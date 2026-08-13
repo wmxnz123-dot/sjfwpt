@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "root": "/Users/sunlu/Documents/WorkSpace/SkillsInstalled/prototype-annotator/examples/expense-reimbursement-demo/input/prototype",
+  "pages": [
+    {
+      "pageKey": "P01",
+      "title": "智能报销助手",
+      "path": "index.html",
+      "route": "/index.html",
+      "elements": [
+        {
+          "elementId": "P01-E001",
+          "tag": "main",
+          "type": "region",
+          "selector": "[data-ann=\"expense-application-page\"]",
+          "strategy": "data",
+          "text": "智能报销助手 上传发票后自动识别、生成报销明细，并提交领导和财务审批。 发票上传 上传发票文件 支持 PDF、JPG、PNG，上传后进入 AI 识别队列。 事项说明 报销事项说明 AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96% 风险校验结果 住宿标准疑似超出",
+          "attrs": {
+            "data-ann": "expense-application-page"
+          }
+        },
+        {
+          "elementId": "P01-E002",
+          "tag": "header",
+          "type": "region",
+          "selector": "header",
+          "strategy": "tag",
+          "text": "智能报销助手 上传发票后自动识别、生成报销明细，并提交领导和财务审批。",
+          "attrs": {}
+        },
+        {
+          "elementId": "P01-E003",
+          "tag": "h1",
+          "type": "element",
+          "selector": "[data-ann=\"page-title\"]",
+          "strategy": "data",
+          "text": "智能报销助手",
+          "attrs": {
+            "data-ann": "page-title"
+          }
+        },
+        {
+          "elementId": "P01-E004",
+          "tag": "section",
+          "type": "region",
+          "selector": "[data-ann=\"invoice-upload-area\"]",
+          "strategy": "data",
+          "text": "发票上传 上传发票文件 支持 PDF、JPG、PNG，上传后进入 AI 识别队列。",
+          "attrs": {
+            "data-ann": "invoice-upload-area"
+          }
+        },
+        {
+          "elementId": "P01-E005",
+          "tag": "h2",
+          "type": "element",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(1) > h2",
+          "strategy": "path",
+          "text": "发票上传",
+          "attrs": {}
+        },
+        {
+          "elementId": "P01-E006",
+          "tag": "input",
+          "type": "form",
+          "selector": "#invoice-file",
+          "strategy": "id",
+          "text": "上传发票文件",
+          "attrs": {
+            "id": "invoice-file",
+            "aria-label": "上传发票文件",
+            "name": "invoiceFile",
+            "type": "file"
+          }
+        },
+        {
+          "elementId": "P01-E007",
+          "tag": "section",
+          "type": "region",
+          "selector": "[data-ann=\"trip-description\"]",
+          "strategy": "data",
+          "text": "事项说明 报销事项说明",
+          "attrs": {
+            "data-ann": "trip-description"
+          }
+        },
+        {
+          "elementId": "P01-E008",
+          "tag": "h2",
+          "type": "element",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(2) > h2",
+          "strategy": "path",
+          "text": "事项说明",
+          "attrs": {}
+        },
+        {
+          "elementId": "P01-E009",
+          "tag": "textarea",
+          "type": "form",
+          "selector": "#trip-purpose",
+          "strategy": "id",
+          "text": "",
+          "attrs": {
+            "id": "trip-purpose",
+            "name": "tripPurpose",
+            "placeholder": "请输入出差城市、日期和事由"
+          }
+        },
+        {
+          "elementId": "P01-E010",
+          "tag": "section",
+          "type": "region",
+          "selector": "[data-ann=\"ai-result-area\"]",
+          "strategy": "data",
+          "text": "AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+          "attrs": {
+            "data-ann": "ai-result-area"
+          }
+        },
+        {
+          "elementId": "P01-E011",
+          "tag": "h2",
+          "type": "element",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(2) > section:nth-of-type(1) > h2",
+          "strategy": "path",
+          "text": "AI识别结果",
+          "attrs": {}
+        },
+        {
+          "elementId": "P01-E012",
+          "tag": "table",
+          "type": "table",
+          "selector": "table",
+          "strategy": "tag",
+          "text": "字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+          "attrs": {}
+        },
+        {
+          "elementId": "P01-E013",
+          "tag": "section",
+          "type": "region",
+          "selector": "[data-ann=\"risk-check-area\"]",
+          "strategy": "data",
+          "text": "风险校验结果 住宿标准疑似超出员工职级上限，需要人工确认。",
+          "attrs": {
+            "data-ann": "risk-check-area"
+          }
+        },
+        {
+          "elementId": "P01-E014",
+          "tag": "h2",
+          "type": "element",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(2) > section:nth-of-type(2) > h2",
+          "strategy": "path",
+          "text": "风险校验结果",
+          "attrs": {}
+        },
+        {
+          "elementId": "P01-E015",
+          "tag": "div",
+          "type": "element",
+          "selector": "[data-ann=\"expense-status\"]",
+          "strategy": "data",
+          "text": "状态：草稿 提交审批",
+          "attrs": {
+            "data-ann": "expense-status"
+          }
+        },
+        {
+          "elementId": "P01-E016",
+          "tag": "button",
+          "type": "interaction",
+          "selector": "[data-ann=\"submit-approval\"]",
+          "strategy": "data",
+          "text": "提交审批",
+          "attrs": {
+            "data-ann": "submit-approval"
+          }
+        }
+      ]
+    }
+  ]
+}

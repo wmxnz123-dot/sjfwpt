@@ -1,0 +1,674 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-12T13:36:04Z",
+  "root": "/Users/sunlu/Documents/WorkSpace/SkillsInstalled/prototype-annotator/examples/surface-demo/input/prototype",
+  "sources": {
+    "pageMap": "page-map.json",
+    "docs": [
+      "/Users/sunlu/Documents/WorkSpace/SkillsInstalled/prototype-annotator/examples/surface-demo/input/PRD.md"
+    ]
+  },
+  "devHandoffHints": [
+    {
+      "pageKey": "P01",
+      "route": "/index.html",
+      "selectedCount": 10,
+      "minSuggested": 10,
+      "densePage": false,
+      "coarseSelectedIds": []
+    }
+  ],
+  "pages": [
+    {
+      "pageKey": "P01",
+      "title": "应用管理",
+      "path": "index.html",
+      "route": "/index.html",
+      "candidates": [
+        {
+          "candidateId": "CAND-P01-001",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E001",
+          "selector": "h1",
+          "strategy": "tag",
+          "fallbackText": "应用管理",
+          "tag": "h1",
+          "type": "element",
+          "attrs": {},
+          "kind": "note",
+          "annotationType": "P",
+          "topics": [
+            "source",
+            "business",
+            "flow"
+          ],
+          "dimension": "Page overview",
+          "priority": "high",
+          "score": 110,
+          "reason": "`应用管理` 是本原型中的一个页面，路由为 `/index.html`，包含列表/表格数据的浏览与操作。",
+          "evidence": [
+            "页面：应用管理",
+            "路由：/index.html",
+            "页面文本：应用管理",
+            "selector：h1",
+            "文档匹配：PRD.md -> 应用管理"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E001"
+          },
+          "selectorQuality": {
+            "level": "coarse",
+            "issues": [
+              "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+            ]
+          },
+          "pageTitle": "应用管理",
+          "pageSummary": "`应用管理` 是本原型中的一个页面，路由为 `/index.html`，包含列表/表格数据的浏览与操作。",
+          "readingFocus": [
+            "先确认本页在业务流程中的入口、出口和服务对象。",
+            "阅读页面内其他标注时，重点关注非显而易见的交互规则、状态、权限和数据变化。",
+            "表格/列表区域关注列含义、筛选条件、行级操作、空状态和分页规则。",
+            "状态类内容关注展示条件、状态切换和异常处理。"
+          ]
+        },
+        {
+          "candidateId": "CAND-P01-002",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E002",
+          "selector": "[data-ann=\"permission-alert\"]",
+          "strategy": "data",
+          "fallbackText": "当前用户仅可管理已授权应用",
+          "tag": "div",
+          "type": "element",
+          "attrs": {
+            "data-ann": "permission-alert"
+          },
+          "kind": "state",
+          "annotationType": "S",
+          "topics": [
+            "state",
+            "exception"
+          ],
+          "dimension": "State and exception",
+          "priority": "medium",
+          "score": 84,
+          "reason": "状态或异常相关元素，适合说明展示条件和处理方式",
+          "evidence": [
+            "页面文本：当前用户仅可管理已授权应用",
+            "selector：[data-ann=\"permission-alert\"]",
+            "文档匹配：PRD.md -> 当前用户仅可管理已授权应用"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E002"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-003",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E003",
+          "selector": "[data-ann=\"create-app\"]",
+          "strategy": "data",
+          "fallbackText": "新建应用",
+          "tag": "button",
+          "type": "interaction",
+          "attrs": {
+            "data-ann": "create-app",
+            "type": "button"
+          },
+          "kind": "interaction",
+          "annotationType": "A",
+          "topics": [
+            "surface",
+            "interaction",
+            "flow"
+          ],
+          "dimension": "Surface trigger",
+          "priority": "high",
+          "score": 92,
+          "reason": "打开create-app-drawer的入口，适合说明打开规则与返回路径",
+          "evidence": [
+            "触发入口：新建应用",
+            "selector：[data-ann=\"create-app\"]",
+            "文档匹配：PRD.md -> 新建应用"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E003"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          },
+          "surfaceId": "surface-P01-create-app-drawer",
+          "displayWhenClosed": "on-trigger",
+          "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+        },
+        {
+          "candidateId": "CAND-P01-004",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E004",
+          "selector": "table",
+          "strategy": "tag",
+          "fallbackText": "应用名称 操作 报销助手 删除",
+          "tag": "table",
+          "type": "table",
+          "attrs": {},
+          "kind": "table",
+          "annotationType": "C",
+          "topics": [
+            "business",
+            "data",
+            "state"
+          ],
+          "dimension": "Table and list",
+          "priority": "medium",
+          "score": 82,
+          "reason": "表格或列表区域，适合说明列、分页、空状态或行操作",
+          "evidence": [
+            "页面文本：应用名称 操作 报销助手 删除",
+            "selector：table",
+            "文档匹配：PRD.md -> 应用名称, 操作, 删除"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E004"
+          },
+          "selectorQuality": {
+            "level": "acceptable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-005",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E005",
+          "selector": "[data-ann=\"delete-app\"]",
+          "strategy": "data",
+          "fallbackText": "删除",
+          "tag": "button",
+          "type": "interaction",
+          "attrs": {
+            "data-ann": "delete-app",
+            "type": "button"
+          },
+          "kind": "note",
+          "annotationType": "C",
+          "topics": [
+            "business"
+          ],
+          "dimension": "Context",
+          "priority": "low",
+          "score": 20,
+          "reason": "公共页眉、全局搜索或导航框架在多页重复出现，默认不作为页面业务标注",
+          "evidence": [
+            "页面文本：删除",
+            "selector：[data-ann=\"delete-app\"]",
+            "文档匹配：PRD.md -> 删除"
+          ],
+          "selected": false,
+          "skipReason": "common-chrome",
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E005"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-006",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E007",
+          "selector": "html > body > div:nth-of-type(3) > div > h2",
+          "strategy": "path",
+          "fallbackText": "新建应用",
+          "tag": "h2",
+          "type": "element",
+          "attrs": {},
+          "kind": "note",
+          "annotationType": "C",
+          "topics": [
+            "surface",
+            "form",
+            "field"
+          ],
+          "dimension": "Surface field",
+          "priority": "low",
+          "score": 62,
+          "reason": "二级界面内部元素，可作为补充说明候选",
+          "evidence": [
+            "页面文本：新建应用",
+            "selector：html > body > div:nth-of-type(3) > div > h2",
+            "二级界面：create-app-drawer",
+            "文档匹配：PRD.md -> 新建应用"
+          ],
+          "selected": false,
+          "skipReason": "no-business-rule",
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E007"
+          },
+          "selectorQuality": {
+            "level": "fragile",
+            "issues": [
+              "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+            ]
+          },
+          "surfaceId": "surface-P01-create-app-drawer",
+          "displayWhenClosed": "sidebar-only",
+          "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+        },
+        {
+          "candidateId": "CAND-P01-007",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E008",
+          "selector": "#app-name",
+          "strategy": "id",
+          "fallbackText": "请输入应用名称",
+          "tag": "input",
+          "type": "form",
+          "attrs": {
+            "id": "app-name",
+            "data-ann": "app-name-input",
+            "placeholder": "请输入应用名称"
+          },
+          "kind": "form",
+          "annotationType": "C",
+          "topics": [
+            "surface",
+            "form",
+            "field",
+            "field-rule"
+          ],
+          "dimension": "Surface field",
+          "priority": "medium",
+          "score": 80,
+          "reason": "二级界面内部字段，适合说明填写规则、校验和保存影响",
+          "evidence": [
+            "页面文本：请输入应用名称",
+            "selector：#app-name",
+            "二级界面：create-app-drawer"
+          ],
+          "selected": false,
+          "skipReason": "out-of-scope",
+          "source": {
+            "type": "prototype",
+            "ref": "page-map:P01-E008"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          },
+          "surfaceId": "surface-P01-create-app-drawer",
+          "displayWhenClosed": "sidebar-only",
+          "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+        },
+        {
+          "candidateId": "CAND-P01-008",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E009",
+          "selector": "[data-ann=\"close-create-app\"]",
+          "strategy": "data",
+          "fallbackText": "关闭",
+          "tag": "button",
+          "type": "interaction",
+          "attrs": {
+            "data-ann": "close-create-app",
+            "type": "button"
+          },
+          "kind": "interaction",
+          "annotationType": "A",
+          "topics": [
+            "surface",
+            "interaction",
+            "action"
+          ],
+          "dimension": "Surface action",
+          "priority": "medium",
+          "score": 82,
+          "reason": "二级界面内部操作，适合说明提交、保存、取消或确认规则",
+          "evidence": [
+            "页面文本：关闭",
+            "selector：[data-ann=\"close-create-app\"]",
+            "二级界面：create-app-drawer",
+            "文档匹配：PRD.md -> 关闭"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E009"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          },
+          "surfaceId": "surface-P01-create-app-drawer",
+          "displayWhenClosed": "sidebar-only",
+          "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+        },
+        {
+          "candidateId": "CAND-P01-009",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E010",
+          "selector": "[data-ann=\"save-app\"]",
+          "strategy": "data",
+          "fallbackText": "保存",
+          "tag": "button",
+          "type": "interaction",
+          "attrs": {
+            "data-ann": "save-app",
+            "type": "button"
+          },
+          "kind": "interaction",
+          "annotationType": "A",
+          "topics": [
+            "surface",
+            "interaction",
+            "action"
+          ],
+          "dimension": "Surface action",
+          "priority": "medium",
+          "score": 82,
+          "reason": "二级界面内部操作，适合说明提交、保存、取消或确认规则",
+          "evidence": [
+            "页面文本：保存",
+            "selector：[data-ann=\"save-app\"]",
+            "二级界面：create-app-drawer",
+            "文档匹配：PRD.md -> 保存"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E010"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          },
+          "surfaceId": "surface-P01-create-app-drawer",
+          "displayWhenClosed": "sidebar-only",
+          "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+        },
+        {
+          "candidateId": "CAND-P01-010",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E012",
+          "selector": "html > body > div:nth-of-type(4) > div > h2",
+          "strategy": "path",
+          "fallbackText": "确认删除",
+          "tag": "h2",
+          "type": "element",
+          "attrs": {},
+          "kind": "note",
+          "annotationType": "C",
+          "topics": [
+            "surface",
+            "form",
+            "field"
+          ],
+          "dimension": "Surface field",
+          "priority": "low",
+          "score": 62,
+          "reason": "二级界面内部元素，可作为补充说明候选",
+          "evidence": [
+            "页面文本：确认删除",
+            "selector：html > body > div:nth-of-type(4) > div > h2",
+            "二级界面：delete-confirm-modal"
+          ],
+          "selected": false,
+          "skipReason": "no-business-rule",
+          "source": {
+            "type": "prototype",
+            "ref": "page-map:P01-E012"
+          },
+          "selectorQuality": {
+            "level": "fragile",
+            "issues": [
+              "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+            ]
+          },
+          "surfaceId": "surface-P01-delete-confirm-modal",
+          "displayWhenClosed": "sidebar-only",
+          "fallbackAnchorSelector": "[data-ann=\"delete-confirm-modal\"]"
+        },
+        {
+          "candidateId": "CAND-P01-011",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E013",
+          "selector": "[data-ann=\"cancel-delete\"]",
+          "strategy": "data",
+          "fallbackText": "取消",
+          "tag": "button",
+          "type": "interaction",
+          "attrs": {
+            "data-ann": "cancel-delete",
+            "type": "button"
+          },
+          "kind": "interaction",
+          "annotationType": "A",
+          "topics": [
+            "surface",
+            "interaction",
+            "risk"
+          ],
+          "dimension": "Surface confirm",
+          "priority": "high",
+          "score": 88,
+          "reason": "二级界面内部操作，适合说明提交、保存、取消或确认规则",
+          "evidence": [
+            "页面文本：取消",
+            "selector：[data-ann=\"cancel-delete\"]",
+            "二级界面：delete-confirm-modal",
+            "文档匹配：PRD.md -> 取消"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E013"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          },
+          "surfaceId": "surface-P01-delete-confirm-modal",
+          "displayWhenClosed": "sidebar-only",
+          "fallbackAnchorSelector": "[data-ann=\"delete-confirm-modal\"]"
+        },
+        {
+          "candidateId": "CAND-P01-012",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E014",
+          "selector": "[data-ann=\"confirm-delete\"]",
+          "strategy": "data",
+          "fallbackText": "确认删除",
+          "tag": "button",
+          "type": "interaction",
+          "attrs": {
+            "data-ann": "confirm-delete",
+            "type": "button"
+          },
+          "kind": "interaction",
+          "annotationType": "A",
+          "topics": [
+            "surface",
+            "interaction",
+            "risk"
+          ],
+          "dimension": "Surface confirm",
+          "priority": "high",
+          "score": 88,
+          "reason": "二级界面内部操作，适合说明提交、保存、取消或确认规则",
+          "evidence": [
+            "页面文本：确认删除",
+            "selector：[data-ann=\"confirm-delete\"]",
+            "二级界面：delete-confirm-modal",
+            "短暂反馈：保存成功"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prototype",
+            "ref": "page-map:P01-E014"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          },
+          "surfaceId": "surface-P01-delete-confirm-modal",
+          "displayWhenClosed": "sidebar-only",
+          "fallbackAnchorSelector": "[data-ann=\"delete-confirm-modal\"]",
+          "feedbackEvidence": [
+            "短暂反馈：保存成功"
+          ]
+        },
+        {
+          "candidateId": "CAND-P01-SURF-surface-P01-create-app-drawer-OV",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": null,
+          "selector": "[data-ann=\"create-app\"]",
+          "strategy": "data",
+          "fallbackText": "create-app-drawer",
+          "tag": "surface",
+          "type": "surface",
+          "kind": "flow",
+          "annotationType": "P",
+          "topics": [
+            "surface",
+            "business",
+            "flow"
+          ],
+          "dimension": "Surface overview",
+          "priority": "high",
+          "score": 90,
+          "reason": "二级界面整体说明，适合描述打开、关闭、职责与状态异常",
+          "evidence": [
+            "二级界面：create-app-drawer",
+            "触发入口：[data-ann=\"create-app\"]"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prototype",
+            "ref": "surface:surface-P01-create-app-drawer"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          },
+          "surfaceId": "surface-P01-create-app-drawer",
+          "displayWhenClosed": "on-trigger",
+          "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+        },
+        {
+          "candidateId": "CAND-P01-SURF-surface-P01-delete-confirm-modal-OV",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": null,
+          "selector": "[data-ann=\"delete-confirm-modal\"]",
+          "strategy": "data",
+          "fallbackText": "delete-confirm-modal",
+          "tag": "surface",
+          "type": "surface",
+          "kind": "interaction",
+          "annotationType": "A",
+          "topics": [
+            "surface",
+            "interaction",
+            "flow"
+          ],
+          "dimension": "Surface trigger",
+          "priority": "high",
+          "score": 92,
+          "reason": "打开delete-confirm-modal的入口，适合说明打开规则与返回路径",
+          "evidence": [
+            "触发入口：delete-confirm-modal",
+            "selector：[data-ann=\"delete-confirm-modal\"]"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prototype",
+            "ref": "surface:surface-P01-delete-confirm-modal"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          },
+          "surfaceId": "surface-P01-delete-confirm-modal",
+          "displayWhenClosed": "on-trigger",
+          "fallbackAnchorSelector": "[data-ann=\"delete-confirm-modal\"]",
+          "sourceType": "prototype"
+        }
+      ]
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P01-create-app-drawer",
+      "type": "drawer",
+      "name": "create-app-drawer",
+      "pageKey": "P01",
+      "openSelector": "[data-ann=\"create-app-drawer\"]",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "triggerSelector": "[data-ann=\"create-app\"]"
+    },
+    {
+      "id": "surface-P01-delete-confirm-modal",
+      "type": "confirm",
+      "name": "delete-confirm-modal",
+      "pageKey": "P01",
+      "openSelector": "[data-ann=\"delete-confirm-modal\"]",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "triggerSelector": "[data-ann=\"delete-confirm-modal\"]"
+    }
+  ]
+}

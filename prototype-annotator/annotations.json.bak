@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P01",
+      "title": "数据服务平台 - 门户首页",
+      "path": "index.html",
+      "route": "/index.html"
+    }
+  ],
+  "surfaces": [],
+  "annotations": [
+    {
+      "id": "ANN-P01-002",
+      "pageKey": "P01",
+      "target": {
+        "selector": "section:nth-of-type(3) > div > div:nth-of-type(1) > div > h2",
+        "fallbackText": "数据资源中心",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "h2"
+        }
+      },
+      "title": "数据资源中心",
+      "contentMarkdown": "### 业务含义\n\n按发布时间倒序",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 2,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T07:34:42.036Z"
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  }
+}

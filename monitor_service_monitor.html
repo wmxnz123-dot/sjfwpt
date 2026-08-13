@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 供给服务监控</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+            
+            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                    <div class="flex items-center gap-6 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">服务名称：</label>
+                            <input type="text" id="search-name" placeholder="请输入服务名称" class="w-[280px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">所属部门：</label>
+                            <select id="search-dept" class="w-[200px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                <option value="">请选择</option>
+                                <option value="市民政局">市民政局</option>
+                                <option value="市公安局">市公安局</option>
+                                <option value="市市场监管局">市市场监管局</option>
+                                <option value="市卫健委">市卫健委</option>
+                                <option value="市教育局">市教育局</option>
+                                <option value="市科技局">市科技局</option>
+                                <option value="市财政局">市财政局</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-3 ml-auto">
+                            <button onclick="resetSearch()" class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-right text-xs"></i>
+                                重置
+                            </button>
+                            <button onclick="doSearch()" class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-search text-xs"></i>
+                                查询
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)]">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h2 class="text-[16px] font-bold text-[#303133]">供给服务监控列表</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="刷新" onclick="refreshData()">
+                                <i class="fa-solid fa-rotate-right text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="导出">
+                                <i class="fa-solid fa-download text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">序号</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">服务名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">所属部门</th>
+                                    <th class="px-5 py-3 text-right font-medium text-[#606266] cursor-pointer hover:text-[#1c7ffd] transition-colors" onclick="sortByTime()">
+                                        更新时间
+                                        <i id="sort-icon" class="fa-solid fa-sort ml-1 text-[#909399] text-xs"></i>
+                                    </th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="service-table-body">
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">1</td>
+                                    <td class="px-5 py-4 text-[#303133]">婚姻状态查询接口</td>
+                                    <td class="px-5 py-4 text-[#303133]">市民政局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-27 14:35:28</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm" onclick="viewService(1)">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">2</td>
+                                    <td class="px-5 py-4 text-[#303133]">人口数据服务接口</td>
+                                    <td class="px-5 py-4 text-[#303133]">市公安局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-27 14:20:15</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm" onclick="viewService(2)">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">3</td>
+                                    <td class="px-5 py-4 text-[#303133]">企业工商登记接口</td>
+                                    <td class="px-5 py-4 text-[#303133]">市市场监管局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-27 13:45:32</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm" onclick="viewService(3)">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">4</td>
+                                    <td class="px-5 py-4 text-[#303133]">健康医疗数据接口</td>
+                                    <td class="px-5 py-4 text-[#303133]">市卫健委</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-27 12:10:45</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm" onclick="viewService(4)">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">5</td>
+                                    <td class="px-5 py-4 text-[#303133]">教育资源查询服务</td>
+                                    <td class="px-5 py-4 text-[#303133]">市教育局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-27 10:30:18</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm" onclick="viewService(5)">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">6</td>
+                                    <td class="px-5 py-4 text-[#303133]">科技项目审批接口</td>
+                                    <td class="px-5 py-4 text-[#303133]">市科技局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-27 09:15:22</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm" onclick="viewService(6)">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">7</td>
+                                    <td class="px-5 py-4 text-[#303133]">财政资金查询接口</td>
+                                    <td class="px-5 py-4 text-[#303133]">市财政局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-26 16:45:30</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm" onclick="viewService(7)">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">8</td>
+                                    <td class="px-5 py-4 text-[#303133]">电子证照验证接口</td>
+                                    <td class="px-5 py-4 text-[#303133]">市民政局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-26 14:20:15</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm" onclick="viewService(8)">查看</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="flex items-center justify-between px-5 py-4 border-t border-gray-100">
+                        <div class="text-sm text-[#606266]">共 8 条记录</div>
+                        <div class="flex items-center gap-2">
+                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <button class="px-3 py-1.5 bg-[#1c7ffd] text-white rounded-lg text-xs hover:bg-[#1a73e8] transition-colors">1</button>
+                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors" disabled>2</button>
+                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors" disabled>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let sortOrder = 'desc';
+        
+        function resetSearch() {
+            document.getElementById('search-name').value = '';
+            document.getElementById('search-dept').value = '';
+        }
+
+        function doSearch() {
+            const name = document.getElementById('search-name').value.trim();
+            const dept = document.getElementById('search-dept').value;
+            alert(`搜索条件：\n服务名称：${name || '全部'}\n所属部门：${dept || '全部'}`);
+        }
+
+        function sortByTime() {
+            const icon = document.getElementById('sort-icon');
+            sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
+            
+            if (sortOrder === 'desc') {
+                icon.classList.remove('fa-sort-up');
+                icon.classList.add('fa-sort-down');
+            } else {
+                icon.classList.remove('fa-sort-down');
+                icon.classList.add('fa-sort-up');
+            }
+            
+            alert(`按更新时间${sortOrder === 'desc' ? '降序' : '升序'}排序`);
+        }
+
+        function refreshData() {
+            alert('数据已刷新');
+        }
+
+        function viewService(id) {
+            const services = {
+                1: { name: '婚姻状态查询接口', dept: '市民政局', status: '正常', calls: 12580, response: '23ms', time: '2023-07-27 14:35:28' },
+                2: { name: '人口数据服务接口', dept: '市公安局', status: '正常', calls: 28960, response: '18ms', time: '2023-07-27 14:20:15' },
+                3: { name: '企业工商登记接口', dept: '市市场监管局', status: '正常', calls: 15320, response: '35ms', time: '2023-07-27 13:45:32' },
+                4: { name: '健康医疗数据接口', dept: '市卫健委', status: '警告', calls: 8750, response: '156ms', time: '2023-07-27 12:10:45' },
+                5: { name: '教育资源查询服务', dept: '市教育局', status: '正常', calls: 6240, response: '28ms', time: '2023-07-27 10:30:18' },
+                6: { name: '科技项目审批接口', dept: '市科技局', status: '异常', calls: 1890, response: '520ms', time: '2023-07-27 09:15:22' },
+                7: { name: '财政资金查询接口', dept: '市财政局', status: '正常', calls: 22450, response: '21ms', time: '2023-07-26 16:45:30' },
+                8: { name: '电子证照验证接口', dept: '市民政局', status: '正常', calls: 35680, response: '15ms', time: '2023-07-26 14:20:15' }
+            };
+            
+            const service = services[id];
+            if (service) {
+                alert(`服务详情：\n服务名称：${service.name}\n所属部门：${service.dept}\n服务状态：${service.status}\n调用次数：${service.calls}\n响应时间：${service.response}\n更新时间：${service.time}`);
+            }
+        }
+    </script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P23",
+      "title": "数据服务平台 - 供给服务监控",
+      "path": "monitor_service_monitor.html",
+      "route": "/monitor_service_monitor.html"
+    }
+  ],
+  "surfaces": [],
+  "annotations": [
+    {
+      "id": "ANN-P23-001",
+      "pageKey": "P23",
+      "target": {
+        "selector": "main \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div:nth-of-type(1) \u003e h2",
+        "fallbackText": "供给服务监控列表",
+        "strategy": "path",
+        "sourceElementId": "P23-E010",
+        "boundsHint": {
+          "text": "供给服务监控列表",
+          "tag": "h2"
+        }
+      },
+      "title": "供给服务监控列表 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「供给服务监控列表」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「供给服务监控列表」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「供给服务监控列表」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 请输入服务名称\n- 请选择 市民政局 市公安局 市市场监管局 市卫…\n- 序号 服务名称 所属部门 更新时间 操作 1 …\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P23-E010"
+      },
+      "evidence": [
+        "页面：供给服务监控列表",
+        "路由：/monitor_service_monitor.html",
+        "页面文本：供给服务监控列表",
+        "selector：main \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div:nth-of-type(1) \u003e h2"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P23-009",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P23-002",
+      "pageKey": "P23",
+      "target": {
+        "selector": "main \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e table",
+        "fallbackText": "序号 服务名称 所属部门 更新时间 操作 1 婚姻状态查询接口 市民政局 2023-07-27 14:35:28 查看 2 人口数据服务接口 市公安局 2023-07-27 14:20:15 查看 3 企业工商登记接口 市市场监管局 2023-07-27 13:45:32 查看 4 健康医疗数据接口 市卫健委 2023",
+        "strategy": "path",
+        "sourceElementId": "P23-E013",
+        "boundsHint": {
+          "text": "序号 服务名称 所属部门 更新时间 操作 1 婚姻状态查询接口 市民政局 2023-07-27 14:35:28 查看 2 人口数据服务接口 市公安局 2023-07-27 14:20:15 查看 3 企业工商登记接口 市市场监管局 2023-07-27 13:45:32 查看 4 健康医疗数据接口 市卫健委 2023",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「序号 服务名称 所属部门 更新时间 操作 1 婚姻状态查询接口…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P23-E013"
+      },
+      "evidence": [
+        "页面文本：序号 服务名称 所属部门 更新时间 操作 1 婚姻状态查询接口 市民政局 2023-07-27 14:35:28 查看 2 人口数据服务接口 市公安局 2023",
+        "selector：main \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P23-012",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

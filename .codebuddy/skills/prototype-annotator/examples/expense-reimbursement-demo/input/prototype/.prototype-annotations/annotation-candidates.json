@@ -1,0 +1,640 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-12T12:24:19Z",
+  "root": "/Users/sunlu/Documents/WorkSpace/SkillsInstalled/prototype-annotator/examples/expense-reimbursement-demo/input/prototype",
+  "sources": {
+    "pageMap": "page-map.json",
+    "docs": [
+      "/Users/sunlu/Documents/WorkSpace/SkillsInstalled/prototype-annotator/examples/expense-reimbursement-demo/input/PRD.md"
+    ]
+  },
+  "devHandoffHints": [
+    {
+      "pageKey": "P01",
+      "route": "/index.html",
+      "selectedCount": 5,
+      "minSuggested": 5,
+      "densePage": false,
+      "coarseSelectedIds": []
+    }
+  ],
+  "pages": [
+    {
+      "pageKey": "P01",
+      "title": "智能报销助手",
+      "path": "index.html",
+      "route": "/index.html",
+      "candidates": [
+        {
+          "candidateId": "CAND-P01-001",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E001",
+          "selector": "[data-ann=\"expense-application-page\"]",
+          "strategy": "data",
+          "fallbackText": "智能报销助手 上传发票后自动识别、生成报销明细，并提交领导和财务审批。 发票上传 上传发票文件 支持 PDF、JPG、PNG，上传后进入 AI 识别队列。 事项说明 报销事项说明 AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96% 风险校验结果 住宿标准疑似超出",
+          "tag": "main",
+          "type": "region",
+          "kind": "note",
+          "annotationType": "DATA",
+          "topics": [
+            "business",
+            "data",
+            "dependency"
+          ],
+          "dimension": "Data explanation",
+          "priority": "low",
+          "score": 62,
+          "reason": "区域文本与文档匹配，可作为上下文候选但默认不优先",
+          "evidence": [
+            "页面文本：智能报销助手 上传发票后自动识别、生成报销明细，并提交领导和财务审批。 发票上传 上传发票文件 支持 PDF、JPG、PNG，上传后进入 AI 识别队列。 事项",
+            "selector：[data-ann=\"expense-application-page\"]",
+            "文档匹配：PRD.md -> 智能报销助手, 生成报销明细, pdf"
+          ],
+          "selected": false,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E001"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-002",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E002",
+          "selector": "header",
+          "strategy": "tag",
+          "fallbackText": "智能报销助手 上传发票后自动识别、生成报销明细，并提交领导和财务审批。",
+          "tag": "header",
+          "type": "region",
+          "kind": "note",
+          "annotationType": "DATA",
+          "topics": [
+            "business",
+            "data",
+            "dependency"
+          ],
+          "dimension": "Data explanation",
+          "priority": "low",
+          "score": 54,
+          "reason": "区域文本与文档匹配，可作为上下文候选但默认不优先",
+          "evidence": [
+            "页面文本：智能报销助手 上传发票后自动识别、生成报销明细，并提交领导和财务审批。",
+            "selector：header",
+            "文档匹配：PRD.md -> 智能报销助手, 生成报销明细"
+          ],
+          "selected": false,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E002"
+          },
+          "selectorQuality": {
+            "level": "acceptable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-003",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E003",
+          "selector": "[data-ann=\"page-title\"]",
+          "strategy": "data",
+          "fallbackText": "智能报销助手",
+          "tag": "h1",
+          "type": "element",
+          "kind": "note",
+          "annotationType": "P",
+          "topics": [
+            "source",
+            "business",
+            "flow"
+          ],
+          "dimension": "Page overview",
+          "priority": "high",
+          "score": 110,
+          "reason": "`智能报销助手` 是本原型中的一个页面，路由为 `/index.html`，包含列表/表格数据的浏览与操作，关键操作包括：提交审批。",
+          "evidence": [
+            "页面：智能报销助手",
+            "路由：/index.html",
+            "页面文本：智能报销助手",
+            "selector：[data-ann=\"page-title\"]",
+            "文档匹配：PRD.md -> 智能报销助手"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E003"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          },
+          "pageTitle": "智能报销助手",
+          "pageSummary": "`智能报销助手` 是本原型中的一个页面，路由为 `/index.html`，包含列表/表格数据的浏览与操作，关键操作包括：提交审批。",
+          "readingFocus": [
+            "先确认本页在业务流程中的入口、出口和服务对象。",
+            "阅读页面内其他标注时，重点关注非显而易见的交互规则、状态、权限和数据变化。",
+            "表格/列表区域关注列含义、筛选条件、行级操作、空状态和分页规则。",
+            "状态类内容关注展示条件、状态切换和异常处理。"
+          ]
+        },
+        {
+          "candidateId": "CAND-P01-004",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E004",
+          "selector": "[data-ann=\"invoice-upload-area\"]",
+          "strategy": "data",
+          "fallbackText": "发票上传 上传发票文件 支持 PDF、JPG、PNG，上传后进入 AI 识别队列。",
+          "tag": "section",
+          "type": "region",
+          "kind": "note",
+          "annotationType": "DATA",
+          "topics": [
+            "business",
+            "data",
+            "dependency"
+          ],
+          "dimension": "Data explanation",
+          "priority": "low",
+          "score": 62,
+          "reason": "区域文本与文档匹配，可作为上下文候选但默认不优先",
+          "evidence": [
+            "页面文本：发票上传 上传发票文件 支持 PDF、JPG、PNG，上传后进入 AI 识别队列。",
+            "selector：[data-ann=\"invoice-upload-area\"]",
+            "文档匹配：PRD.md -> pdf"
+          ],
+          "selected": false,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E004"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-005",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E005",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(1) > h2",
+          "strategy": "path",
+          "fallbackText": "发票上传",
+          "tag": "h2",
+          "type": "element",
+          "kind": "note",
+          "annotationType": "C",
+          "topics": [
+            "business"
+          ],
+          "dimension": "Context",
+          "priority": "low",
+          "score": 0,
+          "reason": "缺少明确业务规则",
+          "evidence": [
+            "页面文本：发票上传",
+            "selector：main > div:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(1) > h2"
+          ],
+          "selected": false,
+          "skipReason": "no-business-rule",
+          "source": {
+            "type": "prototype",
+            "ref": "page-map:P01-E005"
+          },
+          "selectorQuality": {
+            "level": "fragile",
+            "issues": [
+              "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+            ]
+          }
+        },
+        {
+          "candidateId": "CAND-P01-006",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E006",
+          "selector": "#invoice-file",
+          "strategy": "id",
+          "fallbackText": "上传发票文件",
+          "tag": "input",
+          "type": "form",
+          "kind": "form",
+          "annotationType": "C",
+          "topics": [
+            "business",
+            "field-rule",
+            "exception"
+          ],
+          "dimension": "Form and validation",
+          "priority": "medium",
+          "score": 66,
+          "reason": "表单或字段，适合说明输入、默认值、校验或选项来源",
+          "evidence": [
+            "页面文本：上传发票文件",
+            "selector：#invoice-file"
+          ],
+          "selected": false,
+          "skipReason": "no-business-rule",
+          "source": {
+            "type": "prototype",
+            "ref": "page-map:P01-E006"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-007",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E007",
+          "selector": "[data-ann=\"trip-description\"]",
+          "strategy": "data",
+          "fallbackText": "事项说明 报销事项说明",
+          "tag": "section",
+          "type": "region",
+          "kind": "note",
+          "annotationType": "DATA",
+          "topics": [
+            "business",
+            "data",
+            "dependency"
+          ],
+          "dimension": "Data explanation",
+          "priority": "low",
+          "score": 62,
+          "reason": "区域文本与文档匹配，可作为上下文候选但默认不优先",
+          "evidence": [
+            "页面文本：事项说明 报销事项说明",
+            "selector：[data-ann=\"trip-description\"]",
+            "文档匹配：PRD.md -> 事项说明"
+          ],
+          "selected": false,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E007"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-008",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E008",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(2) > h2",
+          "strategy": "path",
+          "fallbackText": "事项说明",
+          "tag": "h2",
+          "type": "element",
+          "kind": "note",
+          "annotationType": "C",
+          "topics": [
+            "business"
+          ],
+          "dimension": "Context",
+          "priority": "low",
+          "score": 12,
+          "reason": "缺少明确业务规则",
+          "evidence": [
+            "页面文本：事项说明",
+            "selector：main > div:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(2) > h2",
+            "文档匹配：PRD.md -> 事项说明"
+          ],
+          "selected": false,
+          "skipReason": "no-business-rule",
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E008"
+          },
+          "selectorQuality": {
+            "level": "fragile",
+            "issues": [
+              "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+            ]
+          }
+        },
+        {
+          "candidateId": "CAND-P01-009",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E009",
+          "selector": "#trip-purpose",
+          "strategy": "id",
+          "fallbackText": "",
+          "tag": "textarea",
+          "type": "form",
+          "kind": "form",
+          "annotationType": "C",
+          "topics": [
+            "business",
+            "field-rule",
+            "exception"
+          ],
+          "dimension": "Form and validation",
+          "priority": "medium",
+          "score": 66,
+          "reason": "表单或字段，适合说明输入、默认值、校验或选项来源",
+          "evidence": [
+            "selector：#trip-purpose"
+          ],
+          "selected": false,
+          "skipReason": "no-business-rule",
+          "source": {
+            "type": "prototype",
+            "ref": "page-map:P01-E009"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-010",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E010",
+          "selector": "[data-ann=\"ai-result-area\"]",
+          "strategy": "data",
+          "fallbackText": "AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+          "tag": "section",
+          "type": "region",
+          "kind": "ai",
+          "annotationType": "AI",
+          "topics": [
+            "ai",
+            "interaction",
+            "state",
+            "exception"
+          ],
+          "dimension": "AI and automation",
+          "priority": "high",
+          "score": 98,
+          "reason": "AI 或自动化相关元素，适合说明生成态、重试和结果处理",
+          "evidence": [
+            "页面文本：AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+            "selector：[data-ann=\"ai-result-area\"]",
+            "文档匹配：PRD.md -> 发票号码, 金额"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E010"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-011",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E011",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(2) > section:nth-of-type(1) > h2",
+          "strategy": "path",
+          "fallbackText": "AI识别结果",
+          "tag": "h2",
+          "type": "element",
+          "kind": "note",
+          "annotationType": "C",
+          "topics": [
+            "business"
+          ],
+          "dimension": "Context",
+          "priority": "low",
+          "score": 0,
+          "reason": "缺少明确业务规则",
+          "evidence": [
+            "页面文本：AI识别结果",
+            "selector：main > div:nth-of-type(1) > div:nth-of-type(2) > section:nth-of-type(1) > h2"
+          ],
+          "selected": false,
+          "skipReason": "no-business-rule",
+          "source": {
+            "type": "prototype",
+            "ref": "page-map:P01-E011"
+          },
+          "selectorQuality": {
+            "level": "fragile",
+            "issues": [
+              "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+            ]
+          }
+        },
+        {
+          "candidateId": "CAND-P01-012",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E012",
+          "selector": "table",
+          "strategy": "tag",
+          "fallbackText": "字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+          "tag": "table",
+          "type": "table",
+          "kind": "table",
+          "annotationType": "C",
+          "topics": [
+            "business",
+            "data",
+            "state"
+          ],
+          "dimension": "Table and list",
+          "priority": "medium",
+          "score": 82,
+          "reason": "表格或列表区域，适合说明列、分页、空状态或行操作",
+          "evidence": [
+            "页面文本：字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+            "selector：table",
+            "文档匹配：PRD.md -> 发票号码, 金额"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E012"
+          },
+          "selectorQuality": {
+            "level": "acceptable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-013",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E013",
+          "selector": "[data-ann=\"risk-check-area\"]",
+          "strategy": "data",
+          "fallbackText": "风险校验结果 住宿标准疑似超出员工职级上限，需要人工确认。",
+          "tag": "section",
+          "type": "region",
+          "kind": "note",
+          "annotationType": "C",
+          "topics": [
+            "business"
+          ],
+          "dimension": "Context",
+          "priority": "low",
+          "score": 8,
+          "reason": "缺少明确业务规则",
+          "evidence": [
+            "页面文本：风险校验结果 住宿标准疑似超出员工职级上限，需要人工确认。",
+            "selector：[data-ann=\"risk-check-area\"]"
+          ],
+          "selected": false,
+          "skipReason": "low-value-structure",
+          "source": {
+            "type": "prototype",
+            "ref": "page-map:P01-E013"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-014",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E014",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(2) > section:nth-of-type(2) > h2",
+          "strategy": "path",
+          "fallbackText": "风险校验结果",
+          "tag": "h2",
+          "type": "element",
+          "kind": "note",
+          "annotationType": "C",
+          "topics": [
+            "business"
+          ],
+          "dimension": "Context",
+          "priority": "low",
+          "score": 0,
+          "reason": "缺少明确业务规则",
+          "evidence": [
+            "页面文本：风险校验结果",
+            "selector：main > div:nth-of-type(1) > div:nth-of-type(2) > section:nth-of-type(2) > h2"
+          ],
+          "selected": false,
+          "skipReason": "no-business-rule",
+          "source": {
+            "type": "prototype",
+            "ref": "page-map:P01-E014"
+          },
+          "selectorQuality": {
+            "level": "fragile",
+            "issues": [
+              "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+            ]
+          }
+        },
+        {
+          "candidateId": "CAND-P01-015",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E015",
+          "selector": "[data-ann=\"expense-status\"]",
+          "strategy": "data",
+          "fallbackText": "状态：草稿 提交审批",
+          "tag": "div",
+          "type": "element",
+          "kind": "state",
+          "annotationType": "S",
+          "topics": [
+            "state",
+            "exception"
+          ],
+          "dimension": "State and exception",
+          "priority": "medium",
+          "score": 84,
+          "reason": "状态或异常相关元素，适合说明展示条件和处理方式",
+          "evidence": [
+            "页面文本：状态：草稿 提交审批",
+            "selector：[data-ann=\"expense-status\"]",
+            "文档匹配：PRD.md -> 状态, 草稿, 提交审批"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E015"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        },
+        {
+          "candidateId": "CAND-P01-016",
+          "pageKey": "P01",
+          "pagePath": "index.html",
+          "pageRoute": "/index.html",
+          "elementId": "P01-E016",
+          "selector": "[data-ann=\"submit-approval\"]",
+          "strategy": "data",
+          "fallbackText": "提交审批",
+          "tag": "button",
+          "type": "interaction",
+          "kind": "interaction",
+          "annotationType": "A",
+          "topics": [
+            "business",
+            "interaction",
+            "flow"
+          ],
+          "dimension": "Primary action",
+          "priority": "high",
+          "score": 110,
+          "reason": "关键操作入口",
+          "evidence": [
+            "页面文本：提交审批",
+            "selector：[data-ann=\"submit-approval\"]",
+            "文档匹配：PRD.md -> 提交审批"
+          ],
+          "selected": true,
+          "skipReason": null,
+          "source": {
+            "type": "prd",
+            "ref": "page-map:P01-E016"
+          },
+          "selectorQuality": {
+            "level": "stable",
+            "issues": []
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 数据中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0f52ba 0%, #1c7ffd 50%, #5a8bfb 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(28, 127, 253, 0.15); }
+        .tree-node { cursor: pointer; user-select: none; }
+        .tree-children { transition: all 0.2s ease; }
+        .tab-active { background: linear-gradient(135deg, #1c7ffd, #5a8bfb); color: white; }
+        .tab-inactive { background: white; color: #606266; border: 1px solid #e4e7ed; }
+        .tab-inactive:hover { border-color: #1c7ffd; color: #1c7ffd; }
+        .filter-tag { transition: all 0.2s ease; }
+        .filter-tag:hover { background-color: #ecf5ff; color: #1c7ffd; }
+        .filter-tag.active { background-color: #1c7ffd; color: white; }
+        .data-card { transition: all 0.3s ease; border: 1px solid #ebeef5; }
+        .data-card:hover { border-color: #1c7ffd; box-shadow: 0 8px 16px rgba(28, 127, 253, 0.1); }
+        .search-input:focus { border-color: #1c7ffd; box-shadow: 0 0 0 3px rgba(28, 127, 253, 0.1); }
+        .left-nav-btn { transition: all 0.2s ease; }
+        .left-nav-btn.active { background: linear-gradient(135deg, #1c7ffd, #5a8bfb); color: white; }
+        .left-nav-btn:not(.active):hover { background: #f5f7fa; color: #1c7ffd; }
+    </style>
+    <script src="portal_common.js"></script>
+</head>
+<body class="bg-[#f5f7fa] text-[14px] text-gray-700">
+    <script>PortalCommon.renderHeader('data_center');</script>
+
+    <main class="pt-16">
+        <!-- Tab切换区 -->
+        <div class="bg-white border-b border-gray-200 sticky top-16 z-40">
+            <div class="max-w-[1440px] mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl font-bold text-[#303133] mr-4">数据中心</h1>
+                        <div class="flex items-center bg-gray-100 rounded-lg p-1">
+                            <button class="tab-btn tab-active px-5 py-2 rounded-md text-sm font-medium transition-all" data-tab="city">市级数据</button>
+                            <button class="tab-btn tab-inactive px-5 py-2 rounded-md text-sm font-medium transition-all" data-tab="province">省级数据</button>
+                            <button class="tab-btn tab-inactive px-5 py-2 rounded-md text-sm font-medium transition-all" data-tab="district">区县数据</button>
+                        </div>
+                    </div>
+                    <button onclick="openDemandModal()" class="px-5 py-2 bg-[#1c7ffd] text-white rounded-lg hover:bg-[#1a73e8] transition-colors text-sm font-medium flex items-center gap-2 shadow-sm shrink-0">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>需求定制
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主体内容区 -->
+        <div class="max-w-[1440px] mx-auto px-6 py-6">
+            <div class="flex gap-6">
+                <!-- 左侧侧边栏 -->
+                <aside class="w-[280px] shrink-0">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <!-- 左侧切换按钮 -->
+                        <div class="flex border-b border-gray-100">
+                            <button class="left-nav-btn active flex-1 py-3 text-sm font-medium" data-left-nav="dept">
+                                <i class="fa-solid fa-building mr-1"></i>部门
+                            </button>
+                            <button class="left-nav-btn flex-1 py-3 text-sm font-medium text-[#606266]" data-left-nav="basic">
+                                <i class="fa-solid fa-layer-group mr-1"></i>基础资源
+                            </button>
+                            <button class="left-nav-btn flex-1 py-3 text-sm font-medium text-[#606266]" data-left-nav="theme">
+                                <i class="fa-solid fa-folder-tree mr-1"></i>主题资源
+                            </button>
+                        </div>
+
+                        <!-- 树形菜单内容区 -->
+                        <div class="p-4 max-h-[calc(100vh-280px)] overflow-y-auto" id="tree-container">
+                            <!-- 部门树 -->
+                            <div class="tree-content" id="tree-dept">
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 text-[#1c7ffd] bg-blue-50 font-medium" onclick="toggleTreeNode(this)">
+                                        <i class="fa-solid fa-angle-down w-5 text-center mr-1 text-xs"></i>
+                                        <i class="fa-solid fa-building w-5 text-center mr-2 text-[#1c7ffd]"></i>
+                                        <span>市政府办公厅</span>
+                                    </div>
+                                    <div class="tree-children ml-4 border-l-2 border-gray-100 pl-2 mt-1">
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">综合处</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">信息处</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="toggleTreeNode(this)">
+                                        <i class="fa-solid fa-angle-right w-5 text-center mr-1 text-xs"></i>
+                                        <i class="fa-solid fa-building w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>市发展和改革委员会</span>
+                                    </div>
+                                    <div class="tree-children hidden ml-4 border-l-2 border-gray-100 pl-2 mt-1">
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">发展规划处</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">产业协调处</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="toggleTreeNode(this)">
+                                        <i class="fa-solid fa-angle-right w-5 text-center mr-1 text-xs"></i>
+                                        <i class="fa-solid fa-building w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>市公安局</span>
+                                    </div>
+                                    <div class="tree-children hidden ml-4 border-l-2 border-gray-100 pl-2 mt-1">
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">治安管理支队</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">交通管理支队</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="toggleTreeNode(this)">
+                                        <i class="fa-solid fa-angle-right w-5 text-center mr-1 text-xs"></i>
+                                        <i class="fa-solid fa-building w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>市市场监督管理局</span>
+                                    </div>
+                                    <div class="tree-children hidden ml-4 border-l-2 border-gray-100 pl-2 mt-1">
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">登记注册处</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">信用监管处</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="toggleTreeNode(this)">
+                                        <i class="fa-solid fa-angle-right w-5 text-center mr-1 text-xs"></i>
+                                        <i class="fa-solid fa-building w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>市人力资源和社会保障局</span>
+                                    </div>
+                                    <div class="tree-children hidden ml-4 border-l-2 border-gray-100 pl-2 mt-1">
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">就业促进处</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">社会保险处</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 基础资源树 -->
+                            <div class="tree-content hidden" id="tree-basic">
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 text-[#1c7ffd] bg-blue-50 font-medium" onclick="selectTreeNode(this)">
+                                        <i class="fa-solid fa-users w-5 text-center mr-2 text-[#1c7ffd]"></i>
+                                        <span>人口基础信息</span>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                        <i class="fa-solid fa-building w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>法人基础信息</span>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                        <i class="fa-solid fa-map-location-dot w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>空间地理基础信息</span>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                        <i class="fa-solid fa-credit-card w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>社会信用基础信息</span>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                        <i class="fa-solid fa-id-card w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>电子证照基础信息</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 主题资源树 -->
+                            <div class="tree-content hidden" id="tree-theme">
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="toggleTreeNode(this)">
+                                        <i class="fa-solid fa-angle-right w-5 text-center mr-1 text-xs"></i>
+                                        <i class="fa-solid fa-city w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>城市建设</span>
+                                    </div>
+                                    <div class="tree-children hidden ml-4 border-l-2 border-gray-100 pl-2 mt-1">
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">城市规划</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">市政设施</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">环境保护</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="toggleTreeNode(this)">
+                                        <i class="fa-solid fa-angle-right w-5 text-center mr-1 text-xs"></i>
+                                        <i class="fa-solid fa-heart-pulse w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>民生服务</span>
+                                    </div>
+                                    <div class="tree-children hidden ml-4 border-l-2 border-gray-100 pl-2 mt-1">
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">医疗卫生</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">教育培训</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">社会保障</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="toggleTreeNode(this)">
+                                        <i class="fa-solid fa-angle-right w-5 text-center mr-1 text-xs"></i>
+                                        <i class="fa-solid fa-chart-line w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>经济发展</span>
+                                    </div>
+                                    <div class="tree-children hidden ml-4 border-l-2 border-gray-100 pl-2 mt-1">
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">产业发展</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">财税金融</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">对外贸易</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tree-node mb-1">
+                                    <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="toggleTreeNode(this)">
+                                        <i class="fa-solid fa-angle-right w-5 text-center mr-1 text-xs"></i>
+                                        <i class="fa-solid fa-shield-halved w-5 text-center mr-2 text-[#909399]"></i>
+                                        <span>公共安全</span>
+                                    </div>
+                                    <div class="tree-children hidden ml-4 border-l-2 border-gray-100 pl-2 mt-1">
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">社会治安</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">应急管理</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer" onclick="selectTreeNode(this)">
+                                                <span class="text-[#606266]">食品药品监管</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- 右侧内容区 -->
+                <div class="flex-1 min-w-0">
+                    <!-- 筛选栏 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-6">
+                        <div class="flex flex-col gap-4">
+                            <!-- 资源类型 -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-medium text-[#303133] shrink-0 w-[80px]">资源类型：</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="filter-tag active px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">全部</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">接口</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">库表</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">文件</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">未挂接</button>
+                                </div>
+                            </div>
+                            <!-- 共享属性 -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-medium text-[#303133] shrink-0 w-[80px]">共享属性：</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="filter-tag active px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">全部</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">无条件共享</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">有条件共享</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">不予共享</button>
+                                </div>
+                            </div>
+                            <!-- 开放属性 -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-medium text-[#303133] shrink-0 w-[80px]">开放属性：</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="filter-tag active px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">全部</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">无条件开放</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">有条件开放</button>
+                                    <button class="filter-tag px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer">不予开放</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-4">
+                            <!-- 关键词搜索 -->
+                            <div class="flex-1 relative">
+                                <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#909399]"></i>
+                                <input type="text" id="smart-search-input" placeholder="请输入关键词搜索数据目录..." oninput="smartSearch(this.value)" class="search-input w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm outline-none transition-all">
+                                <!-- 语义检索悬浮结果面板 -->
+                                <div id="smart-search-panel" class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
+                                    <div class="max-h-[360px] overflow-y-auto" id="smart-search-results"></div>
+                                    <div class="px-4 py-3 border-t border-gray-100 bg-gray-50 text-xs text-[#909399] flex items-center gap-1.5">
+                                        <i class="fa-solid fa-wand-magic-sparkles text-[#1c7ffd]"></i>基于语义检索，实时匹配数据目录
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="px-6 py-2.5 bg-[#1c7ffd] text-white rounded-lg hover:bg-[#1a73e8] transition-colors text-sm font-medium flex items-center">
+                                <i class="fa-solid fa-search mr-2"></i>搜索
+                            </button>
+                            <button class="px-4 py-2.5 border border-gray-200 text-[#606266] rounded-lg hover:bg-gray-50 transition-colors text-sm flex items-center">
+                                <i class="fa-solid fa-rotate-right mr-2"></i>重置
+                            </button>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-sm text-[#606266]">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-database text-[#1c7ffd]"></i>
+                                <span>共 <strong class="text-[#1c7ffd]">2,580</strong> 条数据目录</span>
+                            </div>
+                            <div class="flex items-center gap-5">
+                                <button onclick="toggleSort('update')" id="sort-update" class="flex items-center gap-1 hover:text-[#1c7ffd] transition-colors cursor-pointer">
+                                    <span>目录更新时间</span>
+                                    <i id="sort-update-icon" class="fa-solid fa-sort text-[#1c7ffd]"></i>
+                                </button>
+                                <button onclick="toggleSort('publish')" id="sort-publish" class="flex items-center gap-1 hover:text-[#1c7ffd] transition-colors cursor-pointer">
+                                    <span>发布时间</span>
+                                    <i id="sort-publish-icon" class="fa-solid fa-sort text-[#1c7ffd]"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数据目录列表 -->
+                    <div class="space-y-4" id="catalog-list">
+                        <!-- 目录卡片1 -->
+                        <div onclick="window.location='portal_data_detail.html?id=business'" class="data-card bg-white rounded-xl p-5 cursor-pointer data-publish="2025-06-01" data-update="2025-06-15" hover:shadow-lg hover:border-blue-200 transition-all">
+                            <div class="flex items-start justify-between pb-3 mb-3 border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-database text-[#1c7ffd] text-lg"></i>
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-[#303133] hover:text-[#1c7ffd] transition-colors">测试123</h3>
+                                    <div class="flex items-center gap-2 ml-3">
+                                        <span class="px-2.5 py-1 border border-gray-200 bg-gray-50 text-[#606266] text-xs rounded">不予共享</span>
+                                        <span class="px-2.5 py-1 border border-gray-200 bg-gray-50 text-[#606266] text-xs rounded">不予开放</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between gap-6">
+                                <div class="space-y-2 flex-1 min-w-0">
+                                    <div class="flex items-center gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">提供机构：</span>
+                                        <span class="text-[#595959]">xx市大数据局</span>
+                                    </div>
+                                    <div class="flex items-start gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">信息项：</span>
+                                        <span class="text-[#595959]">生日、性别、年龄、身高、姓名</span>
+                                    </div>
+                                    <div class="flex items-center gap-8 text-xs">
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">目录更新时间：</span>
+                                            <span class="text-[#8c8c8c]">2025-07-21 16:09:16</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">发布时间：</span>
+                                            <span class="text-[#8c8c8c]">2025-07-21 15:21:23</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 shrink-0" onclick="event.stopPropagation()">
+                                    <a href="portal_data_detail.html?id=business" class="w-14 h-14 rounded-lg border-2 border-[#1c7ffd] flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-blue-50 transition-colors">
+                                        <i class="fa-solid fa-table text-[#1c7ffd] text-xl"></i>
+                                        <span class="text-[#1c7ffd] text-xs font-semibold">库表</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=business" class="w-14 h-14 rounded-lg border border-gray-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                                        <i class="fa-solid fa-plug text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 text-xs font-medium">接口</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=business" class="w-14 h-14 rounded-lg border-2 border-[#1c7ffd] flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-blue-50 transition-colors">
+                                        <i class="fa-solid fa-file-lines text-[#1c7ffd] text-xl"></i>
+                                        <span class="text-[#1c7ffd] text-xs font-semibold">文件</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 目录卡片2 -->
+                        <div onclick="window.location='portal_data_detail.html?id=tax'" class="data-card bg-white rounded-xl p-5 cursor-pointer data-publish="2025-08-15" data-update="2025-08-20" hover:shadow-lg hover:border-blue-200 transition-all">
+                            <div class="flex items-start justify-between pb-3 mb-3 border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-database text-[#1c7ffd] text-lg"></i>
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-[#303133] hover:text-[#1c7ffd] transition-colors">税务登记信息</h3>
+                                    <div class="flex items-center gap-2 ml-3">
+                                        <span class="px-2.5 py-1 border border-yellow-200 bg-yellow-50 text-yellow-600 text-xs rounded">有条件共享</span>
+                                        <span class="px-2.5 py-1 border border-orange-200 bg-orange-50 text-orange-600 text-xs rounded">有条件开放</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between gap-6">
+                                <div class="space-y-2 flex-1 min-w-0">
+                                    <div class="flex items-center gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">提供机构：</span>
+                                        <span class="text-[#595959]">市税务局</span>
+                                    </div>
+                                    <div class="flex items-start gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">信息项：</span>
+                                        <span class="text-[#595959]">纳税人识别号、纳税人类型、税务登记状态、主管税务机关</span>
+                                    </div>
+                                    <div class="flex items-center gap-8 text-xs">
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">目录更新时间：</span>
+                                            <span class="text-[#8c8c8c]">2026-01-10 10:20:33</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">发布时间：</span>
+                                            <span class="text-[#8c8c8c]">2025-12-05 09:12:10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 shrink-0" onclick="event.stopPropagation()">
+                                    <a href="portal_data_detail.html?id=tax" class="w-14 h-14 rounded-lg border-2 border-[#1c7ffd] flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-blue-50 transition-colors">
+                                        <i class="fa-solid fa-table text-[#1c7ffd] text-xl"></i>
+                                        <span class="text-[#1c7ffd] text-xs font-semibold">库表</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=tax" class="w-14 h-14 rounded-lg border border-gray-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                                        <i class="fa-solid fa-plug text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 text-xs font-medium">接口</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=tax" class="w-14 h-14 rounded-lg border border-gray-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                                        <i class="fa-solid fa-file-lines text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 text-xs font-medium">文件</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 目录卡片3 -->
+                        <div onclick="window.location='portal_data_detail.html?id=population'" class="data-card bg-white rounded-xl p-5 cursor-pointer data-publish="2025-07-10" data-update="2025-07-25" hover:shadow-lg hover:border-blue-200 transition-all">
+                            <div class="flex items-start justify-between pb-3 mb-3 border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-database text-[#1c7ffd] text-lg"></i>
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-[#303133] hover:text-[#1c7ffd] transition-colors">常住人口基本信息</h3>
+                                    <div class="flex items-center gap-2 ml-3">
+                                        <span class="px-2.5 py-1 border border-yellow-200 bg-yellow-50 text-yellow-600 text-xs rounded">有条件共享</span>
+                                        <span class="px-2.5 py-1 border border-gray-200 bg-gray-100 text-gray-500 text-xs rounded">不予开放</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between gap-6">
+                                <div class="space-y-2 flex-1 min-w-0">
+                                    <div class="flex items-center gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">提供机构：</span>
+                                        <span class="text-[#595959]">市公安局</span>
+                                    </div>
+                                    <div class="flex items-start gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">信息项：</span>
+                                        <span class="text-[#595959]">姓名、性别、民族、出生日期、身份证号码、户籍地址</span>
+                                    </div>
+                                    <div class="flex items-center gap-8 text-xs">
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">目录更新时间：</span>
+                                            <span class="text-[#8c8c8c]">2026-01-20 14:30:22</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">发布时间：</span>
+                                            <span class="text-[#8c8c8c]">2025-11-20 08:45:10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 shrink-0" onclick="event.stopPropagation()">
+                                    <a href="portal_data_detail.html?id=population" class="w-14 h-14 rounded-lg border border-gray-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                                        <i class="fa-solid fa-table text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 text-xs font-medium">库表</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=population" class="w-14 h-14 rounded-lg border-2 border-[#1c7ffd] flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-blue-50 transition-colors">
+                                        <i class="fa-solid fa-plug text-[#1c7ffd] text-xl"></i>
+                                        <span class="text-[#1c7ffd] text-xs font-semibold">接口</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=population" class="w-14 h-14 rounded-lg border border-gray-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                                        <i class="fa-solid fa-file-lines text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 text-xs font-medium">文件</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 目录卡片4 -->
+                        <div onclick="window.location='portal_data_detail.html?id=district'" class="data-card bg-white rounded-xl p-5 cursor-pointer data-publish="2025-09-20" data-update="2025-09-25" hover:shadow-lg hover:border-blue-200 transition-all">
+                            <div class="flex items-start justify-between pb-3 mb-3 border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-database text-[#1c7ffd] text-lg"></i>
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-[#303133] hover:text-[#1c7ffd] transition-colors">行政区划边界数据</h3>
+                                    <div class="flex items-center gap-2 ml-3">
+                                        <span class="px-2.5 py-1 border border-green-200 bg-green-50 text-green-600 text-xs rounded">无条件共享</span>
+                                        <span class="px-2.5 py-1 border border-blue-200 bg-blue-50 text-[#1c7ffd] text-xs rounded">无条件开放</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between gap-6">
+                                <div class="space-y-2 flex-1 min-w-0">
+                                    <div class="flex items-center gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">提供机构：</span>
+                                        <span class="text-[#595959]">市自然资源和规划局</span>
+                                    </div>
+                                    <div class="flex items-start gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">信息项：</span>
+                                        <span class="text-[#595959]">行政区编码、行政区名称、边界坐标、层级、面积、中心点经纬度</span>
+                                    </div>
+                                    <div class="flex items-center gap-8 text-xs">
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">目录更新时间：</span>
+                                            <span class="text-[#8c8c8c]">2025-12-30 09:10:45</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">发布时间：</span>
+                                            <span class="text-[#8c8c8c]">2025-06-15 10:00:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 shrink-0" onclick="event.stopPropagation()">
+                                    <a href="portal_data_detail.html?id=district" class="w-14 h-14 rounded-lg border-2 border-[#1c7ffd] flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-blue-50 transition-colors">
+                                        <i class="fa-solid fa-table text-[#1c7ffd] text-xl"></i>
+                                        <span class="text-[#1c7ffd] text-xs font-semibold">库表</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=district" class="w-14 h-14 rounded-lg border border-gray-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                                        <i class="fa-solid fa-plug text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 text-xs font-medium">接口</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=district" class="w-14 h-14 rounded-lg border-2 border-[#1c7ffd] flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-blue-50 transition-colors">
+                                        <i class="fa-solid fa-file-lines text-[#1c7ffd] text-xl"></i>
+                                        <span class="text-[#1c7ffd] text-xs font-semibold">文件</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 目录卡片5 -->
+                        <div onclick="window.location='portal_data_detail.html?id=credit'" class="data-card bg-white rounded-xl p-5 cursor-pointer data-publish="2025-05-12" data-update="2025-05-30" hover:shadow-lg hover:border-blue-200 transition-all">
+                            <div class="flex items-start justify-between pb-3 mb-3 border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-database text-[#1c7ffd] text-lg"></i>
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-[#303133] hover:text-[#1c7ffd] transition-colors">社会信用信息</h3>
+                                    <div class="flex items-center gap-2 ml-3">
+                                        <span class="px-2.5 py-1 border border-yellow-200 bg-yellow-50 text-yellow-600 text-xs rounded">有条件共享</span>
+                                        <span class="px-2.5 py-1 border border-orange-200 bg-orange-50 text-orange-600 text-xs rounded">有条件开放</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between gap-6">
+                                <div class="space-y-2 flex-1 min-w-0">
+                                    <div class="flex items-center gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">提供机构：</span>
+                                        <span class="text-[#595959]">市发展和改革委员会</span>
+                                    </div>
+                                    <div class="flex items-start gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">信息项：</span>
+                                        <span class="text-[#595959]">信用等级、守信记录、失信记录、信用承诺、评价分数、监管等级</span>
+                                    </div>
+                                    <div class="flex items-center gap-8 text-xs">
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">目录更新时间：</span>
+                                            <span class="text-[#8c8c8c]">2026-01-18 16:50:08</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">发布时间：</span>
+                                            <span class="text-[#8c8c8c]">2025-09-01 12:00:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 shrink-0" onclick="event.stopPropagation()">
+                                    <a href="portal_data_detail.html?id=credit" class="w-14 h-14 rounded-lg border border-gray-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                                        <i class="fa-solid fa-table text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 text-xs font-medium">库表</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=credit" class="w-14 h-14 rounded-lg border-2 border-[#1c7ffd] flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-blue-50 transition-colors">
+                                        <i class="fa-solid fa-plug text-[#1c7ffd] text-xl"></i>
+                                        <span class="text-[#1c7ffd] text-xs font-semibold">接口</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=credit" class="w-14 h-14 rounded-lg border border-gray-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                                        <i class="fa-solid fa-file-lines text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 text-xs font-medium">文件</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 目录卡片6 -->
+                        <div onclick="window.location='portal_data_detail.html?id=license'" class="data-card bg-white rounded-xl p-5 cursor-pointer data-publish="2025-10-01" data-update="2025-10-10" hover:shadow-lg hover:border-blue-200 transition-all">
+                            <div class="flex items-start justify-between pb-3 mb-3 border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-database text-[#1c7ffd] text-lg"></i>
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-[#303133] hover:text-[#1c7ffd] transition-colors">电子证照信息</h3>
+                                    <div class="flex items-center gap-2 ml-3">
+                                        <span class="px-2.5 py-1 border border-green-200 bg-green-50 text-green-600 text-xs rounded">无条件共享</span>
+                                        <span class="px-2.5 py-1 border border-blue-200 bg-blue-50 text-[#1c7ffd] text-xs rounded">无条件开放</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between gap-6">
+                                <div class="space-y-2 flex-1 min-w-0">
+                                    <div class="flex items-center gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">提供机构：</span>
+                                        <span class="text-[#595959]">市行政审批服务局</span>
+                                    </div>
+                                    <div class="flex items-start gap-1 text-sm">
+                                        <span class="text-[#8c8c8c] shrink-0">信息项：</span>
+                                        <span class="text-[#595959]">证照编号、证照类型、持证人、有效期、发证机关、证照状态</span>
+                                    </div>
+                                    <div class="flex items-center gap-8 text-xs">
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">目录更新时间：</span>
+                                            <span class="text-[#8c8c8c]">2026-01-22 11:20:15</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[#8c8c8c] shrink-0">发布时间：</span>
+                                            <span class="text-[#8c8c8c]">2025-10-08 09:30:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 shrink-0" onclick="event.stopPropagation()">
+                                    <a href="portal_data_detail.html?id=license" class="w-14 h-14 rounded-lg border border-gray-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                                        <i class="fa-solid fa-table text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 text-xs font-medium">库表</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=license" class="w-14 h-14 rounded-lg border-2 border-[#1c7ffd] flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-blue-50 transition-colors">
+                                        <i class="fa-solid fa-plug text-[#1c7ffd] text-xl"></i>
+                                        <span class="text-[#1c7ffd] text-xs font-semibold">接口</span>
+                                    </a>
+                                    <a href="portal_data_detail.html?id=license" class="w-14 h-14 rounded-lg border-2 border-[#1c7ffd] flex flex-col items-center justify-center gap-0.5 cursor-pointer hover:bg-blue-50 transition-colors">
+                                        <i class="fa-solid fa-file-lines text-[#1c7ffd] text-xl"></i>
+                                        <span class="text-[#1c7ffd] text-xs font-semibold">文件</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="flex items-center justify-center mt-8 gap-2">
+                        <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-[#909399] hover:bg-gray-50 transition-colors">
+                            <i class="fa-solid fa-angle-left text-sm"></i>
+                        </button>
+                        <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-[#1c7ffd] text-white text-sm font-medium">1</button>
+                        <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-[#606266] hover:bg-gray-50 transition-colors text-sm">2</button>
+                        <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-[#606266] hover:bg-gray-50 transition-colors text-sm">3</button>
+                        <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-[#606266] hover:bg-gray-50 transition-colors text-sm">4</button>
+                        <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-[#606266] hover:bg-gray-50 transition-colors text-sm">5</button>
+                        <span class="text-[#909399] px-2">...</span>
+                        <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-[#606266] hover:bg-gray-50 transition-colors text-sm">50</button>
+                        <button class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-[#909399] hover:bg-gray-50 transition-colors">
+                            <i class="fa-solid fa-angle-right text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 需求定制弹窗 -->
+    <div id="demand-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeDemandModal()"></div>
+    <div id="demand-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[760px] bg-white z-[90] rounded-xl shadow-2xl opacity-0 invisible scale-95 transition-all duration-300 flex flex-col max-h-[calc(100vh-60px)]">
+        <div class="h-14 flex items-center justify-between px-6 border-b border-gray-100 shrink-0">
+            <h3 class="font-semibold text-base text-[#303133]">需求定制</h3>
+            <button onclick="closeDemandModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        <div class="px-6 py-5 space-y-4 overflow-y-auto flex-1">
+            <!-- 智能识别大文本框 -->
+            <div>
+                <label class="block text-sm text-[#303133] mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-[#1c7ffd]"></i>
+                    <span class="font-medium">智能识别</span>
+                    <span class="text-xs text-[#909399] ml-1">用自然语言描述您的数据需求，AI将自动识别并填充下方表单</span>
+                </label>
+                <textarea id="demand-ai-input" rows="3" autocomplete="off" placeholder="例如：我是XX市市场监督管理局的办事员，需要调用市级的企业工商登记数据，包括企业名称、统一社会信用代码、注册地址、经营范围、法定代表人等字段。平均每天调用约50次，峰值100次。"
+                    class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-[#1c7ffd] focus:ring-2 focus:ring-[#1c7ffd]/10 transition-all resize-none"></textarea>
+                <div class="flex justify-end mt-2">
+                    <button onclick="aiFillDemand()" class="px-4 py-1.5 bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] text-white rounded-md text-sm hover:opacity-90 transition-opacity flex items-center gap-1">
+                        <i class="fa-solid fa-brain"></i> 智能识别填充
+                    </button>
+                </div>
+            </div>
+
+            <!-- 表单字段 -->
+            <div class="space-y-4 pt-4 border-t border-gray-100">
+                <div class="flex items-start gap-4">
+                    <label class="text-sm text-[#606266] font-medium w-[140px] text-right pt-2 shrink-0">
+                        <span class="text-red-500 mr-1">*</span>资源级别：
+                    </label>
+                    <div class="flex items-center gap-6 pt-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="demand-level" value="市县级" checked class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                            <span class="text-[#606266]">市县级</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="demand-level" value="省级" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                            <span class="text-[#606266]">省级</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="demand-level" value="国家级" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                            <span class="text-[#606266]">国家级</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <label class="text-sm text-[#606266] font-medium w-[140px] text-right pt-2 shrink-0">
+                        <span class="text-red-500 mr-1">*</span>数据提供单位：
+                    </label>
+                    <div class="flex-1">
+                        <select id="demand-provider" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                            <option>请选择数据提供单位</option>
+                            <option>市大数据局</option>
+                            <option>市市场监督管理局</option>
+                            <option>市税务局</option>
+                            <option>市公安局</option>
+                            <option>市自然资源和规划局</option>
+                            <option>市发展和改革委员会</option>
+                            <option>市人力资源和社会保障局</option>
+                            <option>市行政审批服务局</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <label class="text-sm text-[#606266] font-medium w-[140px] text-right pt-2 shrink-0">
+                        <span class="text-red-500 mr-1">*</span>需求目录：
+                    </label>
+                    <div class="flex-1">
+                        <input type="text" id="demand-catalog" autocomplete="off" placeholder="请输入" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <label class="text-sm text-[#606266] font-medium w-[140px] text-right pt-2 shrink-0">
+                        <span class="text-red-500 mr-1">*</span>需求资源类型：
+                    </label>
+                    <div class="flex items-center gap-6 pt-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="demand-type" value="接口" checked class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                            <span class="text-[#606266]">接口</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="demand-type" value="库表" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                            <span class="text-[#606266]">库表</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="demand-type" value="文件" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                            <span class="text-[#606266]">文件</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <label class="text-sm text-[#606266] font-medium w-[140px] text-right pt-2 shrink-0">
+                        <span class="text-red-500 mr-1">*</span>需求服务：
+                    </label>
+                    <div class="flex-1">
+                        <textarea id="demand-service" rows="2" autocomplete="off" placeholder="申请该目录的具体信息项" class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all resize-none"></textarea>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <label class="text-sm text-[#606266] font-medium w-[140px] text-right pt-2 shrink-0">
+                        <span class="text-red-500 mr-1">*</span>调用频次（平均）（次/天）：
+                    </label>
+                    <div class="flex-1">
+                        <input type="text" id="demand-freq-avg" autocomplete="off" placeholder="请输入" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <label class="text-sm text-[#606266] font-medium w-[140px] text-right pt-2 shrink-0">
+                        <span class="text-red-500 mr-1">*</span>调用频次（峰值）（次/天）：
+                    </label>
+                    <div class="flex-1">
+                        <input type="text" id="demand-freq-peak" autocomplete="off" placeholder="请输入" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-center gap-3 shrink-0 bg-white rounded-b-xl">
+            <button onclick="closeDemandModal()" class="px-10 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">取消</button>
+            <button onclick="submitDemand()" class="px-10 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#0d6efd] transition-colors">确定</button>
+        </div>
+    </div>
+
+    <script>PortalCommon.renderFooter();</script>
+
+    <script>
+        // Tab切换功能
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('tab-active');
+                    b.classList.add('tab-inactive');
+                });
+                this.classList.remove('tab-inactive');
+                this.classList.add('tab-active');
+            });
+        });
+
+        // ===== 语义检索（实时搜索）=====
+        const catalogSearchData = [
+            { id: 'business', name: '测试123', provider: 'xx市大数据局', desc: '企业工商登记基础信息，包括企业名称、统一社会信用代码、注册地址、经营范围等' },
+            { id: 'tax', name: '税务登记信息', provider: '市税务局', desc: '企业税务登记、纳税申报、欠税记录等涉税信息' },
+            { id: 'population', name: '常住人口基本信息', provider: '市公安局', desc: '常住人口身份、户籍、居住等基本信息数据' },
+            { id: 'district', name: '行政区划边界数据', provider: '市自然资源局', desc: '市、区县、街道等各级行政区划边界地理信息' },
+            { id: 'credit', name: '社会信用信息', provider: '市发展改革委', desc: '企业信用评价、信用记录、失信惩戒等社会信用数据' },
+            { id: 'license', name: '电子证照信息', provider: '市政务服务中心', desc: '营业执照、资质证照等电子证照的核验与查询信息' }
+        ];
+
+        // 语义匹配：计算关键词与数据的相关度（名称优先，其次描述）
+        function semanticMatch(query, item) {
+            const q = query.toLowerCase();
+            const name = item.name.toLowerCase();
+            const desc = item.desc.toLowerCase();
+            const provider = item.provider.toLowerCase();
+            if (name.includes(q)) return 3;
+            if (desc.includes(q) || provider.includes(q)) return 2;
+            // 部分匹配（分词）
+            const words = q.split(/[\s,，、]+/).filter(w => w);
+            if (words.some(w => name.includes(w))) return 2;
+            if (words.some(w => desc.includes(w) || provider.includes(w))) return 1;
+            return 0;
+        }
+
+        function smartSearch(value) {
+            const panel = document.getElementById('smart-search-panel');
+            const results = document.getElementById('smart-search-results');
+            const q = (value || '').trim();
+            if (!q) {
+                panel.classList.add('hidden');
+                return;
+            }
+            // 语义检索 + 相关度排序
+            const matched = catalogSearchData
+                .map(item => ({ item, score: semanticMatch(q, item) }))
+                .filter(x => x.score > 0)
+                .sort((a, b) => b.score - a.score);
+
+            if (matched.length === 0) {
+                results.innerHTML = `<div class="px-4 py-10 text-center text-[#909399] text-sm">
+                    <i class="fa-solid fa-circle-question text-2xl mb-2 block opacity-30"></i>
+                    未找到与「${q}」相关的数据目录
+                </div>`;
+                panel.classList.remove('hidden');
+                return;
+            }
+            results.innerHTML = matched.map(m => `
+                <a href="portal_data_detail.html?id=${m.item.id}" class="flex items-start gap-3 px-4 py-3 hover:bg-blue-50/60 transition-colors border-b border-gray-50 last:border-b-0">
+                    <div class="w-9 h-9 rounded-lg bg-blue-50 text-[#1c7ffd] flex items-center justify-center text-sm shrink-0 mt-0.5">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[#303133] font-medium text-sm truncate">${m.item.name}</span>
+                            <span class="text-[10px] px-1.5 py-0.5 bg-blue-50 text-[#1c7ffd] rounded shrink-0">相关度 ${m.score === 3 ? '高' : m.score === 2 ? '中' : '低'}</span>
+                        </div>
+                        <div class="text-xs text-[#909399] truncate mt-0.5">${m.item.provider} · ${m.item.desc}</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-[#1c7ffd] text-xs shrink-0 self-center"></i>
+                </a>
+            `).join('');
+            panel.classList.remove('hidden');
+        }
+
+        // 点击空白处关闭搜索结果面板
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('smart-search-panel');
+            const input = document.getElementById('smart-search-input');
+            if (panel && !e.target.closest('#smart-search-panel') && e.target !== input && e.target.closest('main') && !e.target.closest('.left-nav-btn')) {
+                panel.classList.add('hidden');
+            }
+        });
+
+        // 左侧导航切换功能
+        document.querySelectorAll('.left-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const navType = this.dataset.leftNav;
+                
+                // 切换按钮样式
+                document.querySelectorAll('.left-nav-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.classList.add('text-[#606266]');
+                });
+                this.classList.add('active');
+                this.classList.remove('text-[#606266]');
+                
+                // 切换树形菜单内容
+                document.querySelectorAll('.tree-content').forEach(tree => {
+                    tree.classList.add('hidden');
+                });
+                document.getElementById('tree-' + navType).classList.remove('hidden');
+            });
+        });
+
+        // 树形节点展开/折叠
+        function toggleTreeNode(element) {
+            const children = element.nextElementSibling;
+            const arrow = element.querySelector('.fa-angle-right, .fa-angle-down');
+            
+            if (children && children.classList.contains('tree-children')) {
+                if (children.classList.contains('hidden')) {
+                    children.classList.remove('hidden');
+                    if (arrow) {
+                        arrow.classList.remove('fa-angle-right');
+                        arrow.classList.add('fa-angle-down');
+                    }
+                } else {
+                    children.classList.add('hidden');
+                    if (arrow) {
+                        arrow.classList.remove('fa-angle-down');
+                        arrow.classList.add('fa-angle-right');
+                    }
+                }
+            }
+        }
+
+        // 树形节点选择
+        function selectTreeNode(element) {
+            document.querySelectorAll('.tree-node > div').forEach(div => {
+                div.classList.remove('bg-blue-50', 'text-[#1c7ffd]', 'font-medium');
+            });
+            element.classList.add('bg-blue-50', 'text-[#1c7ffd]', 'font-medium');
+        }
+
+        // 筛选标签切换
+        document.querySelectorAll('.filter-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                const parent = this.parentElement;
+                parent.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // ===== 需求定制弹窗 =====
+        function openDemandModal() {
+            document.getElementById('demand-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('demand-modal').classList.remove('opacity-0', 'invisible', 'scale-95');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDemandModal() {
+            document.getElementById('demand-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('demand-modal').classList.add('opacity-0', 'invisible', 'scale-95');
+            document.body.style.overflow = '';
+            // 重置表单
+            document.getElementById('demand-ai-input').value = '';
+            document.getElementById('demand-catalog').value = '';
+            document.getElementById('demand-service').value = '';
+            document.getElementById('demand-freq-avg').value = '';
+            document.getElementById('demand-freq-peak').value = '';
+            const select = document.getElementById('demand-provider');
+            select.selectedIndex = 0;
+            document.querySelector('input[name="demand-level"][value="市县级"]').checked = true;
+            document.querySelector('input[name="demand-type"][value="接口"]').checked = true;
+        }
+
+        // 智能识别填充
+        function aiFillDemand() {
+            const text = document.getElementById('demand-ai-input').value.trim();
+            if (!text) {
+                showToast('请先在智能识别框中描述您的需求');
+                document.getElementById('demand-ai-input').focus();
+                return;
+            }
+
+            // 1) 资源级别
+            if (/国家级|国家级别|全国/.test(text)) {
+                setRadio('demand-level', '国家级');
+            } else if (/省级|省级别|省厅/.test(text)) {
+                setRadio('demand-level', '省级');
+            } else if (/市|县|区|本地/.test(text)) {
+                setRadio('demand-level', '市县级');
+            }
+
+            // 2) 数据提供单位（关键词匹配）
+            const providerMap = [
+                { name: '市市场监督管理局', keys: ['市场监督', '市场监管', '工商局', '工商', '企业'] },
+                { name: '市税务局', keys: ['税务', '纳税', '税'] },
+                { name: '市公安局', keys: ['公安', '警察', '治安'] },
+                { name: '市自然资源和规划局', keys: ['自然资源', '规划', '地理', '地图', '边界', '区划'] },
+                { name: '市发展和改革委员会', keys: ['发展和改革', '发改委', '改革'] },
+                { name: '市人力资源和社会保障局', keys: ['人力', '社保', '劳动'] },
+                { name: '市行政审批服务局', keys: ['行政审批', '审批', '证照', '证件'] },
+                { name: '市大数据局', keys: ['大数据局', '大数据'] }
+            ];
+            for (const item of providerMap) {
+                if (item.keys.some(k => text.includes(k))) {
+                    setSelect('demand-provider', item.name);
+                    break;
+                }
+            }
+
+            // 3) 需求目录
+            const catalogMap = [
+                { name: '企业工商登记信息', keys: ['工商登记', '工商', '企业信息', '法人信息'] },
+                { name: '税务登记信息', keys: ['税务登记', '税务', '纳税'] },
+                { name: '常住人口基本信息', keys: ['常住人口', '人口信息', '居民信息', '人口'] },
+                { name: '行政区划边界数据', keys: ['行政区划', '边界', '地理', '地图'] },
+                { name: '社会信用信息', keys: ['社会信用', '信用信息', '征信'] },
+                { name: '电子证照信息', keys: ['电子证照', '证照', '证件'] }
+            ];
+            for (const item of catalogMap) {
+                if (item.keys.some(k => text.includes(k))) {
+                    document.getElementById('demand-catalog').value = item.name;
+                    break;
+                }
+            }
+
+            // 4) 需求资源类型
+            if (/库表|数据库|数据表/.test(text)) {
+                setRadio('demand-type', '库表');
+            } else if (/文件|文档|附件/.test(text)) {
+                setRadio('demand-type', '文件');
+            } else {
+                setRadio('demand-type', '接口');
+            }
+
+            // 5) 需求服务（提取字段信息）
+            const fieldKeys = ['企业名称', '统一社会信用代码', '社会信用代码', '注册地址', '经营范围', '法定代表人', '身份证号码', '身份证', '姓名', '性别', '出生日期', '户籍地址', '民族', '纳税人识别号', '税务登记状态', '主管税务机关', '信用等级', '守信记录', '失信记录', '证照编号', '证照类型', '持证人', '有效期', '发证机关'];
+            const fields = fieldKeys.filter(f => text.includes(f));
+            if (fields.length > 0) {
+                document.getElementById('demand-service').value = '申请' + fields.join('、') + '等字段信息';
+            } else {
+                const trimmed = text.length > 80 ? text.substring(0, 80) + '...' : text;
+                document.getElementById('demand-service').value = trimmed;
+            }
+
+            // 6) 调用频次（平均 / 峰值）
+            const avgMatch = text.match(/(平均|日均|日常)[^0-9]{0,10}(\d+)\s*次/);
+            const peakMatch = text.match(/(峰值|最高|高峰|最大)[^0-9]{0,10}(\d+)\s*次/);
+            if (avgMatch) document.getElementById('demand-freq-avg').value = avgMatch[2];
+            if (peakMatch) document.getElementById('demand-freq-peak').value = peakMatch[2];
+            // 若只给出一个数字，默认给到平均
+            if (!avgMatch && !peakMatch) {
+                const anyNum = text.match(/(\d+)\s*次/);
+                if (anyNum) document.getElementById('demand-freq-avg').value = anyNum[1];
+            }
+
+            showToast('智能识别完成，请检查并完善表单内容', 'success');
+        }
+
+        function setRadio(name, value) {
+            const el = document.querySelector('input[name="' + name + '"][value="' + value + '"]');
+            if (el) el.checked = true;
+        }
+
+        function setSelect(id, text) {
+            const select = document.getElementById(id);
+            if (!select) return;
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].text === text) { select.selectedIndex = i; return; }
+            }
+        }
+
+        function submitDemand() {
+            const provider = document.getElementById('demand-provider').value;
+            const catalog = document.getElementById('demand-catalog').value.trim();
+            const service = document.getElementById('demand-service').value.trim();
+            const freqAvg = document.getElementById('demand-freq-avg').value.trim();
+            const freqPeak = document.getElementById('demand-freq-peak').value.trim();
+
+            if (!provider || provider === '请选择数据提供单位') { showToast('请选择数据提供单位'); return; }
+            if (!catalog) { showToast('请输入需求目录'); return; }
+            if (!service) { showToast('请输入需求服务'); return; }
+            if (!freqAvg) { showToast('请输入调用频次（平均）'); return; }
+            if (!freqPeak) { showToast('请输入调用频次（峰值）'); return; }
+
+            // 保存到数据篮定制服务列表
+            const levelRadio = document.querySelector('input[name="demand-level"]:checked');
+            const typeRadio = document.querySelector('input[name="demand-type"]:checked');
+            const item = {
+                level: levelRadio ? levelRadio.value : '市县级',
+                provider: provider,
+                catalog: catalog,
+                type: typeRadio ? typeRadio.value : '接口',
+                service: service,
+                freqAvg: freqAvg,
+                freqPeak: freqPeak,
+                status: '未上传',
+                createTime: new Date().toLocaleDateString('zh-CN')
+            };
+            const list = JSON.parse(localStorage.getItem('custom_services') || '[]');
+            list.push(item);
+            localStorage.setItem('custom_services', JSON.stringify(list));
+
+            showToast('需求定制提交成功！已加入数据篮的定制服务列表', 'success');
+            closeDemandModal();
+        }
+    </script>
+
+    <script>PortalCommon.renderFloatButtons();</script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+    <!-- 页面内提示 toast -->
+    <div id="page-toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[10000] hidden">
+        <div id="page-toast-box" class="px-5 py-3 rounded-lg shadow-2xl text-sm font-medium flex items-center gap-2 max-w-[520px]">
+            <i id="page-toast-icon" class="fa-solid fa-circle-info"></i>
+            <span id="page-toast-msg"></span>
+        </div>
+    </div>
+
+    <style>
+        #page-toast-box { animation: toastSlide 0.3s ease-out; }
+        @keyframes toastSlide {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #page-toast.info #page-toast-box { background: #ffffff; color: #1c7ffd; border: 1px solid #dbeafe; }
+        #page-toast.success #page-toast-box { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+        #page-toast.error #page-toast-box { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    </style>
+
+    <script>
+        // 页面内 toast 提示（替代浏览器原生 alert）
+        let _toastTimer = null;
+        function showToast(msg, type) {
+            const t = document.getElementById('page-toast');
+            const box = document.getElementById('page-toast-box');
+            const icon = document.getElementById('page-toast-icon');
+            const msgEl = document.getElementById('page-toast-msg');
+            if (!t || !box) return;
+            const tp = type || 'info';
+            t.className = 'fixed top-6 left-1/2 -translate-x-1/2 z-[10000] ' + tp;
+            if (tp === 'success') { icon.className = 'fa-solid fa-circle-check'; }
+            else if (tp === 'error') { icon.className = 'fa-solid fa-circle-xmark'; }
+            else { icon.className = 'fa-solid fa-circle-info'; }
+            msgEl.textContent = msg;
+            t.classList.remove('hidden');
+            box.style.animation = 'none';
+            void box.offsetWidth;
+            box.style.animation = 'toastSlide 0.3s ease-out';
+            clearTimeout(_toastTimer);
+            _toastTimer = setTimeout(() => t.classList.add('hidden'), 2400);
+        }
+    </script>
+
+    <script>
+        // 目录排序（更新时间/发布时间，正序/倒序）
+        let sortDir = { update: false, publish: false };
+        function toggleSort(type) {
+            sortDir[type] = !sortDir[type];
+            const asc = sortDir[type];
+            const icon = document.getElementById('sort-' + type + '-icon');
+            icon.className = asc ? 'fa-solid fa-arrow-up-short-wide text-[#1c7ffd]' : 'fa-solid fa-arrow-down-short-wide text-[#1c7ffd]';
+            // 另一个按钮重置为默认状态
+            const other = type === 'update' ? 'publish' : 'update';
+            sortDir[other] = false;
+            document.getElementById('sort-' + other + '-icon').className = 'fa-solid fa-sort text-[#1c7ffd]';
+            const list = document.getElementById('catalog-list');
+            const items = Array.from(list.querySelectorAll('.data-card'));
+            const key = type === 'update' ? 'data-update' : 'data-publish';
+            items.sort((a, b) => {
+                const va = a.getAttribute(key) || '';
+                const vb = b.getAttribute(key) || '';
+                return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+            });
+            items.forEach(it => list.appendChild(it));
+        }
+    </script>
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P29",
+      "title": "数据服务平台 - 数据中心",
+      "path": "portal_data_center.html",
+      "route": "/portal_data_center.html"
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P29-demand-modal",
+      "type": "modal",
+      "name": "需求定制",
+      "pageKey": "P29",
+      "openSelector": "#demand-modal",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "需求定制"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P29-001",
+      "pageKey": "P29",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "数据中心",
+        "strategy": "tag",
+        "sourceElementId": "P29-E002",
+        "boundsHint": {
+          "text": "数据中心",
+          "tag": "h1"
+        }
+      },
+      "title": "数据中心 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「数据中心」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「数据中心」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「数据中心」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 请输入关键词搜索数据目录...\n- 税务登记信息 有条件共享 有条件开放 提供机构…\n- 电子证照信息 无条件共享 无条件开放 提供机构…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E002"
+      },
+      "evidence": [
+        "页面：数据中心",
+        "路由：/portal_data_center.html",
+        "页面文本：数据中心",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P29-002",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P29-002",
+      "pageKey": "P29",
+      "target": {
+        "selector": "#smart-search-input",
+        "fallbackText": "请输入关键词搜索数据目录...",
+        "strategy": "id",
+        "sourceElementId": "P29-E060",
+        "boundsHint": {
+          "text": "请输入关键词搜索数据目录...",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「请输入关键词搜索数据目录...」用于帮助用户在当前页面快速查找与业务目标相关的内容。帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。\n\n### 使用场景\n\n当用户已经知道关键词、名称、类型或部分条件时，可以通过搜索或筛选快速缩小结果范围。\n\n### 交互规则\n\n- 用户输入关键词或筛选条件后，点击「请输入关键词搜索数据目录...」或确认操作触发查询。\n- 系统根据条件刷新结果列表。\n- 清空条件后，应恢复默认列表或推荐内容。\n\n### 状态与异常\n\n- 搜索中：展示加载状态。\n- 无结果：展示空状态，并提示用户调整关键词。\n- 搜索失败：保留用户输入，并提示稍后重试。\n\n### 待确认\n\n- 是否支持模糊搜索？\n- 是否需要保留用户上一次搜索条件？\n- 是否需要按资源类型进一步筛选？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "business",
+        "field-rule",
+        "exception"
+      ],
+      "dimension": "Form and validation",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E060"
+      },
+      "evidence": [
+        "页面文本：请输入关键词搜索数据目录...",
+        "selector：#smart-search-input"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认字段必填性、默认值、校验时机、选项来源和提交阻断条件。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P29-060",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P29-003",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div:nth-of-type(2) \u003e div \u003e div \u003e div:nth-of-type(2) \u003e div:nth-of-type(2)",
+        "fallbackText": "税务登记信息 有条件共享 有条件开放 提供机构： 市税务局 信息项： 纳税人识别号、纳税人类型、税务登记状态、主管税务机关 目录更新时间： 2026-01-10 10:20:33 发布时间： 2025-12-05 09:12:10 库表 接口 文件",
+        "strategy": "path",
+        "sourceElementId": "P29-E071",
+        "boundsHint": {
+          "text": "税务登记信息 有条件共享 有条件开放 提供机构： 市税务局 信息项： 纳税人识别号、纳税人类型、税务登记状态、主管税务机关 目录更新时间： 2026-01-10 10:20:33 发布时间： 2025-12-05 09:12:10 库表 接口 文件",
+          "tag": "div"
+        }
+      },
+      "title": "税务登记信息 有条件共…",
+      "contentMarkdown": "### 业务含义\n\n「税务登记信息 有条件共享 有条件开放 提供机构： 市税务局 信…」用于告诉用户当前事项所处阶段，并影响页面可执行操作。\n\n### 状态规则\n\n- 不同状态下，页面展示内容和可操作按钮可能不同。\n- 状态变化后，应及时刷新页面或给出明确提示。\n- 用户需要能够理解当前状态下还能做什么。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 空状态：提示暂无数据，并提供下一步操作建议。\n- 失败状态：提示失败原因，并支持重试或返回。\n\n### 状态流转\n\n```mermaid\nstateDiagram-v2\n  state \"默认\" as Default\n  state \"加载中\" as Loading\n  state \"成功\" as Success\n  state \"失败\" as Failed\n  state \"空状态\" as Empty\n  state \"禁用\" as Disabled\n  [*] --\u003e Default\n  Default --\u003e Loading: 发起操作\n  Loading --\u003e Success: 处理完成\n  Loading --\u003e Failed: 处理失败\n  Success --\u003e Default: 刷新或返回\n  Failed --\u003e Loading: 重试\n  Default --\u003e Empty: 无数据\n  Default --\u003e Disabled: 权限或条件不满足\n```\n\n### 待确认\n\n- 当前状态枚举是否完整？\n- 每个状态下的可操作按钮是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "S",
+      "kind": "state",
+      "topics": [
+        "state",
+        "exception"
+      ],
+      "dimension": "State and exception",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E071"
+      },
+      "evidence": [
+        "页面文本：税务登记信息 有条件共享 有条件开放 提供机构： 市税务局 信息项： 纳税人识别号、纳税人类型、税务登记状态、主管税务机关 目录更新时间： 2026-01-10",
+        "selector：div:nth-of-type(2) \u003e div \u003e div \u003e div:nth-of-type(2) \u003e div:nth-of-type(2)"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P29-071",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P29-004",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div:nth-of-type(2) \u003e div \u003e div \u003e div:nth-of-type(2) \u003e div:nth-of-type(6)",
+        "fallbackText": "电子证照信息 无条件共享 无条件开放 提供机构： 市行政审批服务局 信息项： 证照编号、证照类型、持证人、有效期、发证机关、证照状态 目录更新时间： 2026-01-22 11:20:15 发布时间： 2025-10-08 09:30:00 库表 接口 文件",
+        "strategy": "path",
+        "sourceElementId": "P29-E095",
+        "boundsHint": {
+          "text": "电子证照信息 无条件共享 无条件开放 提供机构： 市行政审批服务局 信息项： 证照编号、证照类型、持证人、有效期、发证机关、证照状态 目录更新时间： 2026-01-22 11:20:15 发布时间： 2025-10-08 09:30:00 库表 接口 文件",
+          "tag": "div"
+        }
+      },
+      "title": "电子证照信息 无条件共…",
+      "contentMarkdown": "### 业务含义\n\n「电子证照信息 无条件共享 无条件开放 提供机构： 市行政审批服…」用于告诉用户当前事项所处阶段，并影响页面可执行操作。\n\n### 状态规则\n\n- 不同状态下，页面展示内容和可操作按钮可能不同。\n- 状态变化后，应及时刷新页面或给出明确提示。\n- 用户需要能够理解当前状态下还能做什么。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 空状态：提示暂无数据，并提供下一步操作建议。\n- 失败状态：提示失败原因，并支持重试或返回。\n\n### 状态流转\n\n```mermaid\nstateDiagram-v2\n  state \"默认\" as Default\n  state \"加载中\" as Loading\n  state \"成功\" as Success\n  state \"失败\" as Failed\n  state \"空状态\" as Empty\n  state \"禁用\" as Disabled\n  [*] --\u003e Default\n  Default --\u003e Loading: 发起操作\n  Loading --\u003e Success: 处理完成\n  Loading --\u003e Failed: 处理失败\n  Success --\u003e Default: 刷新或返回\n  Failed --\u003e Loading: 重试\n  Default --\u003e Empty: 无数据\n  Default --\u003e Disabled: 权限或条件不满足\n```\n\n### 待确认\n\n- 当前状态枚举是否完整？\n- 每个状态下的可操作按钮是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "S",
+      "kind": "state",
+      "topics": [
+        "state",
+        "exception"
+      ],
+      "dimension": "State and exception",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E095"
+      },
+      "evidence": [
+        "页面文本：电子证照信息 无条件共享 无条件开放 提供机构： 市行政审批服务局 信息项： 证照编号、证照类型、持证人、有效期、发证机关、证照状态 目录更新时间： 2026-",
+        "selector：div:nth-of-type(2) \u003e div \u003e div \u003e div:nth-of-type(2) \u003e div:nth-of-type(6)"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P29-095",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 4
+    },
+    {
+      "id": "ANN-P29-005",
+      "pageKey": "P29",
+      "target": {
+        "selector": "#demand-overlay",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P29-E109",
+        "boundsHint": {
+          "text": "",
+          "tag": "div"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「跳转」用于连接当前页面与下一步业务流程。\n\n### 跳转规则\n\n- 用户完成当前操作后进入目标页面。\n- 跳转时需要带入当前业务对象的标识信息。\n- 返回时应保留用户上一次的筛选或编辑状态。\n\n### 跳转流程\n\n```mermaid\nflowchart LR\n  A[当前页面] --\u003e B[触发跳转]\n  B --\u003e C{校验通过}\n  C --\u003e|是| D[目标页面]\n  C --\u003e|否| E[停留并提示]\n  D --\u003e F[返回时保留上下文]\n```\n\n### 分支情况\n\n- 成功：进入目标页面。\n- 失败：停留当前页面并提示原因。\n- 权限不足：提示无权限或隐藏入口。\n\n### 待确认\n\n- 跳转目标页面是否已明确？\n- 是否需要区分不同角色的跳转路径？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "J",
+      "kind": "flow",
+      "topics": [
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Flow and navigation",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E109"
+      },
+      "evidence": [
+        "selector：#demand-overlay"
+      ],
+      "nextActions": [
+        "触发 `该元素` 后需要确认目标页面、返回路径或二级承载面。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P29-109",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 5
+    },
+    {
+      "id": "ANN-P29-006",
+      "pageKey": "P29",
+      "target": {
+        "selector": "#demand-ai-input",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P29-E112",
+        "boundsHint": {
+          "text": "",
+          "tag": "textarea"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E112"
+      },
+      "evidence": [
+        "selector：#demand-ai-input",
+        "二级界面：需求定制"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P29-112",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P29-demand-modal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 6
+    },
+    {
+      "id": "ANN-P29-007",
+      "pageKey": "P29",
+      "target": {
+        "selector": "input[name=\"demand-level\"]",
+        "fallbackText": "demand-level",
+        "strategy": "name",
+        "sourceElementId": "P29-E114",
+        "boundsHint": {
+          "text": "demand-level",
+          "tag": "input"
+        }
+      },
+      "title": "demand-level",
+      "contentMarkdown": "### 业务含义\n\n「demand-level」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E114"
+      },
+      "evidence": [
+        "页面文本：demand-level",
+        "selector：input[name=\"demand-level\"]",
+        "二级界面：需求定制"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P29-114",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P29-demand-modal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 7
+    },
+    {
+      "id": "ANN-P29-008",
+      "pageKey": "P29",
+      "target": {
+        "selector": "#demand-provider",
+        "fallbackText": "请选择数据提供单位 市大数据局 市市场监督管理局 市税务局 市公安局 市自然资源和规划局 市发展和改革委员会 市人力资源和社会保障局 市行政审批服务局",
+        "strategy": "id",
+        "sourceElementId": "P29-E115",
+        "boundsHint": {
+          "text": "请选择数据提供单位 市大数据局 市市场监督管理局 市税务局 市公安局 市自然资源和规划局 市发展和改革委员会 市人力资源和社会保障局 市行政审批服务局",
+          "tag": "select"
+        }
+      },
+      "title": "请选择数据提供单位 市…",
+      "contentMarkdown": "### 业务含义\n\n「请选择数据提供单位 市大数据局 市市场监督管理局 市税务局 市…」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E115"
+      },
+      "evidence": [
+        "页面文本：请选择数据提供单位 市大数据局 市市场监督管理局 市税务局 市公安局 市自然资源和规划局 市发展和改革委员会 市人力资源和社会保障局 市行政审批服务局",
+        "selector：#demand-provider",
+        "二级界面：需求定制"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P29-115",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P29-demand-modal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 8
+    },
+    {
+      "id": "ANN-P29-009",
+      "pageKey": "P29",
+      "target": {
+        "selector": "#demand-catalog",
+        "fallbackText": "请输入",
+        "strategy": "id",
+        "sourceElementId": "P29-E116",
+        "boundsHint": {
+          "text": "请输入",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「请输入」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E116"
+      },
+      "evidence": [
+        "页面文本：请输入",
+        "selector：#demand-catalog",
+        "二级界面：需求定制"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P29-116",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P29-demand-modal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 9
+    },
+    {
+      "id": "ANN-P29-010",
+      "pageKey": "P29",
+      "target": {
+        "selector": "input[name=\"demand-type\"]",
+        "fallbackText": "demand-type",
+        "strategy": "name",
+        "sourceElementId": "P29-E117",
+        "boundsHint": {
+          "text": "demand-type",
+          "tag": "input"
+        }
+      },
+      "title": "demand-type",
+      "contentMarkdown": "### 业务含义\n\n「demand-type」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E117"
+      },
+      "evidence": [
+        "页面文本：demand-type",
+        "selector：input[name=\"demand-type\"]",
+        "二级界面：需求定制"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P29-117",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P29-demand-modal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 10
+    },
+    {
+      "id": "ANN-P29-011",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div:nth-of-type(2) \u003e div \u003e div \u003e div:nth-of-type(1) \u003e div:nth-of-type(1)",
+        "fallbackText": "资源类型： 全部 接口 库表 文件 未挂接 共享属性： 全部 无条件共享 有条件共享 不予共享 开放属性： 全部 无条件开放 有条件开放 不予开放",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "div"
+        }
+      },
+      "title": "资源类型： 全部 接口 库表 文件 未挂接 共享",
+      "contentMarkdown": "### 业务含义\n\n122112",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 11,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T07:50:15.619Z"
+    },
+    {
+      "id": "ANN-P29-012",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div \u003e div:nth-of-type(1) \u003e div:nth-of-type(1) \u003e div:nth-of-type(1) \u003e div",
+        "fallbackText": "全部 接口 库表 文件 未挂接",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "div"
+        }
+      },
+      "title": "全部 接口 库表 文件 未挂接",
+      "contentMarkdown": "### 业务含义\n\n1212",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 12,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T08:05:50.236Z"
+    },
+    {
+      "id": "ANN-P29-013",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div \u003e div \u003e div \u003e div \u003e button:nth-of-type(3)",
+        "fallbackText": "区县数据",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "button"
+        }
+      },
+      "title": "测试新增标注显示",
+      "contentMarkdown": "### 业务含义",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 13,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T08:06:42.676Z"
+    },
+    {
+      "id": "ANN-P29-014",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div:nth-of-type(1) \u003e div:nth-of-type(1) \u003e div:nth-of-type(2) \u003e div \u003e button:nth-of-type(4)",
+        "fallbackText": "不予共享",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "button"
+        }
+      },
+      "title": "不予共享",
+      "contentMarkdown": "### 业务含义\n\n2121231",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 14,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T08:07:28.522Z"
+    },
+    {
+      "id": "ANN-P29-015",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div \u003e div \u003e div \u003e div \u003e button:nth-of-type(3)",
+        "fallbackText": "区县数据",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "button"
+        }
+      },
+      "title": "测试新增标注显示",
+      "contentMarkdown": "### 业务含义",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 15,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T08:07:50.307Z"
+    },
+    {
+      "id": "ANN-P29-016",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div \u003e div \u003e div \u003e div \u003e button:nth-of-type(3)",
+        "fallbackText": "区县数据",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "button"
+        }
+      },
+      "title": "测试新增标注显示",
+      "contentMarkdown": "### 业务含义",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 16,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T08:08:12.544Z"
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

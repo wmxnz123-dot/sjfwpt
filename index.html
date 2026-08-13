@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 门户首页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="portal_common.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0f52ba 0%, #1c7ffd 50%, #5a8bfb 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(28, 127, 253, 0.15); }
+        .news-item { transition: all 0.3s ease; border: 1px solid #ebeef5; }
+        .news-item:hover { border-color: #1c7ffd; }
+    </style>
+</head>
+<body class="bg-[#f5f7fa] text-[14px] text-gray-700">
+    <script>PortalCommon.renderHeader('home');</script>
+
+    <main>
+        <section class="relative pt-16 overflow-hidden">
+            <div class="absolute inset-0 gradient-bg"></div>
+            <div class="absolute inset-0 opacity-10">
+                <svg class="w-full h-full" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+                </svg>
+            </div>
+            <div class="absolute top-20 right-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 left-10 w-80 h-80 bg-blue-300/20 rounded-full blur-3xl"></div>
+            <div class="relative max-w-7xl mx-auto px-6 py-14">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="text-white">
+                        <h1 class="text-5xl lg:text-6xl font-bold mb-3 tracking-wide" style="line-height:1.2">
+                            数据驱动价值<br>服务赋能创新
+                        </h1>
+                        <p class="text-lg text-white/80 mb-8 leading-relaxed">
+                            一站式数据服务平台，汇聚海量数据资源，提供高效数据处理能力，助力企业数字化转型与创新发展。
+                        </p>
+                        <ul class="space-y-3 text-white/80">
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-check-circle text-[#5a8bfb] mt-1"></i>
+                                <span>汇聚多领域海量数据资源，构建统一的数据资源目录体系</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-check-circle text-[#5a8bfb] mt-1"></i>
+                                <span>提供数据查询、下载、申请、接口调用等一站式数据服务能力</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-check-circle text-[#5a8bfb] mt-1"></i>
+                                <span>完善的数据安全治理体系，保障数据隐私与合规使用</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-check-circle text-[#5a8bfb] mt-1"></i>
+                                <span>基于 AI 的智能编目与问答助手，赋能业务数字化创新</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="relative">
+                        <div class="relative bg-white/10 backdrop-blur-md rounded-2xl p-7 border border-white/20 shadow-2xl">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-white font-semibold text-lg">数据资源总览</h3>
+                                <i class="fa-solid fa-database text-white/60"></i>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-white/10 rounded-xl px-6 py-6 flex items-center gap-4 backdrop-blur border border-white/15">
+                                    <div class="w-16 h-16 bg-blue-400/30 rounded-xl flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-layer-group text-white text-2xl"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-2xl font-bold text-white leading-tight">9261</div>
+                                        <div class="text-white/70 text-sm truncate">数据资源目录</div>
+                                    </div>
+                                </div>
+                                <div class="bg-white/10 rounded-xl px-6 py-6 flex items-center gap-4 backdrop-blur border border-white/15">
+                                    <div class="w-16 h-16 bg-green-400/30 rounded-xl flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-building text-white text-2xl"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-2xl font-bold text-white leading-tight">1914</div>
+                                        <div class="text-white/70 text-sm truncate">部门资源目录</div>
+                                    </div>
+                                </div>
+                                <div class="bg-white/10 rounded-xl px-6 py-6 flex items-center gap-4 backdrop-blur border border-white/15">
+                                    <div class="w-16 h-16 bg-purple-400/30 rounded-xl flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-city text-white text-2xl"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-2xl font-bold text-white leading-tight">7347</div>
+                                        <div class="text-white/70 text-sm truncate">区县资源目录</div>
+                                    </div>
+                                </div>
+                                <div class="bg-white/10 rounded-xl px-6 py-6 flex items-center gap-4 backdrop-blur border border-white/15">
+                                    <div class="w-16 h-16 bg-cyan-400/30 rounded-xl flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-cube text-white text-2xl"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-2xl font-bold text-white leading-tight">80</div>
+                                        <div class="text-white/70 text-sm truncate">基础资源目录</div>
+                                    </div>
+                                </div>
+                                <div class="bg-white/10 rounded-xl px-6 py-6 flex items-center gap-4 backdrop-blur border border-white/15">
+                                    <div class="w-16 h-16 bg-orange-400/30 rounded-xl flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-file-lines text-white text-2xl"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-2xl font-bold text-white leading-tight">155</div>
+                                        <div class="text-white/70 text-sm truncate">事项资源目录</div>
+                                    </div>
+                                </div>
+                                <div class="bg-white/10 rounded-xl px-6 py-6 flex items-center gap-4 backdrop-blur border border-white/15">
+                                    <div class="w-16 h-16 bg-pink-400/30 rounded-xl flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-shapes text-white text-2xl"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-2xl font-bold text-white leading-tight">18</div>
+                                        <div class="text-white/70 text-sm truncate">主题资源目录</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-[#303133] mb-4">平台核心能力</h2>
+                    <p class="text-[#606266] text-lg">提供全方位的数据服务能力，满足企业多样化的数据需求</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm card-hover group">
+                        <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-5 group-hover:bg-[#1c7ffd] transition-colors">
+                            <i class="fa-solid fa-magnifying-glass-chart text-[#1c7ffd] text-2xl group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[#303133] mb-2">摸清家底</h3>
+                        <p class="text-[#606266] text-sm leading-relaxed">业务+技术双视角盘点</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm card-hover group">
+                        <div class="w-14 h-14 rounded-xl bg-green-50 flex items-center justify-center mb-5 group-hover:bg-[#36c2aa] transition-colors">
+                            <i class="fa-solid fa-shield-halved text-[#36c2aa] text-2xl group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[#303133] mb-2">质量提升</h3>
+                        <p class="text-[#606266] text-sm leading-relaxed">监管+测试保障服务可用</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm card-hover group">
+                        <div class="w-14 h-14 rounded-xl bg-purple-50 flex items-center justify-center mb-5 group-hover:bg-[#7a6df4] transition-colors">
+                            <i class="fa-solid fa-user-check text-[#7a6df4] text-2xl group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[#303133] mb-2">精准授权</h3>
+                        <p class="text-[#606266] text-sm leading-relaxed">场景化申请与精准授权</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm card-hover group">
+                        <div class="w-14 h-14 rounded-xl bg-orange-50 flex items-center justify-center mb-5 group-hover:bg-[#e6a23c] transition-colors">
+                            <i class="fa-solid fa-arrows-spin text-[#e6a23c] text-2xl group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[#303133] mb-2">有序共享</h3>
+                        <p class="text-[#606266] text-sm leading-relaxed">需求驱动数据有序共享</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-[#f5f7fa]">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex items-center justify-between mb-12">
+                    <div>
+                        <h2 class="text-3xl font-bold text-[#303133] mb-2">数据资源中心</h2>
+                        <p class="text-[#606266]">丰富的数据资源，助力业务创新发展</p>
+                    </div>
+                    <a href="portal_data_center.html" class="px-5 py-2 border border-[#1c7ffd] text-[#1c7ffd] rounded-lg hover:bg-[#1c7ffd] hover:text-white transition-colors text-sm font-medium flex items-center">
+                        查看全部 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm card-hover flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded-md">政务数据</span>
+                                <span class="px-2 py-0.5 bg-green-50 text-[#36c2aa] text-xs rounded-md">接口</span>
+                            </div>
+                        
+                        <h3 class="font-semibold text-[#303133] mb-2 text-[15px]">企业工商信息查询</h3>
+                        <p class="text-[#606266] text-sm mb-4 flex-1 line-clamp-2">提供企业工商注册信息、经营范围、法定代表人等详细数据查询服务。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 text-xs text-[#909399]">
+                                <span><i class="fa-solid fa-eye mr-1"></i>12,580</span>
+</div>
+                            <a href="portal_data_center.html" class="px-3 py-1 bg-blue-50 text-[#1c7ffd] rounded-md text-xs font-medium hover:bg-blue-100 transition-colors">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm card-hover flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded-md">政务数据</span>
+                                <span class="px-2 py-0.5 bg-purple-50 text-[#7a6df4] text-xs rounded-md">库表</span>
+                            </div>
+                        <h3 class="font-semibold text-[#303133] mb-2 text-[15px]">税务数据查询</h3>
+                        <p class="text-[#606266] text-sm mb-4 flex-1 line-clamp-2">提供企业税务登记信息、纳税信用等级等数据查询服务。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 text-xs text-[#909399]">
+                                <span><i class="fa-solid fa-eye mr-1"></i>8,320</span>
+</div>
+                            <a href="portal_data_center.html" class="px-3 py-1 bg-blue-50 text-[#1c7ffd] rounded-md text-xs font-medium hover:bg-blue-100 transition-colors">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm card-hover flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-0.5 bg-green-50 text-[#36c2aa] text-xs rounded-md">民生数据</span>
+                                <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded-md">接口</span>
+                            </div>
+                        
+                        <h3 class="font-semibold text-[#303133] mb-2 text-[15px]">人口基本信息查询</h3>
+                        <p class="text-[#606266] text-sm mb-4 flex-1 line-clamp-2">提供常住人口身份、户籍、居住等基础信息数据查询服务。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 text-xs text-[#909399]">
+                                <span><i class="fa-solid fa-eye mr-1"></i>20,450</span>
+</div>
+                            <a href="portal_data_center.html" class="px-3 py-1 bg-blue-50 text-[#1c7ffd] rounded-md text-xs font-medium hover:bg-blue-100 transition-colors">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm card-hover flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-0.5 bg-green-50 text-[#36c2aa] text-xs rounded-md">金融数据</span>
+                                <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded-md">接口</span>
+                            </div>
+                        
+                        <h3 class="font-semibold text-[#303133] mb-2 text-[15px]">征信数据服务</h3>
+                        <p class="text-[#606266] text-sm mb-4 flex-1 line-clamp-2">提供个人征信报告、企业征信信息等数据查询服务。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 text-xs text-[#909399]">
+                                <span><i class="fa-solid fa-eye mr-1"></i>15,680</span>
+</div>
+                            <a href="portal_data_center.html" class="px-3 py-1 bg-blue-50 text-[#1c7ffd] rounded-md text-xs font-medium hover:bg-blue-100 transition-colors">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm card-hover flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded-md">政务数据</span>
+                                <span class="px-2 py-0.5 bg-green-50 text-[#36c2aa] text-xs rounded-md">接口</span>
+                            </div>
+                        
+                        <h3 class="font-semibold text-[#303133] mb-2 text-[15px]">行政区划边界数据</h3>
+                        <p class="text-[#606266] text-sm mb-4 flex-1 line-clamp-2">提供市、区县、街道等各级行政区划边界地理信息。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 text-xs text-[#909399]">
+                                <span><i class="fa-solid fa-eye mr-1"></i>6,120</span>
+</div>
+                            <a href="portal_data_center.html" class="px-3 py-1 bg-blue-50 text-[#1c7ffd] rounded-md text-xs font-medium hover:bg-blue-100 transition-colors">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm card-hover flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded-md">政务数据</span>
+                                <span class="px-2 py-0.5 bg-purple-50 text-[#7a6df4] text-xs rounded-md">文件</span>
+                            </div>
+                        <h3 class="font-semibold text-[#303133] mb-2 text-[15px]">电子证照信息</h3>
+                        <p class="text-[#606266] text-sm mb-4 flex-1 line-clamp-2">提供营业执照、资质证照等电子证照的核验与查询信息。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 text-xs text-[#909399]">
+                                <span><i class="fa-solid fa-eye mr-1"></i>9,850</span>
+</div>
+                            <a href="portal_data_center.html" class="px-3 py-1 bg-blue-50 text-[#1c7ffd] rounded-md text-xs font-medium hover:bg-blue-100 transition-colors">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm card-hover flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded-md">政务数据</span>
+                            <span class="px-2 py-0.5 bg-green-50 text-[#36c2aa] text-xs rounded-md">接口</span>
+                        </div>
+                        <h3 class="font-semibold text-[#303133] mb-2 text-[15px]">社会信用信息</h3>
+                        <p class="text-[#606266] text-sm mb-4 flex-1 line-clamp-2">提供企业信用评价、信用记录、失信惩戒等社会信用数据。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 text-xs text-[#909399]">
+                                <span><i class="fa-solid fa-eye mr-1"></i>11,240</span>
+</div>
+                            <a href="portal_data_center.html" class="px-3 py-1 bg-blue-50 text-[#1c7ffd] rounded-md text-xs font-medium hover:bg-blue-100 transition-colors">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm card-hover flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-0.5 bg-green-50 text-[#36c2aa] text-xs rounded-md">民生数据</span>
+                            <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded-md">接口</span>
+                        </div>
+                        <h3 class="font-semibold text-[#303133] mb-2 text-[15px]">健康档案数据</h3>
+                        <p class="text-[#606266] text-sm mb-4 flex-1 line-clamp-2">提供居民健康档案、体检记录、医疗服务等卫生健康数据。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 text-xs text-[#909399]">
+                                <span><i class="fa-solid fa-eye mr-1"></i>7,860</span>
+</div>
+                            <a href="portal_data_center.html" class="px-3 py-1 bg-blue-50 text-[#1c7ffd] rounded-md text-xs font-medium hover:bg-blue-100 transition-colors">
+                                查看详情
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex items-center justify-between mb-12">
+                    <div>
+                        <h2 class="text-3xl font-bold text-[#303133] mb-2">热门应用场景</h2>
+                        <p class="text-[#606266]">覆盖多行业的典型应用场景解决方案</p>
+                    </div>
+                    <a href="portal_scene_center.html" class="px-5 py-2 border border-[#1c7ffd] text-[#1c7ffd] rounded-lg hover:bg-[#1c7ffd] hover:text-white transition-colors text-sm font-medium flex items-center">
+                        查看全部 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="relative h-48 rounded-xl overflow-hidden cursor-pointer group">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Modern%20smart%20city%20digital%20dashboard%20with%20data%20visualization&image_size=landscape_4_3" alt="智慧城市" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-city text-sm"></i>
+                                <span class="text-xs bg-white/20 backdrop-blur px-2 py-0.5 rounded">智慧城市</span>
+                            </div>
+                            <h3 class="text-lg font-semibold">城市数据治理</h3>
+                        </div>
+                    </div>
+                    <div class="relative h-48 rounded-xl overflow-hidden cursor-pointer group">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Financial%20tech%20data%20analytics%20visualization%20with%20charts&image_size=landscape_4_3" alt="金融科技" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-chart-line text-sm"></i>
+                                <span class="text-xs bg-white/20 backdrop-blur px-2 py-0.5 rounded">金融科技</span>
+                            </div>
+                            <h3 class="text-lg font-semibold">智能风控</h3>
+                        </div>
+                    </div>
+                    <div class="relative h-48 rounded-xl overflow-hidden cursor-pointer group">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Healthcare%20medical%20data%20management%20system%20interface&image_size=landscape_4_3" alt="医疗健康" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-heart-pulse text-sm"></i>
+                                <span class="text-xs bg-white/20 backdrop-blur px-2 py-0.5 rounded">医疗健康</span>
+                            </div>
+                            <h3 class="text-lg font-semibold">健康数据服务</h3>
+                        </div>
+                    </div>
+                    <div class="relative h-48 rounded-xl overflow-hidden cursor-pointer group">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Enterprise%20business%20intelligence%20dashboard%20analytics&image_size=landscape_4_3" alt="企业服务" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-building-2 text-sm"></i>
+                                <span class="text-xs bg-white/20 backdrop-blur px-2 py-0.5 rounded">企业服务</span>
+                            </div>
+                            <h3 class="text-lg font-semibold">企业画像</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-[#f5f7fa]">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex items-center justify-between mb-12">
+                    <div>
+                        <h2 class="text-3xl font-bold text-[#303133] mb-2">工作动态</h2>
+                        <p class="text-[#606266]">平台最新动态、产品更新与行业资讯</p>
+                    </div>
+                    <a href="portal_work_dynamics.html" class="px-5 py-2 border border-[#1c7ffd] text-[#1c7ffd] rounded-lg hover:bg-[#1c7ffd] hover:text-white transition-colors text-sm font-medium flex items-center">
+                        查看全部 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm divide-y divide-gray-100 overflow-hidden">
+                    <a href="portal_work_dynamics.html" class="flex items-center gap-5 px-5 py-4 card-hover cursor-pointer">
+                        <div class="w-16 shrink-0 gradient-bg text-white rounded-lg overflow-hidden text-center">
+                            <div class="pt-2 pb-0.5 text-[22px] font-bold leading-none">01</div>
+                            <div class="pb-2 text-[11px] opacity-90">2026-08</div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h3 class="font-semibold text-[#303133] text-[15px] truncate">数据服务平台 3.0 版本正式上线，全新智能编目能力发布</h3>
+                                <span class="px-1.5 py-0.5 bg-red-500 text-white text-xs rounded shrink-0">置顶</span>
+                            </div>
+                            <p class="text-[#606266] text-[13px] truncate">本次版本升级重点优化了智能编目能力，支持基于 AI 的自动目录编制与元数据自动补全...</p>
+                        </div>
+                    </a>
+                    <a href="portal_work_dynamics.html" class="flex items-center gap-5 px-5 py-4 card-hover cursor-pointer">
+                        <div class="w-16 shrink-0 gradient-bg text-white rounded-lg overflow-hidden text-center">
+                            <div class="pt-2 pb-0.5 text-[22px] font-bold leading-none">28</div>
+                            <div class="pb-2 text-[11px] opacity-90">2026-07</div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-[#303133] text-[15px] truncate mb-1">智能问答助手升级：支持自然语言查询数据资源</h3>
+                            <p class="text-[#606266] text-[13px] truncate">智能问答助手现已支持通过自然语言直接查询数据资源，快速定位所需的数据目录与服务接口...</p>
+                        </div>
+                    </a>
+                    <a href="portal_work_dynamics.html" class="flex items-center gap-5 px-5 py-4 card-hover cursor-pointer">
+                        <div class="w-16 shrink-0 gradient-bg text-white rounded-lg overflow-hidden text-center">
+                            <div class="pt-2 pb-0.5 text-[22px] font-bold leading-none">20</div>
+                            <div class="pb-2 text-[11px] opacity-90">2026-07</div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-[#303133] text-[15px] truncate mb-1">《数据要素市场化配置综合改革试点方案》政策解读</h3>
+                            <p class="text-[#606266] text-[13px] truncate">围绕数据要素市场化配置综合改革试点方案的核心要点进行解读...</p>
+                        </div>
+                    </a>
+                    <a href="portal_work_dynamics.html" class="flex items-center gap-5 px-5 py-4 card-hover cursor-pointer">
+                        <div class="w-16 shrink-0 gradient-bg text-white rounded-lg overflow-hidden text-center">
+                            <div class="pt-2 pb-0.5 text-[22px] font-bold leading-none">15</div>
+                            <div class="pb-2 text-[11px] opacity-90">2026-07</div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-[#303133] text-[15px] truncate mb-1">数据创新应用大赛正式启动，诚邀各界参与</h3>
+                            <p class="text-[#606266] text-[13px] truncate">为挖掘数据创新应用潜力，推动数据要素价值释放，数据创新应用大赛现已开放报名...</p>
+                        </div>
+                    </a>
+                    <a href="portal_work_dynamics.html" class="flex items-center gap-5 px-5 py-4 card-hover cursor-pointer">
+                        <div class="w-16 shrink-0 gradient-bg text-white rounded-lg overflow-hidden text-center">
+                            <div class="pt-2 pb-0.5 text-[22px] font-bold leading-none">10</div>
+                            <div class="pb-2 text-[11px] opacity-90">2026-07</div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-[#303133] text-[15px] truncate mb-1">关于平台数据安全管理体系认证的通知</h3>
+                            <p class="text-[#606266] text-[13px] truncate">为进一步加强数据安全防护能力，平台已完成数据安全管理体系认证升级...</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold text-[#303133] mb-4">开始您的数据之旅</h2>
+                <p class="text-[#606266] text-lg">海量数据资源触手可及，智能分析能力赋能业务创新，即刻开启高效数据服务体验</p>
+            </div>
+        </section>
+    </main>
+
+    <script>PortalCommon.renderFooter();</script>
+
+    <script>PortalCommon.renderFloatButtons();</script>
+
+    <script>
+        let basketCount = 1;
+
+        function addToBasket(serviceId, serviceName) {
+            basketCount++;
+            const badge = document.querySelector('#basket-badge span');
+            if (badge) {
+                badge.textContent = basketCount;
+            }
+        }
+    </script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P21",
+      "title": "数据服务平台 - 门户首页",
+      "path": "index.html",
+      "route": "/index.html"
+    }
+  ],
+  "surfaces": [],
+  "annotations": [
+    {
+      "id": "ANN-P21-001",
+      "pageKey": "P21",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "数据驱动价值 服务赋能创新",
+        "strategy": "tag",
+        "sourceElementId": "P21-E003",
+        "boundsHint": {
+          "text": "数据驱动价值 服务赋能创新",
+          "tag": "h1"
+        }
+      },
+      "title": "数据驱动价值 服务赋能创新 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「数据驱动价值 服务赋能创新」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「数据驱动价值 服务赋能创新」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「数据驱动价值 服务赋能创新」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 01 2026-08 数据服务平台 3.0 版…\n- 28 2026-07 智能问答助手升级：支持自…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P21-E003"
+      },
+      "evidence": [
+        "页面：数据驱动价值 服务赋能创新",
+        "路由：/index.html",
+        "页面文本：数据驱动价值 服务赋能创新",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P21-003",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P21-002",
+      "pageKey": "P21",
+      "target": {
+        "selector": "main \u003e section:nth-of-type(5) \u003e div \u003e div:nth-of-type(2) \u003e a:nth-of-type(1)",
+        "fallbackText": "01 2026-08 数据服务平台 3.0 版本正式上线，全新智能编目能力发布 置顶 本次版本升级重点优化了智能编目能力，支持基于 AI 的自动目录编制与元数据自动补全...",
+        "strategy": "path",
+        "sourceElementId": "P21-E040",
+        "boundsHint": {
+          "text": "01 2026-08 数据服务平台 3.0 版本正式上线，全新智能编目能力发布 置顶 本次版本升级重点优化了智能编目能力，支持基于 AI 的自动目录编制与元数据自动补全...",
+          "tag": "a"
+        }
+      },
+      "title": "01 2026-08 …",
+      "contentMarkdown": "### 业务含义\n\n「01 2026-08 数据服务平台 3.0 版本正式上线，全新…」关键操作入口。\n\n### 交互规则\n\n- 用户点击「01 2026-08 数据服务平台 3.0 版本正式上线，全新…」后，系统应执行与该入口对应的业务动作。\n- 操作前应校验当前用户、当前对象状态和必要输入是否满足条件。\n- 若该入口用于跳转，应进入 `portal_work_dynamics.html` 对应页面并保留必要上下文。\n\n### 状态与异常\n\n- 处理中：按钮应进入 loading 或禁用状态，避免重复触发。\n- 失败：保留当前页面状态，并提示用户可执行的修正或重试方式。\n\n### 证据\n\n- 页面文本：01 2026-08 数据服务平台 3.0 版本正式上线，全新智能编目能力发布 置顶 本次版本升级重点优化了智能编目能力，支持基于 AI 的自动目录编制与元数据\n- selector：main \u003e section:nth-of-type(5) \u003e div \u003e div:nth-of-type(2) \u003e a:nth-of-type(1)\n\n### 待确认\n\n- 点击后的目标页面、弹窗或状态变化是否已确认？\n- 是否存在角色权限、状态限制或二次确认要求？\n- 候选证据是否与 PRD 或上游页面级需求说明文档一致？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "business",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Primary action",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P21-E040"
+      },
+      "evidence": [
+        "页面文本：01 2026-08 数据服务平台 3.0 版本正式上线，全新智能编目能力发布 置顶 本次版本升级重点优化了智能编目能力，支持基于 AI 的自动目录编制与元数据",
+        "selector：main \u003e section:nth-of-type(5) \u003e div \u003e div:nth-of-type(2) \u003e a:nth-of-type(1)"
+      ],
+      "nextActions": [
+        "点击 `01 2026-08 数据服务平台 3.0 版本正式上线，全新…` 后需要确认页面/弹窗/状态变化、成功反馈和失败处理。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P21-040",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P21-003",
+      "pageKey": "P21",
+      "target": {
+        "selector": "main \u003e section:nth-of-type(5) \u003e div \u003e div:nth-of-type(2) \u003e a:nth-of-type(2)",
+        "fallbackText": "28 2026-07 智能问答助手升级：支持自然语言查询数据资源 智能问答助手现已支持通过自然语言直接查询数据资源，快速定位所需的数据目录与服务接口...",
+        "strategy": "path",
+        "sourceElementId": "P21-E042",
+        "boundsHint": {
+          "text": "28 2026-07 智能问答助手升级：支持自然语言查询数据资源 智能问答助手现已支持通过自然语言直接查询数据资源，快速定位所需的数据目录与服务接口...",
+          "tag": "a"
+        }
+      },
+      "title": "28 2026-07 …",
+      "contentMarkdown": "### 业务含义\n\n「28 2026-07 智能问答助手升级：支持自然语言查询数据资…」关键操作入口。\n\n### 交互规则\n\n- 用户点击「28 2026-07 智能问答助手升级：支持自然语言查询数据资…」后，系统应执行与该入口对应的业务动作。\n- 操作前应校验当前用户、当前对象状态和必要输入是否满足条件。\n- 若该入口用于跳转，应进入 `portal_work_dynamics.html` 对应页面并保留必要上下文。\n\n### 状态与异常\n\n- 处理中：按钮应进入 loading 或禁用状态，避免重复触发。\n- 失败：保留当前页面状态，并提示用户可执行的修正或重试方式。\n\n### 证据\n\n- 页面文本：28 2026-07 智能问答助手升级：支持自然语言查询数据资源 智能问答助手现已支持通过自然语言直接查询数据资源，快速定位所需的数据目录与服务接口...\n- selector：main \u003e section:nth-of-type(5) \u003e div \u003e div:nth-of-type(2) \u003e a:nth-of-type(2)\n\n### 待确认\n\n- 点击后的目标页面、弹窗或状态变化是否已确认？\n- 是否存在角色权限、状态限制或二次确认要求？\n- 候选证据是否与 PRD 或上游页面级需求说明文档一致？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "business",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Primary action",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P21-E042"
+      },
+      "evidence": [
+        "页面文本：28 2026-07 智能问答助手升级：支持自然语言查询数据资源 智能问答助手现已支持通过自然语言直接查询数据资源，快速定位所需的数据目录与服务接口...",
+        "selector：main \u003e section:nth-of-type(5) \u003e div \u003e div:nth-of-type(2) \u003e a:nth-of-type(2)"
+      ],
+      "nextActions": [
+        "点击 `28 2026-07 智能问答助手升级：支持自然语言查询数据资…` 后需要确认页面/弹窗/状态变化、成功反馈和失败处理。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P21-042",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P21-004",
+      "pageKey": "P21",
+      "target": {
+        "selector": "section:nth-of-type(3) \u003e div \u003e div:nth-of-type(1) \u003e div \u003e h2",
+        "fallbackText": "数据资源中心",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "h2"
+        }
+      },
+      "title": "数据资源中心",
+      "contentMarkdown": "### 业务含义\n\n按照发布时间倒序",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 4,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T07:45:04.324Z"
+    },
+    {
+      "id": "ANN-P21-005",
+      "pageKey": "P21",
+      "target": {
+        "selector": "section:nth-of-type(3) \u003e div \u003e div:nth-of-type(1) \u003e div \u003e p",
+        "fallbackText": "丰富的数据资源，助力业务创新发展",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "p"
+        }
+      },
+      "title": "丰富的数据资源，助力业务创新发展",
+      "contentMarkdown": "### 业务含义\n\n按照发布时间倒序",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 5,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T07:47:30.904Z"
+    },
+    {
+      "id": "ANN-P21-006",
+      "pageKey": "P21",
+      "target": {
+        "selector": "section:nth-of-type(3) \u003e div \u003e div:nth-of-type(1) \u003e div \u003e p",
+        "fallbackText": "丰富的数据资源，助力业务创新发展",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "p"
+        }
+      },
+      "title": "丰富的数据资源，助力业务创新发展",
+      "contentMarkdown": "### 业务含义\n\n按发布时间倒序",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 6,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T08:05:33.818Z"
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 材料中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="portal_common.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0f52ba 0%, #1c7ffd 50%, #5a8bfb 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(28, 127, 253, 0.15); }
+        .tab-active { background: linear-gradient(135deg, #1c7ffd, #5a8bfb); color: white; }
+        .tab-inactive { background: white; color: #606266; border: 1px solid #e4e7ed; }
+        .tab-inactive:hover { border-color: #1c7ffd; color: #1c7ffd; }
+        .filter-tag { transition: all 0.2s ease; }
+        .filter-tag:hover { background-color: #ecf5ff; color: #1c7ffd; }
+        .filter-tag.active { background-color: #1c7ffd; color: white; }
+        .material-card { transition: all 0.3s ease; border: 1px solid #ebeef5; }
+        .material-card:hover { border-color: #1c7ffd; box-shadow: 0 8px 16px rgba(28, 127, 253, 0.1); }
+        .search-input:focus { border-color: #1c7ffd; box-shadow: 0 0 0 3px rgba(28, 127, 253, 0.1); }
+        .category-active { background: linear-gradient(135deg, #1c7ffd, #5a8bfb); color: white; }
+        .category-inactive:hover { background: #f5f7fa; color: #1c7ffd; }
+    </style>
+</head>
+<body class="bg-[#f5f7fa] text-[14px] text-gray-700">
+    <script>PortalCommon.renderHeader('material_center');</script>
+
+    <main class="pt-16">
+        <div class="bg-white border-b border-gray-200 sticky top-16 z-40">
+            <div class="max-w-[1440px] mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-xl font-bold text-[#303133]">材料中心</h1>
+                    <div class="relative w-[320px]">
+                        <input type="text" placeholder="搜索材料名称..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm search-input focus:outline-none">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-[1440px] mx-auto px-6 py-6">
+            <div class="flex gap-6">
+                <aside class="w-[220px] shrink-0">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="p-4 border-b border-gray-100">
+                            <h3 class="font-semibold text-[#303133] text-sm">材料分类</h3>
+                        </div>
+                        <div class="p-2">
+                            <button class="category-btn category-active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all">
+                                <i class="fa-solid fa-layer-group text-xs"></i>
+                                <span>全部材料</span>
+                                <span class="ml-auto bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">28</span>
+                            </button>
+                            <button class="category-btn category-inactive w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all">
+                                <i class="fa-solid fa-file-text text-xs"></i>
+                                <span>政策法规</span>
+                                <span class="ml-auto bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">8</span>
+                            </button>
+                            <button class="category-btn category-inactive w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all">
+                                <i class="fa-solid fa-file-lines text-xs"></i>
+                                <span>技术规范</span>
+                                <span class="ml-auto bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">6</span>
+                            </button>
+                            <button class="category-btn category-inactive w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all">
+                                <i class="fa-solid fa-file-word text-xs"></i>
+                                <span>申请模板</span>
+                                <span class="ml-auto bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">5</span>
+                            </button>
+                            <button class="category-btn category-inactive w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all">
+                                <i class="fa-solid fa-book-open text-xs"></i>
+                                <span>操作手册</span>
+                                <span class="ml-auto bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">9</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    
+                </aside>
+
+                <div class="flex-1">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-[#606266]">共 <span class="text-[#1c7ffd] font-bold">28</span> 份材料</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm">
+                            <span class="text-[#606266]">排序：</span>
+                            <select class="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-[#1c7ffd] bg-white appearance-none cursor-pointer">
+                                <option>最新发布</option>
+                                <option>下载量</option>
+                                <option>名称</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="material-card bg-white rounded-xl p-5 cursor-pointer">
+                            <div class="flex items-start gap-4">
+                                <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-semibold text-[#303133] text-[15px] mb-2 line-clamp-2">数据资源开放共享管理办法</h3>
+                                    <div class="flex items-center gap-3 text-xs text-[#909399] mb-3">
+                                        <span><i class="fa-solid fa-calendar mr-1"></i>2026-07-15</span>
+                                        <span><i class="fa-solid fa-download mr-1"></i>1,256</span>
+                                        <span><i class="fa-solid fa-eye mr-1"></i>3,421</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded">政策法规</span>
+                                        <span class="px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">PDF</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <p class="text-sm text-[#606266] line-clamp-1">本办法旨在规范数据资源的开放共享行为，促进数据资源的合理利用...</p>
+                                <button class="px-4 py-1.5 border border-[#1c7ffd] text-[#1c7ffd] rounded-lg text-sm hover:bg-[#1c7ffd] hover:text-white transition-colors">
+                                    下载
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="material-card bg-white rounded-xl p-5 cursor-pointer">
+                            <div class="flex items-start gap-4">
+                                <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-file-word text-blue-500 text-2xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-semibold text-[#303133] text-[15px] mb-2 line-clamp-2">数据资源申请审批流程说明</h3>
+                                    <div class="flex items-center gap-3 text-xs text-[#909399] mb-3">
+                                        <span><i class="fa-solid fa-calendar mr-1"></i>2026-07-10</span>
+                                        <span><i class="fa-solid fa-download mr-1"></i>987</span>
+                                        <span><i class="fa-solid fa-eye mr-1"></i>2,856</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 bg-orange-50 text-orange-600 text-xs rounded">操作指南</span>
+                                        <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded">DOC</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <p class="text-sm text-[#606266] line-clamp-1">详细说明数据资源申请的审批流程，包括申请条件、审核标准、审批时限等...</p>
+                                <button class="px-4 py-1.5 border border-[#1c7ffd] text-[#1c7ffd] rounded-lg text-sm hover:bg-[#1c7ffd] hover:text-white transition-colors">
+                                    下载
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="material-card bg-white rounded-xl p-5 cursor-pointer">
+                            <div class="flex items-start gap-4">
+                                <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-file-word text-blue-500 text-2xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-semibold text-[#303133] text-[15px] mb-2 line-clamp-2">数据资源共享申请表</h3>
+                                    <div class="flex items-center gap-3 text-xs text-[#909399] mb-3">
+                                        <span><i class="fa-solid fa-calendar mr-1"></i>2026-07-08</span>
+                                        <span><i class="fa-solid fa-download mr-1"></i>756</span>
+                                        <span><i class="fa-solid fa-eye mr-1"></i>1,987</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-xs rounded">申请模板</span>
+                                        <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded">DOC</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <p class="text-sm text-[#606266] line-clamp-1">数据资源共享申请的标准表格模板，包含申请信息、用途说明等...</p>
+                                <button class="px-4 py-1.5 border border-[#1c7ffd] text-[#1c7ffd] rounded-lg text-sm hover:bg-[#1c7ffd] hover:text-white transition-colors">
+                                    下载
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="material-card bg-white rounded-xl p-5 cursor-pointer">
+                            <div class="flex items-start gap-4">
+                                <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-file-excel text-green-500 text-2xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-semibold text-[#303133] text-[15px] mb-2 line-clamp-2">数据目录填报模板</h3>
+                                    <div class="flex items-center gap-3 text-xs text-[#909399] mb-3">
+                                        <span><i class="fa-solid fa-calendar mr-1"></i>2026-07-05</span>
+                                        <span><i class="fa-solid fa-download mr-1"></i>523</span>
+                                        <span><i class="fa-solid fa-eye mr-1"></i>1,456</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-xs rounded">申请模板</span>
+                                        <span class="px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">XLS</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <p class="text-sm text-[#606266] line-clamp-1">数据目录填报的标准Excel模板，包含目录信息、字段说明等...</p>
+                                <button class="px-4 py-1.5 border border-[#1c7ffd] text-[#1c7ffd] rounded-lg text-sm hover:bg-[#1c7ffd] hover:text-white transition-colors">
+                                    下载
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="material-card bg-white rounded-xl p-5 cursor-pointer">
+                            <div class="flex items-start gap-4">
+                                <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-semibold text-[#303133] text-[15px] mb-2 line-clamp-2">数据安全管理规范</h3>
+                                    <div class="flex items-center gap-3 text-xs text-[#909399] mb-3">
+                                        <span><i class="fa-solid fa-calendar mr-1"></i>2026-07-01</span>
+                                        <span><i class="fa-solid fa-download mr-1"></i>456</span>
+                                        <span><i class="fa-solid fa-eye mr-1"></i>1,234</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 bg-orange-50 text-orange-600 text-xs rounded">技术规范</span>
+                                        <span class="px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">PDF</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <p class="text-sm text-[#606266] line-clamp-1">数据安全管理的技术规范，包括数据加密、访问控制、审计日志等...</p>
+                                <button class="px-4 py-1.5 border border-[#1c7ffd] text-[#1c7ffd] rounded-lg text-sm hover:bg-[#1c7ffd] hover:text-white transition-colors">
+                                    下载
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="material-card bg-white rounded-xl p-5 cursor-pointer">
+                            <div class="flex items-start gap-4">
+                                <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-semibold text-[#303133] text-[15px] mb-2 line-clamp-2">数据接口开发规范</h3>
+                                    <div class="flex items-center gap-3 text-xs text-[#909399] mb-3">
+                                        <span><i class="fa-solid fa-calendar mr-1"></i>2026-06-28</span>
+                                        <span><i class="fa-solid fa-download mr-1"></i>389</span>
+                                        <span><i class="fa-solid fa-eye mr-1"></i>987</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 bg-orange-50 text-orange-600 text-xs rounded">技术规范</span>
+                                        <span class="px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">PDF</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <p class="text-sm text-[#606266] line-clamp-1">数据接口开发的技术规范，包括接口设计、参数规范、返回格式等...</p>
+                                <button class="px-4 py-1.5 border border-[#1c7ffd] text-[#1c7ffd] rounded-lg text-sm hover:bg-[#1c7ffd] hover:text-white transition-colors">
+                                    下载
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center mt-8 gap-2">
+                        <button class="w-10 h-10 border border-gray-200 rounded-lg text-gray-400 flex items-center justify-center hover:border-[#1c7ffd] hover:text-[#1c7ffd] transition-colors">
+                            <i class="fa-solid fa-angle-left"></i>
+                        </button>
+                        <button class="w-10 h-10 border border-[#1c7ffd] rounded-lg text-[#1c7ffd] flex items-center justify-center bg-blue-50">1</button>
+                        <button class="w-10 h-10 border border-gray-200 rounded-lg text-gray-600 flex items-center justify-center hover:border-[#1c7ffd] hover:text-[#1c7ffd] transition-colors">2</button>
+                        <button class="w-10 h-10 border border-gray-200 rounded-lg text-gray-600 flex items-center justify-center hover:border-[#1c7ffd] hover:text-[#1c7ffd] transition-colors">3</button>
+                        <button class="w-10 h-10 border border-gray-200 rounded-lg text-gray-400 flex items-center justify-center hover:border-[#1c7ffd] hover:text-[#1c7ffd] transition-colors">
+                            <i class="fa-solid fa-angle-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('tab-active');
+                    b.classList.add('tab-inactive');
+                });
+                this.classList.remove('tab-inactive');
+                this.classList.add('tab-active');
+            });
+        });
+
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(b => {
+                    b.classList.remove('category-active');
+                    b.classList.add('category-inactive');
+                });
+                this.classList.remove('category-inactive');
+                this.classList.add('category-active');
+            });
+        });
+    </script>
+
+    <script>PortalCommon.renderFooter();</script>
+
+    <script>PortalCommon.renderFloatButtons();</script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P31",
+      "title": "数据服务平台 - 材料中心",
+      "path": "portal_material_center.html",
+      "route": "/portal_material_center.html"
+    }
+  ],
+  "surfaces": [],
+  "annotations": [
+    {
+      "id": "ANN-P31-001",
+      "pageKey": "P31",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "材料中心",
+        "strategy": "tag",
+        "sourceElementId": "P31-E002",
+        "boundsHint": {
+          "text": "材料中心",
+          "tag": "h1"
+        }
+      },
+      "title": "材料中心 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「材料中心」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「材料中心」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「材料中心」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 搜索材料名称...\n- 最新发布 下载量 名称\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P31-E002"
+      },
+      "evidence": [
+        "页面：材料中心",
+        "路由：/portal_material_center.html",
+        "页面文本：材料中心",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P31-002",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P31-002",
+      "pageKey": "P31",
+      "target": {
+        "selector": "input[placeholder*=\"搜索材料名称...\"]",
+        "fallbackText": "搜索材料名称...",
+        "strategy": "placeholder",
+        "sourceElementId": "P31-E003",
+        "boundsHint": {
+          "text": "搜索材料名称...",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「搜索材料名称...」用于帮助用户在当前页面快速查找与业务目标相关的内容。帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。\n\n### 使用场景\n\n当用户已经知道关键词、名称、类型或部分条件时，可以通过搜索或筛选快速缩小结果范围。\n\n### 交互规则\n\n- 用户输入关键词或筛选条件后，点击「搜索材料名称...」或确认操作触发查询。\n- 系统根据条件刷新结果列表。\n- 清空条件后，应恢复默认列表或推荐内容。\n\n### 状态与异常\n\n- 搜索中：展示加载状态。\n- 无结果：展示空状态，并提示用户调整关键词。\n- 搜索失败：保留用户输入，并提示稍后重试。\n\n### 待确认\n\n- 是否支持模糊搜索？\n- 是否需要保留用户上一次搜索条件？\n- 是否需要按资源类型进一步筛选？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "business",
+        "field-rule",
+        "exception"
+      ],
+      "dimension": "Form and validation",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P31-E003"
+      },
+      "evidence": [
+        "页面文本：搜索材料名称...",
+        "selector：input[placeholder*=\"搜索材料名称...\"]"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认字段必填性、默认值、校验时机、选项来源和提交阻断条件。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P31-003",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

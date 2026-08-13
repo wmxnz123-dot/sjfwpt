@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数据沙箱平台 - 资源详情</title>
+    <title>数据服务平台 - 资源详情</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -18,7 +18,7 @@
     <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
         <div class="flex items-center gap-2">
             <i class="fa-solid fa-cubes-stacked text-2xl"></i>
-            <span class="text-lg font-medium tracking-wider ml-1">数据沙箱平台</span>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
         </div>
         <div class="flex items-center gap-6">
             <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
@@ -62,34 +62,35 @@
                                 <div class="text-[#909399]">更新时间：2026-06-23 10:16:48</div>
                             </div>
                         </div>
-                        <div class="flex gap-3">
-                            <div class="px-3 py-1 border border-gray-200 rounded text-[#909399] text-[13px] flex items-center gap-1">
-                                <i class="fa-solid fa-table"></i> 库表
+                        <div class="flex flex-col gap-3 items-end">
+                            <div class="flex gap-3">
+                                <div class="px-3 py-1 border border-gray-200 rounded text-[#909399] text-[13px] flex items-center gap-1">
+                                    <i class="fa-solid fa-table"></i> 库表
+                                </div>
+                                <div class="px-3 py-1 border border-[#1c7ffd] rounded text-[#1c7ffd] text-[13px] flex items-center gap-1">
+                                    <i class="fa-solid fa-plug"></i> 接口
+                                </div>
                             </div>
-                            <div class="px-3 py-1 border border-[#1c7ffd] rounded text-[#1c7ffd] text-[13px] flex items-center gap-1">
-                                <i class="fa-solid fa-plug"></i> 接口
-                            </div>
+                            <button onclick="openApiAddToBasketModal()" class="px-5 py-2 bg-[#1c7ffd] text-white rounded text-sm hover:bg-blue-600 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-plus"></i> 加入数据篮
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col">
                     <div class="flex border-b border-gray-100 px-6 shrink-0">
-                        <div id="detail-tab-basic" class="py-3 px-2 text-[#606266] hover:text-[#1c7ffd] mr-8 cursor-pointer transition-colors" onclick="switchDetailTab('basic')">基本信息</div>
-                        <div id="detail-tab-service" class="py-3 px-2 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium mr-8 cursor-pointer" onclick="switchDetailTab('service')">服务详情</div>
+                        <div id="detail-tab-basic" class="py-3 px-2 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium mr-8 cursor-pointer" onclick="switchDetailTab('basic')">基本信息</div>
+                        <div id="detail-tab-sample" class="py-3 px-2 text-[#606266] hover:text-[#1c7ffd] mr-8 cursor-pointer transition-colors" onclick="switchDetailTab('sample')">样例数据</div>
                     </div>
 
                     <div class="flex-1 p-6 overflow-y-auto">
-                        <div id="detail-content-basic" class="hidden">
+                        <div id="detail-content-basic">
                             <h3 class="font-bold border-l-2 border-[#1c7ffd] pl-2 text-[#303133] text-[15px] mb-6 leading-none">基本信息</h3>
-                            <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-[13px] pl-4">
+                            <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-[13px] pl-4 mb-8">
                                 <div class="flex">
                                     <span class="text-[#909399] w-28 text-right pr-4">资源名称</span>
                                     <span class="text-[#303133] flex-1">数据要素数据资源-接口003</span>
-                                </div>
-                                <div class="flex">
-                                    <span class="text-[#909399] w-28 text-right pr-4">资源编码</span>
-                                    <span class="text-[#303133] flex-1">PD202508140002</span>
                                 </div>
                                 <div class="flex">
                                     <span class="text-[#909399] w-28 text-right pr-4">所属分类</span>
@@ -104,21 +105,13 @@
                                     <span class="text-[#303133] flex-1">2026-06-23 10:16:48</span>
                                 </div>
                                 <div class="flex">
-                                    <span class="text-[#909399] w-28 text-right pr-4">提供方</span>
+                                    <span class="text-[#909399] w-28 text-right pr-4">数据所属方</span>
                                     <span class="text-[#303133] flex-1">数据管理局</span>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div id="detail-content-service">
-                            <div class="flex justify-between items-start mb-6">
-                                <div>
-                                    <div class="text-[14px] text-[#606266] mb-2">服务名称：<span class="text-[#303133]">数据要素数据资源-接口服务003</span></div>
-                                    <div class="text-[14px] text-[#606266]">服务类型：<span class="text-[#303133]">接口</span></div>
+                                <div class="flex">
+                                    <span class="text-[#909399] w-28 text-right pr-4">资源类型</span>
+                                    <span class="text-[#303133] flex-1">接口</span>
                                 </div>
-                                <button onclick="openApiAddToBasketModal()" class="px-5 py-2 bg-[#1c7ffd] text-white rounded text-sm hover:bg-blue-600 transition-colors flex items-center gap-1">
-                                    <i class="fa-solid fa-plus"></i> 加入数据篮
-                                </button>
                             </div>
 
                             <h3 class="font-bold text-[#303133] text-[15px] mb-4">接口信息</h3>
@@ -131,6 +124,82 @@
                                 </div>
                             </div>
 
+                            <div class="mt-4">
+                                <h4 class="font-bold text-[#303133] mb-3">请求参数</h4>
+                                <div class="bg-[#f8f8f9] rounded overflow-hidden">
+                                    <table class="w-full text-[13px]">
+                                        <thead class="bg-[#f0f0f0]">
+                                            <tr>
+                                                <th class="py-2 px-4 text-left font-medium text-[#909399]">序号</th>
+                                                <th class="py-2 px-4 text-left font-medium text-[#909399]">名称</th>
+                                                <th class="py-2 px-4 text-left font-medium text-[#909399]">描述</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-t border-gray-200">
+                                                <td class="py-3 px-4">1</td>
+                                                <td class="py-3 px-4">creditCode</td>
+                                                <td class="py-3 px-4">统一社会信用代码</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="font-bold text-[#303133] mb-3">返回参数</h4>
+                                <div class="bg-[#f8f8f9] rounded overflow-hidden">
+                                    <table class="w-full text-[13px]">
+                                        <thead class="bg-[#f0f0f0]">
+                                            <tr>
+                                                <th class="py-2 px-4 text-left font-medium text-[#909399]">序号</th>
+                                                <th class="py-2 px-4 text-left font-medium text-[#909399]">名称</th>
+                                                <th class="py-2 px-4 text-left font-medium text-[#909399]">描述</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-t border-gray-200">
+                                                <td class="py-3 px-4">1</td>
+                                                <td class="py-3 px-4">riskTags</td>
+                                                <td class="py-3 px-4">风险标签列表</td>
+                                            </tr>
+                                            <tr class="border-t border-gray-200">
+                                                <td class="py-3 px-4">2</td>
+                                                <td class="py-3 px-4">score</td>
+                                                <td class="py-3 px-4">风险评分</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="font-bold text-[#303133] mb-3">错误代码</h4>
+                                <div class="bg-[#f8f8f9] rounded overflow-hidden">
+                                    <table class="w-full text-[13px]">
+                                        <thead class="bg-[#f0f0f0]">
+                                            <tr>
+                                                <th class="py-2 px-4 text-left font-medium text-[#909399]">序号</th>
+                                                <th class="py-2 px-4 text-left font-medium text-[#909399]">错误代码</th>
+                                                <th class="py-2 px-4 text-left font-medium text-[#909399]">参数描述</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="border-t border-gray-200">
+                                                <td class="py-3 px-4">1</td>
+                                                <td class="py-3 px-4">400</td>
+                                                <td class="py-3 px-4">参数错误</td>
+                                            </tr>
+                                            <tr class="border-t border-gray-200">
+                                                <td class="py-3 px-4">2</td>
+                                                <td class="py-3 px-4">500</td>
+                                                <td class="py-3 px-4">系统错误</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="detail-content-sample" class="hidden">
                             <h3 class="font-bold text-[#303133] text-[15px] mb-4">样例数据</h3>
                             <pre class="bg-[#f8f8f9] border border-gray-200 rounded-lg p-4 text-[13px] leading-6 text-[#606266] overflow-x-auto whitespace-pre-wrap">{
   "creditCode": "91370100MA1234567X",
@@ -158,6 +227,7 @@
                     <i class="fa-solid fa-xmark text-gray-400 cursor-pointer hover:text-gray-600" onclick="closeDataBasket()"></i>
                 </div>
                 <div class="flex-1 overflow-y-auto p-4 space-y-6">
+                    <!-- 接口类 -->
                     <div>
                         <div class="text-[#303133] font-medium mb-2 flex items-center gap-2">
                             <i class="fa-solid fa-plug text-[#1c7ffd]"></i>接口类
@@ -165,17 +235,15 @@
                         <table class="w-full text-[13px]">
                             <thead>
                                 <tr class="bg-[#f8f8f9]">
-                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">目录名称</th>
-                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">服务名称</th>
-                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">调用频次平均</th>
-                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">调用频次峰值</th>
+                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">资源名称</th>
+                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">调用频次（平均）（次/天）</th>
+                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">调用频次（峰值）（次/天）</th>
                                     <th class="py-2 px-3 text-left text-[#909399] font-medium">附件上传状态</th>
                                     <th class="py-2 px-3 text-left text-[#909399] font-medium">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="border-b border-gray-100">
-                                    <td class="py-3 px-3">企业风险信息</td>
                                     <td class="py-3 px-3">数据要素数据资源-接口003</td>
                                     <td class="py-3 px-3">1200次/小时</td>
                                     <td class="py-3 px-3">3500次/小时</td>
@@ -186,9 +254,21 @@
                                         <a href="#" class="hover:underline">上传附件</a>
                                     </td>
                                 </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-3">数据要素数据资源-接口002</td>
+                                    <td class="py-3 px-3">800次/小时</td>
+                                    <td class="py-3 px-3">2500次/小时</td>
+                                    <td class="py-3 px-3"><span class="text-green-600">已上传</span></td>
+                                    <td class="py-3 px-3 text-[#1c7ffd]">
+                                        <a href="#" class="hover:underline mr-2" onclick="openApiAddToBasketModal()">编辑</a>
+                                        <a href="#" class="hover:underline mr-2">移除</a>
+                                        <a href="#" class="hover:underline">重新上传</a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
+                    <!-- 库表类 -->
                     <div>
                         <div class="text-[#303133] font-medium mb-2 flex items-center gap-2">
                             <i class="fa-solid fa-table text-[#1c7ffd]"></i>库表类
@@ -196,8 +276,7 @@
                         <table class="w-full text-[13px]">
                             <thead>
                                 <tr class="bg-[#f8f8f9]">
-                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">目录名称</th>
-                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">服务名称</th>
+                                    <th class="py-2 px-3 text-left text-[#909399] font-medium">资源名称</th>
                                     <th class="py-2 px-3 text-left text-[#909399] font-medium">字段名称</th>
                                     <th class="py-2 px-3 text-left text-[#909399] font-medium">附件上传状态</th>
                                     <th class="py-2 px-3 text-left text-[#909399] font-medium">操作</th>
@@ -205,7 +284,6 @@
                             </thead>
                             <tbody>
                                 <tr class="border-b border-gray-100">
-                                    <td class="py-3 px-3">企业基础信息库</td>
                                     <td class="py-3 px-3">数据要素数据资源-库表003</td>
                                     <td class="py-3 px-3">id, ip, type, create_by, create_time</td>
                                     <td class="py-3 px-3"><span class="text-green-600">已上传</span></td>
@@ -215,13 +293,53 @@
                                         <a href="#" class="hover:underline">重新上传</a>
                                     </td>
                                 </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-3">数据要素数据资源-库表002</td>
+                                    <td class="py-3 px-3">credit_code, change_item, change_before, change_after</td>
+                                    <td class="py-3 px-3"><span class="text-gray-500">未上传</span></td>
+                                    <td class="py-3 px-3 text-[#1c7ffd]">
+                                        <a href="#" class="hover:underline mr-2">编辑</a>
+                                        <a href="#" class="hover:underline mr-2">移除</a>
+                                        <a href="#" class="hover:underline">上传附件</a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="h-14 border-t border-gray-100 flex items-center justify-between px-6 shrink-0 bg-white">
-                    <span class="text-[#606266] text-sm">共 <span class="text-[#1c7ffd] font-medium">2</span> 项资源</span>
-                    <button class="px-5 py-1.5 bg-[#1c7ffd] text-white rounded text-sm hover:bg-blue-600 transition-colors">提交申请</button>
+                    <span class="text-[#606266] text-sm">共 <span class="text-[#1c7ffd] font-medium">4</span> 项资源</span>
+                    <button class="px-5 py-1.5 bg-[#1c7ffd] text-white rounded text-sm hover:bg-blue-600 transition-colors" onclick="openSubmitApplyModal()">提交申请</button>
+                </div>
+            </div>
+
+            <!-- 发起申请工单弹窗 -->
+            <div id="submitApplyModal" class="fixed inset-0 bg-black bg-opacity-30 z-[70] hidden flex items-center justify-center">
+                <div class="bg-white rounded-lg shadow-2xl w-[500px] overflow-hidden">
+                    <div class="h-12 border-b border-gray-100 flex items-center justify-between px-6">
+                        <span class="font-medium text-[#303133]">发起申请工单</span>
+                        <i class="fa-solid fa-xmark text-gray-400 cursor-pointer hover:text-gray-600" onclick="closeSubmitApplyModal()"></i>
+                    </div>
+                    <div class="px-6 py-5">
+                        <div class="flex flex-col gap-4">
+                            <div class="flex items-center gap-3">
+                                <label class="text-[#606266] whitespace-nowrap w-[130px] text-right">使用单位：</label>
+                                <input type="text" id="applyUnit" value="数据要素事业部" readonly class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] bg-gray-50">
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <label class="text-[#606266] whitespace-nowrap w-[130px] text-right"><span class="text-red-500 mr-1">*</span>联系人：</label>
+                                <input type="text" id="applyContact" value="数据要素" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <label class="text-[#606266] whitespace-nowrap w-[130px] text-right"><span class="text-red-500 mr-1">*</span>联系方式：</label>
+                                <input type="text" id="applyPhone" value="13388889999" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 flex justify-end gap-3 bg-white border-t border-gray-100">
+                        <button class="px-5 h-8 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-sm" onclick="closeSubmitApplyModal()">取 消</button>
+                        <button class="px-5 h-8 bg-[#1c7ffd] text-white rounded hover:bg-blue-600 transition-colors text-sm" onclick="submitApply()">确 定</button>
+                    </div>
                 </div>
             </div>
 
@@ -254,11 +372,11 @@
                 function switchDetailTab(tabName) {
                     const tabs = {
                         'basic': document.getElementById('detail-tab-basic'),
-                        'service': document.getElementById('detail-tab-service')
+                        'sample': document.getElementById('detail-tab-sample')
                     };
                     const contents = {
                         'basic': document.getElementById('detail-content-basic'),
-                        'service': document.getElementById('detail-content-service')
+                        'sample': document.getElementById('detail-content-sample')
                     };
 
                     for (let key in tabs) {
@@ -306,6 +424,25 @@
                         overlay.classList.add('hidden');
                     }, 300);
                 }
+
+                function openSubmitApplyModal() {
+                    document.getElementById('submitApplyModal').classList.remove('hidden');
+                }
+
+                function closeSubmitApplyModal() {
+                    document.getElementById('submitApplyModal').classList.add('hidden');
+                }
+
+                function submitApply() {
+                    const contact = document.getElementById('applyContact').value;
+                    const phone = document.getElementById('applyPhone').value;
+                    if (!contact || !phone) {
+                        showAlert('请填写联系人和联系方式');
+                        return;
+                    }
+                    showAlert('工单提交成功！');
+                    closeSubmitApplyModal();
+                }
             </script>
 
             <div id="alertModal" class="fixed inset-0 bg-black bg-opacity-30 z-[70] hidden flex items-center justify-center">
@@ -332,5 +469,1205 @@
             </script>
         </main>
     </div>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P39",
+      "title": "数据服务平台 - 资源详情",
+      "path": "resource_supermarket_detail_api.html",
+      "route": "/resource_supermarket_detail_api.html"
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P39-databasketdrawer",
+      "type": "drawer",
+      "name": "surface-P39-databasketdrawer",
+      "pageKey": "P39",
+      "openSelector": "#dataBasketDrawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred"
+    },
+    {
+      "id": "surface-P39-submitapplymodal",
+      "type": "modal",
+      "name": "surface-P39-submitapplymodal",
+      "pageKey": "P39",
+      "openSelector": "#submitApplyModal",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred"
+    },
+    {
+      "id": "surface-P39-apiaddtobasketmodaloverlay",
+      "type": "modal",
+      "name": "surface-P39-apiaddtobasketmodaloverlay",
+      "pageKey": "P39",
+      "openSelector": "#apiAddToBasketModalOverlay",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred"
+    },
+    {
+      "id": "surface-P39-alertmodal",
+      "type": "modal",
+      "name": "surface-P39-alertmodal",
+      "pageKey": "P39",
+      "openSelector": "#alertModal",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P39-001",
+      "pageKey": "P39",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "数据要素数据资源-接口003",
+        "strategy": "tag",
+        "sourceElementId": "P39-E006",
+        "boundsHint": {
+          "text": "数据要素数据资源-接口003",
+          "tag": "h1"
+        }
+      },
+      "title": "数据要素数据资源-接口003 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「数据要素数据资源-接口003」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「数据要素数据资源-接口003」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「数据要素数据资源-接口003」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 序号 名称 描述 1 creditCode 统…\n- 错误代码\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P39-E006"
+      },
+      "evidence": [
+        "页面：数据要素数据资源-接口003",
+        "路由：/resource_supermarket_detail_api.html",
+        "页面文本：数据要素数据资源-接口003",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P39-005",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P39-002",
+      "pageKey": "P39",
+      "target": {
+        "selector": "#detail-content-basic table",
+        "fallbackText": "行级操作",
+        "strategy": "data-descendant",
+        "sourceElementId": "P39-E013",
+        "boundsHint": {
+          "text": "行级操作",
+          "tag": "table"
+        }
+      },
+      "title": "行级操作",
+      "contentMarkdown": "### 业务含义\n\n行级操作用于对列表中的单条数据进行查看、编辑、启用、停用、授权、下载或删除等管理动作。\n\n### 操作规则\n\n- 用户点击某一行的操作按钮时，仅影响当前行对应的数据。\n- 高风险操作，例如删除、停用、重置密钥，需要二次确认。\n- 不同状态下可执行操作不同，禁用状态下应隐藏或置灰不可用操作。\n- 权限不足时，应隐藏操作入口或置灰展示。\n\n### 状态与异常\n\n- 操作成功后刷新当前列表或更新当前行状态。\n- 操作失败时保留当前列表状态，并提示失败原因。\n- 高风险操作应记录操作日志。\n\n### 操作流程\n\n```mermaid\nflowchart TD\n  A[选择行记录] --\u003e B[点击行级操作]\n  B --\u003e C{是否高风险}\n  C --\u003e|是| D[二次确认]\n  C --\u003e|否| E[直接执行]\n  D --\u003e E\n  E --\u003e F[刷新列表状态]\n```\n\n### 待确认\n\n- 哪些角色可以执行编辑、删除、启用、停用、授权等操作？\n- 删除后是否允许恢复？\n- 下载或密钥类操作是否需要二次验证？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "table",
+        "row-action",
+        "permission",
+        "risk"
+      ],
+      "dimension": "Table row actions",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P39-E013"
+      },
+      "evidence": [
+        "合并操作：编辑",
+        "页面文本：序号 名称 描述 1 creditCode 统一社会信用代码",
+        "selector：#detail-content-basic table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P39-ROW-GROUP",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P39-003",
+      "pageKey": "P39",
+      "target": {
+        "selector": "div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div:nth-of-type(1) \u003e div:nth-of-type(5) \u003e h4",
+        "fallbackText": "错误代码",
+        "strategy": "path",
+        "sourceElementId": "P39-E015",
+        "boundsHint": {
+          "text": "错误代码",
+          "tag": "h4"
+        }
+      },
+      "title": "错误代码",
+      "contentMarkdown": "### 业务含义\n\n「错误代码」用于告诉用户当前事项所处阶段，并影响页面可执行操作。\n\n### 状态规则\n\n- 不同状态下，页面展示内容和可操作按钮可能不同。\n- 状态变化后，应及时刷新页面或给出明确提示。\n- 用户需要能够理解当前状态下还能做什么。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 空状态：提示暂无数据，并提供下一步操作建议。\n- 失败状态：提示失败原因，并支持重试或返回。\n\n### 状态流转\n\n```mermaid\nstateDiagram-v2\n  state \"默认\" as Default\n  state \"加载中\" as Loading\n  state \"成功\" as Success\n  state \"失败\" as Failed\n  state \"空状态\" as Empty\n  state \"禁用\" as Disabled\n  [*] --\u003e Default\n  Default --\u003e Loading: 发起操作\n  Loading --\u003e Success: 处理完成\n  Loading --\u003e Failed: 处理失败\n  Success --\u003e Default: 刷新或返回\n  Failed --\u003e Loading: 重试\n  Default --\u003e Empty: 无数据\n  Default --\u003e Disabled: 权限或条件不满足\n```\n\n### 待确认\n\n- 当前状态枚举是否完整？\n- 每个状态下的可操作按钮是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "S",
+      "kind": "state",
+      "topics": [
+        "state",
+        "exception"
+      ],
+      "dimension": "State and exception",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P39-E015"
+      },
+      "evidence": [
+        "页面文本：错误代码",
+        "selector：div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div:nth-of-type(1) \u003e div:nth-of-type(5) \u003e h4"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P39-014",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P39-004",
+      "pageKey": "P39",
+      "target": {
+        "selector": "button[onclick=\"openSubmitApplyModal()\"]",
+        "fallbackText": "提交申请",
+        "strategy": "handler",
+        "sourceElementId": "P39-E032",
+        "boundsHint": {
+          "text": "提交申请",
+          "tag": "button"
+        }
+      },
+      "title": "提交申请",
+      "contentMarkdown": "### 业务含义\n\n「提交申请」用于提交当前二级界面中的有效内容，并在成功后同步主页面状态。\n\n### 交互规则\n\n- 用户点击后，系统校验当前界面的必填字段、格式和业务前置条件。\n- 校验通过后执行对应的保存、提交、确认或发布动作。\n- 校验失败时停留在当前界面，并在对应字段或区域提示原因。\n\n### 状态与异常\n\n- 操作完成后：20\n- 处理中：按钮进入 loading 或禁用状态，避免重复触发。\n- 操作成功：关闭二级界面，并刷新主页面相关数据。\n- 操作失败：保留当前输入，并提示用户如何处理。\n\n### 提交流程\n\n```mermaid\nflowchart TD\n  A[点击操作按钮] --\u003e B[校验二级界面内容]\n  B --\u003e C{校验通过}\n  C --\u003e|否| D[提示错误并停留]\n  C --\u003e|是| E[执行对应业务动作]\n  E --\u003e F[关闭界面并刷新]\n```\n\n### 待确认\n\n- 是否需要二次确认？\n- 成功后刷新哪些主页面区域？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "surface",
+        "interaction",
+        "action"
+      ],
+      "dimension": "Surface action",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P39-E032"
+      },
+      "evidence": [
+        "页面文本：提交申请",
+        "selector：button[onclick=\"openSubmitApplyModal()\"]",
+        "二级界面：surface-P39-databasketdrawer",
+        "短暂反馈：20"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P39-031",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P39-databasketdrawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 4
+    },
+    {
+      "id": "ANN-P39-005",
+      "pageKey": "P39",
+      "target": {
+        "selector": "#applyUnit",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P39-E034",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P39-E034"
+      },
+      "evidence": [
+        "selector：#applyUnit",
+        "二级界面：surface-P39-submitapplymodal"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P39-033",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P39-submitapplymodal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 5
+    },
+    {
+      "id": "ANN-P39-006",
+      "pageKey": "P39",
+      "target": {
+        "selector": "#applyContact",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P39-E035",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P39-E035"
+      },
+      "evidence": [
+        "selector：#applyContact",
+        "二级界面：surface-P39-submitapplymodal"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P39-034",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P39-submitapplymodal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 6
+    },
+    {
+      "id": "ANN-P39-007",
+      "pageKey": "P39",
+      "target": {
+        "selector": "#applyPhone",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P39-E036",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P39-E036"
+      },
+      "evidence": [
+        "selector：#applyPhone",
+        "二级界面：surface-P39-submitapplymodal"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P39-035",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P39-submitapplymodal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 7
+    },
+    {
+      "id": "ANN-P39-008",
+      "pageKey": "P39",
+      "target": {
+        "selector": "#apiAvgFrequency",
+        "fallbackText": "请输入",
+        "strategy": "id",
+        "sourceElementId": "P39-E042",
+        "boundsHint": {
+          "text": "请输入",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「请输入」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P39-E042"
+      },
+      "evidence": [
+        "页面文本：请输入",
+        "selector：#apiAvgFrequency",
+        "二级界面：surface-P39-apiaddtobasketmodaloverlay"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P39-040",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P39-apiaddtobasketmodaloverlay",
+      "displayWhenClosed": "sidebar-only",
+      "order": 8
+    },
+    {
+      "id": "ANN-P39-009",
+      "pageKey": "P39",
+      "target": {
+        "selector": "button[onclick=\"closeApiAddToBasketModal()\"]",
+        "fallbackText": "取消",
+        "strategy": "handler",
+        "sourceElementId": "P39-E044",
+        "boundsHint": {
+          "text": "取消",
+          "tag": "button"
+        }
+      },
+      "title": "取消",
+      "contentMarkdown": "### 业务含义\n\n「取消」用于关闭当前二级界面并返回主页面，不提交或保存当前内容。\n\n### 交互规则\n\n- 用户点击后关闭当前抽屉、弹窗或确认框。\n- 关闭后主页面保持原有数据和筛选状态。\n- 如果界面内存在未保存内容，是否提示确认应由业务规则决定。\n\n### 状态与异常\n\n- 关闭成功：二级界面消失，焦点回到触发入口或主页面。\n- 存在未保存内容：可提示用户确认放弃修改。\n\n### 待确认\n\n- 关闭未保存内容时是否需要二次确认？\n- 关闭后焦点是否需要回到打开入口？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "surface",
+        "interaction",
+        "action"
+      ],
+      "dimension": "Surface action",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P39-E044"
+      },
+      "evidence": [
+        "页面文本：取消",
+        "selector：button[onclick=\"closeApiAddToBasketModal()\"]",
+        "二级界面：surface-P39-apiaddtobasketmodaloverlay"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P39-042",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P39-apiaddtobasketmodaloverlay",
+      "displayWhenClosed": "sidebar-only",
+      "order": 9
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
 </body>
 </html>

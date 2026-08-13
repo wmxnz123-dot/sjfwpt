@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 异议受理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .tab-active { color: #1c7ffd; border-bottom: 2px solid #1c7ffd; }
+        .tab-inactive { color: #606266; border-bottom: 2px solid transparent; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>admin</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden relative bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <div class="h-[52px] flex items-center px-6 text-[#606266] shrink-0 bg-white border-b border-gray-100 text-[14px]">
+                <span>异议中心</span>
+                <span class="mx-2">/</span>
+                <span>异议管理</span>
+                <span class="mx-2">/</span>
+                <span class="font-medium text-[#303133]">异议受理</span>
+            </div>
+
+            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+                <div class="flex border-b border-gray-200 bg-white px-6 pt-2 rounded-t-lg">
+                    <div id="tab-pending" class="pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]" onclick="switchTab('pending')">待受理</div>
+                    <div id="tab-approved" class="pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]" onclick="switchTab('approved')">已受理</div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 shrink-0">
+                    <div class="flex items-center gap-6 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">异议标题：</label>
+                            <input type="text" id="search-title" placeholder="请输入" class="w-[280px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">异议对象：</label>
+                            <select id="search-object" class="w-[200px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                <option>请选择</option>
+                                <option>资源申请</option>
+                                <option>其他</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-3 ml-auto">
+                            <button onclick="resetSearch()" class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-right text-xs"></i>
+                                重置
+                            </button>
+                            <button onclick="doSearch()" class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-search text-xs"></i>
+                                查询
+                            </button>
+                            <button class="w-9 h-9 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center justify-center" title="展开">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pending-list" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)]">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h2 class="text-[16px] font-bold text-[#303133]">异议待受理列表</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="刷新">
+                                <i class="fa-solid fa-rotate-right text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="列设置">
+                                <i class="fa-solid fa-table-columns text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="设置">
+                                <i class="fa-solid fa-gear text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">异议标题</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">异议对象</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">服务名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">异议提出单位</th>
+                                    <th class="px-5 py-3 text-right font-medium text-[#606266]">创建时间</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">测试提出方查询条件</td>
+                                    <td class="px-5 py-4 text-[#303133]">资源申请</td>
+                                    <td class="px-5 py-4 text-[#303133]">接口改文件-上传文件有问题</td>
+                                    <td class="px-5 py-4 text-[#303133]">xx区民政局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-08-10 15:18:56</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" onclick="openAcceptDrawer(1)" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">受理</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">异议提出给县级修改了</td>
+                                    <td class="px-5 py-4 text-[#303133]">其他</td>
+                                    <td class="px-5 py-4 text-[#303133]">--</td>
+                                    <td class="px-5 py-4 text-[#303133]">xx区档案馆</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-26 16:49:53</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" onclick="openAcceptDrawer(2)" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">受理</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">异议待受理列表没有返回创建时间</td>
+                                    <td class="px-5 py-4 text-[#303133]">资源申请</td>
+                                    <td class="px-5 py-4 text-[#303133]">低保人员信息接口（统建）</td>
+                                    <td class="px-5 py-4 text-[#303133]">xx市公安局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-04-07 14:45:45</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" onclick="openAcceptDrawer(3)" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">受理</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between">
+                        <div class="text-sm text-[#606266]">
+                            共 <span class="font-medium">3</span> 条
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select class="h-8 px-2 border border-gray-200 rounded text-[#606266] text-sm outline-none focus:border-[#1c7ffd] bg-white">
+                                <option>10条/页</option>
+                                <option>20条/页</option>
+                                <option>50条/页</option>
+                            </select>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-left text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-[#1c7ffd] bg-[#1c7ffd] text-white rounded">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-right text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="approved-list" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] hidden">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h2 class="text-[16px] font-bold text-[#303133]">异议已受理列表</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="刷新">
+                                <i class="fa-solid fa-rotate-right text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="列设置">
+                                <i class="fa-solid fa-table-columns text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="设置">
+                                <i class="fa-solid fa-gear text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">异议标题</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">异议对象</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">服务名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">异议提出单位</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">受理结果</th>
+                                    <th class="px-5 py-3 text-right font-medium text-[#606266]">受理时间</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">测试异议已受理</td>
+                                    <td class="px-5 py-4 text-[#303133]">资源申请</td>
+                                    <td class="px-5 py-4 text-[#303133]">测试服务</td>
+                                    <td class="px-5 py-4 text-[#303133]">xx区民政局</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <span class="flex items-center justify-center gap-1">
+                                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                            <span class="text-green-600 text-sm">已通过</span>
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-08-11 10:20:30</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">查看</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between">
+                        <div class="text-sm text-[#606266]">
+                            共 <span class="font-medium">1</span> 条
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select class="h-8 px-2 border border-gray-200 rounded text-[#606266] text-sm outline-none focus:border-[#1c7ffd] bg-white">
+                                <option>10条/页</option>
+                                <option>20条/页</option>
+                                <option>50条/页</option>
+                            </select>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-left text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-[#1c7ffd] bg-[#1c7ffd] text-white rounded">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-right text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="accept-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeAcceptDrawer()"></div>
+    <div id="accept-drawer" class="fixed top-0 right-0 bottom-0 w-[800px] bg-white z-[90] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="h-14 flex items-center justify-between px-5 border-b border-gray-100 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <i class="fa-solid fa-file-signature text-[#1c7ffd] text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-base text-[#303133]">异议受理</h3>
+                </div>
+            </div>
+            <button onclick="closeAcceptDrawer()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto">
+            <div id="smart-audit-tip" class="mx-5 mt-4 p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div id="smart-audit-icon" class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <i class="fa-solid fa-spinner fa-spin text-green-500 text-sm"></i>
+                    </div>
+                    <div>
+                        <span id="smart-audit-status" class="text-sm font-medium text-green-700">正在智能审核中...</span>
+                        <p id="smart-audit-desc" class="text-xs text-green-600 mt-0.5">AI正在分析异议数据，请稍候</p>
+                    </div>
+                </div>
+                <button id="smart-audit-view-btn" onclick="openSmartAudit()" class="text-sm text-green-600 hover:text-green-700 font-medium">
+                    查看 <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+
+            <div class="px-5 py-4">
+                <div class="font-medium text-[#303133] mb-4">异议基本信息</div>
+                <div class="space-y-3">
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">异议标题：</span>
+                        <span id="info-title" class="ml-4 flex-1 text-[#303133]">测试提出方查询条件</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">异议对象：</span>
+                        <span id="info-object" class="ml-4 flex-1 text-[#303133]">资源申请</span>
+                        <span class="w-[180px] text-right text-[#606266]">服务名称：</span>
+                        <span id="info-service" class="ml-4 text-[#303133]">接口改文件-上传文件有问题</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">异议提出单位：</span>
+                        <span id="info-dept" class="ml-4 flex-1 text-[#303133]">xx区民政局</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">联系人：</span>
+                        <span id="info-contact" class="ml-4 flex-1 text-[#303133]">张三</span>
+                        <span class="w-[180px] text-right text-[#606266]">联系电话：</span>
+                        <span id="info-phone" class="ml-4 text-[#303133]">13800138000</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">提出时间：</span>
+                        <span id="info-create-time" class="ml-4 text-[#303133]">2023-08-10 15:18:56</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-5 py-4 border-t border-gray-100">
+                <div class="font-medium text-[#303133] mb-4">异议内容描述</div>
+                <div id="info-content" class="text-[#606266] text-sm leading-relaxed">
+                    在使用接口改文件-上传文件服务过程中，发现上传文件功能存在问题，上传后文件无法正常解析，影响业务办理。
+                    希望能够尽快排查并修复该问题，确保服务正常使用。
+                </div>
+            </div>
+
+            <div class="px-5 py-4 border-t border-gray-100">
+                <div class="font-medium text-[#303133] mb-4">附件列表</div>
+                <div class="text-center py-6 text-[#909399] text-sm">
+                    <i class="fa-regular fa-file text-3xl mb-2 opacity-50"></i>
+                    <p>暂无附件</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-end shrink-0 bg-white">
+            <div class="flex items-center gap-3">
+                <button onclick="closeAcceptDrawer()" class="px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    驳回
+                </button>
+                <button class="px-5 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors">
+                    受理通过
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="smart-audit-overlay" class="fixed inset-0 bg-black/30 z-[100] opacity-0 invisible transition-all duration-300" onclick="closeSmartAudit()"></div>
+    <div id="smart-audit-drawer" class="fixed top-0 right-0 bottom-0 w-[500px] bg-white z-[110] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="h-14 flex items-center justify-between px-5 border-b border-gray-100 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <i class="fa-solid fa-robot text-[#1c7ffd] text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-base text-[#303133]">智能审核</h3>
+                    <p class="text-[#909399] text-xs">AI辅助审核分析</p>
+                </div>
+            </div>
+            <button onclick="closeSmartAudit()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <div id="smart-audit-progress" class="flex-1 p-5 flex flex-col">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-spinner fa-spin text-3xl text-[#1c7ffd]"></i>
+                </div>
+                <h4 class="font-semibold text-lg text-[#303133]">正在进行智能审核...</h4>
+                <p class="text-[#606266] text-sm mt-1">AI正在分析异议数据，请稍候</p>
+            </div>
+
+            <div class="flex-1 space-y-4">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">异议完整性核查</span>
+                        <span id="step-1-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-1-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">异议类型识别</span>
+                        <span id="step-2-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-2-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">数据相关性分析</span>
+                        <span id="step-3-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-3-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">历史异议比对</span>
+                        <span id="step-4-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-4-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button onclick="closeSmartAudit()" class="w-full px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+            </div>
+        </div>
+
+        <div id="smart-audit-result" class="flex-1 overflow-y-auto p-5 hidden">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-check text-3xl text-green-500"></i>
+                </div>
+                <h4 class="font-semibold text-lg text-[#303133]">智能审核完成</h4>
+            </div>
+
+            <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 mb-5">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="text-[#606266] font-medium">检查 4 项，全部通过</span>
+                    </div>
+                    <span class="text-sm text-green-600 font-medium">建议受理</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-3 mb-5">
+                <div class="bg-gray-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-[#303133]">4</div>
+                    <div class="text-xs text-[#909399]">检查项总数</div>
+                </div>
+                <div class="bg-green-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-green-600">4</div>
+                    <div class="text-xs text-green-600/70">通过项</div>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-yellow-600">0</div>
+                    <div class="text-xs text-yellow-600/70">注意项</div>
+                </div>
+                <div class="bg-red-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-red-500">0</div>
+                    <div class="text-xs text-red-500/70">风险项</div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">异议完整性核查</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266]">异议信息完整，所有必填字段均已填写，异议描述清晰明确。</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">异议类型识别</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266]">异议类型识别准确，属于资源申请类异议，分类正确。</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">数据相关性分析</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266]">异议内容与对应服务高度相关，问题描述具体，具有可核查性。</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">历史异议比对</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266]">未发现重复异议，该异议为首次提出，不存在重复提交情况。</p>
+                </div>
+            </div>
+
+            <div class="mt-5 bg-blue-50 rounded-lg p-4">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-lightbulb text-blue-500"></i>
+                    <span class="font-medium text-[#303133]">智能建议</span>
+                </div>
+                <ul class="text-sm text-[#606266] space-y-2">
+                    <li class="flex items-start gap-2">
+                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 shrink-0"></span>
+                        <span>建议按照正常流程进行受理审批</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 shrink-0"></span>
+                        <span>建议及时跟进异议处理进度，确保按时反馈</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mt-5">
+                <button onclick="closeSmartAudit()" class="w-full px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const objectionData = {
+            1: {
+                title: '测试提出方查询条件',
+                object: '资源申请',
+                service: '接口改文件-上传文件有问题',
+                dept: 'xx区民政局',
+                contact: '张三',
+                phone: '13800138000',
+                createTime: '2023-08-10 15:18:56',
+                content: '在使用接口改文件-上传文件服务过程中，发现上传文件功能存在问题，上传后文件无法正常解析，影响业务办理。希望能够尽快排查并修复该问题，确保服务正常使用。'
+            },
+            2: {
+                title: '异议提出给县级修改了',
+                object: '其他',
+                service: '--',
+                dept: 'xx区档案馆',
+                contact: '李四',
+                phone: '13900139000',
+                createTime: '2023-07-26 16:49:53',
+                content: '关于县级相关异议处理流程的修改建议，希望能够优化异议提出和处理的流程，提高工作效率。'
+            },
+            3: {
+                title: '异议待受理列表没有返回创建时间',
+                object: '资源申请',
+                service: '低保人员信息接口（统建）',
+                dept: 'xx市公安局',
+                contact: '王五',
+                phone: '13700137000',
+                createTime: '2023-04-07 14:45:45',
+                content: '在使用低保人员信息接口过程中，发现异议待受理列表没有返回创建时间字段，不方便进行时间筛选和排序。希望能够补充该字段。'
+            }
+        };
+
+        function switchTab(tab) {
+            document.getElementById('tab-pending').className = tab === 'pending' ? 'pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]' : 'pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]';
+            document.getElementById('tab-approved').className = tab === 'approved' ? 'pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]' : 'pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]';
+            document.getElementById('pending-list').className = tab === 'pending' ? 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)]' : 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] hidden';
+            document.getElementById('approved-list').className = tab === 'approved' ? 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)]' : 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] hidden';
+        }
+
+        function resetSearch() {
+            document.getElementById('search-title').value = '';
+            document.getElementById('search-object').value = '请选择';
+        }
+
+        function doSearch() {
+            alert('搜索功能');
+        }
+
+        function openAcceptDrawer(id) {
+            const data = objectionData[id];
+            if (data) {
+                document.getElementById('info-title').textContent = data.title;
+                document.getElementById('info-object').textContent = data.object;
+                document.getElementById('info-service').textContent = data.service;
+                document.getElementById('info-dept').textContent = data.dept;
+                document.getElementById('info-contact').textContent = data.contact;
+                document.getElementById('info-phone').textContent = data.phone;
+                document.getElementById('info-create-time').textContent = data.createTime;
+                document.getElementById('info-content').textContent = data.content;
+            }
+
+            document.getElementById('accept-drawer').classList.remove('translate-x-full');
+            document.getElementById('accept-overlay').classList.remove('opacity-0', 'invisible');
+            document.body.style.overflow = 'hidden';
+
+            const tip = document.getElementById('smart-audit-tip');
+            tip.className = 'mx-5 mt-4 p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between';
+            document.getElementById('smart-audit-icon').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-green-500 text-sm"></i>';
+            document.getElementById('smart-audit-status').textContent = '正在智能审核中...';
+            document.getElementById('smart-audit-desc').textContent = 'AI正在分析异议数据，请稍候';
+
+            setTimeout(performSmartAudit, 500);
+        }
+
+        function closeAcceptDrawer() {
+            document.getElementById('accept-drawer').classList.add('translate-x-full');
+            document.getElementById('accept-overlay').classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+        }
+
+        function openSmartAudit() {
+            document.getElementById('smart-audit-drawer').classList.remove('translate-x-full');
+            document.getElementById('smart-audit-overlay').classList.remove('opacity-0', 'invisible');
+            document.body.style.overflow = 'hidden';
+
+            document.getElementById('smart-audit-progress').classList.remove('hidden');
+            document.getElementById('smart-audit-result').classList.add('hidden');
+
+            document.getElementById('step-1-bar').style.width = '0%';
+            document.getElementById('step-1-percent').textContent = '0%';
+            document.getElementById('step-2-bar').style.width = '0%';
+            document.getElementById('step-2-percent').textContent = '0%';
+            document.getElementById('step-3-bar').style.width = '0%';
+            document.getElementById('step-3-percent').textContent = '0%';
+            document.getElementById('step-4-bar').style.width = '0%';
+            document.getElementById('step-4-percent').textContent = '0%';
+
+            startSmartAudit();
+        }
+
+        function closeSmartAudit() {
+            document.getElementById('smart-audit-drawer').classList.add('translate-x-full');
+            document.getElementById('smart-audit-overlay').classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+        }
+
+        function performSmartAudit() {
+            let step = 1;
+            const totalSteps = 4;
+
+            function animateStep() {
+                if (step > totalSteps) {
+                    setTimeout(() => {
+                        const tip = document.getElementById('smart-audit-tip');
+                        tip.className = 'mx-5 mt-4 p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between';
+                        document.getElementById('smart-audit-icon').innerHTML = '<i class="fa-solid fa-check-circle text-green-500 text-sm"></i>';
+                        document.getElementById('smart-audit-status').innerHTML = '智能审核完成';
+                        document.getElementById('smart-audit-desc').textContent = '检查 4 项，全部通过，建议受理';
+                    }, 300);
+                    return;
+                }
+
+                let progress = 0;
+                const stepBar = document.getElementById('step-' + step + '-bar');
+                const stepPercent = document.getElementById('step-' + step + '-percent');
+
+                const interval = setInterval(() => {
+                    progress += 2;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        step++;
+                        setTimeout(animateStep, 200);
+                    }
+                    stepBar.style.width = progress + '%';
+                    stepPercent.textContent = progress + '%';
+                }, 15);
+            }
+
+            document.getElementById('step-1-bar').style.width = '0%';
+            document.getElementById('step-1-percent').textContent = '0%';
+            document.getElementById('step-2-bar').style.width = '0%';
+            document.getElementById('step-2-percent').textContent = '0%';
+            document.getElementById('step-3-bar').style.width = '0%';
+            document.getElementById('step-3-percent').textContent = '0%';
+            document.getElementById('step-4-bar').style.width = '0%';
+            document.getElementById('step-4-percent').textContent = '0%';
+
+            animateStep();
+        }
+
+        function startSmartAudit() {
+            let step = 1;
+            const totalSteps = 4;
+
+            function animateStep() {
+                if (step > totalSteps) {
+                    setTimeout(() => {
+                        document.getElementById('smart-audit-progress').classList.add('hidden');
+                        document.getElementById('smart-audit-result').classList.remove('hidden');
+                    }, 500);
+                    return;
+                }
+
+                let progress = 0;
+                const stepBar = document.getElementById('step-' + step + '-bar');
+                const stepPercent = document.getElementById('step-' + step + '-percent');
+
+                const interval = setInterval(() => {
+                    progress += 2;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        step++;
+                        setTimeout(animateStep, 300);
+                    }
+                    stepBar.style.width = progress + '%';
+                    stepPercent.textContent = progress + '%';
+                }, 20);
+            }
+
+            animateStep();
+        }
+    </script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P25",
+      "title": "数据服务平台 - 异议受理",
+      "path": "objection_accept.html",
+      "route": "/objection_accept.html"
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P25-accept-drawer",
+      "type": "drawer",
+      "name": "异议受理",
+      "pageKey": "P25",
+      "openSelector": "#accept-drawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "异议受理"
+    },
+    {
+      "id": "surface-P25-smart-audit-drawer",
+      "type": "drawer",
+      "name": "智能审核",
+      "pageKey": "P25",
+      "openSelector": "#smart-audit-drawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "智能审核"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P25-001",
+      "pageKey": "P25",
+      "target": {
+        "selector": "main \u003e div:nth-of-type(3) \u003e div:nth-of-type(3) \u003e div:nth-of-type(1) \u003e h2",
+        "fallbackText": "异议待受理列表",
+        "strategy": "path",
+        "sourceElementId": "P25-E013",
+        "boundsHint": {
+          "text": "异议待受理列表",
+          "tag": "h2"
+        }
+      },
+      "title": "异议待受理列表 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「异议待受理列表」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「异议待受理列表」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「异议待受理列表」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 请输入\n- 请选择 资源申请 其他\n- 10条/页 20条/页 50条/页\n- 异议标题 异议对象 服务名称 异议提出单位 创…\n- 异议标题 异议对象 服务名称 异议提出单位 受…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P25-E013"
+      },
+      "evidence": [
+        "页面：异议待受理列表",
+        "路由：/objection_accept.html",
+        "页面文本：异议待受理列表",
+        "selector：main \u003e div:nth-of-type(3) \u003e div:nth-of-type(3) \u003e div:nth-of-type(1) \u003e h2"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P25-012",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P25-002",
+      "pageKey": "P25",
+      "target": {
+        "selector": "#pending-list table",
+        "fallbackText": "异议标题 异议对象 服务名称 异议提出单位 创建时间 操作 测试提出方查询条件 资源申请 接口改文件-上传文件有问题 xx区民政局 2023-08-10 15:18:56 受理 异议提出给县级修改了 其他 -- xx区档案馆 2023-07-26 16:49:53 受理 异议待受理列表没有返回创建时间 资源申请 低保人",
+        "strategy": "data-descendant",
+        "sourceElementId": "P25-E017",
+        "boundsHint": {
+          "text": "异议标题 异议对象 服务名称 异议提出单位 创建时间 操作 测试提出方查询条件 资源申请 接口改文件-上传文件有问题 xx区民政局 2023-08-10 15:18:56 受理 异议提出给县级修改了 其他 -- xx区档案馆 2023-07-26 16:49:53 受理 异议待受理列表没有返回创建时间 资源申请 低保人",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「异议标题 异议对象 服务名称 异议提出单位 创建时间 操作 测…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P25-E017"
+      },
+      "evidence": [
+        "页面文本：异议标题 异议对象 服务名称 异议提出单位 创建时间 操作 测试提出方查询条件 资源申请 接口改文件-上传文件有问题 xx区民政局 2023-08-10 15:",
+        "selector：#pending-list table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P25-016",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P25-003",
+      "pageKey": "P25",
+      "target": {
+        "selector": "#approved-list table",
+        "fallbackText": "异议标题 异议对象 服务名称 异议提出单位 受理结果 受理时间 操作 测试异议已受理 资源申请 测试服务 xx区民政局 已通过 2023-08-11 10:20:30 查看",
+        "strategy": "data-descendant",
+        "sourceElementId": "P25-E029",
+        "boundsHint": {
+          "text": "异议标题 异议对象 服务名称 异议提出单位 受理结果 受理时间 操作 测试异议已受理 资源申请 测试服务 xx区民政局 已通过 2023-08-11 10:20:30 查看",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「异议标题 异议对象 服务名称 异议提出单位 受理结果 受理时间…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P25-E029"
+      },
+      "evidence": [
+        "页面文本：异议标题 异议对象 服务名称 异议提出单位 受理结果 受理时间 操作 测试异议已受理 资源申请 测试服务 xx区民政局 已通过 2023-08-11 10:20",
+        "selector：#approved-list table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P25-028",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P25-004",
+      "pageKey": "P25",
+      "target": {
+        "selector": "#accept-overlay",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P25-E035",
+        "boundsHint": {
+          "text": "",
+          "tag": "div"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「跳转」用于连接当前页面与下一步业务流程。\n\n### 跳转规则\n\n- 用户完成当前操作后进入目标页面。\n- 跳转时需要带入当前业务对象的标识信息。\n- 返回时应保留用户上一次的筛选或编辑状态。\n\n### 跳转流程\n\n```mermaid\nflowchart LR\n  A[当前页面] --\u003e B[触发跳转]\n  B --\u003e C{校验通过}\n  C --\u003e|是| D[目标页面]\n  C --\u003e|否| E[停留并提示]\n  D --\u003e F[返回时保留上下文]\n```\n\n### 分支情况\n\n- 成功：进入目标页面。\n- 失败：停留当前页面并提示原因。\n- 权限不足：提示无权限或隐藏入口。\n\n### 待确认\n\n- 跳转目标页面是否已明确？\n- 是否需要区分不同角色的跳转路径？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "J",
+      "kind": "flow",
+      "topics": [
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Flow and navigation",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P25-E035"
+      },
+      "evidence": [
+        "selector：#accept-overlay"
+      ],
+      "nextActions": [
+        "触发 `该元素` 后需要确认目标页面、返回路径或二级承载面。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P25-034",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 4
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

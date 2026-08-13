@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prototype-annotator.local/schemas/annotation-strategy.schema.json",
+  "title": "Prototype Annotator annotation strategy",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["productType", "enabledAnnotationTypes"],
+  "properties": {
+    "productType": {
+      "type": "string"
+    },
+    "enabledAnnotationTypes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/annotationType"
+      }
+    },
+    "priority": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/annotationType"
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "annotationType": {
+      "type": "string",
+      "enum": [
+        "P",
+        "E",
+        "C",
+        "A",
+        "J",
+        "S",
+        "R",
+        "AI",
+        "PROMPT",
+        "CTX",
+        "HITL",
+        "FALLBACK",
+        "PERM",
+        "WF",
+        "DATA",
+        "TRACK",
+        "CV",
+        "REC",
+        "METRIC",
+        "SOURCE",
+        "FILTER",
+        "REFRESH",
+        "DRILL",
+        "PLAN",
+        "ROLE",
+        "TENANT",
+        "CONTENT",
+        "PUBLISH",
+        "MOD"
+      ]
+    }
+  }
+}

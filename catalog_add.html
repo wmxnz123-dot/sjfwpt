@@ -1,0 +1,2844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 目录编制</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .step-active { background: #1c7ffd; color: white; }
+        .step-inactive { background: #fff; color: #909399; border: 1px solid #dcdfe6; }
+        .gradient-bg { background: linear-gradient(135deg, #1c7ffd 0%, #0d6efd 100%); }
+        .gradient-bg-green { background: linear-gradient(135deg, #00d9a6 0%, #00b894 100%); }
+        /* ===== 智能编目抽屉（对齐统计中心智能助手抽屉样式） ===== */
+        .ai-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .pulse-animation { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        .agent-active { border-color: #667eea; background-color: #f3f0ff; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <!-- 顶部导航栏 -->
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="flex-1 flex overflow-hidden">
+        <!-- 左侧导航 -->
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <!-- 右侧内容区 -->
+        <main class="flex-1 flex flex-col overflow-hidden relative">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <div class="px-6 py-3 bg-white border-b border-gray-100 flex items-center shrink-0">
+                <a href="catalog_manage.html?nav=resource-catalog" class="text-[#1c7ffd] hover:opacity-80 transition-colors flex items-center gap-1 font-medium text-[15px]">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> 返回列表
+                </a>
+            </div>
+
+            <div id="content-scroll" class="flex-1 p-6 pb-[88px] overflow-y-auto relative">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                    <!-- 步骤导航 -->
+                    <div class="py-8 px-10">
+                        <div class="flex items-center justify-between relative">
+                            <!-- 连线 -->
+                            <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2" id="step-progress-bar"></div>
+                            
+                            <!-- 步骤1 -->
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center font-bold text-base transition-all" id="step-1-icon">1</div>
+                                <span class="mt-3 font-medium text-[#303133] transition-colors" id="step-1-text">数据资源目录维护</span>
+                            </div>
+                            
+                            <!-- 步骤2 -->
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-base transition-all" id="step-2-icon">2</div>
+                                <span class="mt-3 font-medium text-[#909399] transition-colors" id="step-2-text">信息项维护</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="step-1-content" class="px-10 pb-8 space-y-8">
+                        <!-- 基本信息 -->
+                        <div>
+                            <h3 class="text-[16px] font-bold text-[#303133] mb-6 flex items-center">
+                                <span class="w-1 h-4 bg-[#1c7ffd] rounded-full mr-2"></span>
+                                基本信息
+                            </h3>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>数据资源目录名称
+                                    </label>
+                                    <input type="text" id="catalog-name" placeholder="以概况政务数据资源目录内容的标题和“信息”字样组成。建议包含数据资源目录覆盖范围。" 
+                                        class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>数据资源目录摘要
+                                    </label>
+                                    <textarea id="catalog-summary" rows="3" placeholder="对资源内容进行概要说明的文字。与目录名称相对应。包含挂载的数据资源目录的起始时间。" 
+                                        class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all resize-none"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>所属领域
+                                    </label>
+                                    <select id="domain" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                        <option>请选择</option>
+                                        <option>经济建设</option>
+                                        <option>教育科技</option>
+                                        <option>社会保障</option>
+                                        <option>医疗卫生</option>
+                                        <option>城市建设</option>
+                                        <option>公共安全</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">主题资源分类</label>
+                                    <select id="theme-category" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                        <option>请选择</option>
+                                        <option>人口基础信息</option>
+                                        <option>法人基础信息</option>
+                                        <option>空间地理基础信息</option>
+                                        <option>社会信用基础信息</option>
+                                        <option>电子证照基础信息</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-3">
+                                        <span class="text-red-500 mr-1">*</span>是否包含电子证照
+                                    </label>
+                                    <div class="flex items-center gap-6">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="has-license" value="是" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">是</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="has-license" value="否" checked class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">否</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>应用场景
+                                    </label>
+                                    <select id="application-scene" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                        <option>请选择</option>
+                                        <option>政务服务</option>
+                                        <option>市场监管</option>
+                                        <option>公共安全</option>
+                                        <option>城市治理</option>
+                                        <option>社会服务</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>来源系统
+                                    </label>
+                                    <div class="flex items-center">
+                                        <select id="source-system" class="flex-1 h-[36px] px-3 border border-gray-200 rounded-l-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                            <option>请选择</option>
+                                            <option>政务数据平台</option>
+                                            <option>工商登记系统</option>
+                                            <option>税务管理系统</option>
+                                            <option>公安人口系统</option>
+                                        </select>
+                                        <button class="w-10 h-[36px] border border-l-0 border-gray-200 rounded-r-md text-[#1c7ffd] hover:bg-blue-50 transition-colors">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">数据所属事项名称</label>
+                                    <select id="matter-name" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                        <option>请选择</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>业务更新周期
+                                    </label>
+                                    <select id="business-cycle" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                        <option>请选择</option>
+                                        <option>实时</option>
+                                        <option>每日</option>
+                                        <option>每周</option>
+                                        <option>每月</option>
+                                        <option>每季度</option>
+                                        <option>每年</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>数据更新周期
+                                    </label>
+                                    <select id="data-cycle" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                        <option>请选择</option>
+                                        <option>实时</option>
+                                        <option>每日</option>
+                                        <option>每周</option>
+                                        <option>每月</option>
+                                        <option>每季度</option>
+                                        <option>每年</option>
+                                    </select>
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-[#606266] font-medium mb-2">备注</label>
+                                    <textarea id="remark" rows="2" placeholder="其他需说明的相关信息。" 
+                                        class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all resize-none"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 数据资源目录格式 -->
+                        <div>
+                            <h3 class="text-[16px] font-bold text-[#303133] mb-6 flex items-center">
+                                <span class="w-1 h-4 bg-[#1c7ffd] rounded-full mr-2"></span>
+                                数据资源目录格式
+                            </h3>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>数据资源目录格式分类
+                                    </label>
+                                    <select id="format-category" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                        <option>请选择</option>
+                                        <option>数据库</option>
+                                        <option>文件</option>
+                                        <option>API</option>
+                                        <option>流媒体</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>数据资源目录格式类型
+                                    </label>
+                                    <select id="format-type" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                        <option>请选择</option>
+                                        <option>MySQL</option>
+                                        <option>PostgreSQL</option>
+                                        <option>SQL Server</option>
+                                        <option>CSV</option>
+                                        <option>JSON</option>
+                                        <option>REST API</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 共享属性 -->
+                        <div>
+                            <h3 class="text-[16px] font-bold text-[#303133] mb-6 flex items-center">
+                                <span class="w-1 h-4 bg-[#1c7ffd] rounded-full mr-2"></span>
+                                共享属性
+                            </h3>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-3">
+                                        <span class="text-red-500 mr-1">*</span>数据资源目录共享类型
+                                    </label>
+                                    <div class="flex items-center gap-6">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="share-type" value="无条件共享" checked class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">无条件共享</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="share-type" value="有条件共享" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">有条件共享</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="share-type" value="不予共享" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">不予共享</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <label class="block text-[#606266] font-medium mb-2">
+                                    <span class="text-red-500 mr-1">*</span>数据资源目录共享条件
+                                </label>
+                                <textarea id="share-condition" rows="3" placeholder="对无条件共享的政务目录，标明使用要求，包括作为行政依据、工作参考，用于数据校核、业务协同等。" 
+                                    class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all resize-none"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 开放属性 -->
+                        <div>
+                            <h3 class="text-[16px] font-bold text-[#303133] mb-6 flex items-center">
+                                <span class="w-1 h-4 bg-[#1c7ffd] rounded-full mr-2"></span>
+                                开放属性
+                            </h3>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-3">
+                                        <span class="text-red-500 mr-1">*</span>数据资源目录开放类型
+                                    </label>
+                                    <div class="flex items-center gap-6">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="open-type" value="无条件开放" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">无条件开放</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="open-type" value="有条件开放" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">有条件开放</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="open-type" value="不予开放" checked class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">不予开放</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-3">
+                                        <span class="text-red-500 mr-1">*</span>是否通过隐私计算提供
+                                    </label>
+                                    <div class="flex items-center gap-6">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="privacy-compute" value="是" class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">是</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" name="privacy-compute" value="否" checked class="text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                                            <span class="text-[#606266]">否</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 数据资源目录提供方信息 -->
+                        <div>
+                            <h3 class="text-[16px] font-bold text-[#303133] mb-6 flex items-center">
+                                <span class="w-1 h-4 bg-[#1c7ffd] rounded-full mr-2"></span>
+                                数据资源目录提供方信息
+                            </h3>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>目录提供方
+                                    </label>
+                                    <input type="text" id="provider" value="大数据局" readonly 
+                                        class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none bg-gray-50">
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">提供方内设机构</label>
+                                    <input type="text" id="provider-dept" placeholder="请输入" 
+                                        class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>联系人
+                                    </label>
+                                    <div class="flex items-center">
+                                        <input type="text" id="contact" value="潍坊市大数据局" 
+                                            class="flex-1 h-[36px] px-3 border border-gray-200 rounded-l-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                                        <button class="w-10 h-[36px] border border-l-0 border-gray-200 rounded-r-md text-[#909399] hover:text-red-500 hover:bg-red-50 transition-colors">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[#606266] font-medium mb-2">
+                                        <span class="text-red-500 mr-1">*</span>联系电话
+                                    </label>
+                                    <div class="flex items-center">
+                                        <input type="text" id="contact-phone" value="15589779987" 
+                                            class="flex-1 h-[36px] px-3 border border-gray-200 rounded-l-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                                        <button class="w-10 h-[36px] border border-l-0 border-gray-200 rounded-r-md text-[#909399] hover:text-red-500 hover:bg-red-50 transition-colors">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步骤2：信息项维护 -->
+                    <div id="step-2-content" class="px-10 pb-8 space-y-6 hidden">
+                        <!-- 操作按钮区 -->
+                        <div class="flex justify-end items-center gap-3">
+                            <button class="text-gray-300 text-sm flex items-center gap-1 cursor-not-allowed" disabled>
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> 快速填充
+                            </button>
+                            <button class="px-4 py-2 bg-gray-200 text-gray-400 rounded-md text-sm cursor-not-allowed" disabled>
+                                <i class="fa-solid fa-plus text-xs"></i> 添加信息项
+                            </button>
+                            <button onclick="openSmartFillModal()" class="px-4 py-2 bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] text-white rounded-md text-sm hover:opacity-90 transition-opacity flex items-center gap-1">
+                                <i class="fa-solid fa-brain"></i> 智能添加
+                            </button>
+                            <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-trash text-xs"></i> 批量删除
+                            </button>
+                        </div>
+
+                        <!-- 信息项表格 -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-center text-[13px] text-[#606266] border-collapse">
+                                <thead class="bg-[#f8f8f9] text-[#909399] font-medium sticky top-0">
+                                    <tr>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100 w-10">
+                                            <input type="checkbox" class="w-4 h-4 text-[#1c7ffd] rounded">
+                                        </th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100 w-16">序号</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">信息项名称</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">共享类型</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">共享条件</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">开放类型</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">开放条件</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">是否开放脱敏</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">脱敏规则</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">信息项类型</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">信息项长度</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">敏感级别</th>
+                                        <th class="py-3 px-3 font-medium border-b border-gray-100">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="info-items-body">
+                                    <tr>
+                                        <td colspan="13" class="py-10 text-[#909399]">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                                <span>暂无数据，请添加信息项或使用快速填充</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 h-[52px] px-6 flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                <button class="px-6 py-1.5 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-sm bg-white">暂存</button>
+                <button id="btn-prev" onclick="goToStep(1)" class="px-6 py-1.5 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-sm bg-white hidden">上一步</button>
+                <button id="btn-next" onclick="goToStep(2)" class="px-6 py-1.5 bg-[#1c7ffd] text-white rounded hover:bg-blue-500 transition-colors text-sm">下一步</button>
+                <button id="btn-submit" onclick="submitForm()" class="px-6 py-1.5 bg-[#1c7ffd] text-white rounded hover:bg-blue-500 transition-colors text-sm hidden">提交</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- 智能编目悬浮按钮 -->
+    <button id="smart-catalog-btn" class="fixed bottom-8 right-8 flex items-center gap-3 px-5 py-3 ai-card text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 z-[30]" title="智能编目">
+        <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center pulse-animation">
+            <i class="fa-solid fa-brain"></i>
+        </span>
+        <span class="font-medium">智能编目</span>
+        <i class="fa-solid fa-chevron-left text-sm" id="smart-catalog-arrow"></i>
+    </button>
+
+    <!-- 智能编目抽屉 -->
+    <div id="smart-catalog-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeSmartCatalog()"></div>
+    <div id="smart-catalog-drawer" class="fixed top-0 right-0 bottom-0 w-[900px] bg-white z-[90] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- 抽屉头部 -->
+        <div class="p-5 border-b border-gray-100 flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg ai-card flex items-center justify-center">
+                    <i class="fa-solid fa-brain text-white"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-[#303133]">智能编目</h3>
+                    <p class="text-xs text-[#909399]">选择智能体开始对话</p>
+                </div>
+            </div>
+            <button onclick="closeSmartCatalog()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- 选择智能体 -->
+        <div class="p-4 border-b border-gray-100 shrink-0">
+            <div class="flex items-center gap-2 mb-3">
+                <i class="fa-solid fa-robot text-[#667eea]"></i>
+                <span class="text-sm font-medium text-[#303133]">选择智能体</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button id="catalog-tab-auto" onclick="switchCatalogTab('auto')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left agent-active">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[#1c7ffd]"></i>
+                        <span class="font-medium text-sm">自动编目智能体</span>
+                    </div>
+                    <p class="text-xs text-[#909399]">选择数据表自动编目，AI生成资源目录</p>
+                </button>
+                <button id="catalog-tab-qa" onclick="switchCatalogTab('qa')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-comments text-[#36c2aa]"></i>
+                        <span class="font-medium text-sm">问答编目智能体</span>
+                    </div>
+                    <p class="text-xs text-[#909399]">输入描述或上传文件，AI智能生成目录</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- 自动编目视图 -->
+        <div id="catalog-view-auto" class="flex-1 flex flex-col overflow-hidden">
+            <div id="auto-catalog-content" class="flex-1 overflow-y-auto px-6 py-5">
+                <p class="text-[#606266] text-sm mb-4">请选择要自动编目的数据表：</p>
+                <!-- 搜索框 -->
+                <div class="mb-4">
+                    <div class="relative">
+                        <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-[#909399] text-sm"></i>
+                        <input type="text" id="auto-table-search" placeholder="按表名/中文名/字段关键词搜索..." 
+                            oninput="filterAutoTables()"
+                            class="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-[#1c7ffd] focus:ring-2 focus:ring-[#1c7ffd]/10 transition-all">
+                    </div>
+                    <div id="auto-table-search-empty" class="hidden py-10 text-center text-sm text-[#909399]">
+                        <i class="fa-regular fa-folder-open text-3xl mb-2 block text-gray-300"></i>
+                        没有找到匹配的数据表
+                    </div>
+                </div>
+                <div id="auto-table-list" class="space-y-2 max-h-[420px] overflow-y-auto">
+                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
+                        <input type="radio" name="table-select" value="enterprise_company" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
+                            data-keywords="enterprise company 企业 工商 公司 信用代码 注册地址 法人">
+                        <div>
+                            <div class="font-medium text-[#303133]">enterprise_company</div>
+                            <div class="text-xs text-[#909399]">企业工商登记信息表 - 包含企业名称、统一社会信用代码、注册地址等字段</div>
+                        </div>
+                    </label>
+                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
+                        <input type="radio" name="table-select" value="population_resident" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
+                            data-keywords="population resident 常住 人口 居民 姓名 性别 民族 出生 身份证">
+                        <div>
+                            <div class="font-medium text-[#303133]">population_resident</div>
+                            <div class="text-xs text-[#909399]">常住人口基本信息表 - 包含姓名、性别、民族、出生日期等字段</div>
+                        </div>
+                    </label>
+                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
+                        <input type="radio" name="table-select" value="tax_register" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
+                            data-keywords="tax register 税务 登记 纳税人 识别号 主管 税务机关">
+                        <div>
+                            <div class="font-medium text-[#303133]">tax_register</div>
+                            <div class="text-xs text-[#909399]">税务登记信息表 - 包含纳税人识别号、税务登记状态等字段</div>
+                        </div>
+                    </label>
+                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
+                        <input type="radio" name="table-select" value="credit_info" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
+                            data-keywords="credit info 信用 征信 守信 失信 惩戒 评价 信用承诺">
+                        <div>
+                            <div class="font-medium text-[#303133]">credit_info</div>
+                            <div class="text-xs text-[#909399]">社会信用信息表 - 包含信用评价、守信激励、失信惩戒等字段</div>
+                        </div>
+                    </label>
+                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
+                        <input type="radio" name="table-select" value="geo_boundary" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
+                            data-keywords="geo boundary 地理 边界 空间 行政区 区划 坐标 面积 经纬度">
+                        <div>
+                            <div class="font-medium text-[#303133]">geo_boundary</div>
+                            <div class="text-xs text-[#909399]">空间地理边界数据表 - 包含行政区划边界、地理坐标等字段</div>
+                        </div>
+                    </label>
+                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
+                        <input type="radio" name="table-select" value="license_electronic" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
+                            data-keywords="license electronic 证照 电子证 证件 执照 驾驶证 不动产 证照编号">
+                        <div>
+                            <div class="font-medium text-[#303133]">license_electronic</div>
+                            <div class="text-xs text-[#909399]">电子证照信息表 - 包含证照编号、证照类型、持证人、有效期等字段</div>
+                        </div>
+                    </label>
+                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
+                        <input type="radio" name="table-select" value="marriage_register" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
+                            data-keywords="marriage register 婚姻 登记 结婚证 离婚证 配偶 登记时间 民政">
+                        <div>
+                            <div class="font-medium text-[#303133]">marriage_register</div>
+                            <div class="text-xs text-[#909399]">婚姻登记信息表 - 包含婚姻登记编号、夫妻双方信息、登记日期等字段</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 进度条区域 -->
+            <div id="auto-catalog-progress" class="hidden px-6 py-4 border-t border-gray-100">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="h-full bg-[#00d9a6] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <span id="progress-text" class="text-sm text-[#606266] w-16 text-right">0%</span>
+                </div>
+                <div id="progress-steps" class="space-y-2">
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="step-1-icon">1</span>
+                        <span id="step-1-text" class="text-[#909399]">正在读取数据表结构...</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="step-2-icon">2</span>
+                        <span id="step-2-text" class="text-[#909399]">正在分析字段信息...</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="step-3-icon">3</span>
+                        <span id="step-3-text" class="text-[#909399]">正在生成目录信息...</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="step-4-icon">4</span>
+                        <span id="step-4-text" class="text-[#909399]">正在填充表单...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 编目完成页 -->
+            <div id="auto-catalog-done" class="hidden flex-1 overflow-y-auto px-8 py-8">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 rounded-full bg-green-50 border-4 border-green-200 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-check text-3xl text-[#00d9a6]"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[#303133] mb-2">自动编目完成</h3>
+                    <p class="text-sm text-[#909399]">已成功生成目录信息并自动填充到表单，请确认或继续编辑</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl border border-gray-100 p-6">
+                    <div class="grid grid-cols-2 gap-5 text-sm">
+                        <div>
+                            <div class="text-xs text-[#909399] mb-1">目录名称</div>
+                            <div class="text-[#303133] font-medium" id="done-name">-</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#909399] mb-1">所属领域</div>
+                            <div class="text-[#303133] font-medium" id="done-domain">-</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#909399] mb-1">共享方式</div>
+                            <div class="text-[#303133] font-medium" id="done-share">-</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#909399] mb-1">开放类型</div>
+                            <div class="text-[#303133] font-medium" id="done-open">-</div>
+                        </div>
+                        <div class="col-span-2">
+                            <div class="text-xs text-[#909399] mb-1">目录描述</div>
+                            <div class="text-[#303133]" id="done-summary">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center mt-8">
+                    <button onclick="resetAutoCatalogView(); closeSmartCatalog();" class="px-5 py-2 bg-[#00d9a6] text-white rounded-md text-sm hover:bg-[#00b894] transition-colors flex items-center gap-1">
+                        <i class="fa-solid fa-eye"></i>查看表单
+                    </button>
+                </div>
+            </div>
+
+            <!-- 自动编目底部按钮 -->
+            <div id="auto-catalog-footer" class="px-6 py-4 border-t border-gray-100 flex items-center justify-end gap-3 shrink-0">
+                <button onclick="closeSmartCatalog()" class="px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+                <button onclick="startAutoCatalog()" class="px-5 py-2 bg-[#00d9a6] text-white rounded-md text-sm hover:bg-[#00b894] transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-play"></i>
+                    开始编目
+                </button>
+            </div>
+        </div>
+
+        <!-- 问答编目视图 -->
+        <div id="catalog-view-qa" class="flex-1 flex flex-col overflow-hidden">
+
+        <!-- 对话内容区 -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-5" id="smart-catalog-messages">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-full ai-card flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-brain text-white text-base"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-3.5 text-sm text-[#303133] leading-relaxed">
+                        您好！我是智能编目助手，支持以下两种方式帮您自动生成数据资源目录：<br>
+                        <br>
+                        📄 <b>方式一：上传文件分析</b>（支持 .xlsx / .xls / .csv / .doc / .docx / .pdf / .json）<br>
+                        &nbsp;&nbsp;&nbsp;• 我会自动识别文件中的字段、数据格式、业务含义<br>
+                        &nbsp;&nbsp;&nbsp;• 自动推荐：目录名称、提供机构、信息项、资源分类、共享开放属性<br>
+                        <br>
+                        ✏️ <b>方式二：直接输入描述</b><br>
+                        &nbsp;&nbsp;&nbsp;例如：企业工商登记信息，包含企业名称、统一社会信用代码、注册地址、经营范围、法定代表人等字段
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 输入区 -->
+        <div class="border-t border-gray-100 px-6 py-4 shrink-0 bg-white">
+            <!-- 上传文件预览 -->
+            <div id="smart-upload-preview" class="hidden mb-3"></div>
+            <!-- 工具栏 -->
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                    <label class="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-gray-200 text-[#606266] hover:border-blue-400 hover:text-[#1c7ffd] hover:bg-blue-50 transition-colors cursor-pointer">
+                        <i class="fa-solid fa-paperclip"></i>
+                        <span>上传文件</span>
+                        <input type="file" id="smart-upload-input" multiple 
+                            accept=".xlsx,.xls,.csv,.doc,.docx,.pdf,.json"
+                            class="hidden" onchange="handleSmartFileUpload(event)">
+                    </label>
+                    <span class="text-xs text-[#909399]">支持 Excel/CSV/Word/PDF/JSON，单文件 ≤ 20MB</span>
+                </div>
+            </div>
+            <!-- 文本输入 -->
+            <div class="flex gap-3">
+                <input type="text" id="smart-catalog-input" rows="2" placeholder="请输入目录描述，或点击上方按钮上传文件让AI分析..." 
+                    class="flex-1 px-4 py-2.5 border border-gray-200 rounded-full text-sm focus:outline-none focus:border-[#667eea] focus:ring-2 focus:ring-[#667eea]/20 transition-all" 
+                    onkeydown="handleSmartCatalogKeydown(event)">
+                <button onclick="generateCatalog()" class="w-11 h-11 rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity ai-card shrink-0">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- 快速填充弹窗 -->
+    <div id="smart-fill-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeSmartFillModal()"></div>
+    <div id="smart-fill-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] bg-white z-[90] rounded-lg shadow-2xl opacity-0 invisible transition-all duration-300">
+        <div class="h-12 flex items-center justify-between px-5 border-b border-gray-100">
+            <h3 class="font-semibold text-base text-[#303133]">智能添加信息项</h3>
+            <button onclick="closeSmartFillModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        <div class="p-5 space-y-5">
+            <div class="flex items-center gap-2 px-4 py-3 bg-[#fffbe6] border border-[#ffe58f] rounded-lg">
+                <i class="fa-solid fa-lightbulb text-[#e6a23c]"></i>
+                <span class="text-sm text-[#d4a76a]">输入字段描述或上传文件，系统将智能解析并自动填充信息项</span>
+            </div>
+
+            <div>
+                <label class="block text-sm text-[#606266] mb-2">输入字段描述：</label>
+                <textarea id="smart-fill-input" rows="4" placeholder="例如：包含姓名、性别、身份证号码、出生日期、户籍地址等字段" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133] resize-none"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm text-[#606266] mb-2">或上传文件：</label>
+                <div class="border border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#1c7ffd] transition-colors cursor-pointer" onclick="document.getElementById('file-upload').click()">
+                    <input type="file" id="file-upload" class="hidden" accept=".txt,.csv,.json,.doc,.docx" onchange="handleFileUpload(this)">
+                    <i class="fa-solid fa-upload text-3xl text-[#c0c4cc] mb-3"></i>
+                    <div class="text-sm text-[#909399]">点击或拖拽文件到此处上传</div>
+                    <div class="text-xs text-[#c0c4cc] mt-1">支持 .txt .csv .json .doc .docx 格式</div>
+                </div>
+                <div id="uploaded-file-info" class="mt-2 text-sm text-[#606266] hidden"></div>
+            </div>
+
+            <div id="smart-fill-progress" class="hidden">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="smart-fill-progress-bar" class="h-full bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <span id="smart-fill-progress-text" class="text-sm text-[#606266] w-16 text-right">0%</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="fill-step-1-icon">1</span>
+                        <span id="fill-step-1-text" class="text-[#909399]">正在解析输入内容...</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="fill-step-2-icon">2</span>
+                        <span id="fill-step-2-text" class="text-[#909399]">正在分析字段类型...</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="fill-step-3-icon">3</span>
+                        <span id="fill-step-3-text" class="text-[#909399]">正在智能填充表格...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-3" id="smart-fill-buttons">
+                <button onclick="closeSmartFillModal()" class="flex-1 px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+                <button onclick="doSmartFill()" class="flex-1 px-5 py-2 bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] text-white rounded-md text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-brain"></i>
+                    开始智能添加
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 打开智能编目抽屉
+        document.getElementById('smart-catalog-btn').addEventListener('click', function() {
+            document.getElementById('smart-catalog-drawer').classList.remove('translate-x-full');
+            document.getElementById('smart-catalog-overlay').classList.remove('opacity-0', 'invisible');
+            document.body.style.overflow = 'hidden';
+            switchCatalogTab('auto');
+        });
+
+        // 关闭智能编目抽屉
+        function closeSmartCatalog() {
+            document.getElementById('smart-catalog-drawer').classList.add('translate-x-full');
+            document.getElementById('smart-catalog-overlay').classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+            resetAutoCatalogView();
+        }
+
+        // 自动调整输入框高度
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
+        }
+
+        // 处理回车发送
+        function handleSmartCatalogKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                generateCatalog();
+            }
+        }
+
+        // 生成目录信息
+        function generateCatalog() {
+            const input = document.getElementById('smart-catalog-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // 添加用户消息
+            addSmartCatalogMessage('user', text);
+            input.value = '';
+            input.style.height = 'auto';
+
+            // 模拟AI处理
+            const container = document.getElementById('smart-catalog-messages');
+            const loadingHtml = `
+                <div class="flex items-start gap-3" id="smart-catalog-loading">
+                    <div class="w-9 h-9 rounded-full gradient-bg flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-3 text-sm text-[#303133] inline-flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 bg-[#909399] rounded-full animate-bounce"></span>
+                            <span class="w-1.5 h-1.5 bg-[#909399] rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+                            <span class="w-1.5 h-1.5 bg-[#909399] rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', loadingHtml);
+            scrollSmartCatalogToBottom();
+
+            setTimeout(() => {
+                const loading = document.getElementById('smart-catalog-loading');
+                if (loading) loading.remove();
+
+                // 根据输入自动填充表单字段
+                const catalogData = analyzeCatalog(text);
+                fillCatalogForm(catalogData);
+
+                // 添加AI回复
+                addSmartCatalogMessage('ai', `已为您自动生成目录信息：
+• 目录名称：${catalogData.name}
+• 所属领域：${catalogData.domain}
+• 共享类型：${catalogData.shareType}
+• 开放类型：${catalogData.openType}
+
+您可以继续编辑调整，满意后关闭此对话框。`);
+            }, 1500);
+        }
+
+        // 添加消息
+        function addSmartCatalogMessage(type, text) {
+            const container = document.getElementById('smart-catalog-messages');
+            if (type === 'user') {
+                const html = `
+                    <div class="flex items-start gap-3 justify-end">
+                        <div class="flex-1 max-w-[85%]">
+                            <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm leading-relaxed">
+                                ${text}
+                            </div>
+                        </div>
+                        <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-user text-gray-500 text-sm"></i>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            } else {
+                const html = `
+                    <div class="flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-full gradient-bg flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-robot text-white text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-3 text-sm text-[#303133] leading-relaxed">
+                                ${text}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            }
+            scrollSmartCatalogToBottom();
+        }
+
+        // 滚动到底部
+        function scrollSmartCatalogToBottom() {
+            const container = document.getElementById('smart-catalog-messages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // 分析目录描述
+        function analyzeCatalog(text) {
+            let name = '数据资源目录';
+            let domain = '请选择';
+            let shareType = '无条件共享';
+            let openType = '不予开放';
+            let summary = '';
+            let themeCategory = '请选择';
+            let applicationScene = '请选择';
+            let businessCycle = '请选择';
+            let dataCycle = '请选择';
+            let formatCategory = '数据库';
+            let formatType = 'MySQL';
+            let shareCondition = '';
+
+            if (text.includes('企业') || text.includes('工商') || text.includes('法人')) {
+                name = '企业工商登记信息';
+                domain = '经济建设';
+                themeCategory = '法人基础信息';
+                applicationScene = '市场监管';
+                businessCycle = '每日';
+                dataCycle = '每日';
+                summary = '包含企业名称、统一社会信用代码、注册地址、经营范围、法定代表人等工商登记基本信息。';
+                shareCondition = '用于企业资质核验、市场分析等场景，可作为行政依据和工作参考。';
+            } else if (text.includes('人口') || text.includes('居民') || text.includes('个人')) {
+                name = '常住人口基本信息';
+                domain = '社会保障';
+                themeCategory = '人口基础信息';
+                applicationScene = '政务服务';
+                businessCycle = '每月';
+                dataCycle = '每月';
+                shareType = '有条件共享';
+                openType = '不予开放';
+                summary = '包含姓名、性别、民族、出生日期、身份证号码、户籍地址等人口基本信息。';
+                shareCondition = '用于政务服务、社会管理等场景，需严格控制使用范围。';
+            } else if (text.includes('税务') || text.includes('纳税')) {
+                name = '税务登记信息';
+                domain = '经济建设';
+                applicationScene = '市场监管';
+                businessCycle = '每月';
+                dataCycle = '每月';
+                shareType = '有条件共享';
+                openType = '不予开放';
+                summary = '包含纳税人识别号、纳税人类型、税务登记状态、主管税务机关等信息。';
+                shareCondition = '用于税务风控、企业征信等场景，需经授权使用。';
+            } else if (text.includes('证照') || text.includes('证件')) {
+                name = '电子证照信息';
+                domain = '政务服务';
+                themeCategory = '电子证照基础信息';
+                applicationScene = '政务服务';
+                businessCycle = '实时';
+                dataCycle = '实时';
+                shareCondition = '支持证照核验、亮证应用等场景。';
+            } else if (text.includes('信用') || text.includes('征信')) {
+                name = '社会信用信息';
+                domain = '公共安全';
+                themeCategory = '社会信用基础信息';
+                applicationScene = '市场监管';
+                businessCycle = '每月';
+                dataCycle = '每月';
+                shareType = '有条件共享';
+                openType = '有条件开放';
+                summary = '包含企业和个人的信用评价信息、守信激励和失信惩戒记录。';
+                shareCondition = '用于信用监管、金融服务等场景。';
+            } else if (text.includes('地理') || text.includes('地图') || text.includes('位置')) {
+                name = '空间地理基础信息';
+                domain = '城市建设';
+                themeCategory = '空间地理基础信息';
+                applicationScene = '城市治理';
+                businessCycle = '每年';
+                dataCycle = '每年';
+                formatCategory = '文件';
+                formatType = 'CSV';
+                summary = '包含行政区划边界、地理坐标等空间地理基础数据。';
+                shareCondition = '用于地图应用、区域分析等场景。';
+            }
+
+            return { name, domain, shareType, openType, summary, themeCategory, applicationScene, businessCycle, dataCycle, formatCategory, formatType, shareCondition };
+        }
+
+        // 填充表单字段
+        function fillCatalogForm(data) {
+            document.getElementById('catalog-name').value = data.name;
+            document.getElementById('catalog-summary').value = data.summary;
+            
+            selectOption('domain', data.domain);
+            selectOption('theme-category', data.themeCategory);
+            selectOption('application-scene', data.applicationScene);
+            selectOption('business-cycle', data.businessCycle);
+            selectOption('data-cycle', data.dataCycle);
+            selectOption('format-category', data.formatCategory);
+            selectOption('format-type', data.formatType);
+            document.getElementById('share-condition').value = data.shareCondition;
+
+            // 单选按钮
+            document.querySelectorAll('input[name="share-type"]').forEach(radio => {
+                radio.checked = radio.value === data.shareType;
+            });
+            document.querySelectorAll('input[name="open-type"]').forEach(radio => {
+                radio.checked = radio.value === data.openType;
+            });
+        }
+
+        // 选择下拉选项
+        function selectOption(id, value) {
+            const select = document.getElementById(id);
+            if (select) {
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].text === value) {
+                        select.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 抽屉 Tab 切换
+        function switchCatalogTab(tab) {
+            const autoTab = document.getElementById('catalog-tab-auto');
+            const qaTab = document.getElementById('catalog-tab-qa');
+            const autoView = document.getElementById('catalog-view-auto');
+            const qaView = document.getElementById('catalog-view-qa');
+            autoTab.classList.toggle('agent-active', tab === 'auto');
+            qaTab.classList.toggle('agent-active', tab === 'qa');
+            autoView.classList.toggle('hidden', tab !== 'auto');
+            qaView.classList.toggle('hidden', tab !== 'qa');
+        }
+
+        // 自动编目相关函数
+        function resetAutoCatalogView() {
+            document.getElementById('auto-catalog-content').classList.remove('hidden');
+            document.getElementById('auto-catalog-footer').classList.remove('hidden');
+            document.getElementById('auto-catalog-progress').classList.add('hidden');
+            document.getElementById('auto-catalog-done').classList.add('hidden');
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-text').textContent = '0%';
+            resetSteps();
+            document.getElementById('auto-table-search').value = '';
+            filterAutoTables();
+        }
+
+        // 显示编目完成页
+        function showAutoCatalogDone(tableData) {
+            document.getElementById('auto-catalog-content').classList.add('hidden');
+            document.getElementById('auto-catalog-footer').classList.add('hidden');
+            document.getElementById('auto-catalog-progress').classList.add('hidden');
+            document.getElementById('auto-catalog-done').classList.remove('hidden');
+            const d = tableData || {};
+            const set = (id, val) => { document.getElementById(id).textContent = val || '-'; };
+            set('done-name', d.name);
+            set('done-domain', d.domain);
+            set('done-share', d.shareType);
+            set('done-open', d.openType);
+            set('done-summary', d.summary);
+        }
+
+        // 返回选表列表继续编目
+        function showAutoCatalogList() {
+            resetAutoCatalogView();
+        }
+
+        function filterAutoTables() {
+            const kw = (document.getElementById('auto-table-search').value || '').trim().toLowerCase();
+            const items = document.querySelectorAll('.auto-table-item');
+            const empty = document.getElementById('auto-table-search-empty');
+            let visibleCount = 0;
+            items.forEach(item => {
+                const input = item.querySelector('input[name="table-select"]');
+                const words = (input ? input.getAttribute('data-keywords') || '' : '') + ' ' + item.innerText;
+                const matched = !kw || words.toLowerCase().indexOf(kw) > -1;
+                item.classList.toggle('hidden', !matched);
+                if (matched) visibleCount++;
+            });
+            if (empty) empty.classList.toggle('hidden', visibleCount > 0);
+        }
+
+        function handleSmartFileUpload(e) {
+            const files = Array.from(e.target.files || []);
+            if (!files.length) return;
+            const previewBox = document.getElementById('smart-upload-preview');
+            let html = '';
+            files.forEach(file => {
+                let icon = 'fa-file-lines text-gray-500';
+                if (/\.xlsx?|\.csv$/i.test(file.name)) icon = 'fa-file-excel text-green-600';
+                else if (/\.docx?$/i.test(file.name)) icon = 'fa-file-word text-blue-600';
+                else if (/\.pdf$/i.test(file.name)) icon = 'fa-file-pdf text-red-500';
+                else if (/\.json$/i.test(file.name)) icon = 'fa-file-code text-yellow-600';
+                const size = file.size > 1024 * 1024 ? (file.size / 1024 / 1024).toFixed(2) + 'MB' : (file.size / 1024).toFixed(1) + 'KB';
+                html += `<div class="flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg bg-gray-50">
+                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                        <i class="fa-solid ${icon} text-lg"></i>
+                        <div class="min-w-0 flex-1">
+                            <div class="text-sm text-[#303133] truncate">${file.name}</div>
+                            <div class="text-xs text-[#909399]">${size} · 等待AI分析</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="this.closest('#smart-upload-preview').querySelectorAll('.smart-upload-item').length>1?this.closest('.smart-upload-item').remove():(document.getElementById('smart-upload-preview').classList.add('hidden'),document.getElementById('smart-upload-preview').innerHTML='');document.getElementById('smart-upload-input').value='';"
+                        class="w-7 h-7 rounded-full hover:bg-white text-[#909399] hover:text-red-500 shrink-0 ml-2 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>`;
+            });
+            previewBox.innerHTML = `<div class="space-y-2 smart-upload-wrap">${html}</div>`;
+            previewBox.classList.remove('hidden');
+            setTimeout(() => {
+                const msgs = document.getElementById('smart-catalog-messages');
+                const bubble = document.createElement('div');
+                bubble.className = 'flex items-start gap-3 justify-end';
+                bubble.innerHTML = `<div class="max-w-[80%]">
+                    <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm leading-relaxed">
+                        📄 已上传 ${files.length} 个文件：${files.map(f=>f.name).join('、')}<br>
+                        点击发送按钮，AI将自动分析文件中的字段并生成推荐目录信息～
+                    </div>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" class="w-8 h-8 rounded-full">
+                </div>`;
+                msgs.appendChild(bubble);
+                msgs.scrollTop = msgs.scrollHeight;
+            }, 80);
+        }
+
+        function resetSteps() {
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('step-' + i + '-icon').className = 'w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs';
+                document.getElementById('step-' + i + '-icon').textContent = i;
+                document.getElementById('step-' + i + '-text').className = 'text-[#909399]';
+            }
+        }
+
+        function setStepActive(step, text) {
+            const icon = document.getElementById('step-' + step + '-icon');
+            const textEl = document.getElementById('step-' + step + '-text');
+            icon.className = 'w-5 h-5 rounded-full bg-[#00d9a6] text-white flex items-center justify-center text-xs';
+            icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            textEl.className = 'text-[#00d9a6] font-medium';
+            textEl.textContent = text;
+        }
+
+        function setStepCurrent(step, text) {
+            const icon = document.getElementById('step-' + step + '-icon');
+            const textEl = document.getElementById('step-' + step + '-text');
+            icon.className = 'w-5 h-5 rounded-full border-2 border-[#00d9a6] text-[#00d9a6] flex items-center justify-center text-xs';
+            icon.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            textEl.className = 'text-[#303133]';
+            textEl.textContent = text;
+        }
+
+        function startAutoCatalog() {
+            const selectedTable = document.querySelector('input[name="table-select"]:checked');
+            if (!selectedTable) {
+                alert('请选择一个数据表');
+                return;
+            }
+
+            document.getElementById('auto-catalog-content').classList.add('hidden');
+            document.getElementById('auto-catalog-footer').classList.add('hidden');
+            document.getElementById('auto-catalog-progress').classList.remove('hidden');
+
+            const tableData = getTableCatalogData(selectedTable.value);
+            
+            let progress = 0;
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+
+            const steps = [
+                { percent: 25, step: 1, text: '正在读取数据表结构...', doneText: '数据表结构读取完成' },
+                { percent: 50, step: 2, text: '正在分析字段信息...', doneText: '字段信息分析完成' },
+                { percent: 75, step: 3, text: '正在生成目录信息...', doneText: '目录信息生成完成' },
+                { percent: 100, step: 4, text: '正在填充表单...', doneText: '表单填充完成' }
+            ];
+
+            let stepIndex = 0;
+            setStepCurrent(1, steps[0].text);
+
+            const interval = setInterval(() => {
+                progress += 2;
+                if (progress >= steps[stepIndex].percent) {
+                    setStepActive(steps[stepIndex].step, steps[stepIndex].doneText);
+                    stepIndex++;
+                    if (stepIndex < steps.length) {
+                        setStepCurrent(steps[stepIndex].step, steps[stepIndex].text);
+                    }
+                }
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        fillCatalogForm(tableData);
+                        showAutoCatalogDone(tableData);
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        function getTableCatalogData(tableName) {
+            const tableMap = {
+                'enterprise_company': {
+                    name: '企业工商登记信息',
+                    domain: '经济建设',
+                    shareType: '无条件共享',
+                    openType: '不予开放',
+                    summary: '包含企业名称、统一社会信用代码、注册地址、经营范围、法定代表人等工商登记基本信息。',
+                    themeCategory: '法人基础信息',
+                    applicationScene: '市场监管',
+                    businessCycle: '每日',
+                    dataCycle: '每日',
+                    formatCategory: '数据库',
+                    formatType: 'MySQL',
+                    shareCondition: '用于企业资质核验、市场分析等场景，可作为行政依据和工作参考。'
+                },
+                'population_resident': {
+                    name: '常住人口基本信息',
+                    domain: '社会保障',
+                    shareType: '有条件共享',
+                    openType: '不予开放',
+                    summary: '包含姓名、性别、民族、出生日期、身份证号码、户籍地址等人口基本信息。',
+                    themeCategory: '人口基础信息',
+                    applicationScene: '政务服务',
+                    businessCycle: '每月',
+                    dataCycle: '每月',
+                    formatCategory: '数据库',
+                    formatType: 'MySQL',
+                    shareCondition: '用于政务服务、社会管理等场景，需严格控制使用范围。'
+                },
+                'tax_register': {
+                    name: '税务登记信息',
+                    domain: '经济建设',
+                    shareType: '有条件共享',
+                    openType: '不予开放',
+                    summary: '包含纳税人识别号、纳税人类型、税务登记状态、主管税务机关等信息。',
+                    themeCategory: '请选择',
+                    applicationScene: '市场监管',
+                    businessCycle: '每月',
+                    dataCycle: '每月',
+                    formatCategory: '数据库',
+                    formatType: 'MySQL',
+                    shareCondition: '用于税务风控、企业征信等场景，需经授权使用。'
+                },
+                'credit_info': {
+                    name: '社会信用信息',
+                    domain: '公共安全',
+                    shareType: '有条件共享',
+                    openType: '有条件开放',
+                    summary: '包含企业和个人的信用评价信息、守信激励和失信惩戒记录。',
+                    themeCategory: '社会信用基础信息',
+                    applicationScene: '市场监管',
+                    businessCycle: '每月',
+                    dataCycle: '每月',
+                    formatCategory: '数据库',
+                    formatType: 'MySQL',
+                    shareCondition: '用于信用监管、金融服务等场景。'
+                },
+                'geo_boundary': {
+                    name: '空间地理边界数据',
+                    domain: '城市建设',
+                    shareType: '无条件共享',
+                    openType: '不予开放',
+                    summary: '包含行政区划边界、地理坐标等空间地理基础数据。',
+                    themeCategory: '空间地理基础信息',
+                    applicationScene: '城市治理',
+                    businessCycle: '每年',
+                    dataCycle: '每年',
+                    formatCategory: '文件',
+                    formatType: 'CSV',
+                    shareCondition: '用于地图应用、区域分析等场景。'
+                }
+            };
+            return tableMap[tableName] || tableMap['enterprise_company'];
+        }
+
+        let currentStep = 1;
+
+        function goToStep(step) {
+            currentStep = step;
+            
+            if (step === 1) {
+                document.getElementById('step-1-content').classList.remove('hidden');
+                document.getElementById('step-2-content').classList.add('hidden');
+                
+                document.getElementById('step-1-icon').className = 'w-10 h-10 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center font-bold text-base transition-all';
+                document.getElementById('step-1-icon').innerHTML = '1';
+                document.getElementById('step-1-text').className = 'mt-3 font-medium text-[#303133] transition-colors';
+                document.getElementById('step-2-icon').className = 'w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-base transition-all';
+                document.getElementById('step-2-text').className = 'mt-3 font-medium text-[#909399] transition-colors';
+                
+                document.getElementById('btn-prev').classList.add('hidden');
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-submit').classList.add('hidden');
+            } else {
+                document.getElementById('step-1-content').classList.add('hidden');
+                document.getElementById('step-2-content').classList.remove('hidden');
+                
+                document.getElementById('step-1-icon').className = 'w-10 h-10 rounded-full bg-gray-200 text-white flex items-center justify-center font-bold text-base transition-all';
+                document.getElementById('step-1-icon').innerHTML = '<i class="fa-solid fa-check text-sm"></i>';
+                document.getElementById('step-1-text').className = 'mt-3 font-medium text-[#303133] transition-colors';
+                document.getElementById('step-2-icon').className = 'w-10 h-10 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center font-bold text-base transition-all';
+                document.getElementById('step-2-icon').innerHTML = '2';
+                document.getElementById('step-2-text').className = 'mt-3 font-medium text-[#303133] transition-colors';
+                
+                document.getElementById('btn-prev').classList.remove('hidden');
+                document.getElementById('btn-next').classList.add('hidden');
+                document.getElementById('btn-submit').classList.remove('hidden');
+            }
+            
+            document.querySelector('.flex-1.p-6.pb-\\[88px\\].overflow-y-auto').scrollTop = 0;
+        }
+
+        function openSmartFillModal() {
+            document.getElementById('smart-fill-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('smart-fill-modal').classList.remove('opacity-0', 'invisible');
+        }
+
+        function closeSmartFillModal() {
+            document.getElementById('smart-fill-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('smart-fill-modal').classList.add('opacity-0', 'invisible');
+        }
+
+        function handleFileUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                document.getElementById('uploaded-file-info').textContent = `已选择文件：${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                document.getElementById('uploaded-file-info').classList.remove('hidden');
+            }
+        }
+
+        function doSmartFill() {
+            const inputText = document.getElementById('smart-fill-input').value.trim();
+            const fileInput = document.getElementById('file-upload');
+            
+            if (!inputText && (!fileInput.files || fileInput.files.length === 0)) {
+                alert('请输入字段描述或上传文件');
+                return;
+            }
+            
+            document.getElementById('smart-fill-buttons').classList.add('hidden');
+            document.getElementById('smart-fill-progress').classList.remove('hidden');
+            
+            const progressBar = document.getElementById('smart-fill-progress-bar');
+            const progressText = document.getElementById('smart-fill-progress-text');
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+            
+            resetProgressSteps();
+            
+            setTimeout(() => {
+                updateProgress(33, '正在解析输入内容...', 1);
+                
+                setTimeout(() => {
+                    updateProgress(66, '正在分析字段类型...', 2);
+                    
+                    setTimeout(() => {
+                        updateProgress(100, '正在智能填充表格...', 3);
+                        
+                        setTimeout(() => {
+                            let fieldNames = [];
+                            if (inputText) {
+                                fieldNames = parseFieldDescription(inputText);
+                            }
+                            
+                            if (fieldNames.length === 0) {
+                                fieldNames = ['姓名', '性别', '身份证号码', '出生日期', '户籍地址'];
+                            }
+                            
+                            fillInfoItems(fieldNames);
+                            closeSmartFillModal();
+                            
+                            setTimeout(() => {
+                                document.getElementById('smart-fill-buttons').classList.remove('hidden');
+                                document.getElementById('smart-fill-progress').classList.add('hidden');
+                            }, 300);
+                        }, 800);
+                    }, 800);
+                }, 800);
+            }, 300);
+        }
+
+        function updateProgress(percent, message, step) {
+            const progressBar = document.getElementById('smart-fill-progress-bar');
+            const progressText = document.getElementById('smart-fill-progress-text');
+            progressBar.style.width = percent + '%';
+            progressText.textContent = percent + '%';
+            
+            for (let i = 1; i <= 3; i++) {
+                const icon = document.getElementById('fill-step-' + i + '-icon');
+                const text = document.getElementById('fill-step-' + i + '-text');
+                if (i < step) {
+                    icon.className = 'w-5 h-5 rounded-full bg-[#00d9a6] text-white flex items-center justify-center text-xs';
+                    icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    text.className = 'text-[#00d9a6]';
+                } else if (i === step) {
+                    icon.className = 'w-5 h-5 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center text-xs';
+                    text.className = 'text-[#1c7ffd] font-medium';
+                    text.textContent = message;
+                }
+            }
+        }
+
+        function resetProgressSteps() {
+            for (let i = 1; i <= 3; i++) {
+                const icon = document.getElementById('fill-step-' + i + '-icon');
+                const text = document.getElementById('fill-step-' + i + '-text');
+                icon.className = 'w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs';
+                icon.textContent = i;
+                text.className = 'text-[#909399]';
+            }
+            document.getElementById('fill-step-1-text').textContent = '正在解析输入内容...';
+            document.getElementById('fill-step-2-text').textContent = '正在分析字段类型...';
+            document.getElementById('fill-step-3-text').textContent = '正在智能填充表格...';
+        }
+
+        function parseFieldDescription(text) {
+            const patterns = [
+                /包含([\u4e00-\u9fa5、，,。]+)等字段?/g,
+                /([\u4e00-\u9fa5、，,]+)字段/g,
+                /字段包括([\u4e00-\u9fa5、，,。]+)/g
+            ];
+            
+            for (const pattern of patterns) {
+                const match = pattern.exec(text);
+                if (match && match[1]) {
+                    return match[1].split(/[、，,。]/).filter(item => item.trim());
+                }
+            }
+            
+            return text.split(/[、，,。\n]/).filter(item => item.trim() && item.length > 1);
+        }
+
+        function fillInfoItems(fieldNames) {
+            const tbody = document.getElementById('info-items-body');
+            tbody.innerHTML = '';
+            
+            fieldNames.forEach((name, index) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-100 hover:bg-gray-50 transition-colors';
+                
+                const type = guessFieldType(name);
+                const length = guessFieldLength(type);
+                const sensitivity = guessSensitivity(name);
+                
+                row.innerHTML = `
+                    <td class="py-3 px-3">
+                        <input type="checkbox" class="w-4 h-4 text-[#1c7ffd] rounded">
+                    </td>
+                    <td class="py-3 px-3 text-[#303133]">${index + 1}</td>
+                    <td class="py-3 px-3">
+                        <input type="text" value="${name}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:border-[#1c7ffd]">
+                    </td>
+                    <td class="py-3 px-3">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>无条件共享</option>
+                            <option>有条件共享</option>
+                            <option>不予共享</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-3">
+                        <input type="text" value="12" class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                    </td>
+                    <td class="py-3 px-3">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>不予开放</option>
+                            <option>有条件开放</option>
+                            <option>无条件开放</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-3">
+                        <input type="text" value="无" class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                    </td>
+                    <td class="py-3 px-3">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>否</option>
+                            <option>是</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-3">--</td>
+                    <td class="py-3 px-3">
+                        <input type="text" value="${type}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                    </td>
+                    <td class="py-3 px-3">
+                        <input type="text" value="${length}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto">
+                    </td>
+                    <td class="py-3 px-3 text-[#606266]">${sensitivity}</td>
+                    <td class="py-3 px-3">
+                        <a href="#" onclick="editInfoItem(this)" class="text-[#1c7ffd] hover:underline text-xs mr-2">编辑</a>
+                        <a href="#" onclick="deleteInfoItem(this)" class="text-red-500 hover:underline text-xs">删除</a>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function guessFieldType(name) {
+            if (name.includes('日期') || name.includes('时间')) return '日期型D';
+            if (name.includes('号码') || name.includes('ID') || name.includes('编号')) return '字符串型C';
+            if (name.includes('金额') || name.includes('数量') || name.includes('年龄')) return '数值型N';
+            if (name.includes('性别') || name.includes('状态') || name.includes('类型')) return '字符串型C';
+            return '字符串型C';
+        }
+
+        function guessFieldLength(type) {
+            if (type === '日期型D') return '';
+            if (type === '数值型N') return '10';
+            return '50';
+        }
+
+        function guessSensitivity(name) {
+            const sensitiveWords = ['身份证', '电话', '手机', '邮箱', '住址', '地址', '银行', '密码', '姓名'];
+            if (sensitiveWords.some(word => name.includes(word))) {
+                return '2级：一般';
+            }
+            return '1级：无危害';
+        }
+
+        function addInfoItem() {
+            const tbody = document.getElementById('info-items-body');
+            
+            if (tbody.querySelector('td[colspan]')) {
+                tbody.innerHTML = '';
+            }
+            
+            const rows = tbody.querySelectorAll('tr');
+            const index = rows.length + 1;
+            
+            const row = document.createElement('tr');
+            row.className = 'border-b border-gray-100 hover:bg-gray-50 transition-colors';
+            row.innerHTML = `
+                <td class="py-3 px-3">
+                    <input type="checkbox" class="w-4 h-4 text-[#1c7ffd] rounded">
+                </td>
+                <td class="py-3 px-3 text-[#303133]">${index}</td>
+                <td class="py-3 px-3">
+                    <input type="text" placeholder="信息项名称" class="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:border-[#1c7ffd]">
+                </td>
+                <td class="py-3 px-3">
+                    <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                        <option>无条件共享</option>
+                        <option>有条件共享</option>
+                        <option>不予共享</option>
+                    </select>
+                </td>
+                <td class="py-3 px-3">
+                    <input type="text" value="12" class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                </td>
+                <td class="py-3 px-3">
+                    <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                        <option>不予开放</option>
+                        <option>有条件开放</option>
+                        <option>无条件开放</option>
+                    </select>
+                </td>
+                <td class="py-3 px-3">
+                    <input type="text" value="无" class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                </td>
+                <td class="py-3 px-3">
+                    <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                        <option>否</option>
+                        <option>是</option>
+                    </select>
+                </td>
+                <td class="py-3 px-3">--</td>
+                <td class="py-3 px-3">
+                    <input type="text" placeholder="信息项类型" class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                </td>
+                <td class="py-3 px-3">
+                    <input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto">
+                </td>
+                <td class="py-3 px-3 text-[#606266]">1级：无危害</td>
+                <td class="py-3 px-3">
+                    <a href="#" onclick="editInfoItem(this)" class="text-[#1c7ffd] hover:underline text-xs mr-2">编辑</a>
+                    <a href="#" onclick="deleteInfoItem(this)" class="text-red-500 hover:underline text-xs">删除</a>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function editInfoItem(el) {
+            alert('编辑信息项');
+        }
+
+        function deleteInfoItem(el) {
+            el.closest('tr').remove();
+            const tbody = document.getElementById('info-items-body');
+            if (tbody.children.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="13" class="py-10 text-[#909399]">
+                            <div class="flex flex-col items-center gap-2">
+                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                <span>暂无数据，请添加信息项或使用快速填充</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                tbody.querySelectorAll('tr').forEach((tr, index) => {
+                    tr.querySelector('td:nth-child(2)').textContent = index + 1;
+                });
+            }
+        }
+
+        function submitForm() {
+            alert('提交成功');
+            window.location.href = 'catalog_manage.html?nav=resource-catalog';
+        }
+
+    </script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P09",
+      "title": "数据服务平台 - 目录编制",
+      "path": "catalog_add.html",
+      "route": "/catalog_add.html"
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P09-smart-catalog-drawer",
+      "type": "drawer",
+      "name": "智能编目",
+      "pageKey": "P09",
+      "openSelector": "#smart-catalog-drawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "智能编目"
+    },
+    {
+      "id": "surface-P09-smart-fill-modal",
+      "type": "modal",
+      "name": "智能添加信息项",
+      "pageKey": "P09",
+      "openSelector": "#smart-fill-modal",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "智能添加信息项"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P09-001",
+      "pageKey": "P09",
+      "target": {
+        "selector": "main",
+        "fallbackText": "返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应",
+        "strategy": "tag",
+        "sourceElementId": "P09-E005",
+        "boundsHint": {
+          "text": "返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应",
+          "tag": "main"
+        }
+      },
+      "title": "返回列表 1 数据资源目录维护 2… · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 以概况政务数据资源目录内容的标题和“信息”字样…\n- 请选择 经济建设 教育科技 社会保障 医疗卫生…\n- 请选择 人口基础信息 法人基础信息 空间地理基…\n- has-license\n- 请选择 政务服务 市场监管 公共安全 城市治理…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E005"
+      },
+      "evidence": [
+        "页面：返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应",
+        "路由：/catalog_add.html",
+        "页面文本：返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫",
+        "selector：main"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-004",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P09-002",
+      "pageKey": "P09",
+      "target": {
+        "selector": "#step-2-content table",
+        "fallbackText": "序号 信息项名称 共享类型 共享条件 开放类型 开放条件 是否开放脱敏 脱敏规则 信息项类型 信息项长度 敏感级别 操作 暂无数据，请添加信息项或使用快速填充",
+        "strategy": "data-descendant",
+        "sourceElementId": "P09-E040",
+        "boundsHint": {
+          "text": "序号 信息项名称 共享类型 共享条件 开放类型 开放条件 是否开放脱敏 脱敏规则 信息项类型 信息项长度 敏感级别 操作 暂无数据，请添加信息项或使用快速填充",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「序号 信息项名称 共享类型 共享条件 开放类型 开放条件 是否…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E040"
+      },
+      "evidence": [
+        "页面文本：序号 信息项名称 共享类型 共享条件 开放类型 开放条件 是否开放脱敏 脱敏规则 信息项类型 信息项长度 敏感级别 操作 暂无数据，请添加信息项或使用快速填充",
+        "selector：#step-2-content table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-039",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P09-003",
+      "pageKey": "P09",
+      "target": {
+        "selector": "#auto-table-search",
+        "fallbackText": "按表名/中文名/字段关键词搜索...",
+        "strategy": "id",
+        "sourceElementId": "P09-E052",
+        "boundsHint": {
+          "text": "按表名/中文名/字段关键词搜索...",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「按表名/中文名/字段关键词搜索...」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E052"
+      },
+      "evidence": [
+        "页面文本：按表名/中文名/字段关键词搜索...",
+        "selector：#auto-table-search",
+        "二级界面：智能编目"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-051",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P09-smart-catalog-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 3
+    },
+    {
+      "id": "ANN-P09-004",
+      "pageKey": "P09",
+      "target": {
+        "selector": "input[name=\"table-select\"]",
+        "fallbackText": "table-select",
+        "strategy": "name",
+        "sourceElementId": "P09-E053",
+        "boundsHint": {
+          "text": "table-select",
+          "tag": "input"
+        }
+      },
+      "title": "table-select",
+      "contentMarkdown": "### 业务含义\n\n「table-select」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E053"
+      },
+      "evidence": [
+        "页面文本：table-select",
+        "selector：input[name=\"table-select\"]",
+        "二级界面：智能编目"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-052",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P09-smart-catalog-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 4
+    },
+    {
+      "id": "ANN-P09-005",
+      "pageKey": "P09",
+      "target": {
+        "selector": "#smart-upload-input",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P09-E057",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E057"
+      },
+      "evidence": [
+        "selector：#smart-upload-input",
+        "二级界面：智能编目"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-056",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P09-smart-catalog-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 5
+    },
+    {
+      "id": "ANN-P09-006",
+      "pageKey": "P09",
+      "target": {
+        "selector": "#smart-catalog-input",
+        "fallbackText": "请输入目录描述，或点击上方按钮上传文件让AI分析...",
+        "strategy": "id",
+        "sourceElementId": "P09-E058",
+        "boundsHint": {
+          "text": "请输入目录描述，或点击上方按钮上传文件让AI分析...",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「请输入目录描述，或点击上方按钮上传文件让AI分析...」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E058"
+      },
+      "evidence": [
+        "页面文本：请输入目录描述，或点击上方按钮上传文件让AI分析...",
+        "selector：#smart-catalog-input",
+        "二级界面：智能编目"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-057",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P09-smart-catalog-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 6
+    },
+    {
+      "id": "ANN-P09-007",
+      "pageKey": "P09",
+      "target": {
+        "selector": "#smart-fill-overlay",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P09-E060",
+        "boundsHint": {
+          "text": "",
+          "tag": "div"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「跳转」用于连接当前页面与下一步业务流程。\n\n### 跳转规则\n\n- 用户完成当前操作后进入目标页面。\n- 跳转时需要带入当前业务对象的标识信息。\n- 返回时应保留用户上一次的筛选或编辑状态。\n\n### 跳转流程\n\n```mermaid\nflowchart LR\n  A[当前页面] --\u003e B[触发跳转]\n  B --\u003e C{校验通过}\n  C --\u003e|是| D[目标页面]\n  C --\u003e|否| E[停留并提示]\n  D --\u003e F[返回时保留上下文]\n```\n\n### 分支情况\n\n- 成功：进入目标页面。\n- 失败：停留当前页面并提示原因。\n- 权限不足：提示无权限或隐藏入口。\n\n### 待确认\n\n- 跳转目标页面是否已明确？\n- 是否需要区分不同角色的跳转路径？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "J",
+      "kind": "flow",
+      "topics": [
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Flow and navigation",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E060"
+      },
+      "evidence": [
+        "selector：#smart-fill-overlay"
+      ],
+      "nextActions": [
+        "触发 `该元素` 后需要确认目标页面、返回路径或二级承载面。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-059",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 7
+    },
+    {
+      "id": "ANN-P09-008",
+      "pageKey": "P09",
+      "target": {
+        "selector": "#smart-fill-input",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P09-E063",
+        "boundsHint": {
+          "text": "",
+          "tag": "textarea"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E063"
+      },
+      "evidence": [
+        "selector：#smart-fill-input",
+        "二级界面：智能添加信息项"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-062",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P09-smart-fill-modal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 8
+    },
+    {
+      "id": "ANN-P09-009",
+      "pageKey": "P09",
+      "target": {
+        "selector": "#file-upload",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P09-E065",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E065"
+      },
+      "evidence": [
+        "selector：#file-upload",
+        "二级界面：智能添加信息项"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-064",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P09-smart-fill-modal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 9
+    },
+    {
+      "id": "ANN-P09-010",
+      "pageKey": "P09",
+      "target": {
+        "selector": "button[onclick=\"this.closest('#smart-upload-preview').querySelectorAll('.smart-upload-item').length\u003e1?this.closest('.smart-upload-item').remove():(document.getElementById('smart-upload-preview').classList.add('hidden'),document.getElementById('smart-upload-preview').innerHTML='');document.getElementById('smart-upload-input').value='';\"]",
+        "fallbackText": "",
+        "strategy": "handler",
+        "sourceElementId": "P09-E068",
+        "boundsHint": {
+          "text": "",
+          "tag": "button"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「操作」关键操作入口。\n\n### 交互规则\n\n- 用户点击「操作」后，系统应执行与该入口对应的业务动作。\n- 操作前应校验当前用户、当前对象状态和必要输入是否满足条件。\n- 若操作在当前页完成，应给出明确成功反馈并更新相关区域。\n\n### 状态与异常\n\n- 操作完成后：20\n\n### 证据\n\n- selector：button[onclick=\"this.closest('#smart-upload-preview').querySelectorAll('.smart-upload-item').length\u003e1?this.closest('.smart-upload-item').remove():(document.getElementById('smart-upload-preview').classList.add('hidden'),document.getElementById('smart-upload-preview').innerHTML='');document.getElementById('smart-upload-input').value='';\"]\n- 短暂反馈：20\n\n### 待确认\n\n- 点击后的目标页面、弹窗或状态变化是否已确认？\n- 是否存在角色权限、状态限制或二次确认要求？\n- 候选证据是否与 PRD 或上游页面级需求说明文档一致？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "business",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Primary action",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E068"
+      },
+      "evidence": [
+        "selector：button[onclick=\"this.closest('#smart-upload-preview').querySelectorAll('.smart-upload-item').length\u003e1?this.closest('.smart-upload-item').remove():(document.getElementById('smart-upload-preview').classList.add('hidden'),document.getElementById('smart-upload-preview').innerHTML='');document.getElementById('smart-upload-input').value='';\"]",
+        "短暂反馈：20"
+      ],
+      "nextActions": [
+        "点击 `该元素` 后需要确认页面/弹窗/状态变化、成功反馈和失败处理。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-067",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 10
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

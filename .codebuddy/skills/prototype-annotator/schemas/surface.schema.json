@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prototype-annotator.local/schemas/surface.schema.json",
+  "title": "Prototype Surface",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "name", "pageKey"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable surface id, e.g. surface-P01-create-app-drawer"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "modal",
+        "drawer",
+        "confirm",
+        "popover",
+        "dropdown",
+        "toast",
+        "message",
+        "notification",
+        "alert",
+        "banner"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable surface name shown in sidebar groups"
+    },
+    "pageKey": {
+      "type": "string"
+    },
+    "triggerSelector": {
+      "type": "string",
+      "description": "Selector for the control that opens this surface"
+    },
+    "openSelector": {
+      "type": "string",
+      "description": "Selector for the surface root when open"
+    },
+    "closeSelector": {
+      "type": "string",
+      "description": "Selector for the control that closes this surface"
+    },
+    "contentSelector": {
+      "type": "string",
+      "description": "Selector that must exist inside the open root for this logical surface"
+    },
+    "containerSelector": {
+      "type": "string",
+      "description": "Selector for the logical surface container. It may match the open root itself or a child inside the open root."
+    },
+    "activeSelector": {
+      "type": "string",
+      "description": "Alias for contentSelector when the surface has an active state marker"
+    },
+    "titleSelector": {
+      "type": "string",
+      "description": "Selector for the title or heading inside the open surface"
+    },
+    "titleText": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ],
+      "description": "Text candidate(s) for the open surface title or body. Arrays are matched as alternatives; compound labels such as 创建/编辑对象 or 新增/修改记录 should not be the only discriminator when the rendered title changes by mode."
+    },
+    "textIncludes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Text fragments that must be present in the open surface body"
+    },
+    "matchText": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Alias for textIncludes"
+    },
+    "stateText": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "State text used to distinguish shared modal/drawer containers"
+    },
+    "visibility": {
+      "type": "string",
+      "enum": ["always", "on-trigger", "temporary", "persistent"],
+      "default": "on-trigger"
+    },
+    "description": {
+      "type": "string"
+    },
+    "scanSource": {
+      "type": "string",
+      "enum": ["interaction-plan", "static-inferred", "manual"],
+      "description": "How this surface record was discovered"
+    }
+  }
+}

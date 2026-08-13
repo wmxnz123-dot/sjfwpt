@@ -1,0 +1,399 @@
+{
+  "version": 1,
+  "project": {
+    "id": "prototype",
+    "name": "prototype",
+    "source": "local-rule-draft"
+  },
+  "pages": [
+    {
+      "pageKey": "P01",
+      "title": "智能报销助手",
+      "path": "index.html",
+      "route": "/index.html"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P01-001",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"page-title\"]",
+        "fallbackText": "智能报销助手",
+        "strategy": "data",
+        "sourceElementId": "P01-E003",
+        "boundsHint": {
+          "text": "智能报销助手",
+          "tag": "h1"
+        }
+      },
+      "title": "智能报销助手 · 页面介绍",
+      "contentMarkdown": "### 页面说明\n\n本页面用于帮助【业务用户】完成与「智能报销助手」相关的核心任务。\n\n### 页面目标\n\n帮助用户在 智能报销助手 中完成与「智能报销助手」相关的业务操作。\n\n### 主要操作\n\n- 提交审批\n- AI识别结果 字段 识别值 置信度 发票号码 …\n- 上传发票文件\n- 字段 识别值 置信度 发票号码 INV-202…\n- 状态：草稿 提交审批\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E003"
+      },
+      "evidence": [
+        "页面：智能报销助手",
+        "路由：/index.html",
+        "页面文本：智能报销助手",
+        "selector：[data-ann=\"page-title\"]",
+        "文档匹配：PRD.md -> 智能报销助手"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-003",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T09:37:42Z"
+    },
+    {
+      "id": "ANN-P01-002",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"ai-result-area\"]",
+        "fallbackText": "AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+        "strategy": "data",
+        "sourceElementId": "P01-E010",
+        "boundsHint": {
+          "text": "AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+          "tag": "section"
+        }
+      },
+      "title": "AI识别结果 字段 识别值 置信度 发…",
+      "contentMarkdown": "### 业务含义\n\n「AI识别结果 字段 识别值 置信度 发票号码 INV-2026…」由 AI 辅助完成信息识别、生成、推荐或判断，减少用户手动处理成本。\n\n### AI 输入\n\nAI 会读取用户输入、上传资料、当前页面上下文或历史记录中的相关信息。\n\n### AI 输出\n\nAI 输出结果应以结构化方式展示，便于用户查看、修改和确认。\n\n### 人工确认\n\nAI 结果不能默认等同于最终结论。用户提交前应能检查、修改或重新生成。\n\n### 失败兜底\n\n- AI 生成失败时，应提示用户重试。\n- AI 结果不准确时，应支持人工修改。\n- 低置信度内容应高亮提示。\n\n### 待确认\n\n- 是否需要展示置信度？\n- 是否需要保留 AI 生成过程或引用依据？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "AI",
+      "kind": "ai",
+      "topics": [
+        "ai",
+        "interaction",
+        "state",
+        "exception"
+      ],
+      "dimension": "AI and automation",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E010"
+      },
+      "evidence": [
+        "页面文本：AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+        "selector：[data-ann=\"ai-result-area\"]",
+        "文档匹配：PRD.md -> 发票号码, 金额"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-010",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T09:37:42Z"
+    },
+    {
+      "id": "ANN-P01-003",
+      "pageKey": "P01",
+      "target": {
+        "selector": "table",
+        "fallbackText": "字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+        "strategy": "tag",
+        "sourceElementId": "P01-E012",
+        "boundsHint": {
+          "text": "字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+          "tag": "table"
+        }
+      },
+      "title": "字段 识别值 置信度 发票号码 INV…",
+      "contentMarkdown": "### 业务含义\n\n「字段 识别值 置信度 发票号码 INV-2026-001 98…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E012"
+      },
+      "evidence": [
+        "页面文本：字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+        "selector：table",
+        "文档匹配：PRD.md -> 发票号码, 金额"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-012",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T09:37:42Z"
+    },
+    {
+      "id": "ANN-P01-004",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"expense-status\"]",
+        "fallbackText": "状态：草稿 提交审批",
+        "strategy": "data",
+        "sourceElementId": "P01-E015",
+        "boundsHint": {
+          "text": "状态：草稿 提交审批",
+          "tag": "div"
+        }
+      },
+      "title": "状态：草稿 提交审批",
+      "contentMarkdown": "### 业务含义\n\n「状态：草稿 提交审批」用于告诉用户当前事项所处阶段，并影响页面可执行操作。\n\n### 状态规则\n\n- 不同状态下，页面展示内容和可操作按钮可能不同。\n- 状态变化后，应及时刷新页面或给出明确提示。\n- 用户需要能够理解当前状态下还能做什么。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 空状态：提示暂无数据，并提供下一步操作建议。\n- 失败状态：提示失败原因，并支持重试或返回。\n\n### 待确认\n\n- 当前状态枚举是否完整？\n- 每个状态下的可操作按钮是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "S",
+      "kind": "state",
+      "topics": [
+        "state",
+        "exception"
+      ],
+      "dimension": "State and exception",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E015"
+      },
+      "evidence": [
+        "页面文本：状态：草稿 提交审批",
+        "selector：[data-ann=\"expense-status\"]",
+        "文档匹配：PRD.md -> 状态, 草稿, 提交审批"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-015",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T09:37:42Z"
+    },
+    {
+      "id": "ANN-P01-005",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"submit-approval\"]",
+        "fallbackText": "提交审批",
+        "strategy": "data",
+        "sourceElementId": "P01-E016",
+        "boundsHint": {
+          "text": "提交审批",
+          "tag": "button"
+        }
+      },
+      "title": "提交审批",
+      "contentMarkdown": "### 业务含义\n\n「提交审批」用于帮助用户完成当前页面的关键操作。\n\n### 交互规则\n\n- 用户点击后，系统先校验当前操作是否满足前置条件。\n- 校验通过后，执行对应操作并给出成功反馈。\n- 校验失败时，停留当前页面并提示失败原因。\n\n### 状态与异常\n\n- 操作处理中：按钮应进入 loading 或禁用状态，避免重复提交。\n- 操作成功：展示成功提示，并刷新当前页面或进入下一步。\n- 操作失败：保留用户当前输入，并提示用户如何处理。\n\n### 待确认\n\n- 是否需要二次确认？\n- 是否支持撤销？\n- 失败后是否需要记录操作日志？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "business",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Primary action",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E016"
+      },
+      "evidence": [
+        "页面文本：提交审批",
+        "selector：[data-ann=\"submit-approval\"]",
+        "文档匹配：PRD.md -> 提交审批"
+      ],
+      "nextActions": [
+        "点击 `提交审批` 后需要确认页面/弹窗/状态变化、成功反馈和失败处理。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-016",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T09:37:42Z"
+    },
+    {
+      "id": "ANN-P01-006",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"ai-result-area\"]",
+        "fallbackText": "AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+        "strategy": "data",
+        "sourceElementId": "P01-E010",
+        "boundsHint": {
+          "text": "AI识别结果 字段 识别值 置信度 发票号码 INV-2026-001 98% 金额 1280.00 96%",
+          "tag": "section"
+        }
+      },
+      "title": "AI 失败兜底",
+      "contentMarkdown": "### 业务含义\n\n当「AI识别结果 字段 识别值 置信度 发票号码 INV-2026…」相关 AI 能力识别失败、生成失败或结果置信度过低时，系统需要提供可理解的兜底处理。\n\n### 失败兜底\n\n- AI 生成失败时，应提示用户重试或改用手动填写。\n- AI 结果不准确时，应支持人工修改后再提交。\n- 低置信度字段应高亮提示，避免用户误用错误结果。\n\n### 交互规则\n\n- 兜底路径不应阻断用户继续完成核心业务操作。\n- 需要明确哪些失败场景允许继续提交，哪些必须修正后才能提交。\n\n### 待确认\n\n- 识别失败后是否允许保存草稿？\n- 低置信度结果是否需要人工确认才能进入审批？\n",
+      "audienceMode": "product-review",
+      "annotationType": "FALLBACK",
+      "kind": "ai",
+      "topics": [
+        "ai",
+        "exception"
+      ],
+      "dimension": "AI and automation",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "mixed",
+        "ref": "productProfile.ai"
+      },
+      "evidence": [
+        "productProfile 表明当前产品包含 AI 产品形态。"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认 AI 失败后的人工修正、重试和提交阻断规则。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "AI 失败或低置信度时是否允许人工确认后继续提交？"
+      ],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T09:37:42Z"
+    }
+  ],
+  "productProfile": {
+    "productName": "智能报销助手",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "审批系统"
+    ],
+    "primaryUsers": [
+      "员工",
+      "领导",
+      "财务"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "AI",
+      "PERM",
+      "WF",
+      "DATA",
+      "HITL",
+      "FALLBACK"
+    ]
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "智能报销助手",
+    "productType": "ai_saas",
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "智能报销助手",
+        "purpose": "帮助用户在 智能报销助手 中完成与「智能报销助手」相关的业务操作。",
+        "primaryTasks": [
+          "提交审批",
+          "AI识别结果 字段 识别值 置信度 发票号码 …",
+          "上传发票文件",
+          "字段 识别值 置信度 发票号码 INV-202…",
+          "状态：草稿 提交审批"
+        ],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-06-12T09:37:42Z",
+    "sources": [
+      "/Users/sunlu/Documents/WorkSpace/SkillsInstalled/prototype-annotator/examples/expense-reimbursement-demo/input/PRD.md"
+    ]
+  }
+}

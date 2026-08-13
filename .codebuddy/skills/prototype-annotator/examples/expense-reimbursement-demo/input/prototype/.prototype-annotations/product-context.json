@@ -1,0 +1,26 @@
+{
+  "productName": "智能报销助手",
+  "productType": "ai_saas",
+  "roles": [],
+  "coreObjects": [],
+  "coreFlows": [],
+  "pages": [
+    {
+      "pageKey": "P01",
+      "pageName": "智能报销助手",
+      "purpose": "帮助用户在 智能报销助手 中完成与「智能报销助手」相关的业务操作。",
+      "primaryTasks": [
+        "提交审批",
+        "AI识别结果 字段 识别值 置信度 发票号码 …",
+        "上传发票文件",
+        "字段 识别值 置信度 发票号码 INV-202…",
+        "状态：草稿 提交审批"
+      ],
+      "mainUser": ""
+    }
+  ],
+  "generatedAt": "2026-06-12T09:37:42Z",
+  "sources": [
+    "/Users/sunlu/Documents/WorkSpace/SkillsInstalled/prototype-annotator/examples/expense-reimbursement-demo/input/PRD.md"
+  ]
+}

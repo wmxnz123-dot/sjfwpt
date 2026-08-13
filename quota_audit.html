@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 配额分配审核</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden relative bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <div class="h-[52px] flex items-center px-6 text-[#606266] shrink-0 bg-white border-b border-gray-100 text-[14px]">
+                <span>审批中心</span>
+                <span class="mx-2">/</span>
+                <span>待处理</span>
+                <span class="mx-2">/</span>
+                <span class="font-medium text-[#303133]">配额分配审核</span>
+            </div>
+
+            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+                <div class="bg-white rounded-t-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] px-6 pt-4 shrink-0">
+                    <div class="flex border-b border-gray-100">
+                        <div id="pendingTab" class="pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer transition-colors" onclick="switchTab('pending')">待审核</div>
+                        <div id="approvedTab" class="pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors" onclick="switchTab('approved')">已审核</div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 shrink-0">
+                    <div class="grid grid-cols-3 gap-x-8 gap-y-4">
+                        <div class="flex items-center gap-3">
+                            <label class="text-[#606266] whitespace-nowrap w-[110px] text-right">部门名称：</label>
+                            <input type="text" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                        </div>
+                        <div class="flex items-center gap-3"></div>
+                         <div class="flex justify-end gap-3">
+                        <button class="h-8 px-5 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-[13px] flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-right"></i> 重置
+                        </button>
+                        <button class="h-8 px-5 bg-[#1c7ffd] text-white rounded hover:bg-blue-600 transition-colors text-[13px] flex items-center gap-1">
+                            <i class="fa-solid fa-magnifying-glass"></i> 查询
+                        </button>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- 待审核列表 -->
+                <div id="pending-list" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-[#303133]">配额分配待审核列表</h3>
+                        <div class="flex gap-3 text-gray-400">
+                            <i class="fa-solid fa-rotate-right cursor-pointer hover:text-[#1c7ffd] transition-colors"></i>
+                            <i class="fa-solid fa-gear cursor-pointer hover:text-[#1c7ffd] transition-colors"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1 overflow-x-auto">
+                        <table class="w-full text-left text-[13px] text-[#606266]">
+                            <thead class="bg-[#f8f8f9] text-[#909399] font-medium border-b border-gray-200">
+                                <tr>
+                                    <th class="py-3 px-4 w-16">序号</th>
+                                    <th class="py-3 px-4">部门名称</th>
+                                    <th class="py-3 px-4 cursor-pointer hover:text-[#1c7ffd] transition-colors">申请时间 <i class="fa-solid fa-sort"></i></th>
+                                    <th class="py-3 px-4 w-36">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-4">1</td>
+                                    <td class="py-4 px-4">数据要素事业部</td>
+                                    <td class="py-4 px-4">2026-07-17 10:30:15</td>
+                                    <td class="py-4 px-4">
+                                        <a href="#" class="text-[#1c7ffd] hover:underline" onclick="openAuditDrawer(); return false;">审核</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-4">2</td>
+                                    <td class="py-4 px-4">数据研发部</td>
+                                    <td class="py-4 px-4">2026-07-16 14:20:30</td>
+                                    <td class="py-4 px-4">
+                                        <a href="#" class="text-[#1c7ffd] hover:underline" onclick="openAuditDrawer(); return false;">审核</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-end items-center mt-4 text-[#606266] text-sm">
+                        <span class="mr-4">共 2 条</span>
+                        <div class="flex items-center gap-1">
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50 cursor-not-allowed">
+                                <i class="fa-solid fa-angle-left"></i>
+                            </button>
+                            <button class="w-7 h-7 flex items-center justify-center border border-[#1c7ffd] rounded text-[#1c7ffd] bg-blue-50">1</button>
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50 cursor-not-allowed">
+                                <i class="fa-solid fa-angle-right"></i>
+                            </button>
+                        </div>
+                        <div class="relative ml-4 w-[90px]">
+                            <select class="w-full border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:border-[#1c7ffd] appearance-none bg-white cursor-pointer hover:border-gray-400 transition-colors">
+                                <option>10 条/页</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 已审核列表 -->
+                <div id="approved-list" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col p-6 hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-[#303133]">配额分配已审核列表</h3>
+                        <div class="flex gap-3 text-gray-400">
+                            <i class="fa-solid fa-rotate-right cursor-pointer hover:text-[#1c7ffd] transition-colors"></i>
+                            <i class="fa-solid fa-gear cursor-pointer hover:text-[#1c7ffd] transition-colors"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1 overflow-x-auto">
+                        <table class="w-full text-left text-[13px] text-[#606266]">
+                            <thead class="bg-[#f8f8f9] text-[#909399] font-medium border-b border-gray-200">
+                                <tr>
+                                    <th class="py-3 px-4 w-16">序号</th>
+                                    <th class="py-3 px-4">部门名称</th>
+                                    <th class="py-3 px-4 text-center relative">
+                                        <div class="flex items-center justify-center gap-1">
+                                            <span>审核结果</span>
+                                            <i class="fa-solid fa-filter text-gray-400 text-[10px] cursor-pointer" onclick="toggleColumnFilter('auditResultFilter', event)"></i>
+                                        </div>
+                                        <div id="auditResultFilter" class="hidden absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded shadow-lg p-3 z-30 w-[160px]">
+                                            <div class="space-y-2 mb-3">
+                                                <label class="flex items-center gap-2 cursor-pointer text-[13px]"><input type="checkbox" class="w-3.5 h-3.5"> 已分配</label>
+                                                <label class="flex items-center gap-2 cursor-pointer text-[13px]"><input type="checkbox" class="w-3.5 h-3.5"> 已驳回</label>
+                                            </div>
+                                            <div class="flex justify-end gap-2">
+                                                <button class="text-[#1c7ffd] text-[13px]" onclick="closeColumnFilter('auditResultFilter')">确定</button>
+                                                <button class="text-[#1c7ffd] text-[13px]" onclick="closeColumnFilter('auditResultFilter')">重置</button>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="py-3 px-4 cursor-pointer hover:text-[#1c7ffd] transition-colors">审核时间 <i class="fa-solid fa-sort"></i></th>
+                                    <th class="py-3 px-4 w-36">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-4">1</td>
+                                    <td class="py-4 px-4">市场运营部</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <span class="inline-flex items-center justify-center h-5 px-2.5 bg-green-50 text-green-600 rounded-sm text-[12px]">已分配</span>
+                                    </td>
+                                    <td class="py-4 px-4">2026-07-15 09:15:00</td>
+                                    <td class="py-4 px-4">
+                                        <a href="#" class="text-[#1c7ffd] hover:underline" onclick="openViewDrawer(); return false;">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-4">2</td>
+                                    <td class="py-4 px-4">平台架构部</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <span class="inline-flex items-center justify-center h-5 px-2.5 bg-red-50 text-red-600 rounded-sm text-[12px]">已驳回</span>
+                                    </td>
+                                    <td class="py-4 px-4">2026-07-14 16:45:00</td>
+                                    <td class="py-4 px-4">
+                                        <a href="#" class="text-[#1c7ffd] hover:underline" onclick="openViewDrawer(); return false;">查看</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-end items-center mt-4 text-[#606266] text-sm">
+                        <span class="mr-4">共 2 条</span>
+                        <div class="flex items-center gap-1">
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50 cursor-not-allowed">
+                                <i class="fa-solid fa-angle-left"></i>
+                            </button>
+                            <button class="w-7 h-7 flex items-center justify-center border border-[#1c7ffd] rounded text-[#1c7ffd] bg-blue-50">1</button>
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50 cursor-not-allowed">
+                                <i class="fa-solid fa-angle-right"></i>
+                            </button>
+                        </div>
+                        <div class="relative ml-4 w-[90px]">
+                            <select class="w-full border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:border-[#1c7ffd] appearance-none bg-white cursor-pointer hover:border-gray-400 transition-colors">
+                                <option>10 条/页</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 配额分配审核抽屉 -->
+    <div id="quotaAuditDrawer" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="closeAuditDrawer()"></div>
+        <div class="absolute right-0 top-0 h-full w-[680px] bg-white shadow-2xl flex flex-col">
+            <!-- 标题区域 -->
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-[16px] font-medium text-[#303133]">部门名称：数据要素事业部</span>
+                        <span class="inline-flex items-center justify-center h-5 px-2.5 bg-blue-50 text-[#1c7ffd] rounded-sm text-[12px]">待审核</span>
+                    </div>
+                    <i class="fa-solid fa-xmark text-gray-400 cursor-pointer hover:text-gray-600" onclick="closeAuditDrawer()"></i>
+                </div>
+                <div class="text-[#909399] text-[13px] mt-2">申请时间：2026-07-17 10:30:15</div>
+            </div>
+            
+            <!-- Tab切换 -->
+            <div class="px-6 pt-4 border-b border-gray-100">
+                <div class="flex">
+                    <div id="basicInfoTab" class="pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer transition-colors text-[14px]" onclick="switchDrawerTab('basic')">基本信息</div>
+                    <div id="resourceConfigTab" class="pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]" onclick="switchDrawerTab('resource')">资源配置情况</div>
+                    <div id="approvalRecordTab" class="pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]" onclick="switchDrawerTab('record')">审批记录</div>
+                </div>
+            </div>
+            
+            <!-- 内容区域 -->
+            <div class="flex-1 overflow-y-auto p-6">
+                <!-- 基本信息Tab -->
+                <div id="basicInfoContent">
+                    <div class="space-y-6">
+                        <!-- 当前信息 -->
+                        <div>
+                            <h3 class="text-[15px] font-medium text-[#303133] mb-4">原信息</h3>
+                            <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">CPU配额(核)：</label>
+                                    <span class="text-[#303133]">4</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">内存配额(Mb)：</label>
+                                    <span class="text-[#303133]">8192</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">CPU使用(核)：</label>
+                                    <span class="text-[#303133]">2.5</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">内存使用(Mb)：</label>
+                                    <span class="text-[#303133]">4096</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 申请信息 -->
+                        <div>
+                            <h3 class="text-[15px] font-medium text-[#303133] mb-4">申请信息</h3>
+                            <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">CPU配额（核）：</label>
+                                    <span class="text-[#303133]">2</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">内存配额（Mb）：</label>
+                                    <span class="text-[#303133]">2048</span>
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="text-[#606266] block mb-2">申请原因：</label>
+                                    <div class="bg-gray-50 rounded p-4 text-[#606266] text-[13px]">
+                                        因业务发展需要，申请增加配额用于数据处理。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 资源配置情况Tab -->
+                <div id="resourceConfigContent" class="hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-[13px] text-[#606266]">
+                            <thead class="bg-[#f8f8f9] text-[#909399] font-medium border-b border-gray-200">
+                                <tr>
+                                    <th class="py-3 px-4 w-16">序号</th>
+                                    <th class="py-3 px-4">模型名称</th>
+                                    <th class="py-3 px-4">镜像名称</th>
+                                    <th class="py-3 px-4">模型所属方</th>
+                                    <th class="py-3 px-4 cursor-pointer hover:text-[#1c7ffd] transition-colors">cpu使用 <i class="fa-solid fa-sort"></i></th>
+                                    <th class="py-3 px-4 cursor-pointer hover:text-[#1c7ffd] transition-colors">内存使用 <i class="fa-solid fa-sort"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="py-20 text-center text-gray-400">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <i class="fa-regular fa-folder-open text-5xl mb-3 text-gray-300"></i>
+                                            <span class="text-[14px]">暂无数据</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-end items-center mt-4 text-[#606266] text-sm">
+                        <span class="mr-4">共 0 条</span>
+                        <div class="flex items-center gap-1">
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50 cursor-not-allowed">
+                                <i class="fa-solid fa-angle-left"></i>
+                            </button>
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50">0</button>
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50 cursor-not-allowed">
+                                <i class="fa-solid fa-angle-right"></i>
+                            </button>
+                        </div>
+                        <div class="relative ml-4 w-[90px]">
+                            <select class="w-full border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:border-[#1c7ffd] appearance-none bg-white cursor-pointer hover:border-gray-400 transition-colors">
+                                <option>10 条/页</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 审批记录Tab -->
+                <div id="approvalRecordContent" class="hidden">
+                </div>
+            </div>
+            
+            <!-- 底部按钮组 -->
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
+                <button class="h-8 px-5 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-[13px]" onclick="showRejectModal()">驳回</button>
+                <button class="h-8 px-5 bg-[#1c7ffd] text-white rounded hover:bg-blue-600 transition-colors text-[13px]" onclick="showAssignModal()">分配</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分配弹窗 -->
+    <div id="assignModal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="closeAssignModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] bg-white rounded-lg shadow-2xl">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <span class="font-medium text-[#303133]">配额分配</span>
+                <i class="fa-solid fa-xmark text-gray-400 cursor-pointer hover:text-gray-600" onclick="closeAssignModal()"></i>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <label class="text-[#606266] whitespace-nowrap w-[120px] text-right">CPU配额（核）：</label>
+                        <input type="number" value="2" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="text-[#606266] whitespace-nowrap w-[120px] text-right">内存配额（Mb）：</label>
+                        <input type="number" value="2048" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="text-[#606266] whitespace-nowrap w-[120px] text-right">审核意见：</label>
+                        <textarea class="flex-1 h-24 px-3 py-2 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd] resize-none" placeholder="请输入审核意见"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
+                <button class="h-8 px-5 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-[13px]" onclick="closeAssignModal()">取消</button>
+                <button class="h-8 px-5 bg-[#1c7ffd] text-white rounded hover:bg-blue-600 transition-colors text-[13px]" onclick="submitAssign()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 已审核查看抽屉 -->
+    <div id="quotaViewDrawer" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="closeViewDrawer()"></div>
+        <div class="absolute right-0 top-0 h-full w-[680px] bg-white shadow-2xl flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <span class="text-[16px] font-medium text-[#303133]">部门名称：市场运营部</span>
+                        <span class="inline-flex items-center justify-center h-5 px-2.5 bg-green-50 text-green-600 rounded-sm text-[12px]">已分配</span>
+                    </div>
+                    <i class="fa-solid fa-xmark text-gray-400 cursor-pointer hover:text-gray-600" onclick="closeViewDrawer()"></i>
+                </div>
+                <div class="text-[#909399] text-[13px] mt-2">审核时间：2026-07-15 09:15:00</div>
+            </div>
+            
+            <div class="px-6 pt-4 border-b border-gray-100">
+                <div class="flex">
+                    <div id="viewBasicInfoTab" class="pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer transition-colors text-[14px]" onclick="switchViewDrawerTab('basic')">基本信息</div>
+                    <div id="viewResourceConfigTab" class="pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]" onclick="switchViewDrawerTab('resource')">资源配置情况</div>
+                    <div id="viewApprovalRecordTab" class="pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]" onclick="switchViewDrawerTab('record')">审批记录</div>
+                </div>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-6">
+                <div id="viewBasicInfoContent">
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-[15px] font-medium text-[#303133] mb-4">原信息</h3>
+                            <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">CPU配额(核)：</label>
+                                    <span class="text-[#303133]">4</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">内存配额(Mb)：</label>
+                                    <span class="text-[#303133]">8192</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">CPU使用(核)：</label>
+                                    <span class="text-[#303133]">2.5</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">内存使用(Mb)：</label>
+                                    <span class="text-[#303133]">4096</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-[15px] font-medium text-[#303133] mb-4">申请信息</h3>
+                            <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">CPU配额（核）：</label>
+                                    <span class="text-[#303133]">2</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">内存配额（Mb）：</label>
+                                    <span class="text-[#303133]">2048</span>
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="text-[#606266] block mb-2">申请原因：</label>
+                                    <div class="bg-gray-50 rounded p-4 text-[#606266] text-[13px]">
+                                        申请配额用于市场数据分析。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-[15px] font-medium text-[#303133] mb-4">分配信息</h3>
+                            <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">CPU配额（核）：</label>
+                                    <span class="text-[#303133]">2</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-[#606266] whitespace-nowrap w-[120px]">内存配额（Mb）：</label>
+                                    <span class="text-[#303133]">2048</span>
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="text-[#606266] block mb-2">审核意见：</label>
+                                    <div class="bg-gray-50 rounded p-4 text-[#606266] text-[13px]">
+                                        同意分配。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="viewResourceConfigContent" class="hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-[13px] text-[#606266]">
+                            <thead class="bg-[#f8f8f9] text-[#909399] font-medium border-b border-gray-200">
+                                <tr>
+                                    <th class="py-3 px-4 w-16">序号</th>
+                                    <th class="py-3 px-4">模型名称</th>
+                                    <th class="py-3 px-4">镜像名称</th>
+                                    <th class="py-3 px-4">模型所属方</th>
+                                    <th class="py-3 px-4 cursor-pointer hover:text-[#1c7ffd] transition-colors">cpu使用 <i class="fa-solid fa-sort"></i></th>
+                                    <th class="py-3 px-4 cursor-pointer hover:text-[#1c7ffd] transition-colors">内存使用 <i class="fa-solid fa-sort"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="py-20 text-center text-gray-400">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <i class="fa-regular fa-folder-open text-5xl mb-3 text-gray-300"></i>
+                                            <span class="text-[14px]">暂无数据</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-end items-center mt-4 text-[#606266] text-sm">
+                        <span class="mr-4">共 0 条</span>
+                        <div class="flex items-center gap-1">
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50 cursor-not-allowed">
+                                <i class="fa-solid fa-angle-left"></i>
+                            </button>
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50">0</button>
+                            <button class="w-7 h-7 flex items-center justify-center border border-gray-200 rounded text-gray-400 bg-gray-50 cursor-not-allowed">
+                                <i class="fa-solid fa-angle-right"></i>
+                            </button>
+                        </div>
+                        <div class="relative ml-4 w-[90px]">
+                            <select class="w-full border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:border-[#1c7ffd] appearance-none bg-white cursor-pointer hover:border-gray-400 transition-colors">
+                                <option>10 条/页</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="viewApprovalRecordContent" class="hidden">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- 驳回弹窗 -->
+    <div id="rejectModal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="closeRejectModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] bg-white rounded-lg shadow-2xl">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <span class="font-medium text-[#303133]">驳回原因</span>
+                <i class="fa-solid fa-xmark text-gray-400 cursor-pointer hover:text-gray-600" onclick="closeRejectModal()"></i>
+            </div>
+            <div class="p-6">
+                <div class="flex items-start gap-3">
+                    <label class="text-[#606266] whitespace-nowrap w-[100px] text-right pt-1">驳回原因：</label>
+                    <textarea class="flex-1 h-24 px-3 py-2 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd] resize-none" placeholder="请输入驳回原因"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
+                <button class="h-8 px-5 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-[13px]" onclick="closeRejectModal()">取消</button>
+                <button class="h-8 px-5 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-[13px]" onclick="submitReject()">确定驳回</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            if (tab === 'pending') {
+                document.getElementById('pendingTab').classList.add('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('pendingTab').classList.remove('text-[#606266]');
+                document.getElementById('approvedTab').classList.remove('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('approvedTab').classList.add('text-[#606266]');
+                document.getElementById('pending-list').classList.remove('hidden');
+                document.getElementById('approved-list').classList.add('hidden');
+            } else {
+                document.getElementById('approvedTab').classList.add('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('approvedTab').classList.remove('text-[#606266]');
+                document.getElementById('pendingTab').classList.remove('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('pendingTab').classList.add('text-[#606266]');
+                document.getElementById('approved-list').classList.remove('hidden');
+                document.getElementById('pending-list').classList.add('hidden');
+            }
+        }
+
+        function switchDrawerTab(tab) {
+            document.getElementById('basicInfoTab').classList.remove('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+            document.getElementById('basicInfoTab').classList.add('text-[#606266]');
+            document.getElementById('resourceConfigTab').classList.remove('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+            document.getElementById('resourceConfigTab').classList.add('text-[#606266]');
+            document.getElementById('approvalRecordTab').classList.remove('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+            document.getElementById('approvalRecordTab').classList.add('text-[#606266]');
+            document.getElementById('basicInfoContent').classList.add('hidden');
+            document.getElementById('resourceConfigContent').classList.add('hidden');
+            document.getElementById('approvalRecordContent').classList.add('hidden');
+            
+            if (tab === 'basic') {
+                document.getElementById('basicInfoTab').classList.add('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('basicInfoTab').classList.remove('text-[#606266]');
+                document.getElementById('basicInfoContent').classList.remove('hidden');
+            } else if (tab === 'resource') {
+                document.getElementById('resourceConfigTab').classList.add('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('resourceConfigTab').classList.remove('text-[#606266]');
+                document.getElementById('resourceConfigContent').classList.remove('hidden');
+            } else if (tab === 'record') {
+                document.getElementById('approvalRecordTab').classList.add('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('approvalRecordTab').classList.remove('text-[#606266]');
+                document.getElementById('approvalRecordContent').classList.remove('hidden');
+            }
+        }
+
+        function toggleColumnFilter(filterId, event) {
+            event.stopPropagation();
+            const filter = document.getElementById(filterId);
+            filter.classList.toggle('hidden');
+        }
+
+        function closeColumnFilter(filterId) {
+            document.getElementById(filterId).classList.add('hidden');
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('[id$="Filter"]') && !event.target.closest('.fa-filter')) {
+                document.querySelectorAll('[id$="Filter"]').forEach(filter => {
+                    filter.classList.add('hidden');
+                });
+            }
+        });
+
+        function openAuditDrawer() {
+            document.getElementById('quotaAuditDrawer').classList.remove('hidden');
+        }
+
+        function closeAuditDrawer() {
+            document.getElementById('quotaAuditDrawer').classList.add('hidden');
+        }
+
+        function switchViewDrawerTab(tab) {
+            document.getElementById('viewBasicInfoTab').classList.remove('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+            document.getElementById('viewBasicInfoTab').classList.add('text-[#606266]');
+            document.getElementById('viewResourceConfigTab').classList.remove('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+            document.getElementById('viewResourceConfigTab').classList.add('text-[#606266]');
+            document.getElementById('viewApprovalRecordTab').classList.remove('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+            document.getElementById('viewApprovalRecordTab').classList.add('text-[#606266]');
+            document.getElementById('viewBasicInfoContent').classList.add('hidden');
+            document.getElementById('viewResourceConfigContent').classList.add('hidden');
+            document.getElementById('viewApprovalRecordContent').classList.add('hidden');
+            
+            if (tab === 'basic') {
+                document.getElementById('viewBasicInfoTab').classList.add('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('viewBasicInfoTab').classList.remove('text-[#606266]');
+                document.getElementById('viewBasicInfoContent').classList.remove('hidden');
+            } else if (tab === 'resource') {
+                document.getElementById('viewResourceConfigTab').classList.add('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('viewResourceConfigTab').classList.remove('text-[#606266]');
+                document.getElementById('viewResourceConfigContent').classList.remove('hidden');
+            } else if (tab === 'record') {
+                document.getElementById('viewApprovalRecordTab').classList.add('text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]', 'font-medium');
+                document.getElementById('viewApprovalRecordTab').classList.remove('text-[#606266]');
+                document.getElementById('viewApprovalRecordContent').classList.remove('hidden');
+            }
+        }
+
+        function openViewDrawer() {
+            document.getElementById('quotaViewDrawer').classList.remove('hidden');
+        }
+
+        function closeViewDrawer() {
+            document.getElementById('quotaViewDrawer').classList.add('hidden');
+        }
+
+        function showAssignModal() {
+            document.getElementById('assignModal').classList.remove('hidden');
+        }
+
+        function closeAssignModal() {
+            document.getElementById('assignModal').classList.add('hidden');
+        }
+
+        function showRejectModal() {
+            document.getElementById('rejectModal').classList.remove('hidden');
+        }
+
+        function closeRejectModal() {
+            document.getElementById('rejectModal').classList.add('hidden');
+        }
+
+        function submitAssign() {
+            alert('分配成功');
+            closeAssignModal();
+            closeAuditDrawer();
+        }
+
+        function submitReject() {
+            alert('已驳回');
+            closeRejectModal();
+            closeAuditDrawer();
+        }
+    </script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P36",
+      "title": "数据服务平台 - 配额分配审核",
+      "path": "quota_audit.html",
+      "route": "/quota_audit.html"
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P36-quotaauditdrawer",
+      "type": "drawer",
+      "name": "原信息",
+      "pageKey": "P36",
+      "openSelector": "#quotaAuditDrawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "原信息"
+    },
+    {
+      "id": "surface-P36-assignmodal",
+      "type": "modal",
+      "name": "surface-P36-assignmodal",
+      "pageKey": "P36",
+      "openSelector": "#assignModal",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred"
+    },
+    {
+      "id": "surface-P36-quotaviewdrawer",
+      "type": "drawer",
+      "name": "原信息",
+      "pageKey": "P36",
+      "openSelector": "#quotaViewDrawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "原信息"
+    },
+    {
+      "id": "surface-P36-rejectmodal",
+      "type": "modal",
+      "name": "surface-P36-rejectmodal",
+      "pageKey": "P36",
+      "openSelector": "#rejectModal",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P36-001",
+      "pageKey": "P36",
+      "target": {
+        "selector": "main",
+        "fallbackText": "审批中心 / 待处理 / 配额分配审核 待审核 已审核 部门名称： 重置 查询 配额分配待审核列表 序号 部门名称 申请时间 操作 1 数据要素事业部 2026-07-17 10:30:15 审核 2 数据研发部 2026-07-16 14:20:30 审核 共 2 条 1 10 条/页 配额分配已审核列表 序号 部门",
+        "strategy": "tag",
+        "sourceElementId": "P36-E004",
+        "boundsHint": {
+          "text": "审批中心 / 待处理 / 配额分配审核 待审核 已审核 部门名称： 重置 查询 配额分配待审核列表 序号 部门名称 申请时间 操作 1 数据要素事业部 2026-07-17 10:30:15 审核 2 数据研发部 2026-07-16 14:20:30 审核 共 2 条 1 10 条/页 配额分配已审核列表 序号 部门",
+          "tag": "main"
+        }
+      },
+      "title": "审批中心 / 待处理 / 配额分配… · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「审批中心 / 待处理 / 配额分配审核 待审核 已审核 部门名称： 重置 查询 配额分配待审核列表 序号 部门名称 申请时间 操作 1 数据要素事业部 2026-07-17 10:30:15 审核 2 数据研发部 2026-07-16 14:20:30 审核 共 2 条 1 10 条/页 配额分配已审核列表 序号 部门」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「审批中心 / 待处理 / 配额分配审核 待审核 已审核 部门名称： 重置 查询 配额分配待审核列表 序号 部门名称 申请时间 操作 1 数据要素事业部 2026-07-17 10:30:15 审核 2 数据研发部 2026-07-16 14:20:30 审核 共 2 条 1 10 条/页 配额分配已审核列表 序号 部门」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「审批中心 / 待处理 / 配额分配审核 待审核 已审核 部门名称： 重置 查询 配额分配待审核列表 序号 部门名称 申请时间 操作 1 数据要素事业部 2026-07-17 10:30:15 审核 2 数据研发部 2026-07-16 14:20:30 审核 共 2 条 1 10 条/页 配额分配已审核列表 序号 部门」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 请输入\n- 10 条/页\n- 序号 部门名称 申请时间 操作 1 数据要素事…\n- 序号 部门名称 审核结果 已分配 已驳回 确定…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P36-E004"
+      },
+      "evidence": [
+        "页面：审批中心 / 待处理 / 配额分配审核 待审核 已审核 部门名称： 重置 查询 配额分配待审核列表 序号 部门名称 申请时间 操作 1 数据要素事业部 2026-07-17 10:30:15 审核 2 数据研发部 2026-07-16 14:20:30 审核 共 2 条 1 10 条/页 配额分配已审核列表 序号 部门",
+        "路由：/quota_audit.html",
+        "页面文本：审批中心 / 待处理 / 配额分配审核 待审核 已审核 部门名称： 重置 查询 配额分配待审核列表 序号 部门名称 申请时间 操作 1 数据要素事业部 2026",
+        "selector：main"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P36-003",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P36-002",
+      "pageKey": "P36",
+      "target": {
+        "selector": "#pending-list table",
+        "fallbackText": "序号 部门名称 申请时间 操作 1 数据要素事业部 2026-07-17 10:30:15 审核 2 数据研发部 2026-07-16 14:20:30 审核",
+        "strategy": "data-descendant",
+        "sourceElementId": "P36-E011",
+        "boundsHint": {
+          "text": "序号 部门名称 申请时间 操作 1 数据要素事业部 2026-07-17 10:30:15 审核 2 数据研发部 2026-07-16 14:20:30 审核",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「序号 部门名称 申请时间 操作 1 数据要素事业部 2026-…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P36-E011"
+      },
+      "evidence": [
+        "页面文本：序号 部门名称 申请时间 操作 1 数据要素事业部 2026-07-17 10:30:15 审核 2 数据研发部 2026-07-16 14:20:30 审核",
+        "selector：#pending-list table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P36-010",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P36-003",
+      "pageKey": "P36",
+      "target": {
+        "selector": "#approved-list table",
+        "fallbackText": "序号 部门名称 审核结果 已分配 已驳回 确定 重置 审核时间 操作 1 市场运营部 已分配 2026-07-15 09:15:00 查看 2 平台架构部 已驳回 2026-07-14 16:45:00 查看",
+        "strategy": "data-descendant",
+        "sourceElementId": "P36-E018",
+        "boundsHint": {
+          "text": "序号 部门名称 审核结果 已分配 已驳回 确定 重置 审核时间 操作 1 市场运营部 已分配 2026-07-15 09:15:00 查看 2 平台架构部 已驳回 2026-07-14 16:45:00 查看",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「序号 部门名称 审核结果 已分配 已驳回 确定 重置 审核时间…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P36-E018"
+      },
+      "evidence": [
+        "页面文本：序号 部门名称 审核结果 已分配 已驳回 确定 重置 审核时间 操作 1 市场运营部 已分配 2026-07-15 09:15:00 查看 2 平台架构部 已驳",
+        "selector：#approved-list table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P36-017",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P36-004",
+      "pageKey": "P36",
+      "target": {
+        "selector": "div:nth-of-type(3) \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e select",
+        "fallbackText": "10 条/页",
+        "strategy": "path",
+        "sourceElementId": "P36-E039",
+        "boundsHint": {
+          "text": "10 条/页",
+          "tag": "select"
+        }
+      },
+      "title": "10 条/页",
+      "contentMarkdown": "### 业务含义\n\n「10 条/页」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P36-E039"
+      },
+      "evidence": [
+        "页面文本：10 条/页",
+        "selector：div:nth-of-type(3) \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e select",
+        "二级界面：原信息"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P36-038",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P36-quotaauditdrawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 4
+    },
+    {
+      "id": "ANN-P36-005",
+      "pageKey": "P36",
+      "target": {
+        "selector": "div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div \u003e div:nth-of-type(1) \u003e input",
+        "fallbackText": "",
+        "strategy": "path",
+        "sourceElementId": "P36-E044",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P36-E044"
+      },
+      "evidence": [
+        "selector：div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div \u003e div:nth-of-type(1) \u003e input",
+        "二级界面：surface-P36-assignmodal"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P36-043",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P36-assignmodal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 5
+    },
+    {
+      "id": "ANN-P36-006",
+      "pageKey": "P36",
+      "target": {
+        "selector": "div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div \u003e div:nth-of-type(2) \u003e input",
+        "fallbackText": "",
+        "strategy": "path",
+        "sourceElementId": "P36-E045",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P36-E045"
+      },
+      "evidence": [
+        "selector：div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div \u003e div:nth-of-type(2) \u003e input",
+        "二级界面：surface-P36-assignmodal"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P36-044",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P36-assignmodal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 6
+    },
+    {
+      "id": "ANN-P36-007",
+      "pageKey": "P36",
+      "target": {
+        "selector": "textarea[placeholder*=\"请输入审核意见\"]",
+        "fallbackText": "",
+        "strategy": "placeholder",
+        "sourceElementId": "P36-E046",
+        "boundsHint": {
+          "text": "",
+          "tag": "textarea"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P36-E046"
+      },
+      "evidence": [
+        "selector：textarea[placeholder*=\"请输入审核意见\"]",
+        "二级界面：surface-P36-assignmodal"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P36-045",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P36-assignmodal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 7
+    },
+    {
+      "id": "ANN-P36-008",
+      "pageKey": "P36",
+      "target": {
+        "selector": "button[onclick=\"closeAssignModal()\"]",
+        "fallbackText": "取消",
+        "strategy": "handler",
+        "sourceElementId": "P36-E047",
+        "boundsHint": {
+          "text": "取消",
+          "tag": "button"
+        }
+      },
+      "title": "取消",
+      "contentMarkdown": "### 业务含义\n\n「取消」用于关闭当前二级界面并返回主页面，不提交或保存当前内容。\n\n### 交互规则\n\n- 用户点击后关闭当前抽屉、弹窗或确认框。\n- 关闭后主页面保持原有数据和筛选状态。\n- 如果界面内存在未保存内容，是否提示确认应由业务规则决定。\n\n### 状态与异常\n\n- 关闭成功：二级界面消失，焦点回到触发入口或主页面。\n- 存在未保存内容：可提示用户确认放弃修改。\n\n### 待确认\n\n- 关闭未保存内容时是否需要二次确认？\n- 关闭后焦点是否需要回到打开入口？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "surface",
+        "interaction",
+        "action"
+      ],
+      "dimension": "Surface action",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P36-E047"
+      },
+      "evidence": [
+        "页面文本：取消",
+        "selector：button[onclick=\"closeAssignModal()\"]",
+        "二级界面：surface-P36-assignmodal"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P36-046",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P36-assignmodal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 8
+    },
+    {
+      "id": "ANN-P36-009",
+      "pageKey": "P36",
+      "target": {
+        "selector": "textarea[placeholder*=\"请输入驳回原因\"]",
+        "fallbackText": "",
+        "strategy": "placeholder",
+        "sourceElementId": "P36-E058",
+        "boundsHint": {
+          "text": "",
+          "tag": "textarea"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P36-E058"
+      },
+      "evidence": [
+        "selector：textarea[placeholder*=\"请输入驳回原因\"]",
+        "二级界面：surface-P36-rejectmodal"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P36-057",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P36-rejectmodal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 9
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

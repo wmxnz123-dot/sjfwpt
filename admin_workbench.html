@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数据沙箱平台 - 管理工作台</title>
+    <title>数据服务平台 - 工作台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -17,9 +17,9 @@
 <body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
     <!-- 顶部导航栏 -->
     <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
             <i class="fa-solid fa-cubes-stacked text-2xl"></i>
-            <span class="text-lg font-medium tracking-wider ml-1">数据沙箱平台</span>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
         </div>
         <div class="flex items-center gap-6">
             <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
@@ -65,43 +65,58 @@
                 </div>
 
                 <!-- 业务概览 -->
-                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6">
-                    <h2 class="text-[16px] font-bold text-[#303133] mb-5">业务概览</h2>
-                    <div class="grid grid-cols-4 gap-5">
-                        <div class="flex items-center gap-4 p-5 rounded-lg border border-gray-100 bg-gradient-to-r from-blue-50 to-white hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center text-xl shrink-0">
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-                            </div>
-                            <div>
-                                <div class="text-[#909399] text-[13px] mb-1">已发布资源</div>
-                                <div class="text-[28px] font-bold text-[#303133] leading-none">12</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4 p-5 rounded-lg border border-gray-100 bg-gradient-to-r from-green-50 to-white hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center text-xl shrink-0">
-                                <i class="fa-solid fa-database"></i>
-                            </div>
-                            <div>
-                                <div class="text-[#909399] text-[13px] mb-1">自用数据资源</div>
-                                <div class="text-[28px] font-bold text-[#303133] leading-none">8</div>
+                <div class="bg-white rounded-xl shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-1 h-4 bg-[#1c7ffd] rounded-full"></span>
+                        <h2 class="text-[15px] font-bold text-[#303133]">业务概览</h2>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3">
+                        <div class="group relative overflow-hidden py-3 px-3.5 rounded-lg border border-gray-100 bg-gradient-to-br from-blue-50 to-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+                            <div class="absolute -right-5 -bottom-5 w-16 h-16 bg-blue-100/40 rounded-full group-hover:scale-125 transition-transform duration-500"></div>
+                            <div class="relative flex items-center gap-3">
+                                <div class="w-11 h-11 rounded-lg bg-[#1c7ffd] text-white flex items-center justify-center text-lg shrink-0 shadow-sm shadow-blue-200">
+                                    <i class="fa-solid fa-folder-open"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[20px] font-bold text-[#303133] leading-none mb-0.5">128</div>
+                                    <div class="text-[#909399] text-[12px]">已发布目录数</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-4 p-5 rounded-lg border border-gray-100 bg-gradient-to-r from-orange-50 to-white hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center text-xl shrink-0">
-                                <i class="fa-solid fa-tasks"></i>
-                            </div>
-                            <div>
-                                <div class="text-[#909399] text-[13px] mb-1">开发任务</div>
-                                <div class="text-[28px] font-bold text-[#303133] leading-none">15</div>
+                        <div class="group relative overflow-hidden py-3 px-3.5 rounded-lg border border-gray-100 bg-gradient-to-br from-green-50 to-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+                            <div class="absolute -right-5 -bottom-5 w-16 h-16 bg-green-100/40 rounded-full group-hover:scale-125 transition-transform duration-500"></div>
+                            <div class="relative flex items-center gap-3">
+                                <div class="w-11 h-11 rounded-lg bg-green-500 text-white flex items-center justify-center text-lg shrink-0 shadow-sm shadow-green-200">
+                                    <i class="fa-solid fa-server"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[20px] font-bold text-[#303133] leading-none mb-0.5">86</div>
+                                    <div class="text-[#909399] text-[12px]">已发布服务数</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-4 p-5 rounded-lg border border-gray-100 bg-gradient-to-r from-purple-50 to-white hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 rounded-full bg-purple-500 text-white flex items-center justify-center text-xl shrink-0">
-                                <i class="fa-solid fa-cube"></i>
+                        <div class="group relative overflow-hidden py-3 px-3.5 rounded-lg border border-gray-100 bg-gradient-to-br from-orange-50 to-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+                            <div class="absolute -right-5 -bottom-5 w-16 h-16 bg-orange-100/40 rounded-full group-hover:scale-125 transition-transform duration-500"></div>
+                            <div class="relative flex items-center gap-3">
+                                <div class="w-11 h-11 rounded-lg bg-orange-500 text-white flex items-center justify-center text-lg shrink-0 shadow-sm shadow-orange-200">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[20px] font-bold text-[#303133] leading-none mb-0.5">53</div>
+                                    <div class="text-[#909399] text-[12px]">申请服务数</div>
+                                </div>
                             </div>
-                            <div>
-                                <div class="text-[#909399] text-[13px] mb-1">数据模型统计</div>
-                                <div class="text-[28px] font-bold text-[#303133] leading-none">6</div>
+                        </div>
+                        <div class="group relative overflow-hidden py-3 px-3.5 rounded-lg border border-gray-100 bg-gradient-to-br from-purple-50 to-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+                            <div class="absolute -right-5 -bottom-5 w-16 h-16 bg-purple-100/40 rounded-full group-hover:scale-125 transition-transform duration-500"></div>
+                            <div class="relative flex items-center gap-3">
+                                <div class="w-11 h-11 rounded-lg bg-purple-500 text-white flex items-center justify-center text-lg shrink-0 shadow-sm shadow-purple-200">
+                                    <i class="fa-solid fa-handshake"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[20px] font-bold text-[#303133] leading-none mb-0.5">42</div>
+                                    <div class="text-[#909399] text-[12px]">供给服务数</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -111,40 +126,52 @@
                     <!-- 我的待办 -->
                     <div class="flex-1 bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 flex flex-col">
                         <div class="flex justify-between items-center mb-5">
-                            <h2 class="text-[16px] font-bold text-[#303133]">我的待办</h2>
+                            <div class="flex items-center gap-2">
+                                <span class="w-1 h-5 bg-[#1c7ffd] rounded-full"></span>
+                                <h2 class="text-[16px] font-bold text-[#303133]">待办事项</h2>
+                            </div>
+                            <span class="text-[12px] text-[#f56c6c] bg-red-50 px-2 py-1 rounded-full font-medium">6 项待处理</span>
                         </div>
 
                         <div class="grid grid-cols-2 gap-3 flex-1 content-start">
-                            <a href="data_resource_audit.html?nav=pending-resource" class="relative flex items-center gap-3 p-3 rounded-lg m-2 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 transition-colors group">
-                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full z-10">3</div>
-                                <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center text-lg shrink-0">
+                            <a href="catalog_audit.html?nav=resource-catalog-audit" class="relative flex items-center gap-3 p-3.5 rounded-xl m-1.5 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 hover:shadow-md transition-all duration-200 group">
+                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold min-w-5 h-5 px-1 flex items-center justify-center rounded-full z-10 shadow-sm">5</div>
+                                <div class="w-11 h-11 rounded-xl bg-blue-100 text-[#1c7ffd] flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-folder-plus"></i>
+                                </div>
+                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">目录发布审核</div>
+                            </a>
+
+                            <a href="service_delivery.html?nav=resource-service-delivery" class="relative flex items-center gap-3 p-3.5 rounded-xl m-1.5 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 hover:shadow-md transition-all duration-200 group">
+                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold min-w-5 h-5 px-1 flex items-center justify-center rounded-full z-10 shadow-sm">4</div>
+                                <div class="w-11 h-11 rounded-xl bg-orange-100 text-orange-500 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-truck-fast"></i>
+                                </div>
+                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">服务交付</div>
+                            </a>
+
+                            <a href="demand_accept.html?nav=demand-accept" class="relative flex items-center gap-3 p-3.5 rounded-xl m-1.5 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 hover:shadow-md transition-all duration-200 group">
+                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold min-w-5 h-5 px-1 flex items-center justify-center rounded-full z-10 shadow-sm">7</div>
+                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-500 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition-transform">
                                     <i class="fa-solid fa-file-signature"></i>
                                 </div>
-                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">数据资源审核</div>
+                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">需求受理</div>
                             </a>
 
-                            <a href="data_resource_renew_audit.html?nav=pending-renew" class="relative flex items-center gap-3 p-3 rounded-lg m-2 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 transition-colors group">
-                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full z-10">2</div>
-                                <div class="w-10 h-10 rounded-full bg-green-100 text-green-500 flex items-center justify-center text-lg shrink-0">
-                                    <i class="fa-solid fa-refresh"></i>
+                            <a href="demand_audit.html?nav=demand-audit" class="relative flex items-center gap-3 p-3.5 rounded-xl m-1.5 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 hover:shadow-md transition-all duration-200 group">
+                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold min-w-5 h-5 px-1 flex items-center justify-center rounded-full z-10 shadow-sm">2</div>
+                                <div class="w-11 h-11 rounded-xl bg-teal-100 text-teal-500 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-clipboard-check"></i>
                                 </div>
-                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">资源续期审核</div>
+                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">需求审核</div>
                             </a>
 
-                            <a href="model_deploy_audit.html?nav=pending-deploy" class="relative flex items-center gap-3 p-3 rounded-lg m-2 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 transition-colors group">
-                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full z-10">2</div>
-                                <div class="w-10 h-10 rounded-full bg-blue-100 text-[#1c7ffd] flex items-center justify-center text-lg shrink-0">
-                                    <i class="fa-solid fa-cube"></i>
+                            <a href="objection_accept.html?nav=objection-accept" class="relative flex items-center gap-3 p-3.5 rounded-xl m-1.5 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 hover:shadow-md transition-all duration-200 group">
+                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold min-w-5 h-5 px-1 flex items-center justify-center rounded-full z-10 shadow-sm">1</div>
+                                <div class="w-11 h-11 rounded-xl bg-pink-100 text-pink-500 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
                                 </div>
-                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">模型注册部署</div>
-                            </a>
-
-                            <a href="model_change_audit.html?nav=pending-change" class="relative flex items-center gap-3 p-3 rounded-lg m-2 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 transition-colors group">
-                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full z-10">1</div>
-                                <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center text-lg shrink-0">
-                                    <i class="fa-solid fa-code-branch"></i>
-                                </div>
-                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">模型变更部署</div>
+                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">异议受理</div>
                             </a>
 
                         </div>
@@ -160,7 +187,7 @@
                         <div class="flex flex-col gap-1 flex-1 overflow-y-auto pr-1">
                             <div class="flex items-center gap-3 px-2 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer">
                                 <div class="w-2 h-2 rounded-full bg-[#f56c6c] shrink-0"></div>
-                                <div class="flex-1 min-w-0 text-[#303133] text-[13px] truncate">数据资源申请已通过审核</div>
+                                <div class="flex-1 min-w-0 text-[#303133] text-[13px] truncate">数据申请已通过审核</div>
                                 <div class="text-[#909399] text-[12px] shrink-0">2024-01-25 10:30</div>
                             </div>
 
@@ -178,7 +205,7 @@
 
                             <div class="flex items-center gap-3 px-2 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer">
                                 <div class="w-2 h-2 rounded-full bg-gray-300 shrink-0"></div>
-                                <div class="flex-1 min-w-0 text-[#606266] text-[13px] truncate">数据资源授权即将到期提醒通知</div>
+                                <div class="flex-1 min-w-0 text-[#606266] text-[13px] truncate">数据授权即将到期提醒通知</div>
                                 <div class="text-[#909399] text-[12px] shrink-0">2024-01-23 14:00</div>
                             </div>
 
@@ -222,5 +249,845 @@
             </div>
         </main>
     </div>
+
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P04",
+      "title": "数据服务平台 - 工作台",
+      "path": "admin_workbench.html",
+      "route": "/admin_workbench.html"
+    }
+  ],
+  "surfaces": [],
+  "annotations": [
+    {
+      "id": "ANN-P04-001",
+      "pageKey": "P04",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "欢迎登录，yiyun！",
+        "strategy": "tag",
+        "sourceElementId": "P04-E006",
+        "boundsHint": {
+          "text": "欢迎登录，yiyun！",
+          "tag": "h1"
+        }
+      },
+      "title": "欢迎登录，yiyun！ · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「欢迎登录，yiyun！」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「欢迎登录，yiyun！」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「欢迎登录，yiyun！」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 5 目录发布审核\n- 2 需求审核\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P04-E006"
+      },
+      "evidence": [
+        "页面：欢迎登录，yiyun！",
+        "路由：/admin_workbench.html",
+        "页面文本：欢迎登录，yiyun！",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P04-005",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P04-002",
+      "pageKey": "P04",
+      "target": {
+        "selector": "a[href=\"catalog_audit.html?nav=resource-catalog-audit\"]",
+        "fallbackText": "5 目录发布审核",
+        "strategy": "href",
+        "sourceElementId": "P04-E009",
+        "boundsHint": {
+          "text": "5 目录发布审核",
+          "tag": "a"
+        }
+      },
+      "title": "5 目录发布审核",
+      "contentMarkdown": "### 业务含义\n\n「5 目录发布审核」关键操作入口。\n\n### 交互规则\n\n- 用户点击「5 目录发布审核」后，系统应执行与该入口对应的业务动作。\n- 操作前应校验当前用户、当前对象状态和必要输入是否满足条件。\n- 若该入口用于跳转，应进入 `catalog_audit.html?nav=resource-catalog-audit` 对应页面并保留必要上下文。\n\n### 状态与异常\n\n- 处理中：按钮应进入 loading 或禁用状态，避免重复触发。\n- 失败：保留当前页面状态，并提示用户可执行的修正或重试方式。\n\n### 证据\n\n- 页面文本：5 目录发布审核\n- selector：a[href=\"catalog_audit.html?nav=resource-catalog-audit\"]\n\n### 待确认\n\n- 点击后的目标页面、弹窗或状态变化是否已确认？\n- 是否存在角色权限、状态限制或二次确认要求？\n- 候选证据是否与 PRD 或上游页面级需求说明文档一致？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "business",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Primary action",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P04-E009"
+      },
+      "evidence": [
+        "页面文本：5 目录发布审核",
+        "selector：a[href=\"catalog_audit.html?nav=resource-catalog-audit\"]"
+      ],
+      "nextActions": [
+        "点击 `5 目录发布审核` 后需要确认页面/弹窗/状态变化、成功反馈和失败处理。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P04-008",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P04-003",
+      "pageKey": "P04",
+      "target": {
+        "selector": "a[href=\"demand_audit.html?nav=demand-audit\"]",
+        "fallbackText": "2 需求审核",
+        "strategy": "href",
+        "sourceElementId": "P04-E012",
+        "boundsHint": {
+          "text": "2 需求审核",
+          "tag": "a"
+        }
+      },
+      "title": "2 需求审核",
+      "contentMarkdown": "### 业务含义\n\n「2 需求审核」关键操作入口。\n\n### 交互规则\n\n- 用户点击「2 需求审核」后，系统应执行与该入口对应的业务动作。\n- 操作前应校验当前用户、当前对象状态和必要输入是否满足条件。\n- 若该入口用于跳转，应进入 `demand_audit.html?nav=demand-audit` 对应页面并保留必要上下文。\n\n### 状态与异常\n\n- 操作完成后：20\n- 操作完成后：查看更多\n\n### 证据\n\n- 页面文本：2 需求审核\n- selector：a[href=\"demand_audit.html?nav=demand-audit\"]\n- 短暂反馈：20\n- 短暂反馈：查看更多\n\n### 待确认\n\n- 点击后的目标页面、弹窗或状态变化是否已确认？\n- 是否存在角色权限、状态限制或二次确认要求？\n- 候选证据是否与 PRD 或上游页面级需求说明文档一致？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "business",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Primary action",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P04-E012"
+      },
+      "evidence": [
+        "页面文本：2 需求审核",
+        "selector：a[href=\"demand_audit.html?nav=demand-audit\"]",
+        "短暂反馈：20",
+        "短暂反馈：查看更多"
+      ],
+      "nextActions": [
+        "点击 `2 需求审核` 后需要确认页面/弹窗/状态变化、成功反馈和失败处理。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P04-011",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P04-004",
+      "pageKey": "P04",
+      "target": {
+        "selector": "div:nth-of-type(1) \u003e main \u003e div:nth-of-type(2) \u003e div:nth-of-type(2)",
+        "fallbackText": "业务概览 128 已发布目录数 86 已发布服务数 53 申请服务数 42 供给服务数",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "div"
+        }
+      },
+      "title": "业务概览 128 已发布目录数 86 已发布服务",
+      "contentMarkdown": "### 业务含义\n\n1212",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 4,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T08:07:41.271Z"
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
 </body>
 </html>

@@ -1,0 +1,384 @@
+{
+  "version": 1,
+  "project": {
+    "id": "expense-reimbursement-demo",
+    "name": "智能报销助手",
+    "source": "example-seed"
+  },
+  "productProfile": {
+    "productName": "智能报销助手",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "审批系统"
+    ],
+    "primaryUsers": [
+      "员工",
+      "领导",
+      "财务"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "AI",
+      "PERM",
+      "WF",
+      "DATA",
+      "HITL",
+      "FALLBACK"
+    ]
+  },
+  "pages": [
+    {
+      "pageKey": "P01",
+      "title": "智能报销助手",
+      "path": "index.html",
+      "route": "/index.html",
+      "type": "form",
+      "role": [
+        "员工"
+      ]
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P01-001",
+      "pageKey": "P01",
+      "annotationType": "P",
+      "target": {
+        "selector": "[data-ann=\"page-title\"]",
+        "fallbackText": "智能报销助手",
+        "strategy": "data",
+        "sourceElementId": "P01-E001"
+      },
+      "title": "页面说明",
+      "contentMarkdown": "### 页面来源\n\n- 员工从报销申请入口进入本页，用于创建新的报销单。\n\n### 页面功能\n\n- 本页承载发票上传、AI 识别、事项说明、风险校验和提交审批的主路径。\n\n### 阅读重点\n\n- 重点确认 AI 识别结果是否可人工修正、风险校验如何阻断提交，以及提交后的审批流转。",
+      "kind": "note",
+      "dimension": "Page overview",
+      "topics": [
+        "overview",
+        "flow"
+      ],
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 1 产品概述"
+      },
+      "evidence": [
+        "PRD：智能报销助手用于帮助员工上传发票、自动识别发票信息、生成报销明细，并完成领导与财务审批。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "ANN-P01-002",
+      "pageKey": "P01",
+      "annotationType": "E",
+      "target": {
+        "selector": "[data-ann=\"expense-application-page\"]",
+        "fallbackText": "上传发票后自动识别、生成报销明细，并提交领导和财务审批。",
+        "strategy": "data",
+        "sourceElementId": "P01-E002"
+      },
+      "title": "入口来源",
+      "contentMarkdown": "### 页面来源\n\n- 员工在发起报销时进入本页，页面状态默认为草稿。\n\n### 前后依赖\n\n- 上游需要有员工身份、组织信息和可用报销规则；下游进入领导审批和财务审核。",
+      "kind": "flow",
+      "dimension": "Flow and navigation",
+      "topics": [
+        "source",
+        "flow"
+      ],
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 3 核心流程"
+      },
+      "evidence": [
+        "PRD：员工进入报销申请页。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "ANN-P01-003",
+      "pageKey": "P01",
+      "annotationType": "C",
+      "target": {
+        "selector": "[data-ann=\"invoice-upload-area\"]",
+        "fallbackText": "发票上传",
+        "strategy": "data",
+        "sourceElementId": "P01-E003"
+      },
+      "title": "发票上传区",
+      "contentMarkdown": "### 业务含义\n\n- 员工在此上传发票 PDF 或图片，作为 AI 识别和报销明细生成的输入。\n\n### 字段规则\n\n- 需要确认支持的文件格式、大小限制、重复发票校验和上传失败提示。",
+      "kind": "form",
+      "dimension": "Form and validation",
+      "topics": [
+        "field-rule",
+        "interaction"
+      ],
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 4.1 发票信息智能提取"
+      },
+      "evidence": [
+        "PRD：输入包括发票 PDF / 图片。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "ANN-P01-004",
+      "pageKey": "P01",
+      "annotationType": "AI",
+      "target": {
+        "selector": "[data-ann=\"ai-result-area\"]",
+        "fallbackText": "AI识别结果",
+        "strategy": "data",
+        "sourceElementId": "P01-E004"
+      },
+      "title": "发票信息智能提取",
+      "contentMarkdown": "### 业务含义\n\n- AI 根据上传发票提取发票号码、金额、日期、报销类目、销售方和购买方。\n\n### 交互规则\n\n- 识别结果需要展示字段值和置信度，低置信度字段应提醒员工复核。\n\n### 状态与异常\n\n- 需要确认识别中、识别失败、低置信度和重复识别时的提示与恢复路径。",
+      "kind": "ai",
+      "dimension": "AI and automation",
+      "topics": [
+        "ai",
+        "state",
+        "exception"
+      ],
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 4.1 发票信息智能提取"
+      },
+      "evidence": [
+        "PRD：系统调用 AI 识别发票信息。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "ANN-P01-005",
+      "pageKey": "P01",
+      "annotationType": "C",
+      "target": {
+        "selector": "[data-ann=\"trip-description\"]",
+        "fallbackText": "事项说明",
+        "strategy": "data",
+        "sourceElementId": "P01-E005"
+      },
+      "title": "事项说明",
+      "contentMarkdown": "### 业务含义\n\n- 员工补充出差城市、日期和事由，用于解释发票用途并辅助生成报销明细。\n\n### 字段规则\n\n- 需要确认是否必填、最小字数、敏感词提示，以及和发票日期的校验关系。",
+      "kind": "form",
+      "dimension": "Form and validation",
+      "topics": [
+        "field-rule",
+        "business"
+      ],
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 3 核心流程"
+      },
+      "evidence": [
+        "PRD：员工填写事项说明。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "ANN-P01-006",
+      "pageKey": "P01",
+      "annotationType": "FALLBACK",
+      "target": {
+        "selector": "[data-ann=\"ai-result-area\"]",
+        "fallbackText": "AI识别结果",
+        "strategy": "data",
+        "sourceElementId": "P01-E004"
+      },
+      "title": "识别失败兜底",
+      "contentMarkdown": "### 状态与异常\n\n- 发票识别失败时允许员工手动填写或修正识别字段，不应阻断继续编辑草稿。\n\n### 交互规则\n\n- 需要确认手动填写后的字段是否仍进入规则校验，以及是否记录 AI 失败原因。",
+      "kind": "ai",
+      "dimension": "AI and automation",
+      "topics": [
+        "ai",
+        "exception"
+      ],
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 4.1 失败兜底"
+      },
+      "evidence": [
+        "PRD：识别失败时允许手动填写。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "ANN-P01-007",
+      "pageKey": "P01",
+      "annotationType": "R",
+      "target": {
+        "selector": "[data-ann=\"risk-check-area\"]",
+        "fallbackText": "风险校验结果",
+        "strategy": "data",
+        "sourceElementId": "P01-E006"
+      },
+      "title": "差旅标准校验",
+      "contentMarkdown": "### 业务含义\n\n- 系统根据员工职级、出差城市、发票类目判断是否超出报销标准。\n\n### 风险提示\n\n- 超标结果需要说明是否允许提交、是否要求补充说明，以及审批人是否能看到风险原因。",
+      "kind": "permission",
+      "dimension": "Permission and risk",
+      "topics": [
+        "risk",
+        "business"
+      ],
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 5.1 差旅标准校验"
+      },
+      "evidence": [
+        "PRD：根据员工职级、出差城市、发票类目判断是否超出报销标准。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "ANN-P01-008",
+      "pageKey": "P01",
+      "annotationType": "A",
+      "target": {
+        "selector": "[data-ann=\"submit-approval\"]",
+        "fallbackText": "提交审批",
+        "strategy": "data",
+        "sourceElementId": "P01-E008"
+      },
+      "title": "提交审批",
+      "contentMarkdown": "### 交互规则\n\n- 员工点击提交审批后，系统应校验发票识别结果、事项说明和风险校验是否满足提交条件。\n\n### 状态与异常\n\n- 校验通过后状态从草稿进入待领导审批；校验失败时应停留当前页并提示原因。",
+      "kind": "interaction",
+      "dimension": "Primary action",
+      "topics": [
+        "interaction",
+        "flow",
+        "state"
+      ],
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 3 核心流程"
+      },
+      "evidence": [
+        "PRD：员工提交审批。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "ANN-P01-009",
+      "pageKey": "P01",
+      "annotationType": "J",
+      "target": {
+        "selector": "[data-ann=\"submit-approval\"]",
+        "fallbackText": "提交审批",
+        "strategy": "data",
+        "sourceElementId": "P01-E008"
+      },
+      "title": "提交后跳转",
+      "contentMarkdown": "### 页面流转\n\n- 提交成功后进入领导审批节点，员工应能在报销列表或详情页查看当前审批状态。\n\n### 前后依赖\n\n- 跳转和状态变更依赖审批流配置、领导关系和财务审核规则。",
+      "kind": "flow",
+      "dimension": "Flow and navigation",
+      "topics": [
+        "flow",
+        "dependency"
+      ],
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 3 核心流程"
+      },
+      "evidence": [
+        "PRD：领导审批、财务审核、审核通过或驳回。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    },
+    {
+      "id": "ANN-P01-010",
+      "pageKey": "P01",
+      "annotationType": "S",
+      "target": {
+        "selector": "[data-ann=\"expense-status\"]",
+        "fallbackText": "状态：草稿",
+        "strategy": "data",
+        "sourceElementId": "P01-E007"
+      },
+      "title": "报销单状态",
+      "contentMarkdown": "### 状态与异常\n\n- 报销单状态包括草稿、待领导审批、待财务审核、已通过和已驳回。\n\n### 页面流转\n\n- 不同状态会影响是否允许编辑、重新提交、撤回或查看审批意见。",
+      "kind": "state",
+      "dimension": "State and exception",
+      "topics": [
+        "state",
+        "flow"
+      ],
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "PRD 6 状态流转"
+      },
+      "evidence": [
+        "PRD：草稿、待领导审批、待财务审核、已通过、已驳回。"
+      ],
+      "createdBy": "ai",
+      "review": {
+        "required": false,
+        "status": "completed"
+      }
+    }
+  ]
+}

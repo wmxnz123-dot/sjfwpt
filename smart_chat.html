@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能问答助手 - 数据服务平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="portal_common.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0f52ba 0%, #1c7ffd 50%, #5a8bfb 100%); }
+    </style>
+</head>
+<body class="bg-[#f5f7fa] text-[14px] text-gray-700">
+    <script>PortalCommon.renderHeader('');</script>
+
+    <main class="pt-16">
+        <div class="max-w-[1440px] mx-auto px-6 py-6">
+            <div class="flex gap-6 h-[calc(100vh-120px)]">
+                <div class="w-64 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col shrink-0">
+                    <div class="p-4 border-b border-gray-100">
+                        <button onclick="startNewChat()" class="w-full py-2.5 bg-[#1c7ffd] hover:bg-[#1a73e8] text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            新建对话
+                        </button>
+                    </div>
+                    <div class="flex-1 overflow-y-auto p-3">
+                        <p class="text-xs text-[#909399] px-3 mb-2">历史对话</p>
+                        <div class="space-y-1">
+                            <button class="w-full text-left px-3 py-2.5 bg-blue-50 text-[#1c7ffd] rounded-lg text-sm hover:bg-blue-50 transition-colors line-clamp-1">
+                                我想做一个婚姻查询的应用
+                            </button>
+                            <button class="w-full text-left px-3 py-2.5 text-[#606266] hover:bg-gray-50 rounded-lg text-sm transition-colors line-clamp-1">
+                                企业信用查询怎么申请
+                            </button>
+                            <button class="w-full text-left px-3 py-2.5 text-[#606266] hover:bg-gray-50 rounded-lg text-sm transition-colors line-clamp-1">
+                                人口数据服务接口有哪些
+                            </button>
+                            <button class="w-full text-left px-3 py-2.5 text-[#606266] hover:bg-gray-50 rounded-lg text-sm transition-colors line-clamp-1">
+                                数据安全如何保障
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-3 border-t border-gray-100">
+                        <div class="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors">
+                            <div class="w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
+                                <i class="fa-solid fa-user text-white text-xs"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-[#303133] truncate">admin</p>
+                                <p class="text-xs text-[#909399] truncate">管理员</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
+                    <div class="h-14 border-b border-gray-100 flex items-center justify-between px-6 shrink-0">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
+                                <i class="fa-solid fa-robot text-white text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-[#303133] text-sm">智能问答助手</h3>
+                                <p class="text-xs text-green-500 flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    在线服务中
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="清空对话" onclick="startNewChat()">
+                                <i class="fa-solid fa-trash-can text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-br from-blue-50/30 to-white" id="chat-messages">
+                        <div id="chat-welcome" class="flex flex-col items-center justify-center h-full py-10">
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center mb-5">
+                                <div class="w-14 h-14 rounded-full gradient-bg flex items-center justify-center">
+                                    <i class="fa-solid fa-robot text-white text-2xl"></i>
+                                </div>
+                            </div>
+                            <h2 class="text-2xl font-bold text-[#303133] mb-2">你好，我是智能问答助手</h2>
+                            <p class="text-[#606266] mb-8">我可以帮您查询数据资源、解答平台使用问题，请问有什么可以帮您？</p>
+
+                            <div class="w-full max-w-3xl">
+                                <p class="text-sm text-[#909399] mb-3 text-center">试试问我这些问题</p>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
+                                        <div class="flex items-start gap-3">
+                                            <i class="fa-solid fa-car text-[#1c7ffd] mt-0.5"></i>
+                                            <div>
+                                                <p class="font-medium">我要新能源汽车相关数据</p>
+                                                <p class="text-xs text-[#909399] mt-1">查询新能源汽车产业相关数据资源</p>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
+                                        <div class="flex items-start gap-3">
+                                            <i class="fa-solid fa-building text-[#1c7ffd] mt-0.5"></i>
+                                            <div>
+                                                <p class="font-medium">企业纳税数据是谁的？</p>
+                                                <p class="text-xs text-[#909399] mt-1">了解企业纳税数据的归属部门</p>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
+                                        <div class="flex items-start gap-3">
+                                            <i class="fa-solid fa-chart-line text-[#1c7ffd] mt-0.5"></i>
+                                            <div>
+                                                <p class="font-medium">做数字经济分析需要哪些数据？</p>
+                                                <p class="text-xs text-[#909399] mt-1">获取数字经济分析所需的数据资源推荐</p>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
+                                        <div class="flex items-start gap-3">
+                                            <i class="fa-solid fa-file-circle-check text-[#1c7ffd] mt-0.5"></i>
+                                            <div>
+                                                <p class="font-medium">如何申请数据资源？</p>
+                                                <p class="text-xs text-[#909399] mt-1">了解数据资源申请的流程和条件</p>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 p-4 shrink-0 bg-white">
+                        <div class="flex items-end gap-3">
+                            <div class="flex-1 relative">
+                                <textarea id="chat-input" rows="1" placeholder="请输入您的问题..." class="w-full px-4 py-3 pr-24 border border-gray-200 rounded-xl text-sm resize-none outline-none focus:border-[#1c7ffd] focus:ring-2 focus:ring-[#1c7ffd]/10 transition-all max-h-32" oninput="autoResize(this)" onkeydown="handleChatKeydown(event)"></textarea>
+                                <div class="absolute right-3 bottom-3 flex items-center gap-2">
+                                    <button class="text-[#909399] hover:text-[#1c7ffd] transition-colors" title="附件">
+                                        <i class="fa-solid fa-paperclip"></i>
+                                    </button>
+                                    <button class="text-[#909399] hover:text-[#1c7ffd] transition-colors" title="语音">
+                                        <i class="fa-solid fa-microphone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button onclick="sendMessage()" class="px-5 py-3 bg-[#1c7ffd] text-white rounded-lg text-sm font-medium hover:bg-[#1a73e8] transition-colors flex items-center gap-2 shrink-0">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                发送
+                            </button>
+                        </div>
+                        <p class="text-xs text-[#909399] mt-2 text-center">AI生成内容仅供参考，具体以平台实际规则为准</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>PortalCommon.renderFloatButtons();</script>
+
+    <script>
+        let basketCount = 1;
+        let customizing = false;
+        let lastRecommendServices = [];
+
+        function startNewChat() {
+            const welcome = document.getElementById('chat-welcome');
+            if (welcome) welcome.classList.remove('hidden');
+            const container = document.getElementById('chat-messages');
+            const messages = container.querySelectorAll('.flex.items-start.gap-3');
+            messages.forEach(msg => {
+                if (!msg.closest('#chat-welcome')) msg.remove();
+            });
+            document.getElementById('chat-input').value = '';
+            document.getElementById('chat-input').style.height = 'auto';
+        }
+
+        function hideWelcome() {
+            const welcome = document.getElementById('chat-welcome');
+            if (welcome) welcome.classList.add('hidden');
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
+        }
+
+        function sendQuickQuestion(btn) {
+            const text = btn.querySelector('p:first-child')?.textContent?.trim() || btn.textContent.trim();
+            hideWelcome();
+            addUserMessage(text);
+            simulateReply(text);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            hideWelcome();
+            addUserMessage(text);
+            input.value = '';
+            input.style.height = 'auto';
+            simulateReply(text);
+        }
+
+        function handleChatKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function addUserMessage(text) {
+            const container = document.getElementById('chat-messages');
+            const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            const html = `
+                <div class="flex items-start gap-3 justify-end">
+                    <div class="max-w-[70%]">
+                        <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-sm px-4 py-3 text-sm leading-relaxed">
+                            ${escapeHtml(text)}
+                        </div>
+                        <div class="text-xs text-[#909399] mt-1 mr-1 text-right">${time}</div>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user text-gray-500 text-xs"></i>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+            scrollToBottom();
+        }
+
+        function simulateReply(userText) {
+            const container = document.getElementById('chat-messages');
+            const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            
+            const loadingHtml = `
+                <div class="flex items-start gap-3" id="ai-loading">
+                    <div class="w-8 h-8 rounded-full gradient-bg flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-robot text-white text-xs"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
+                        <span class="inline-block w-1 h-1 bg-[#909399] rounded-full animate-bounce"></span>
+                        <span class="inline-block w-1 h-1 bg-[#909399] rounded-full animate-bounce mx-0.5" style="animation-delay: 0.15s"></span>
+                        <span class="inline-block w-1 h-1 bg-[#909399] rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', loadingHtml);
+            scrollToBottom();
+
+            setTimeout(() => {
+                document.getElementById('ai-loading').remove();
+                const replyText = generateReply(userText);
+                if (!replyText) {
+                    scrollToBottom();
+                    return;
+                }
+                const replyHtml = `
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full gradient-bg flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-robot text-white text-xs"></i>
+                        </div>
+                        <div class="max-w-[70%]">
+                            <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-[#303133] leading-relaxed">
+                                ${replyText}
+                            </div>
+                            <div class="text-xs text-[#909399] mt-1 ml-1">${time}</div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', replyHtml);
+                scrollToBottom();
+            }, 1000);
+        }
+
+        function generateReply(text) {
+            if (customizing) {
+                customizing = false;
+                addCustomToBasket(text);
+                return '';
+            }
+
+            if (text.includes('定制') || text.includes('我的需求')) {
+                customizing = true;
+                return '好的，请告诉我您的具体数据需求，包括需要什么类型的数据、使用场景、数据字段等信息，我会将您的定制需求加入数据篮，后续会有专人与您对接。';
+            }
+
+            if (text.includes('加入数据篮') || text.includes('加进去') || text.includes('添加到数据篮')) {
+                if (lastRecommendServices.length > 0) {
+                    const serviceName = lastRecommendServices[0];
+                    lastRecommendServices = [];
+                    addToBasket(serviceName, serviceName);
+                    return '';
+                }
+                const serviceName = extractServiceName(text);
+                if (serviceName) {
+                    addToBasket(serviceName, serviceName);
+                    return '';
+                }
+                return '请问您想把哪个数据服务加入数据篮呢？您可以直接告诉我服务名称。';
+            }
+
+            if (text.includes('没找到') || text.includes('找不到') || text.includes('没有相关数据')) {
+                return '很抱歉没有找到您需要的数据资源。<br><br>不过别担心，我们支持<strong>数据定制服务</strong>！<br><br>您可以告诉我具体的数据需求，我们会：<br>• 评估数据可行性<br>• 协调数据提供方<br>• 定制数据接口或数据包<br><br>请问您需要什么类型的数据呢？';
+            }
+
+            if (text.includes('新能源汽车') || text.includes('汽车')) {
+                lastRecommendServices = ['新能源汽车产业数据接口', '充电基础设施数据接口'];
+                return `根据您的需求，为您推荐以下新能源汽车相关数据资源：<br><br>
+                    <strong>1. ${dataLink('新能源汽车产业数据', 'business')}</strong><br>
+                    • 提供方：市工业和信息化局<br>
+                    • 数据内容：新能源汽车产量、销量、保有量等产业数据<br>
+                    • 更新频率：月度更新<br><br>
+                    <strong>2. ${dataLink('充电基础设施数据', 'district')}</strong><br>
+                    • 提供方：市发展改革委<br>
+                    • 数据内容：充电桩分布、充电量、运营状态等数据<br>
+                    • 更新频率：实时更新<br><br>
+                    <strong>3. ${dataLink('机动车保有量数据', 'population')}</strong><br>
+                    • 提供方：市公安局交通管理局<br>
+                    • 数据内容：机动车注册登记、转移登记等数据<br>
+                    • 更新频率：月度更新<br><br>
+                    您需要我把这些数据服务加入数据篮吗？`;
+            }
+            if (text.includes('企业纳税') || text.includes('纳税数据') || text.includes('是谁的')) {
+                return `企业纳税数据的相关说明：<br><br>
+                    <strong>数据提供方</strong>：国家税务总局某市税务局<br><br>
+                    <strong>数据内容</strong>：<br>
+                    • 企业纳税基本信息<br>
+                    • 各税种缴纳情况<br>
+                    • 纳税信用等级<br>
+                    • 欠税信息等<br><br>
+                    <strong>数据分类</strong>：<br>
+                    • 公共数据：纳税信用A级企业名单、欠税公告等可公开信息<br>
+                    • 受限数据：企业具体纳税明细（需授权申请）<br><br>
+                    <strong>注意事项</strong>：<br>
+                    企业纳税明细数据属于敏感数据，申请使用需符合相关法律法规要求，并取得数据主体授权。`;
+            }
+            if (text.includes('数字经济') && text.includes('分析')) {
+                lastRecommendServices = ['数字经济核心产业数据接口', '数字产业企业名录接口'];
+                return `做数字经济分析建议关注以下几类数据：<br><br>
+                    <strong>一、产业基础数据</strong><br>
+                    • ${dataLink('数字产业企业名录', 'business')}（工信部门）<br>
+                    • 软件和信息技术服务业数据<br>
+                    • 互联网行业发展数据<br><br>
+                    <strong>二、经济运行数据</strong><br>
+                    • 数字经济核心产业增加值（统计部门）<br>
+                    • 数字产品进出口贸易数据<br>
+                    • 数字产业投资数据<br><br>
+                    <strong>三、创新能力数据</strong><br>
+                    • 数字经济领域专利数据（知识产权局）<br>
+                    • 软件著作权登记数据<br>
+                    • ${dataLink('高新技术企业认定数据', 'business')}<br><br>
+                    <strong>四、基础设施数据</strong><br>
+                    • 5G基站建设数据<br>
+                    • 数据中心布局数据<br>
+                    • 宽带网络覆盖数据<br><br>
+                    需要我帮您把推荐的数据服务加入数据篮吗？`;
+            }
+            if (text.includes('申请') && text.includes('数据')) {
+                return `申请数据资源的详细流程如下：<br><br>
+                    <strong>第一步：查找数据</strong><br>
+                    在数据中心浏览或搜索您需要的数据资源<br><br>
+                    <strong>第二步：提交申请</strong><br>
+                    1. 进入数据详情页，点击"申请使用"<br>
+                    2. 填写申请信息（用途说明、使用场景等）<br>
+                    3. 上传相关证明材料<br>
+                    4. 提交申请<br><br>
+                    <strong>第三步：审核流程</strong><br>
+                    1. 平台初审（1个工作日）<br>
+                    2. 数据提供方审核（1-3个工作日）<br>
+                    3. 审核结果通知<br><br>
+                    <strong>第四步：使用数据</strong><br>
+                    审核通过后，您可以：<br>
+                    • 通过API接口调用数据<br>
+                    • 下载数据包（如适用）<br>
+                    • 在数据沙箱中使用数据<br><br>
+                    您有想申请的具体数据吗？我可以帮您找到。`;
+            }
+            if (text.includes('婚姻') || (text.includes('应用') && text.includes('数据'))) {
+                lastRecommendServices = ['人口基本信息查询接口', '婚姻登记信息查询接口'];
+                return `根据您的需求，开发婚姻查询应用可能需要以下数据资源：<br><br>
+                    <strong>1. ${dataLink('人口基本信息数据', 'population')}</strong><br>
+                    • 目录名称：人口基础信息库<br>
+                    • 服务名称：人口基本信息查询接口<br>
+                    • 服务类型：API接口服务<br><br>
+                    <strong>2. ${dataLink('婚姻登记数据', 'population')}</strong><br>
+                    • 目录名称：婚姻登记信息库<br>
+                    • 服务名称：婚姻登记信息查询接口<br>
+                    • 服务类型：API接口服务<br><br>
+                    <strong>3. ${dataLink('户籍信息数据', 'population')}</strong><br>
+                    • 目录名称：户籍人口信息库<br>
+                    • 服务名称：户籍信息查询接口<br>
+                    • 服务类型：API接口服务<br><br>
+                    您需要我把哪个服务加入数据篮吗？`;
+            }
+            if (text.includes('收费')) {
+                return '数据服务平台提供基础免费和增值收费两种模式：<br><br>• <strong>免费服务</strong>：公共数据资源免费开放，包含基础的人口、法人、信用等公共数据可免费申请使用<br><br>• <strong>增值服务</strong>：部分高价值数据资源和定制化服务需要收费，具体费用根据数据类型和调用量确定<br><br>您可以在数据中心查看每个数据服务的具体收费标准。';
+            }
+            if (text.includes('安全') || text.includes('隐私')) {
+                return '平台高度重视数据安全和隐私保护：<br><br>• 所有数据传输采用加密传输<br>• 严格的数据脱敏处理<br>• 完善的访问控制和审计机制<br>• 符合国家数据安全法规要求<br>• 通过等保三级认证<br><br>您可以放心使用平台的数据服务。';
+            }
+            return '感谢您的提问！我是数据服务平台智能问答助手，可以帮您解答数据资源查找、申请使用、平台操作等问题。<br><br>如果您没有找到需要的数据，我们还支持<strong>数据定制服务</strong>，告诉我您的需求，我们来帮您对接实现。<br><br>请问还有什么可以帮您的？';
+        }
+
+        function extractServiceName(text) {
+            const patterns = ['人口数据服务', '人口基本信息', '婚姻登记', '户籍信息', '新能源汽车', '充电基础设施'];
+            for (const p of patterns) {
+                if (text.includes(p)) return p + '接口';
+            }
+            return null;
+        }
+
+        function addToBasket(serviceId, serviceName) {
+            basketCount++;
+            const badge = document.querySelector('#basket-badge span');
+            if (badge) {
+                badge.textContent = basketCount;
+            }
+            
+            const container = document.getElementById('chat-messages');
+            const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            const html = `
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-[#00d9a6] flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-basket-shopping text-white text-xs"></i>
+                    </div>
+                    <div class="max-w-[70%]">
+                        <div class="bg-green-50 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-[#303133]">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-check text-[#00d9a6]"></i>
+                                <span><strong>${serviceName}</strong> 已成功加入数据篮</span>
+                            </div>
+                            <div class="mt-2 text-xs text-[#606266]">
+                                <a href="data_basket.html" class="text-[#1c7ffd] hover:underline">查看数据篮</a>
+                            </div>
+                        </div>
+                        <div class="text-xs text-[#909399] mt-1 ml-1">${time}</div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+            scrollToBottom();
+        }
+
+        function addCustomToBasket(demand) {
+            basketCount++;
+            const badge = document.querySelector('#basket-badge span');
+            if (badge) {
+                badge.textContent = basketCount;
+            }
+            // 保存定制需求到数据篮定制服务列表
+            try {
+                const item = {
+                    level: '市县级',
+                    provider: '待评估',
+                    catalog: (demand || '').slice(0, 20),
+                    type: '定制服务',
+                    service: demand,
+                    freqAvg: '-',
+                    freqPeak: '-',
+                    status: '未上传',
+                    createTime: new Date().toLocaleDateString('zh-CN')
+                };
+                const list = JSON.parse(localStorage.getItem('custom_services') || '[]');
+                list.push(item);
+                localStorage.setItem('custom_services', JSON.stringify(list));
+            } catch (e) { /* localStorage 不可用时忽略 */ }
+            
+            const container = document.getElementById('chat-messages');
+            const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            const html = `
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-lightbulb text-white text-xs"></i>
+                    </div>
+                    <div class="max-w-[70%]">
+                        <div class="bg-purple-50 rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-[#303133]">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-check text-purple-500"></i>
+                                <span><strong>定制需求已加入数据篮</strong></span>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 border border-purple-100">
+                                <p class="text-xs text-[#909399] mb-1">需求描述：</p>
+                                <p class="text-sm text-[#606266]">${escapeHtml(demand)}</p>
+                            </div>
+                            <div class="mt-3 text-xs text-[#606266]">
+                                我们会在1-3个工作日内评估您的需求并与您联系。
+                                <a href="data_basket.html" class="text-[#1c7ffd] hover:underline ml-2">查看数据篮</a>
+                            </div>
+                        </div>
+                        <div class="text-xs text-[#909399] mt-1 ml-1">${time}</div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('chat-messages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 生成数据名称详情页链接
+        function dataLink(name, id) {
+            return `<a href="portal_data_detail.html?id=${id}" target="_blank" class="text-[#1c7ffd] hover:underline cursor-pointer">${name} <i class="fa-solid fa-up-right-from-square text-[10px]"></i></a>`;
+        }
+    </script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P46",
+      "title": "智能问答助手 - 数据服务平台",
+      "path": "smart_chat.html",
+      "route": "/smart_chat.html"
+    }
+  ],
+  "surfaces": [],
+  "annotations": [
+    {
+      "id": "ANN-P46-001",
+      "pageKey": "P46",
+      "target": {
+        "selector": "div \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div \u003e h2",
+        "fallbackText": "你好，我是智能问答助手",
+        "strategy": "path",
+        "sourceElementId": "P46-E008",
+        "boundsHint": {
+          "text": "你好，我是智能问答助手",
+          "tag": "h2"
+        }
+      },
+      "title": "你好，我是智能问答助手 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「你好，我是智能问答助手」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「你好，我是智能问答助手」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「你好，我是智能问答助手」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 先确认本页在业务流程中的入口、出口和服务对象。\n- 阅读页面内其他标注时，重点关注非显而易见的交互规则、状态、权限和数据变化。\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P46-E008"
+      },
+      "evidence": [
+        "页面：你好，我是智能问答助手",
+        "路由：/smart_chat.html",
+        "页面文本：你好，我是智能问答助手",
+        "selector：div \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e div \u003e h2"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P46-008",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

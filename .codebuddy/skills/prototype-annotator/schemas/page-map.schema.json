@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prototype-annotator.local/schemas/page-map.schema.json",
+  "title": "Prototype Annotator page-map.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["pages"],
+  "properties": {
+    "version": {
+      "type": ["integer", "string"]
+    },
+    "root": {
+      "type": "string"
+    },
+    "surfaces": {
+      "type": "array",
+      "items": {
+        "$ref": "surface.schema.json"
+      }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["pageKey"],
+        "properties": {
+          "pageKey": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "route": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "role": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "elementId": {
+                  "type": "string"
+                },
+                "tag": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "selector": {
+                  "type": "string"
+                },
+                "strategy": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "visible": {
+                  "type": "boolean",
+                  "description": "Whether the element was visible at scan time"
+                },
+                "surfaceId": {
+                  "type": "string",
+                  "description": "Surface id when the element belongs to a secondary UI"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "trigger": {
+            "type": "string"
+          },
+          "condition": {
+            "type": "string"
+          },
+          "stateChange": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

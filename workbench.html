@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数据沙箱平台 - 开发工作台</title>
+    <title>数据服务平台 - 开发工作台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,7 +19,7 @@
     <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
         <div class="flex items-center gap-2">
             <i class="fa-solid fa-cubes-stacked text-2xl"></i>
-            <span class="text-lg font-medium tracking-wider ml-1">数据沙箱平台</span>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
         </div>
         <div class="flex items-center gap-6">
             <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href=\'my_messages.html\'">
@@ -80,13 +80,9 @@
                                     <div class="flex flex-col items-center flex-1 px-1">
                                         <div class="bg-white rounded-lg px-2 py-1.5 flex items-center gap-1 text-[12px] border border-blue-50 shadow-sm flex-wrap justify-center mb-2">
                                             <div class="w-4 h-4 rounded-full bg-[#5a8bfb] text-white flex items-center justify-center text-[10px] font-bold shrink-0">1</div>
-                                            <span class="text-[#5a8bfb] font-bold">数据准备</span>
+                                            <span class="text-[#5a8bfb] font-bold">数据查看</span>
                                             <span class="text-gray-200">|</span>
-                                            <a href="resource_supermarket.html?nav=resource-market" class="text-[#606266] hover:text-[#5a8bfb] transition-colors">数据资源申请</a>
-                                            <span class="text-gray-200">|</span>
-                                            <a href="applied_data_resources.html?nav=resource-applied" class="text-[#606266] hover:text-[#5a8bfb] transition-colors">已申请数据</a>
-                                            <span class="text-gray-200">|</span>
-                                            <a href="own_data_manage.html?nav=resource-own" class="text-[#606266] hover:text-[#5a8bfb] transition-colors">自用数据管理</a>
+                                            <a href="scene_center.html?nav=sandbox-task" class="text-[#606266] hover:text-[#5a8bfb] transition-colors">开发任务</a>
                                         </div>
                                         <div class="w-3 h-3 rounded-full bg-white border-2 border-[#5a8bfb] z-10 shadow-sm"></div>
                                     </div>
@@ -98,9 +94,11 @@
                                             <div class="w-4 h-4 rounded-full bg-[#36c2aa] text-white flex items-center justify-center text-[10px] font-bold shrink-0">2</div>
                                             <span class="text-[#36c2aa] font-bold">数据开发</span>
                                             <span class="text-gray-200">|</span>
-                                            <a href="dev_task_create.html?nav=sandbox-task" class="text-[#606266] hover:text-[#36c2aa] transition-colors">开发任务创建</a>
+                                            <a href="test_zone_guide.html?nav=sandbox-test-doc" class="text-[#606266] hover:text-[#36c2aa] transition-colors">测试区使用说明</a>
                                             <span class="text-gray-200">|</span>
-                                            <a href="#" class="text-[#c0c4cc] cursor-not-allowed" title="暂无页面">测试区使用说明</a>
+                                            <a href="#" class="text-[#c0c4cc] cursor-not-allowed" title="暂无页面">在线开发</a>
+                                            <span class="text-gray-200">|</span>
+                                            <a href="#" class="text-[#c0c4cc] cursor-not-allowed">离线开发</a>
                                         </div>
                                     </div>
 
@@ -111,8 +109,6 @@
                                             <span class="text-[#7a6df4] font-bold">模型部署</span>
                                             <span class="text-gray-200">|</span>
                                             <a href="image_upload.html?nav=result-upload" class="text-[#606266] hover:text-[#7a6df4] transition-colors">镜像上传</a>
-                                            <span class="text-gray-200">|</span>
-                                            <a href="api_list.html?nav=result-api" class="text-[#606266] hover:text-[#7a6df4] transition-colors">API列表</a>
                                             <span class="text-gray-200">|</span>
                                             <a href="model_deploy_list.html?nav=model-register" class="text-[#606266] hover:text-[#7a6df4] transition-colors">模型部署</a>
                                             <span class="text-gray-200">|</span>
@@ -127,50 +123,150 @@
                 </div>
 
                 <div class="flex gap-5 flex-1 min-h-[300px]">
-                    <!-- 我的待办 -->
+                    <!-- 任务列表 -->
                     <div class="flex-1 bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 flex flex-col">
                         <div class="flex justify-between items-center mb-5">
-                            <h2 class="text-[16px] font-bold text-[#303133]">我的待办</h2>
+                            <h2 class="text-[16px] font-bold text-[#303133]">任务列表</h2>
+                            <a href="scene_center.html?nav=sandbox-task" class="text-sm text-gray-400 hover:text-[#1c7ffd] flex items-center">查看更多 <i class="fa-solid fa-angle-right ml-1 text-xs"></i></a>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3 flex-1 content-start">
-                            <a href="data_resource_audit.html?nav=pending-resource" class="relative flex items-center gap-3 p-3 rounded-lg m-2 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 transition-colors group">
-                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full z-10">3</div>
-                                <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center text-lg shrink-0">
-                                    <i class="fa-solid fa-file-signature"></i>
+                        <div class="grid grid-cols-2 gap-4 flex-1 content-start">
+                            <!-- Task Card 1 -->
+                            <div onclick="window.location.href='scene_detail.html'" class="group relative bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden flex flex-col h-[140px] transition-all hover:shadow-lg hover:border-blue-200 cursor-pointer">
+                                <div class="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#f0f6ff] to-[#e1edff] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0">
+                                    <svg class="absolute bottom-0 right-0 w-full h-full opacity-60 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <path d="M100,100 L100,40 C80,70 50,90 0,100 Z" fill="rgba(64,158,255,0.06)"></path>
+                                        <path d="M100,100 L100,0 C70,40 30,80 0,100 Z" fill="rgba(64,158,255,0.04)"></path>
+                                    </svg>
                                 </div>
-                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">数据资源审核</div>
-                            </a>
-
-                            <a href="data_resource_renew_audit.html?nav=pending-renew" class="relative flex items-center gap-3 p-3 rounded-lg m-2 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 transition-colors group">
-                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full z-10">2</div>
-                                <div class="w-10 h-10 rounded-full bg-green-100 text-green-500 flex items-center justify-center text-lg shrink-0">
-                                    <i class="fa-solid fa-refresh"></i>
+                                <div class="relative z-10 p-4 flex flex-col h-full">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="w-9 h-9 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center text-base shadow-sm shrink-0">
+                                                <i class="fa-solid fa-envelope"></i>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <span class="text-[#303133] font-bold text-[14px] truncate w-28" title="zh测试任务_0310">zh测试任务_0310</span>
+                                                <span class="text-[#909399] text-[11px] mt-0.5">任务ID：CJ20260310001</span>
+                                            </div>
+                                        </div>
+                                        <div class="bg-[#1c7ffd] text-white px-2 py-0.5 rounded-full text-[10px] flex items-center shadow-sm whitespace-nowrap">
+                                            <i class="fa-solid fa-clipboard-check mr-1 text-[9px]"></i> 已创建
+                                        </div>
+                                    </div>
+                                    <div class="border-b border-gray-100 mb-2 group-hover:border-blue-100 transition-colors duration-300"></div>
+                                    <div class="flex flex-col gap-1.5 mb-auto">
+                                        <span class="text-[#606266] text-[12px] truncate" title="任务描述：zh测试任务描述">任务描述：zh测试任务描述</span>
+                                    </div>
+                                    <div class="flex items-center text-[#909399] text-[11px]">
+                                        任务更新时间：2026-03-10 10:00:00
+                                    </div>
                                 </div>
-                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">资源续期审核</div>
-                            </a>
+                            </div>
 
-                            <a href="model_deploy_audit.html?nav=pending-deploy" class="relative flex items-center gap-3 p-3 rounded-lg m-2 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 transition-colors group">
-                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full z-10">2</div>
-                                <div class="w-10 h-10 rounded-full bg-blue-100 text-[#1c7ffd] flex items-center justify-center text-lg shrink-0">
-                                    <i class="fa-solid fa-cube"></i>
+                            <!-- Task Card 2 -->
+                            <div onclick="window.location.href='scene_detail.html'" class="group relative bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden flex flex-col h-[140px] transition-all hover:shadow-lg hover:border-blue-200 cursor-pointer">
+                                <div class="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#f0f6ff] to-[#e1edff] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0">
+                                    <svg class="absolute bottom-0 right-0 w-full h-full opacity-60 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <path d="M100,100 L100,40 C80,70 50,90 0,100 Z" fill="rgba(64,158,255,0.06)"></path>
+                                        <path d="M100,100 L100,0 C70,40 30,80 0,100 Z" fill="rgba(64,158,255,0.04)"></path>
+                                    </svg>
                                 </div>
-                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">模型部署审核</div>
-                            </a>
-
-                            <a href="model_change_audit.html?nav=pending-change" class="relative flex items-center gap-3 p-3 rounded-lg m-2 border border-gray-100 hover:border-[#1c7ffd] hover:bg-blue-50 transition-colors group">
-                                <div class="absolute -top-2 -right-2 bg-[#f56c6c] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full z-10">1</div>
-                                <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center text-lg shrink-0">
-                                    <i class="fa-solid fa-code-branch"></i>
+                                <div class="relative z-10 p-4 flex flex-col h-full">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="w-9 h-9 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center text-base shadow-sm shrink-0">
+                                                <i class="fa-solid fa-database"></i>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <span class="text-[#303133] font-bold text-[14px] truncate w-28" title="公积金数据任务_0815">公积金数据任务_0815</span>
+                                                <span class="text-[#909399] text-[11px] mt-0.5">任务ID：CJ20260815002</span>
+                                            </div>
+                                        </div>
+                                        <div class="bg-[#1c7ffd] text-white px-2 py-0.5 rounded-full text-[10px] flex items-center shadow-sm whitespace-nowrap">
+                                            <i class="fa-solid fa-clipboard-check mr-1 text-[9px]"></i> 已创建
+                                        </div>
+                                    </div>
+                                    <div class="border-b border-gray-100 mb-2 group-hover:border-blue-100 transition-colors duration-300"></div>
+                                    <div class="flex flex-col gap-1.5 mb-auto">
+                                        <span class="text-[#606266] text-[12px] truncate" title="任务描述：公积金数据处理任务">任务描述：公积金数据处理任务</span>
+                                    </div>
+                                    <div class="flex items-center text-[#909399] text-[11px]">
+                                        任务更新时间：2026-08-15 14:30:00
+                                    </div>
                                 </div>
-                                <div class="text-[#303133] font-medium group-hover:text-[#1c7ffd] transition-colors">模型变更审核</div>
-                            </a>
+                            </div>
 
+                            <!-- Task Card 3 -->
+                            <div onclick="window.location.href='scene_detail.html'" class="group relative bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden flex flex-col h-[140px] transition-all hover:shadow-lg hover:border-blue-200 cursor-pointer">
+                                <div class="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#f0f6ff] to-[#e1edff] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0">
+                                    <svg class="absolute bottom-0 right-0 w-full h-full opacity-60 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <path d="M100,100 L100,40 C80,70 50,90 0,100 Z" fill="rgba(64,158,255,0.06)"></path>
+                                        <path d="M100,100 L100,0 C70,40 30,80 0,100 Z" fill="rgba(64,158,255,0.04)"></path>
+                                    </svg>
+                                </div>
+                                <div class="relative z-10 p-4 flex flex-col h-full">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="w-9 h-9 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center text-base shadow-sm shrink-0">
+                                                <i class="fa-solid fa-file-pen"></i>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <span class="text-[#303133] font-bold text-[14px] truncate w-28" title="测试离线任务_0602">测试离线任务_0602</span>
+                                                <span class="text-[#909399] text-[11px] mt-0.5">任务ID：CJ20260602001</span>
+                                            </div>
+                                        </div>
+                                        <div class="bg-[#1c7ffd] text-white px-2 py-0.5 rounded-full text-[10px] flex items-center shadow-sm whitespace-nowrap">
+                                            <i class="fa-solid fa-clipboard-check mr-1 text-[9px]"></i> 已创建
+                                        </div>
+                                    </div>
+                                    <div class="border-b border-gray-100 mb-2 group-hover:border-blue-100 transition-colors duration-300"></div>
+                                    <div class="flex flex-col gap-1.5 mb-auto">
+                                        <span class="text-[#606266] text-[12px] truncate" title="任务描述：测试离线任务描述">任务描述：测试离线任务描述</span>
+                                    </div>
+                                    <div class="flex items-center text-[#909399] text-[11px]">
+                                        任务更新时间：2026-06-02 10:00:00
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Task Card 4 -->
+                            <div onclick="window.location.href='scene_detail.html'" class="group relative bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden flex flex-col h-[140px] transition-all hover:shadow-lg hover:border-blue-200 cursor-pointer">
+                                <div class="absolute inset-0 bg-gradient-to-br from-[#ffffff] via-[#f0f6ff] to-[#e1edff] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0">
+                                    <svg class="absolute bottom-0 right-0 w-full h-full opacity-60 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <path d="M100,100 L100,40 C80,70 50,90 0,100 Z" fill="rgba(64,158,255,0.06)"></path>
+                                        <path d="M100,100 L100,0 C70,40 30,80 0,100 Z" fill="rgba(64,158,255,0.04)"></path>
+                                    </svg>
+                                </div>
+                                <div class="relative z-10 p-4 flex flex-col h-full">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="w-9 h-9 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center text-base shadow-sm shrink-0">
+                                                <i class="fa-solid fa-circle-check"></i>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <span class="text-[#303133] font-bold text-[14px] truncate w-28" title="社保核验模型_0420">社保核验模型_0420</span>
+                                                <span class="text-[#909399] text-[11px] mt-0.5">任务ID：CJ20260420003</span>
+                                            </div>
+                                        </div>
+                                        <div class="bg-[#1c7ffd] text-white px-2 py-0.5 rounded-full text-[10px] flex items-center shadow-sm whitespace-nowrap">
+                                            <i class="fa-solid fa-clipboard-check mr-1 text-[9px]"></i> 已创建
+                                        </div>
+                                    </div>
+                                    <div class="border-b border-gray-100 mb-2 group-hover:border-blue-100 transition-colors duration-300"></div>
+                                    <div class="flex flex-col gap-1.5 mb-auto">
+                                        <span class="text-[#606266] text-[12px] truncate" title="任务描述：社保核验模型开发">任务描述：社保核验模型开发</span>
+                                    </div>
+                                    <div class="flex items-center text-[#909399] text-[11px]">
+                                        任务更新时间：2026-04-20 16:00:00
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 消息提醒 -->
-                    <div class="flex-1 bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 flex flex-col">
+                    <div class="w-[400px] bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 flex flex-col shrink-0">
                         <div class="flex justify-between items-center mb-5">
                             <h2 class="text-[16px] font-bold text-[#303133]">消息提醒</h2>
                             <a href="my_messages.html" class="text-sm text-gray-400 hover:text-[#1c7ffd] flex items-center">查看更多 <i class="fa-solid fa-angle-right ml-1 text-xs"></i></a>
@@ -179,7 +275,7 @@
                         <div class="flex flex-col gap-1 flex-1 overflow-y-auto pr-1">
                             <div class="flex items-center gap-3 px-2 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer">
                                 <div class="w-2 h-2 rounded-full bg-[#f56c6c] shrink-0"></div>
-                                <div class="flex-1 min-w-0 text-[#303133] text-[13px] truncate">数据资源申请已通过审核</div>
+                                <div class="flex-1 min-w-0 text-[#303133] text-[13px] truncate">数据申请已通过审核</div>
                                 <div class="text-[#909399] text-[12px] shrink-0">2024-01-25 10:30</div>
                             </div>
 
@@ -197,7 +293,7 @@
 
                             <div class="flex items-center gap-3 px-2 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer">
                                 <div class="w-2 h-2 rounded-full bg-gray-300 shrink-0"></div>
-                                <div class="flex-1 min-w-0 text-[#606266] text-[13px] truncate">数据资源授权即将到期提醒通知</div>
+                                <div class="flex-1 min-w-0 text-[#606266] text-[13px] truncate">数据授权即将到期提醒通知</div>
                                 <div class="text-[#909399] text-[12px] shrink-0">2024-01-23 14:00</div>
                             </div>
 
@@ -208,38 +304,705 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 快捷入口 -->
-                    <div class="w-[260px] bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5 flex flex-col shrink-0">
-                        <h2 class="text-[16px] font-bold text-[#303133] mb-4">快捷入口</h2>
-
-                        <div class="flex flex-col gap-2 overflow-y-auto pr-1 flex-1">
-                            <div class="flex items-center gap-3 p-3 rounded-lg border border-gray-100 bg-blue-50 cursor-pointer hover:bg-blue-100 hover:border-[#1c7ffd] transition-all group">
-                                <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#1c7ffd] text-base shrink-0 shadow-sm">
-                                    <i class="fa-solid fa-globe"></i>
-                                </div>
-                                <span class="text-[#303133] font-medium text-[13px] group-hover:text-[#1c7ffd] transition-colors">授权运营门户</span>
-                            </div>
-
-                            <div class="flex items-center gap-3 p-3 rounded-lg border border-gray-100 bg-blue-50 cursor-pointer hover:bg-blue-100 hover:border-[#1c7ffd] transition-all group">
-                                <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#1c7ffd] text-base shrink-0 shadow-sm">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                </div>
-                                <span class="text-[#303133] font-medium text-[13px] group-hover:text-[#1c7ffd] transition-colors">数据交易平台</span>
-                            </div>
-
-                            <div class="flex items-center gap-3 p-3 rounded-lg border border-gray-100 bg-blue-50 cursor-pointer hover:bg-blue-100 hover:border-[#1c7ffd] transition-all group">
-                                <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#1c7ffd] text-base shrink-0 shadow-sm">
-                                    <i class="fa-solid fa-book"></i>
-                                </div>
-                                <span class="text-[#303133] font-medium text-[13px] group-hover:text-[#1c7ffd] transition-colors">帮助中心</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 
             </div>
         </main>
     </div>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P50",
+      "title": "数据服务平台 - 开发工作台",
+      "path": "workbench.html",
+      "route": "/workbench.html"
+    }
+  ],
+  "surfaces": [],
+  "annotations": [
+    {
+      "id": "ANN-P50-001",
+      "pageKey": "P50",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "欢迎登录，yiyun！",
+        "strategy": "tag",
+        "sourceElementId": "P50-E005",
+        "boundsHint": {
+          "text": "欢迎登录，yiyun！",
+          "tag": "h1"
+        }
+      },
+      "title": "欢迎登录，yiyun！ · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「欢迎登录，yiyun！」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「欢迎登录，yiyun！」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「欢迎登录，yiyun！」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 先确认本页在业务流程中的入口、出口和服务对象。\n- 阅读页面内其他标注时，重点关注非显而易见的交互规则、状态、权限和数据变化。\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P50-E005"
+      },
+      "evidence": [
+        "页面：欢迎登录，yiyun！",
+        "路由：/workbench.html",
+        "页面文本：欢迎登录，yiyun！",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P50-004",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
 </body>
 </html>

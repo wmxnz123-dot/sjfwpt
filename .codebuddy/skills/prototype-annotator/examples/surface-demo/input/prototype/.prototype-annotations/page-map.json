@@ -1,0 +1,248 @@
+{
+  "version": 2,
+  "root": "/Users/sunlu/Documents/WorkSpace/SkillsInstalled/prototype-annotator/examples/surface-demo/input/prototype",
+  "scanMode": "static-html",
+  "pages": [
+    {
+      "pageKey": "P01",
+      "title": "应用管理",
+      "path": "index.html",
+      "route": "/index.html",
+      "elements": [
+        {
+          "elementId": "P01-E001",
+          "tag": "h1",
+          "type": "element",
+          "selector": "h1",
+          "strategy": "tag",
+          "text": "应用管理",
+          "visible": true,
+          "attrs": {}
+        },
+        {
+          "elementId": "P01-E002",
+          "tag": "div",
+          "type": "element",
+          "selector": "[data-ann=\"permission-alert\"]",
+          "strategy": "data",
+          "text": "当前用户仅可管理已授权应用",
+          "visible": true,
+          "attrs": {
+            "data-ann": "permission-alert"
+          }
+        },
+        {
+          "elementId": "P01-E003",
+          "tag": "button",
+          "type": "interaction",
+          "selector": "[data-ann=\"create-app\"]",
+          "strategy": "data",
+          "text": "新建应用",
+          "visible": true,
+          "attrs": {
+            "data-ann": "create-app",
+            "type": "button"
+          }
+        },
+        {
+          "elementId": "P01-E004",
+          "tag": "table",
+          "type": "table",
+          "selector": "table",
+          "strategy": "tag",
+          "text": "应用名称 操作 报销助手 删除",
+          "visible": true,
+          "attrs": {}
+        },
+        {
+          "elementId": "P01-E005",
+          "tag": "button",
+          "type": "interaction",
+          "selector": "[data-ann=\"delete-app\"]",
+          "strategy": "data",
+          "text": "删除",
+          "visible": true,
+          "attrs": {
+            "data-ann": "delete-app",
+            "type": "button"
+          }
+        },
+        {
+          "elementId": "P01-E006",
+          "tag": "div",
+          "type": "element",
+          "selector": "[data-ann=\"create-app-drawer\"]",
+          "strategy": "data",
+          "text": "新建应用 应用名称 关闭 保存",
+          "visible": false,
+          "attrs": {
+            "data-ann": "create-app-drawer"
+          },
+          "surfaceId": "surface-P01-create-app-drawer"
+        },
+        {
+          "elementId": "P01-E007",
+          "tag": "h2",
+          "type": "element",
+          "selector": "html > body > div:nth-of-type(3) > div > h2",
+          "strategy": "path",
+          "text": "新建应用",
+          "visible": true,
+          "attrs": {},
+          "surfaceId": "surface-P01-create-app-drawer"
+        },
+        {
+          "elementId": "P01-E008",
+          "tag": "input",
+          "type": "form",
+          "selector": "#app-name",
+          "strategy": "id",
+          "text": "请输入应用名称",
+          "visible": true,
+          "attrs": {
+            "id": "app-name",
+            "data-ann": "app-name-input",
+            "placeholder": "请输入应用名称"
+          },
+          "surfaceId": "surface-P01-create-app-drawer"
+        },
+        {
+          "elementId": "P01-E009",
+          "tag": "button",
+          "type": "interaction",
+          "selector": "[data-ann=\"close-create-app\"]",
+          "strategy": "data",
+          "text": "关闭",
+          "visible": true,
+          "attrs": {
+            "data-ann": "close-create-app",
+            "type": "button"
+          },
+          "surfaceId": "surface-P01-create-app-drawer"
+        },
+        {
+          "elementId": "P01-E010",
+          "tag": "button",
+          "type": "interaction",
+          "selector": "[data-ann=\"save-app\"]",
+          "strategy": "data",
+          "text": "保存",
+          "visible": true,
+          "attrs": {
+            "data-ann": "save-app",
+            "type": "button"
+          },
+          "surfaceId": "surface-P01-create-app-drawer"
+        },
+        {
+          "elementId": "P01-E011",
+          "tag": "div",
+          "type": "element",
+          "selector": "[data-ann=\"delete-confirm-modal\"]",
+          "strategy": "data",
+          "text": "确认删除 删除后不可恢复，是否继续？ 取消 确认删除",
+          "visible": false,
+          "attrs": {
+            "data-ann": "delete-confirm-modal"
+          },
+          "surfaceId": "surface-P01-delete-confirm-modal"
+        },
+        {
+          "elementId": "P01-E012",
+          "tag": "h2",
+          "type": "element",
+          "selector": "html > body > div:nth-of-type(4) > div > h2",
+          "strategy": "path",
+          "text": "确认删除",
+          "visible": true,
+          "attrs": {},
+          "surfaceId": "surface-P01-delete-confirm-modal"
+        },
+        {
+          "elementId": "P01-E013",
+          "tag": "button",
+          "type": "interaction",
+          "selector": "[data-ann=\"cancel-delete\"]",
+          "strategy": "data",
+          "text": "取消",
+          "visible": true,
+          "attrs": {
+            "data-ann": "cancel-delete",
+            "type": "button"
+          },
+          "surfaceId": "surface-P01-delete-confirm-modal"
+        },
+        {
+          "elementId": "P01-E014",
+          "tag": "button",
+          "type": "interaction",
+          "selector": "[data-ann=\"confirm-delete\"]",
+          "strategy": "data",
+          "text": "确认删除",
+          "visible": true,
+          "attrs": {
+            "data-ann": "confirm-delete",
+            "type": "button"
+          },
+          "surfaceId": "surface-P01-delete-confirm-modal"
+        },
+        {
+          "elementId": "P01-E015",
+          "tag": "div",
+          "type": "element",
+          "selector": "[data-ann=\"success-toast\"]",
+          "strategy": "data",
+          "text": "保存成功",
+          "visible": true,
+          "attrs": {
+            "data-ann": "success-toast"
+          }
+        }
+      ],
+      "surfaces": [
+        {
+          "id": "surface-P01-create-app-drawer",
+          "type": "drawer",
+          "name": "create-app-drawer",
+          "pageKey": "P01",
+          "openSelector": "[data-ann=\"create-app-drawer\"]",
+          "visibility": "on-trigger",
+          "scanSource": "static-inferred",
+          "scanQuality": "static-inferred"
+        },
+        {
+          "id": "surface-P01-delete-confirm-modal",
+          "type": "confirm",
+          "name": "delete-confirm-modal",
+          "pageKey": "P01",
+          "openSelector": "[data-ann=\"delete-confirm-modal\"]",
+          "visibility": "on-trigger",
+          "scanSource": "static-inferred",
+          "scanQuality": "static-inferred"
+        }
+      ]
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P01-create-app-drawer",
+      "type": "drawer",
+      "name": "create-app-drawer",
+      "pageKey": "P01",
+      "openSelector": "[data-ann=\"create-app-drawer\"]",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred"
+    },
+    {
+      "id": "surface-P01-delete-confirm-modal",
+      "type": "confirm",
+      "name": "delete-confirm-modal",
+      "pageKey": "P01",
+      "openSelector": "[data-ann=\"delete-confirm-modal\"]",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred"
+    }
+  ]
+}

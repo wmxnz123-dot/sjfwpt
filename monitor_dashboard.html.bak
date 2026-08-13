@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 监控看板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .ai-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .agent-active { border-color: #667eea; background-color: #f3f0ff; }
+        .warning-card { border-left: 4px solid #f56c6c; }
+        .success-card { border-left: 4px solid #67c23a; }
+        .info-card { border-left: 4px solid #409eff; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+            
+            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-[18px] font-bold text-[#303133]">监控看板</h2>
+                    <div class="flex items-center gap-3">
+                        <select class="h-[32px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] bg-white">
+                            <option>今日</option>
+                            <option>本周</option>
+                            <option>本月</option>
+                            <option>本季度</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-9 h-9 rounded-lg ai-card flex items-center justify-center text-white shrink-0">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <div>
+                            <div class="text-[16px] font-bold text-[#303133] leading-tight">AI提示</div>
+                            <div class="text-xs text-[#909399] leading-tight mt-1">智能识别异常、风险与处置建议</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-5">
+                        <div class="warning-card bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-triangle-exclamation text-red-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-[#303133] mb-1">慢接口预警</h4>
+                                    <p class="text-sm text-[#606266] mb-2">科技项目审批接口P99 520ms，超基线3.2倍</p>
+                                    <button onclick="showMonitorDetail('slow')" class="text-[#1c7ffd] text-xs hover:underline">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="success-card bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-[#303133] mb-1">整体健康可控</h4>
+                                    <p class="text-sm text-[#606266] mb-2">当前健康度93.8%，异常服务3个</p>
+                                    <button onclick="showMonitorDetail('health')" class="text-[#1c7ffd] text-xs hover:underline">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-info-circle text-blue-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-[#303133] mb-1">告警聚合建议</h4>
+                                    <p class="text-sm text-[#606266] mb-2">今日告警15条，聚合后预计有效告警≈4条</p>
+                                    <button onclick="showMonitorDetail('alert')" class="text-[#1c7ffd] text-xs hover:underline">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-5 gap-4">
+                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-[#909399] text-sm mb-1">服务总数</div>
+                                <div class="text-[28px] font-bold text-[#303133]">128</div>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-server text-[#1c7ffd] text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center text-xs">
+                            <span class="text-green-500 flex items-center"><i class="fa-solid fa-trending-up mr-1"></i> +8</span>
+                            <span class="text-[#909399] ml-2">较昨日</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-[#909399] text-sm mb-1">运行正常</div>
+                                <div class="text-[28px] font-bold text-green-600">120</div>
+                            </div>
+                            <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-check-circle text-green-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center text-xs">
+                            <span class="text-green-500 flex items-center"><i class="fa-solid fa-trending-up mr-1"></i> 93.8%</span>
+                            <span class="text-[#909399] ml-2">健康度</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-[#909399] text-sm mb-1">服务异常</div>
+                                <div class="text-[28px] font-bold text-red-500">8</div>
+                            </div>
+                            <div class="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-exclamation-circle text-red-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center text-xs">
+                            <span class="text-red-500 flex items-center"><i class="fa-solid fa-trending-down mr-1"></i> -3</span>
+                            <span class="text-[#909399] ml-2">较昨日</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-[#909399] text-sm mb-1">今日告警</div>
+                                <div class="text-[28px] font-bold text-orange-500">15</div>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-bell text-orange-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center text-xs">
+                            <span class="text-red-500 flex items-center"><i class="fa-solid fa-trending-up mr-1"></i> +5</span>
+                            <span class="text-[#909399] ml-2">较昨日</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-[#909399] text-sm mb-1">调用总量</div>
+                                <div class="text-[28px] font-bold text-[#303133]">125.6万</div>
+                            </div>
+                            <div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-chart-line text-indigo-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center text-xs">
+                            <span class="text-green-500 flex items-center"><i class="fa-solid fa-trending-up mr-1"></i> +12.5%</span>
+                            <span class="text-[#909399] ml-2">较昨日</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-5">
+                    <div class="col-span-1 bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <h3 class="text-[16px] font-bold text-[#303133] mb-4">服务健康度分布</h3>
+                        <div class="flex justify-center">
+                            <div class="relative w-48 h-48">
+                                <canvas id="healthChart"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span class="text-[32px] font-bold text-[#303133]">93.8%</span>
+                                    <span class="text-sm text-[#909399]">健康度</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                    <span class="text-sm text-[#606266]">正常</span>
+                                </div>
+                                <span class="text-sm font-medium text-[#303133]">120 (93.8%)</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                                    <span class="text-sm text-[#606266]">警告</span>
+                                </div>
+                                <span class="text-sm font-medium text-[#303133]">5 (3.9%)</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                    <span class="text-sm text-[#606266]">异常</span>
+                                </div>
+                                <span class="text-sm font-medium text-[#303133]">3 (2.3%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-span-2 bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-[16px] font-bold text-[#303133]">服务健康度实时监控</h3>
+                            <div class="flex items-center gap-2">
+                                <button class="px-3 py-1.5 bg-green-50 text-green-600 rounded-md text-xs hover:bg-green-100 transition-colors">全部</button>
+                                <button class="px-3 py-1.5 bg-red-50 text-red-600 rounded-md text-xs hover:bg-red-100 transition-colors">异常</button>
+                                <button class="px-3 py-1.5 bg-yellow-50 text-yellow-600 rounded-md text-xs hover:bg-yellow-100 transition-colors">警告</button>
+                            </div>
+                        </div>
+                        <div class="space-y-3 max-h-[300px] overflow-y-auto">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                    <div>
+                                        <div class="text-sm font-medium text-[#303133]">婚姻状态查询接口</div>
+                                        <div class="text-xs text-[#909399]">市民政局</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6">
+                                    <div class="text-center">
+                                        <div class="text-sm text-green-600">正常</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-[#303133]">23ms</div>
+                                        <div class="text-xs text-[#909399]">响应时间</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-[#303133]">1,258</div>
+                                        <div class="text-xs text-[#909399]">今日调用</div>
+                                    </div>
+                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                    <div>
+                                        <div class="text-sm font-medium text-[#303133]">人口数据服务接口</div>
+                                        <div class="text-xs text-[#909399]">市公安局</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6">
+                                    <div class="text-center">
+                                        <div class="text-sm text-green-600">正常</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-[#303133]">18ms</div>
+                                        <div class="text-xs text-[#909399]">响应时间</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-[#303133]">2,896</div>
+                                        <div class="text-xs text-[#909399]">今日调用</div>
+                                    </div>
+                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                                    <div>
+                                        <div class="text-sm font-medium text-[#303133]">健康医疗数据接口</div>
+                                        <div class="text-xs text-[#909399]">市卫健委</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6">
+                                    <div class="text-center">
+                                        <div class="text-sm text-yellow-600">警告</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-red-500">156ms</div>
+                                        <div class="text-xs text-[#909399]">响应时间</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-[#303133]">875</div>
+                                        <div class="text-xs text-[#909399]">今日调用</div>
+                                    </div>
+                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <div>
+                                        <div class="text-sm font-medium text-[#303133]">科技项目审批接口</div>
+                                        <div class="text-xs text-[#909399]">市科技局</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6">
+                                    <div class="text-center">
+                                        <div class="text-sm text-red-600">异常</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-red-500">520ms</div>
+                                        <div class="text-xs text-[#909399]">响应时间</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-[#303133]">189</div>
+                                        <div class="text-xs text-[#909399]">今日调用</div>
+                                    </div>
+                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                    <div>
+                                        <div class="text-sm font-medium text-[#303133]">企业工商登记接口</div>
+                                        <div class="text-xs text-[#909399]">市市场监管局</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6">
+                                    <div class="text-center">
+                                        <div class="text-sm text-green-600">正常</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-[#303133]">35ms</div>
+                                        <div class="text-xs text-[#909399]">响应时间</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm text-[#303133]">1,532</div>
+                                        <div class="text-xs text-[#909399]">今日调用</div>
+                                    </div>
+                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <h3 class="text-[16px] font-bold text-[#303133] mb-4">调用量趋势</h3>
+                        <div class="h-[220px]">
+                            <canvas id="callTrendChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <h3 class="text-[16px] font-bold text-[#303133] mb-4">告警趋势</h3>
+                        <div class="h-[220px]">
+                            <canvas id="alertTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <h3 class="text-[16px] font-bold text-[#303133] mb-4">服务调用量Top5</h3>
+                        <div class="h-[220px]">
+                            <canvas id="topCallsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                        <h3 class="text-[16px] font-bold text-[#303133] mb-4">服务响应时长Top5</h3>
+                        <div class="h-[220px]">
+                            <canvas id="topResponseTimeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const healthCanvas = document.getElementById('healthChart');
+            if (healthCanvas) {
+                const healthCtx = healthCanvas.getContext('2d');
+                new Chart(healthCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['正常', '警告', '异常'],
+                        datasets: [{
+                            data: [120, 5, 3],
+                            backgroundColor: ['#22c55e', '#eab308', '#ef4444'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        cutout: '75%',
+                        animation: { animateScale: true, animateRotate: true }
+                    }
+                });
+            }
+
+            const callTrendCanvas = document.getElementById('callTrendChart');
+            if (callTrendCanvas) {
+                const callTrendCtx = callTrendCanvas.getContext('2d');
+                new Chart(callTrendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['7/21', '7/22', '7/23', '7/24', '7/25', '7/26', '7/27'],
+                        datasets: [{
+                            label: '调用量(万)',
+                            data: [98, 105, 112, 108, 115, 110, 125.6],
+                            borderColor: '#1c7ffd',
+                            backgroundColor: 'rgba(28, 127, 253, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#1c7ffd'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: false, grid: { color: '#f3f4f6' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            const alertTrendCanvas = document.getElementById('alertTrendChart');
+            if (alertTrendCanvas) {
+                const alertTrendCtx = alertTrendCanvas.getContext('2d');
+                new Chart(alertTrendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['7/21', '7/22', '7/23', '7/24', '7/25', '7/26', '7/27'],
+                        datasets: [{
+                            label: '告警数量',
+                            data: [5, 8, 3, 12, 7, 15, 10],
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#ef4444'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: '#f3f4f6' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            const topCallsCanvas = document.getElementById('topCallsChart');
+            if (topCallsCanvas) {
+                const topCallsCtx = topCallsCanvas.getContext('2d');
+                new Chart(topCallsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['人口数据服务', '企业工商登记', '婚姻状态查询', '健康医疗数据', '电子证照验证'],
+                        datasets: [{
+                            label: '调用次数(万次)',
+                            data: [12.5, 9.8, 8.5, 6.2, 5.1],
+                            backgroundColor: '#1c7ffd',
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: '#f3f4f6' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            const topResponseTimeCanvas = document.getElementById('topResponseTimeChart');
+            if (topResponseTimeCanvas) {
+                const topResponseTimeCtx = topResponseTimeCanvas.getContext('2d');
+                new Chart(topResponseTimeCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['科技项目审批', '健康医疗数据', '财政资金查询', '企业工商登记', '人口数据服务'],
+                        datasets: [{
+                            label: '响应时长(ms)',
+                            data: [520, 156, 85, 35, 18],
+                            backgroundColor: '#f56c6c',
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: '#f3f4f6' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+        });
+
+        let currentAgent = 'monitor';
+        const agents = {
+            monitor:   { name: '服务健康智能体', icon: 'fa-heart-pulse', color: '#667eea', desc: '实时健康度评估、异常根因定位、可用性巡检' },
+            alert:     { name: '告警分析智能体', icon: 'fa-bell', color: '#ef4444', desc: '告警聚合去噪、关联分析、故障告警研判' },
+            trace:     { name: '链路诊断智能体', icon: 'fa-chart-line', color: '#0ea5e9', desc: '接口响应慢查询、调用链路瓶颈、错误率排查' },
+            stability: { name: '稳定性治理智能体', icon: 'fa-shield-halved', color: '#22c55e', desc: '熔断降级、限流参数、弹性伸缩、容量规划建议' }
+        };
+
+        function toggleAIDrawer() {
+            const drawer = document.getElementById('ai-drawer');
+            const overlay = document.getElementById('ai-drawer-overlay');
+            const arrow = document.getElementById('drawer-arrow');
+            
+            if (drawer.classList.contains('translate-x-full')) {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+                overlay.classList.remove('opacity-0');
+                arrow.classList.remove('fa-chevron-left');
+                arrow.classList.add('fa-chevron-right');
+            } else {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+                arrow.classList.remove('fa-chevron-right');
+                arrow.classList.add('fa-chevron-left');
+            }
+        }
+
+        function selectAgent(agentId) {
+            document.querySelectorAll('.agent-card').forEach(card => {
+                card.classList.remove('agent-active');
+            });
+            document.getElementById('agent-' + agentId).classList.add('agent-active');
+            
+            currentAgent = agentId;
+            
+            const container = document.getElementById('chat-messages');
+            const agent = agents[agentId];
+            
+            container.innerHTML = `
+                <div class="flex gap-3">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: ${agent.color}">
+                        <i class="fa-solid ${agent.icon} text-white text-xs"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                        <p class="text-sm text-[#606266]">您好！我是${agent.name}。${agent.desc}。请问有什么需要帮助的吗？</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            input.value = '';
+            
+            const container = document.getElementById('chat-messages');
+            const agent = agents[currentAgent];
+            const scrollBox = document.getElementById('chat-container');
+            
+            container.innerHTML += `
+                <div class="flex gap-3 justify-end">
+                    <div class="bg-[#667eea] text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%]">
+                        <p class="text-sm">${message}</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user text-gray-500 text-xs"></i>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML += `
+                <div class="flex gap-3">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: ${agent.color}">
+                        <i class="fa-solid ${agent.icon} text-white text-xs"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                        <p class="text-sm text-[#606266] animate-pulse">${agent.name}正在分析...</p>
+                    </div>
+                </div>
+            `;
+            
+            scrollBox.scrollTop = scrollBox.scrollHeight;
+            
+            setTimeout(() => {
+                container.innerHTML = container.innerHTML.replace(
+                    `<p class="text-sm text-[#606266] animate-pulse">${agent.name}正在分析...</p>`,
+                    `<p class="text-sm text-[#606266]">${generateAnswer(message, currentAgent)}</p>`
+                );
+                scrollBox.scrollTop = scrollBox.scrollHeight;
+            }, 1500);
+        }
+
+        function generateAnswer(question, agentId) {
+            if (agentId === 'monitor') {
+                if (question.includes('健康度') || question.includes('健康')) {
+                    return `【实时健康度评估】
+服务总数：128
+- 正常：120（93.8%）🟢
+- 警告：5（3.9%）🟡
+- 严重异常：3（2.3%）🔴
+整体健康度：93.8%（目标≥95%，差距-1.2pp）
+
+【异常Top3根因定位】
+1. 科技项目审批接口 · 严重
+   - 现象：响应时间520ms，连续5次探测失败
+   - 根因推测：后端Tomcat线程池耗尽（活跃线程200/200）
+   - 建议：立即重启实例 + 排查线程dump
+2. 教育资源查询服务 · 严重
+   - 现象：调用量骤降20%（8:30-9:00）
+   - 根因推测：上游鉴权SDK升级兼容性问题
+   - 建议：回滚SDK版本并验证
+3. 健康医疗数据接口 · 警告
+   - 现象：P99 156ms，超基线2.3倍
+   - 根因推测：SQL全表扫描，缺少联合索引
+   - 建议：慢查询日志中 TOP1 SQL 加 idx(patient_id, created_at)`;
+                } else if (question.includes('巡检') || question.includes('可用性')) {
+                    return `【7:30 全量可用性巡检报告（共128个服务）】
+✅ 通过：120
+⚠️ 警告：5（HTTP 429 限流、响应退化）
+❌ 失败：3
+  · 科技项目审批  | 503 Service Unavailable | 节点 10.0.1.23
+  · 教育资源查询  | 连接超时 3000ms         | 节点 10.0.2.14
+  · 不动产登记    | SSL证书将在7天后过期    | 所有节点
+
+【与昨日对比】
+健康度环比 +0.2pp，警告数 -2，严重异常数 +1（科技项目审批新增）。建议立即处理🔴节点。`;
+                } else {
+                    return `我是服务健康智能体，可随时帮您做：
+1) 实时健康度评估 + 分层（正常/警告/异常）
+2) 异常接口根因定位（线程池/SQL/网络/SDK/证书）
+3) 定时/即时全量可用性巡检
+4) 不健康服务的立即处置建议
+
+当前健康度93.8%，3个🔴严重异常待处理。`;
+                }
+            }
+
+            if (agentId === 'alert') {
+                if (question.includes('风暴') || question.includes('告警')) {
+                    return `【今日告警风暴分析 00:00-至今】
+原始告警数：278 条 → 经过聚合降噪后 **15 条有效告警**（压缩比 94.6%）
+
+【按故障域聚类】
+1. 「科技项目审批」故障域（关联告警 186 条，占 67%）
+   · CPU>90% × 2节点 + 线程池耗尽 + 503错误率17% + 响应时间>500ms
+   · ⭐ 根告警：节点 10.0.1.23 CPU 持续 95% 已 8 分钟
+   · 建议：先摘除该节点流量 → dump 线程栈 → 扩容 2 实例
+2. 「健康医疗」故障域（关联告警 59 条，占 21%）
+   · 慢查询>2s × 12次 + DB连接池85% + P99>150ms
+   · ⭐ 根告警：MySQL slowlog 中 patient 查询 SQL 扫描行 120w+
+3. 「基础设施」故障域（关联告警 33 条，占 12%）
+   · 证书过期预警 × 1（不动产）+ 磁盘>80% × 2（监控节点自身）
+
+【误报/可屏蔽识别】共识别 4 条误报：磁盘瞬时写放大、K8s pod 正常滚动重启等已自动抑制。`;
+                } else if (question.includes('研判') || question.includes('故障')) {
+                    return `【故障告警研判】
+告警条目：科技项目审批 503 错误率 17%
+▸ 严重级别：🔴 P0（核心服务，SLA 99.95%）
+▸ 影响范围：市民端 / 法人端 双端受影响，估算 5 分钟内影响 320 单业务
+▸ 关联证据：
+  ✗ 依赖的下游「统一审批引擎」同一时段错误率 22%
+  ✓ 数据库实例 CPU / 连接池正常（排除DB）
+  ✗ Tomcat 线程池 200/200 卡满
+▸ 研判结论：**非本服务自身代码问题**，是下游依赖故障引发的级联 503
+▸ 处置建议：
+  1. 立即在网关层打开「降级开关」，返回兜底静态页 + 缓存数据
+  2. 同步通知「统一审批引擎」Owner 处置（工单已自动创建 #INC-20260729-0038）
+  3. 设置熔断：下游 5s 错误率>20% 自动熔断 30s`;
+                } else {
+                    return `我是告警分析智能体，能力：
+- 告警聚合去噪（可将几百条合并为几条根告警+压缩比）
+- 按故障域聚类关联（同一服务/节点/DB 的多维告警合并）
+- P0/P1/P2 分级研判 + 影响范围评估 + 根因指向
+- 自动识别误报并给出抑制建议
+- 自动创建处置工单 + 推荐熔断降级措施`;
+                }
+            }
+
+            if (agentId === 'trace') {
+                if (question.includes('慢') || question.includes('慢查询') || question.includes('响应')) {
+                    return `【接口响应慢排查 · 科技项目审批接口 520ms】
+🔍 调用链路火焰图（自顶向下耗时占比）：
+┌─ Gateway 鉴权/限流 ───────────────  12ms  (2.3%)
+├─ Controller 参数解析 ─────────────  18ms  (3.5%)
+├─ Service 业务逻辑
+│   ├─ 调用「统一审批引擎」 RPC ───  320ms (61.5%)  ← 最大瓶颈
+│   │   └─ 对方线程池排队 280ms / 实际处理 40ms
+│   ├─ 查询审批主表 MySQL ────────  86ms  (16.5%)  ← 第2瓶颈
+│   │   └─ SQL: select ... where applicant_id=?
+│   │      · 扫描行: 420,816 | 返回行: 1 | 索引缺失
+│   └─ 写操作日志 ES ────────────  36ms  (6.9%)
+└─ Response 序列化 ───────────────  48ms  (9.2%)
+
+【瓶颈结论】
+1. 61.5% 耗时在下游 RPC 排队 → 需推动审批引擎扩容队列
+2. 16.5% 是缺索引慢 SQL → 加 idx_applicant_id_created，预计从 86ms → 3ms
+
+【预期收益】修复后该接口 P95 预计从 520ms → **~80ms**，降幅 85%。`;
+                } else if (question.includes('错误') || question.includes('错误率')) {
+                    return `【错误率排查 · 教育资源查询 5xx 率 5.8%】
+近1小时错误分布：
+- 502 Bad Gateway     62%  ← 上游 ingress-nginx 与后端握手失败（后端偶发 Reset）
+- 504 Gateway Timeout 23%  ← K8s readinessProbe 超时，Pod 被反复摘流
+- 499 Client Close    10%  ← 用户端放弃（与504正相关）
+- 其他 5xx             5%
+
+【关联证据链】
+· 同一时段 K8s Events：Pod edu-query-5f8d-6x2kq 重启 17 次（OOMKilled）
+· JVM 堆 dump 定位：自定义缓存 Map 未设 TTL，老年代占用 94%+ → Full GC STW 2.8s
+· 导致探针超时 → Pod 被重启 → 504 循环
+
+【处置】
+1) 立即替换缓存为 Caffeine（maximumSize + expireAfterWrite）
+2) 扩容堆内存 2G → 4G，调小 -XX:MaxMetaspaceSize
+3) readinessProbe.initialDelaySeconds: 10 → 45`;
+                } else {
+                    return `我是链路诊断智能体，负责：
+- 接口慢查询根因定位（输出调用链火焰图 + TopN 耗时占比）
+- 5xx/4xx 错误率归因（Nginx 层 / Pod 层 / JVM / DB / 下游依赖）
+- JVM：内存泄漏、GC 停顿、线程死锁、OOM 分析
+- DB：慢 SQL、锁等待、连接池耗尽、主从延迟
+- K8s：探针失败、Pod OOM、Ingress/Nginx 握手问题
+直接输入接口名+现象（如"科技项目审批慢"）我给出完整链路分析。`;
+                }
+            }
+
+            if (agentId === 'stability') {
+                return `【下一季度稳定性治理方案 · Q3】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📌 目标：整体可用性从 99.92% → 99.95%；P0故障 ≤ 1次
+核心思路："防、控、恢"三道防线 + SLO 驱动
+
+一、防护层（防止故障发生）
+1. 服务分级 & 流量治理（熔断/降级/限流）
+   ├─ 核心服务（婚姻/户籍/不动产等12个）：
+   │   · Sentinel 限流 QPS = 近7日峰值 × 1.5
+   │   · 熔断策略：慢调用比例 > 30%（10s 窗口）→ 熔断30s
+   │   · 降级策略：下游非核心依赖故障 → 返回本地缓存兜底
+   └─ 一般服务：限流=峰值×1.2，仅开启错误率熔断
+2. 容量规划（HPA 自动弹性）
+   ├─ 指标：CPU>60% / P95>基线2倍 / 队列深度>100
+   ├─ 最小实例 2 → 3（跨AZ高可用），最大实例 ×3
+   └─ 提前压测：每季度前两周做全链路压测，拿到容量水位
+3. 混沌工程（每周演练 1 次，2小时窗口）
+   · Pod 随机杀 / 网络丢包20% / 下游依赖注入500ms延迟
+   · 验证：自愈时间 < 2 分钟、业务SLA不击穿
+
+二、控制层（故障发生后快速止损）
+4. 告警收敛 & 值班体系
+   · 根告警（故障域聚合后）10 分钟内触达值班人
+   · 值班机器人自动派单 + 电话叫醒（P0 5min未响应升级）
+5. 预案 & 作战手册
+   · 建立 20 个典型故障 runbook（如"网关5xx"、"DB慢查询"、"OOM"）
+   · 每两周一次桌面演练
+
+三、恢复层（数据/状态层面恢复）
+6. 多活容灾
+   · 核心库从单AZ → 同城双 AZ 同步复制（RPO=0，RTO<30s）
+   · 网关按 AZ 切流，单 AZ 故障 30s 内自动摘除
+7. 回滚 & 变更管控
+   · 所有发布支持金丝雀 1% → 5% → 20% → 100%
+   · 任何 1% 阶段出现错误率>0.5% 自动回滚（无需人工）
+
+【资源预算预估】
+- 机器成本 ↑ ~15%（多 1 倍冗余 + 跨AZ副本）
+- 人力：SRE ×2 专项推进 1 个季度
+【收益】
+- SLA +0.03pp → 每月故障影响时间从 ~43min 降到 ~22min
+- P0 故障 6 次/季 → ≤ 1 次/季`;
+        }
+
+            return '抱歉，我暂时无法回答这个问题。请换个问题试试。';
+        }
+
+        function showMonitorDetail(type) {
+            let title = '', content = '';
+            if (type === 'slow') {
+                title = '慢接口预警详情';
+                content = '科技项目审批接口 P99 520ms，较近7日基线提升约3.2倍。\n建议优先检查下游依赖与线程池/连接池水位，并结合链路诊断确认瓶颈位置。';
+            } else if (type === 'health') {
+                title = '整体健康度详情';
+                content = '服务总数128：正常120、警告5、异常3。\n当前整体健康度93.8%，建议优先处置异常服务并关注告警集中度。';
+            } else if (type === 'alert') {
+                title = '告警聚合建议详情';
+                content = '今日告警15条，存在同一故障域集中触发的特征。\n建议先按服务/节点聚合去噪，定位根告警后再派单处置。';
+            }
+            alert(`${title}\n\n${content}`);
+        }
+
+        function quickQuestion(question) {
+            document.getElementById('chat-input').value = question;
+            sendMessage();
+        }
+
+        function toggleSmartAssistant() { toggleAIDrawer(); }
+        function sendQuestion() { sendMessage(); }
+        function sendQuickQuestion(q) { quickQuestion(q); }
+    </script>
+</body>
+</html>

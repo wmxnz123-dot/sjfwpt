@@ -1,0 +1,2718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 服务注册新增</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1c7ffd 0%, #0d6efd 100%); }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <!-- 顶部导航栏 -->
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="relative group cursor-pointer">
+                <div class="flex items-center gap-2 hover:text-gray-200 transition-colors">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                    <span>admin</span>
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                </div>
+                <div class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-1 hidden group-hover:block z-50">
+                    <a href="admin_workbench.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">进入后台</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">退出登录</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="flex-1 flex overflow-hidden">
+        <!-- 左侧导航 -->
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <!-- 右侧内容区 -->
+        <main class="flex-1 flex flex-col overflow-hidden relative">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <div class="px-6 py-3 bg-white border-b border-gray-100 flex items-center shrink-0">
+                <a href="service_register.html?nav=resource-service" class="text-[#1c7ffd] hover:opacity-80 transition-colors flex items-center gap-1 font-medium text-[15px]">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> 返回列表
+                </a>
+            </div>
+
+            <!-- 步骤1：选择目录 -->
+            <div id="step-1" class="flex-1 p-6 pb-[88px] overflow-y-auto">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                    <div class="py-8 px-10">
+                        <div class="flex items-center justify-between relative">
+                            <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2"></div>
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center font-bold text-base">1</div>
+                                <span class="mt-3 font-medium text-[#303133]">选择目录</span>
+                            </div>
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-base">2</div>
+                                <span class="mt-3 font-medium text-[#909399]">注册服务</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-10 pb-8">
+                        <!-- 搜索框 -->
+                        <div class="flex items-center gap-3 mb-6">
+                            <input type="text" id="catalog-search" placeholder="请输入目录名称" class="flex-1 h-[40px] px-4 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                            <button onclick="searchCatalog()" class="px-5 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors">
+                                搜索
+                            </button>
+                        </div>
+
+                        <!-- 目录列表 -->
+                        <table class="w-full text-sm table-fixed">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="w-[220px] px-5 py-3 text-left font-medium text-[#606266]">目录名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">数据项</th>
+                                    <th class="w-[100px] px-5 py-3 text-center font-medium text-[#606266]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">行政复议被申请人信息</td>
+                                    <td class="px-5 py-4 text-[#606266]">
+                                        <div class="line-clamp-2" title="是否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位-被申请人id、行政管理类别文字、创建人、最后更新时间">
+                                            否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位-被申请人id、行政管理类别文字、创建人、最后更新时间
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center">
+                                        <button onclick="selectStep1Catalog('行政复议被申请人信息')" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">选择</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">行政处罚基本信息</td>
+                                    <td class="px-5 py-4 text-[#606266]">
+                                        <div class="line-clamp-2" title="行政处罚案件来源、创建时间、移送、抄送司法机关时间、当事人数量、处罚行为名称、是否移送司法机关、案件移送书及相关材料、无当事人说明、受委托组织编码、受委托组织名称、行政处罚案件来源日期、事由（案由）、执法主体名称、主键ID、更新类型、案情介绍、案件程序类别、执法主体主键ID、案件编号、批次号">
+                                            行政处罚案件来源、创建时间、移送、抄送司法机关时间、当事人数量、处罚行为名称、是否移送司法机关、案件移送书及相关材料、无当事人说明、受委托组织编码、受委托组织名称、行政处罚案件来源日期、事由（案由）、执法主体名称、主键ID、更新类型、案情介绍、案件程序类别、执法主体主键ID、案件编号、批次号
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center">
+                                        <button onclick="selectStep1Catalog('行政处罚基本信息')" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">选择</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">先行化解信息</td>
+                                    <td class="px-5 py-4 text-[#606266]">
+                                        <div class="line-clamp-2" title="联系方式、最后更新人、最后更新时间、行政机关、备注、创建时间、机构id、先行化解id、创建人、区划id、删除标志">
+                                            联系方式、最后更新人、最后更新时间、行政机关、备注、创建时间、机构id、先行化解id、创建人、区划id、删除标志
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center">
+                                        <button onclick="selectStep1Catalog('先行化解信息')" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">选择</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">行政复议答复信息</td>
+                                    <td class="px-5 py-4 text-[#606266]">
+                                        <div class="line-clamp-2" title="落实情况--落实情况证据材料概要、案件id、删除标记、落实情况--其他落实情况、终止方式、最近更新人、建议书、主键ID、程序、案件收文编号、驳回类型、其他纠错类型、新增标志、实体、纠错原因人、修改时间、企业挽回损失金额、收文时间、驳回类型、其他纠错类型、新增标志时间、实体、纠错原因、修改时间、企业挽回损失金额、创建时间、意见书、补充结案方式、建议完成时间、备注、赔偿金金额、是否经过委员会咨询、主要结案方式、立案讨论记录、撤销类型、创建人、调解书是否履行完毕、确认无效类型、驳回类型下级、调解成功">
+                                            落实情况--落实情况证据材料概要、案件id、删除标记、落实情况--其他落实情况、终止方式、最近更新人、建议书、主键ID、程序、案件收文编号、驳回类型、其他纠错类型、新增标志、实体、纠错原因人、修改时间、企业挽回损失金额、收文时间、驳回类型、其他纠错类型、新增标志时间、实体、纠错原因、修改时间、企业挽回损失金额、创建时间、意见书、补充结案方式、建议完成时间、备注、赔偿金金额、是否经过委员会咨询、主要结案方式、立案讨论记录、撤销类型、创建人、调解书是否履行完毕、确认无效类型、驳回类型下级、调解成功
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center">
+                                        <button onclick="selectStep1Catalog('行政复议答复信息')" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">选择</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤2：注册服务 -->
+            <div id="step-2" class="flex-1 p-6 pb-[88px] overflow-y-auto hidden">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                    <div class="py-8 px-10">
+                        <div class="flex items-center justify-between relative">
+                            <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2"></div>
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-gray-200 text-white flex items-center justify-center font-bold text-base">
+                                    <i class="fa-solid fa-check text-sm"></i>
+                                </div>
+                                <span class="mt-3 font-medium text-[#303133]">选择目录</span>
+                            </div>
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center font-bold text-base">2</div>
+                                <span class="mt-3 font-medium text-[#303133]">注册服务</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-10 pb-8 space-y-5">
+                        <!-- 已选目录名称 -->
+                        <div class="text-center py-3">
+                            <span class="text-[#606266]">数据资源目录名称：</span>
+                            <span class="font-medium text-[#303133]" id="selected-catalog-name">行政复议被申请人信息</span>
+                        </div>
+
+                        <!-- 服务名称 -->
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>服务名称：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="service-name" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]">
+                            </div>
+                        </div>
+
+                        <!-- 服务类型 -->
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>服务类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="service-type" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> 接口
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="service-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> 库表
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="service-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> 文件
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 接口来源 -->
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>接口来源：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="api-source" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> 已有API
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="api-source" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> 定制API
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- API拉取 -->
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]">API拉取：</label>
+                            <div class="ml-4 flex-1">
+                                <select class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                    <option>请选择</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 接口地址 -->
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>接口地址：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="api-url" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]">
+                            </div>
+                        </div>
+
+                        <!-- 接口类型 -->
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>接口类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="api-type" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> rest
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="api-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> webservice
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 返回类型 -->
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>返回类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="return-type" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> json
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="return-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> xml
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="return-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> string
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 请求类型 -->
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>请求类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="request-method" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> GET
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="request-method" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> POST
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- API并发 -->
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>API并发（次/秒）：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="api-concurrent" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]">
+                            </div>
+                        </div>
+
+                        <!-- 上传说明文件 -->
+                        <div class="flex items-start">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266] mt-1.5"><span class="text-red-500 mr-1">*</span>上传说明文件：</label>
+                            <div class="ml-4 flex flex-col gap-2">
+                                <button class="border border-gray-300 rounded px-4 py-1.5 text-sm w-fit hover:border-[#1c7ffd] hover:text-[#1c7ffd] transition-colors bg-white shadow-sm">
+                                    <i class="fa-solid fa-arrow-up-from-bracket mr-1"></i> 上传文件
+                                </button>
+                                <span class="text-[#909399] text-[13px]">支持扩展名：.doc .docx 文件最大不能超过10MB 最多上传一个文件</span>
+                            </div>
+                        </div>
+
+                        <!-- 服务描述 -->
+                        <div class="flex items-start">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266] mt-2">服务描述：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <textarea rows="3" id="service-desc" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133] resize-none"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 请求参数列表 -->
+                        <div class="flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="text-[#606266] font-medium"><span class="text-red-500 mr-1">*</span>请求参数列表：</div>
+                                <div class="flex items-center gap-4">
+                                    <button onclick="openQuickFillModal('request')" class="text-[#1c7ffd] text-sm flex items-center gap-1 hover:opacity-80 transition-opacity">
+                                        <i class="fa-solid fa-bolt"></i> 快速填充
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-[#fffbe6] border border-[#ffe58f] text-[#d4a76a] text-sm px-4 py-2 rounded">
+                                <i class="fa-solid fa-exclamation-circle mr-1"></i>
+                                对于webservice类型接口,创建请求参数的顺序请与原接口参数顺序保持一致,否则可能会无法代理。另外,接口参数类型建议选字符串型!
+                            </div>
+                            <table class="w-full text-center text-[13px] text-[#606266] border-collapse">
+                                <thead class="bg-[#f8f8f9] text-[#909399] font-medium">
+                                    <tr>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数名称</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数描述</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数位置</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">是否必填</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">顺序</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数默认值</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="requestParamsBody">
+                                    <tr>
+                                        <td colspan="7" class="py-10 text-[#909399]">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                                <span>暂无数据</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button onclick="addParamRow('request')" class="w-full py-2 border border-dashed border-[#1c7ffd] text-[#1c7ffd] rounded hover:bg-blue-50 transition-colors text-sm flex items-center justify-center gap-1 mt-1">
+                                <i class="fa-solid fa-plus text-xs"></i> 添加一行数据
+                            </button>
+                        </div>
+
+                        <!-- 固定参数列表 -->
+                        <div class="flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="text-[#606266] font-medium">固定参数列表：</div>
+                            </div>
+                            <table class="w-full text-center text-[13px] text-[#606266] border-collapse">
+                                <thead class="bg-[#f8f8f9] text-[#909399] font-medium">
+                                    <tr>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数名称</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数描述</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数位置</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">顺序</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数默认值</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fixedParamsBody">
+                                    <tr>
+                                        <td colspan="6" class="py-10 text-[#909399]">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                                <span>暂无数据</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button onclick="addParamRow('fixed')" class="w-full py-2 border border-dashed border-[#1c7ffd] text-[#1c7ffd] rounded hover:bg-blue-50 transition-colors text-sm flex items-center justify-center gap-1 mt-1">
+                                <i class="fa-solid fa-plus text-xs"></i> 添加一行数据
+                            </button>
+                        </div>
+
+                        <!-- 返回参数列表 -->
+                        <div class="flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="text-[#606266] font-medium"><span class="text-red-500 mr-1">*</span>返回参数列表：</div>
+                                <div class="flex items-center gap-4">
+                                    <button onclick="openQuickFillModal('response')" class="text-[#1c7ffd] text-sm flex items-center gap-1 hover:opacity-80 transition-opacity">
+                                        <i class="fa-solid fa-bolt"></i> 快速填充
+                                    </button>
+                                </div>
+                            </div>
+                            <table class="w-full text-center text-[13px] text-[#606266] border-collapse">
+                                <thead class="bg-[#f8f8f9] text-[#909399] font-medium">
+                                    <tr>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数名称</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数描述</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="responseParamsBody">
+                                    <tr>
+                                        <td colspan="3" class="py-10 text-[#909399]">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                                <span>暂无数据</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button onclick="addParamRow('response')" class="w-full py-2 border border-dashed border-[#1c7ffd] text-[#1c7ffd] rounded hover:bg-blue-50 transition-colors text-sm flex items-center justify-center gap-1 mt-1">
+                                <i class="fa-solid fa-plus text-xs"></i> 添加一行数据
+                            </button>
+                        </div>
+
+                        <!-- 错误代码 -->
+                        <div class="flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="text-[#606266] font-medium">错误代码：</div>
+                            </div>
+                            <table class="w-full text-center text-[13px] text-[#606266] border-collapse">
+                                <thead class="bg-[#f8f8f9] text-[#909399] font-medium">
+                                    <tr>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">错误代码</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">错误描述</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="errorCodesBody">
+                                    <tr>
+                                        <td colspan="3" class="py-10 text-[#909399]">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                                <span>暂无数据</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button onclick="addParamRow('error')" class="w-full py-2 border border-dashed border-[#1c7ffd] text-[#1c7ffd] rounded hover:bg-blue-50 transition-colors text-sm flex items-center justify-center gap-1 mt-1">
+                                <i class="fa-solid fa-plus text-xs"></i> 添加一行数据
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部按钮 -->
+            <div class="absolute bottom-0 left-0 right-0 h-[64px] px-6 flex items-center justify-end gap-3 bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] z-20">
+                <button id="btn-prev" onclick="goToStep(1)" class="px-6 py-1.5 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-sm bg-white shadow-sm hidden">上一步</button>
+                <button id="btn-save" class="px-6 py-1.5 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-sm bg-white shadow-sm">暂存</button>
+                <button id="btn-next" onclick="goToStep(2)" class="px-6 py-1.5 bg-[#1c7ffd] text-white rounded hover:bg-blue-500 transition-colors text-sm shadow-sm">下一步</button>
+                <button id="btn-submit" onclick="submitForm()" class="px-6 py-1.5 bg-[#1c7ffd] text-white rounded hover:bg-blue-500 transition-colors text-sm shadow-sm hidden">提交</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- 智能助手悬浮按钮（仅第二步显示） -->
+    <button id="global-smart-fill-btn" onclick="openGlobalSmartFill()" class="fixed right-6 bottom-8 z-[30] w-14 h-14 rounded-full gradient-bg shadow-lg shadow-blue-500/30 flex items-center justify-center text-white hover:scale-110 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 group hidden">
+        <i class="fa-solid fa-robot text-xl"></i>
+        <div class="absolute right-[72px] whitespace-nowrap px-3 py-1.5 bg-[#303133] text-white text-xs rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+            智能助手 · 注册服务
+        </div>
+    </button>
+
+    <!-- 智能助手抽屉 -->
+    <div id="global-smart-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeGlobalSmartFill()"></div>
+    <div id="global-smart-drawer" class="fixed top-0 right-0 bottom-0 w-[760px] bg-white z-[90] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- 抽屉头部 -->
+        <div class="p-5 border-b border-gray-100 flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center">
+                    <i class="fa-solid fa-robot text-white"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-[#303133]">智能助手 · 注册服务</h3>
+                    <p class="text-xs text-[#909399]">选择智能体开始对话</p>
+                </div>
+            </div>
+            <button onclick="closeGlobalSmartFill()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- 选择智能体 -->
+        <div class="p-4 border-b border-gray-100 shrink-0">
+            <div class="flex items-center gap-2 mb-3">
+                <i class="fa-solid fa-robot text-[#667eea]"></i>
+                <span class="text-sm font-medium text-[#303133]">选择智能体</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="selectAgent('doc')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left" id="agent-doc">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-file-lines text-[#1c7ffd]"></i>
+                        <span class="font-medium text-sm">文档解析智能体</span>
+                    </div>
+                    <p class="text-xs text-[#909399]">上传接口文档/数据字典，AI自动解析并填充注册表单</p>
+                </button>
+                <button onclick="selectAgent('qa')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left agent-active" id="agent-qa">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-message-question text-[#36c2aa]"></i>
+                        <span class="font-medium text-sm">问答生成智能体</span>
+                    </div>
+                    <p class="text-xs text-[#909399]">自然语言描述需求，AI智能生成服务注册信息</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== 文档解析智能体 - 上传视图 ===== -->
+        <div id="doc-view" class="flex-1 flex flex-col overflow-hidden hidden">
+            <div class="flex-1 overflow-y-auto px-6 py-5 space-y-5" id="doc-messages">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #1c7ffd">
+                        <i class="fa-solid fa-file-lines text-white text-xs"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                        <p class="text-sm text-[#606266]">您好！我是<strong>文档解析智能体</strong>。请上传接口文档 / 数据字典（支持 .xlsx / .docx / .pdf / .json 等），我将自动解析服务名称、调用方式、请求/返回参数、错误代码等，一键填充到注册表单。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-100 px-6 py-4 shrink-0 bg-white">
+                <div id="doc-preview" class="hidden mb-3"></div>
+                <div class="flex items-center justify-between mb-2">
+                    <label class="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-gray-200 text-[#606266] hover:border-blue-400 hover:text-[#1c7ffd] hover:bg-blue-50 transition-colors cursor-pointer">
+                        <i class="fa-solid fa-paperclip"></i>
+                        <span>上传接口文档</span>
+                        <input type="file" id="doc-upload" multiple
+                            accept=".xlsx,.xls,.csv,.doc,.docx,.pdf,.json,.txt,.yaml,.yml"
+                            class="hidden" onchange="handleGlobalSmartFile(event)">
+                    </label>
+                    <span class="text-xs text-[#909399]">支持接口文档/数据字典/json schema</span>
+                </div>
+                <button onclick="fillWithLastAnswer()" id="doc-apply-btn" class="hidden w-full text-sm text-white px-3 py-2.5 rounded-lg gradient-bg flex items-center justify-center gap-1 hover:shadow-lg transition-all">
+                    <i class="fa-solid fa-check-double"></i>应用AI填写到表单
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== 问答生成智能体 - 聊天视图 ===== -->
+        <div id="qa-view" class="flex-1 flex flex-col overflow-hidden">
+            <div class="flex-1 overflow-y-auto px-6 py-5 space-y-5" id="qa-messages">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
+                        <i class="fa-solid fa-message-question text-white text-xs"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                        <p class="text-sm text-[#606266]">您好！我是<strong>问答生成智能体</strong>。用自然语言描述您要注册的服务，例如："我要注册一个企业工商信息查询接口，GET方式，请求参数是企业信用代码，返回企业名称、法人、注册资本…"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-100 px-6 py-4 shrink-0 bg-white">
+                <div class="flex items-end gap-3">
+                    <div class="flex-1 relative">
+                        <textarea id="global-smart-input" rows="2" placeholder="描述您要注册的服务信息，或直接粘贴接口定义..."
+                            class="w-full px-4 py-3 pr-10 border border-gray-200 rounded-xl text-sm resize-none outline-none focus:border-[#1c7ffd] focus:ring-2 focus:ring-[#1c7ffd]/10 transition-all max-h-40"
+                            onkeydown="handleGlobalSmartKeydown(event)"></textarea>
+                    </div>
+                    <button onclick="sendGlobalSmartMsg()" class="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center text-white hover:shadow-lg transition-all shrink-0">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="flex items-center gap-2 mt-3 flex-wrap">
+                    <span class="text-xs text-[#909399]">快捷填充：</span>
+                    <button onclick="quickAsk(1)" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">身份证查询</button>
+                    <button onclick="quickAsk(2)" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">企业工商查询</button>
+                    <button onclick="quickAsk(3)" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">手机号用户查询</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 快速填充弹窗 -->
+    <div id="quick-fill-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeQuickFillModal()"></div>
+    <div id="quick-fill-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] bg-white z-[90] rounded-lg shadow-2xl opacity-0 invisible transition-all duration-300">
+        <div class="h-12 flex items-center justify-between px-5 border-b border-gray-100">
+            <h3 class="font-semibold text-base text-[#303133]">快速填充</h3>
+            <button onclick="closeQuickFillModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        <div class="flex flex-col h-[420px]">
+            <div class="h-11 px-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+                <div class="flex items-center gap-4">
+                    <label class="flex items-center gap-1.5 text-sm text-[#606266] cursor-pointer select-none">
+                        <input type="checkbox" id="check-all-request" class="rounded text-[#1c7ffd]" onchange="toggleAllColumn('request')">
+                        <span class="text-[#1c7ffd]">全选请求</span>
+                    </label>
+                    <label class="flex items-center gap-1.5 text-sm text-[#606266] cursor-pointer select-none">
+                        <input type="checkbox" id="check-all-response" class="rounded text-[#36c2aa]" onchange="toggleAllColumn('response')">
+                        <span class="text-[#36c2aa]">全选返回</span>
+                    </label>
+                </div>
+                <span class="text-xs text-[#909399]" id="selected-count">已选 0 项</span>
+            </div>
+            <div class="flex-1 overflow-y-auto p-3" id="fields-list">
+            </div>
+        </div>
+        <div class="h-14 flex items-center justify-end gap-3 px-5 border-t border-gray-100">
+            <button onclick="closeQuickFillModal()" class="px-5 py-1.5 border border-gray-200 text-[#606266] rounded text-sm hover:bg-gray-50 transition-colors">
+                取消
+            </button>
+            <button onclick="doQuickFill()" class="px-5 py-1.5 bg-[#1c7ffd] text-white rounded text-sm hover:bg-[#1a73e8] transition-colors">
+                确定填充
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function selectStep1Catalog(name) {
+            document.getElementById('selected-catalog-name').textContent = name;
+            goToStep(2);
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            const floatBtn = document.getElementById('global-smart-fill-btn');
+            if (step === 1) {
+                document.getElementById('step-1').classList.remove('hidden');
+                document.getElementById('step-2').classList.add('hidden');
+                document.getElementById('btn-prev').classList.add('hidden');
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-submit').classList.add('hidden');
+                if (floatBtn) floatBtn.classList.add('hidden');
+            } else {
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.remove('hidden');
+                document.getElementById('btn-prev').classList.remove('hidden');
+                document.getElementById('btn-next').classList.add('hidden');
+                document.getElementById('btn-submit').classList.remove('hidden');
+                if (floatBtn) floatBtn.classList.remove('hidden');
+            }
+        }
+
+        function searchCatalog() {
+            alert('搜索功能');
+        }
+
+
+        function addParamRow(type) {
+            let tbody, cols;
+            if (type === 'request') {
+                tbody = document.getElementById('requestParamsBody');
+                cols = 7;
+            } else if (type === 'fixed') {
+                tbody = document.getElementById('fixedParamsBody');
+                cols = 6;
+            } else if (type === 'response') {
+                tbody = document.getElementById('responseParamsBody');
+                cols = 3;
+            } else {
+                tbody = document.getElementById('errorCodesBody');
+                cols = 3;
+            }
+
+            if (tbody.querySelector('td[colspan]')) {
+                tbody.innerHTML = '';
+            }
+
+            let html = '<tr class="border-b border-gray-100">';
+            if (type === 'request') {
+                html += `
+                    <td class="py-3 px-4"><input type="text" placeholder="参数名称" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="参数描述" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>body</option>
+                            <option>query</option>
+                            <option>header</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>否</option>
+                            <option>是</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="默认值" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                `;
+            } else if (type === 'fixed') {
+                html += `
+                    <td class="py-3 px-4"><input type="text" placeholder="参数名称" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="参数描述" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>header</option>
+                            <option>body</option>
+                            <option>query</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="默认值" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                `;
+            } else if (type === 'response') {
+                html += `
+                    <td class="py-3 px-4"><input type="text" placeholder="参数名称" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="参数描述" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                `;
+            } else {
+                html += `
+                    <td class="py-3 px-4"><input type="text" placeholder="错误代码" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="错误描述" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                `;
+            }
+            html += '</tr>';
+            tbody.innerHTML += html;
+        }
+
+        function deleteRow(el) {
+            el.closest('tr').remove();
+            const tbody = el.closest('tbody');
+            if (tbody.children.length === 0) {
+                const cols = tbody.querySelectorAll('th').length;
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="${cols}" class="py-10 text-[#909399]">
+                            <div class="flex flex-col items-center gap-2">
+                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                <span>暂无数据</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function submitForm() {
+            alert('提交成功');
+            window.location.href = 'service_register.html';
+        }
+
+        let currentQuickFillType = '';
+        let currentCatalogFields = [];
+        let selectedFields = [];
+
+        const catalogFieldsMap = {
+            '行政复议被申请人信息': [
+                { name: 'id', desc: '主键ID' },
+                { name: 'case_id', desc: '案件ID' },
+                { name: 'respondent_id', desc: '被申请人ID' },
+                { name: 'respondent_name', desc: '被申请人名称' },
+                { name: 'respondent_type', desc: '被申请人分类' },
+                { name: 'legal_representative', desc: '法定代表人名称' },
+                { name: 'address', desc: '住所地' },
+                { name: 'phone', desc: '手机号' },
+                { name: 'is_main_send', desc: '是否主送' },
+                { name: 'order_no', desc: '顺序' },
+                { name: 'del_flag', desc: '删除标志' },
+                { name: 'remark', desc: '备注' },
+                { name: 'create_time', desc: '创建时间' },
+                { name: 'create_by', desc: '创建人' },
+                { name: 'update_time', desc: '最后更新时间' },
+                { name: 'update_by', desc: '最后更新人' }
+            ],
+            '行政处罚基本信息': [
+                { name: 'id', desc: '主键ID' },
+                { name: 'case_no', desc: '案件编号' },
+                { name: 'case_source', desc: '行政处罚案件来源' },
+                { name: 'case_source_date', desc: '行政处罚案件来源日期' },
+                { name: 'penalty_name', desc: '处罚行为名称' },
+                { name: 'reason', desc: '事由（案由）' },
+                { name: 'party_count', desc: '当事人数量' },
+                { name: 'case_description', desc: '案情介绍' },
+                { name: 'case_type', desc: '案件程序类别' },
+                { name: 'law_enforcement_org', desc: '执法主体名称' },
+                { name: 'law_enforcement_org_id', desc: '执法主体主键ID' },
+                { name: 'is_transfer', desc: '是否移送司法机关' },
+                { name: 'transfer_date', desc: '移送、抄送司法机关时间' },
+                { name: 'batch_no', desc: '批次号' },
+                { name: 'update_type', desc: '更新类型' },
+                { name: 'create_time', desc: '创建时间' }
+            ],
+            '先行化解信息': [
+                { name: 'id', desc: '先行化解ID' },
+                { name: 'org_id', desc: '机构ID' },
+                { name: 'org_name', desc: '行政机关' },
+                { name: 'contact', desc: '联系方式' },
+                { name: 'region_id', desc: '区划ID' },
+                { name: 'remark', desc: '备注' },
+                { name: 'del_flag', desc: '删除标志' },
+                { name: 'create_time', desc: '创建时间' },
+                { name: 'create_by', desc: '创建人' },
+                { name: 'update_time', desc: '最后更新时间' },
+                { name: 'update_by', desc: '最后更新人' }
+            ],
+            '行政复议答复信息': [
+                { name: 'id', desc: '主键ID' },
+                { name: 'case_id', desc: '案件ID' },
+                { name: 'case_receive_no', desc: '案件收文编号' },
+                { name: 'procedure', desc: '程序' },
+                { name: 'reject_type', desc: '驳回类型' },
+                { name: 'other_correction_type', desc: '其他纠错类型' },
+                { name: 'new_flag', desc: '新增标志' },
+                { name: 'entity', desc: '实体' },
+                { name: 'correction_reason', desc: '纠错原因' },
+                { name: 'modify_time', desc: '修改时间' },
+                { name: 'loss_amount', desc: '企业挽回损失金额' },
+                { name: 'receive_time', desc: '收文时间' },
+                { name: 'create_time', desc: '创建时间' },
+                { name: 'suggestion', desc: '建议书' },
+                { name: 'opinion', desc: '意见书' },
+                { name: 'completion_time', desc: '建议完成时间' },
+                { name: 'remark', desc: '备注' },
+                { name: 'compensation_amount', desc: '赔偿金金额' },
+                { name: 'del_flag', desc: '删除标记' }
+            ],
+            '人口基础信息库': [
+                { name: 'id_card', desc: '身份证号' },
+                { name: 'name', desc: '姓名' },
+                { name: 'gender', desc: '性别' },
+                { name: 'birth_date', desc: '出生日期' },
+                { name: 'nation', desc: '民族' },
+                { name: 'address', desc: '户籍地址' },
+                { name: 'phone', desc: '联系电话' },
+                { name: 'education', desc: '文化程度' },
+                { name: 'marital_status', desc: '婚姻状况' },
+                { name: 'occupation', desc: '职业' }
+            ],
+            '法人单位信息库': [
+                { name: 'unified_social_credit_code', desc: '统一社会信用代码' },
+                { name: 'enterprise_name', desc: '企业名称' },
+                { name: 'legal_person', desc: '法定代表人' },
+                { name: 'register_date', desc: '成立日期' },
+                { name: 'register_capital', desc: '注册资本' },
+                { name: 'business_scope', desc: '经营范围' },
+                { name: 'enterprise_type', desc: '企业类型' },
+                { name: 'register_address', desc: '注册地址' },
+                { name: 'industry', desc: '所属行业' },
+                { name: 'business_status', desc: '经营状态' }
+            ],
+            '婚姻登记信息库': [
+                { name: 'id_card', desc: '身份证号' },
+                { name: 'name', desc: '姓名' },
+                { name: 'spouse_id_card', desc: '配偶身份证号' },
+                { name: 'spouse_name', desc: '配偶姓名' },
+                { name: 'marriage_date', desc: '结婚登记日期' },
+                { name: 'marriage_number', desc: '结婚证字号' },
+                { name: 'marriage_status', desc: '婚姻状态' },
+                { name: 'register_authority', desc: '登记机关' }
+            ],
+            '户籍人口信息库': [
+                { name: 'id_card', desc: '公民身份号码' },
+                { name: 'name', desc: '姓名' },
+                { name: 'gender', desc: '性别' },
+                { name: 'ethnicity', desc: '民族' },
+                { name: 'birth_date', desc: '出生日期' },
+                { name: 'household_address', desc: '户籍住址' },
+                { name: 'household_type', desc: '户口类型' },
+                { name: 'householder', desc: '户主姓名' },
+                { name: 'relation', desc: '与户主关系' }
+            ],
+            '社会信用信息库': [
+                { name: 'entity_name', desc: '主体名称' },
+                { name: 'credit_code', desc: '统一社会信用代码' },
+                { name: 'credit_level', desc: '信用等级' },
+                { name: 'punish_count', desc: '行政处罚次数' },
+                { name: 'reward_count', desc: '荣誉奖励次数' },
+                { name: 'blacklist_flag', desc: '是否黑名单' },
+                { name: 'dishonest_flag', desc: '是否失信被执行人' },
+                { name: 'credit_score', desc: '信用评分' }
+            ],
+            '不动产登记库': [
+                { name: 'property_id', desc: '不动产单元号' },
+                { name: 'property_address', desc: '坐落位置' },
+                { name: 'property_type', desc: '不动产类型' },
+                { name: 'owner_name', desc: '权利人姓名' },
+                { name: 'owner_id_card', desc: '权利人身份证号' },
+                { name: 'area', desc: '面积' },
+                { name: 'use_type', desc: '用途' },
+                { name: 'register_date', desc: '登记日期' },
+                { name: 'mortgage_flag', desc: '是否抵押' },
+                { name: 'seal_flag', desc: '是否查封' }
+            ],
+            '医疗健康信息库': [
+                { name: 'id_card', desc: '身份证号' },
+                { name: 'name', desc: '姓名' },
+                { name: 'medical_card_no', desc: '医保卡号' },
+                { name: 'medical_level', desc: '医保等级' },
+                { name: 'medical_org', desc: '定点医疗机构' },
+                { name: 'insurance_status', desc: '参保状态' },
+                { name: 'contribution_base', desc: '缴费基数' },
+                { name: 'account_balance', desc: '账户余额' }
+            ],
+            '教育资源信息库': [
+                { name: 'school_name', desc: '学校名称' },
+                { name: 'school_type', desc: '学校类型' },
+                { name: 'school_level', desc: '学校等级' },
+                { name: 'student_name', desc: '学生姓名' },
+                { name: 'student_id', desc: '学号' },
+                { name: 'grade', desc: '年级' },
+                { name: 'class_name', desc: '班级' },
+                { name: 'enrollment_date', desc: '入学日期' },
+                { name: 'graduation_date', desc: '毕业日期' }
+            ]
+        };
+
+        function openQuickFillModal(type) {
+            currentQuickFillType = type;
+            const catalogName = document.getElementById('selected-catalog-name').textContent;
+            document.getElementById('check-all-request').checked = false;
+            document.getElementById('check-all-response').checked = false;
+            document.getElementById('selected-count').textContent = '已选 0 项';
+            document.getElementById('quick-fill-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('quick-fill-modal').classList.remove('opacity-0', 'invisible');
+            loadFields(catalogName);
+        }
+
+        function closeQuickFillModal() {
+            document.getElementById('quick-fill-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('quick-fill-modal').classList.add('opacity-0', 'invisible');
+        }
+
+        function loadFields(catalogName) {
+            const fields = catalogFieldsMap[catalogName] || [];
+            currentCatalogFields = fields;
+            document.getElementById('check-all-request').checked = false;
+            document.getElementById('check-all-response').checked = false;
+            document.getElementById('selected-count').textContent = '已选 0 项';
+
+            const container = document.getElementById('fields-list');
+            if (fields.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 text-[#909399] text-sm">
+                        <i class="fa-solid fa-folder-open text-2xl mb-2 block opacity-30"></i>
+                        暂无字段数据
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="w-full text-sm table-fixed">
+                    <thead>
+                        <tr class="bg-gray-50 sticky top-0">
+                            <th class="w-10 py-2.5 text-center font-medium text-[#606266]">序号</th>
+                            <th class="px-3 py-2.5 text-left font-medium text-[#606266]">字段名称</th>
+                            <th class="px-3 py-2.5 text-left font-medium text-[#606266]">字段描述</th>
+                            <th class="w-20 py-2.5 text-center font-medium text-[#1c7ffd]">请求参数</th>
+                            <th class="w-20 py-2.5 text-center font-medium text-[#36c2aa]">返回参数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${fields.map((field, index) => `
+                            <tr class="border-b border-gray-100 hover:bg-blue-50/50 transition-colors">
+                                <td class="py-2.5 text-center text-[#909399]">${index + 1}</td>
+                                <td class="px-3 py-2.5 text-[#303133] font-mono text-xs">${field.name}</td>
+                                <td class="px-3 py-2.5 text-[#606266]">${field.desc}</td>
+                                <td class="py-2.5 text-center">
+                                    <input type="checkbox" class="field-checkbox-req rounded text-[#1c7ffd]" data-index="${index}" onchange="updateSelectedCount()">
+                                </td>
+                                <td class="py-2.5 text-center">
+                                    <input type="checkbox" class="field-checkbox-resp rounded text-[#36c2aa]" data-index="${index}" onchange="updateSelectedCount()">
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            // 点击行切换该行"请求参数"勾选（快捷操作），不阻塞弹窗原有交互
+            document.querySelectorAll('#fields-list tbody tr').forEach(row => {
+                row.addEventListener('click', (e) => {
+                    if (e.target.tagName !== 'INPUT') {
+                        const cb = row.querySelector('.field-checkbox-req');
+                        cb.checked = !cb.checked;
+                        updateSelectedCount();
+                    }
+                });
+            });
+        }
+
+        function toggleAllColumn(column) {
+            const checked = document.getElementById(column === 'request' ? 'check-all-request' : 'check-all-response').checked;
+            document.querySelectorAll(column === 'request' ? '.field-checkbox-req' : '.field-checkbox-resp').forEach(cb => {
+                cb.checked = checked;
+            });
+            updateSelectedCount();
+        }
+
+        function updateSelectedCount() {
+            const reqChecked = document.querySelectorAll('.field-checkbox-req:checked').length;
+            const respChecked = document.querySelectorAll('.field-checkbox-resp:checked').length;
+            const total = reqChecked + respChecked;
+            document.getElementById('selected-count').textContent = `已选 ${total} 项（请求 ${reqChecked} / 返回 ${respChecked}）`;
+            // 同步全选列状态
+            const reqBoxes = document.querySelectorAll('.field-checkbox-req');
+            const respBoxes = document.querySelectorAll('.field-checkbox-resp');
+            document.getElementById('check-all-request').checked = reqBoxes.length > 0 && reqChecked === reqBoxes.length;
+            document.getElementById('check-all-response').checked = respBoxes.length > 0 && respChecked === respBoxes.length;
+        }
+
+        function doQuickFill() {
+            const reqBoxes = document.querySelectorAll('.field-checkbox-req:checked');
+            const respBoxes = document.querySelectorAll('.field-checkbox-resp:checked');
+            if (reqBoxes.length === 0 && respBoxes.length === 0) {
+                alert('请至少勾选一个请求参数或返回参数');
+                return;
+            }
+
+            const reqFields = [];
+            reqBoxes.forEach(cb => {
+                const index = parseInt(cb.dataset.index);
+                if (currentCatalogFields[index]) reqFields.push(currentCatalogFields[index]);
+            });
+            const respFields = [];
+            respBoxes.forEach(cb => {
+                const index = parseInt(cb.dataset.index);
+                if (currentCatalogFields[index]) respFields.push(currentCatalogFields[index]);
+            });
+
+            closeQuickFillModal();
+
+            if (reqFields.length > 0) fillRequestQuick(reqFields);
+            if (respFields.length > 0) fillResponseQuick(respFields);
+        }
+
+        function fillRequestQuick(fields) {
+            const tbody = document.getElementById('requestParamsBody');
+            const order = tbody.querySelectorAll('tr:not([style*="display: none"])').length;
+            let html = fields.map((field, i) => `
+                <tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="${field.name}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="${field.desc}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>body</option>
+                            <option>query</option>
+                            <option>header</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>否</option>
+                            <option>是</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4"><input type="text" value="${order + i + 1}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="参数默认值" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                </tr>
+            `).join('');
+
+            if (tbody.querySelector('td[colspan]')) {
+                tbody.innerHTML = html;
+            } else {
+                tbody.insertAdjacentHTML('beforeend', html);
+            }
+        }
+
+        function fillResponseQuick(fields) {
+            const tbody = document.getElementById('responseParamsBody');
+            let html = fields.map(field => `
+                <tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="${field.name}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="${field.desc}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                </tr>
+            `).join('');
+
+            if (tbody.querySelector('td[colspan]')) {
+                tbody.innerHTML = html;
+            } else {
+                tbody.insertAdjacentHTML('beforeend', html);
+            }
+        }
+
+        // ============== 智能助手（悬浮按钮+抽屉） ==============
+        let lastSmartAnswer = null;
+        let currentAgent = 'qa';
+
+        function openGlobalSmartFill() {
+            document.getElementById('global-smart-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('global-smart-drawer').classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+            selectAgent('qa');
+        }
+
+        function closeGlobalSmartFill() {
+            document.getElementById('global-smart-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('global-smart-drawer').classList.add('translate-x-full');
+            document.body.style.overflow = '';
+        }
+
+        // 切换智能体（参考统计中心抽屉样式）
+        function selectAgent(agentId) {
+            currentAgent = agentId;
+            document.querySelectorAll('.agent-card').forEach(card => {
+                card.classList.remove('agent-active');
+            });
+            const targetCard = document.getElementById('agent-' + agentId);
+            if (targetCard) targetCard.classList.add('agent-active');
+            document.getElementById('doc-view').classList.toggle('hidden', agentId !== 'doc');
+            document.getElementById('qa-view').classList.toggle('hidden', agentId !== 'qa');
+        }
+
+        // 获取当前智能体的消息容器
+        function getMsgContainer() {
+            return document.getElementById(currentAgent === 'doc' ? 'doc-messages' : 'qa-messages');
+        }
+
+        function quickAsk(id) {
+            const map = {
+                1: '帮我填写一个「身份证号查询公民基本信息」的接口服务：POST方式，请求参数为身份证号id_card(必填，string，body)，返回参数request_id、data.name(姓名)、data.gender(性别)、data.age(年龄)、data.birthday(出生日期)、data.address(户籍地址)，错误代码400参数错误、401未授权、500服务器错误',
+                2: '帮我填写「统一社会信用代码查询企业工商信息」接口服务：GET方式，请求参数credit_code(必填，string，query)，返回企业名称、法人、注册资本、成立日期、注册地址、经营范围，错误代码400、404未找到、500',
+                3: '帮我填写「手机号查询用户基础信息」接口服务：POST方式，请求参数phone(必填，header中app_id和app_secret为固定常量参数，body中phone)，返回用户ID、昵称、头像、性别、注册时间、会员等级，错误代码400参数错误、403无权限、429调用超限'
+            };
+            const val = map[id] || '';
+            document.getElementById('global-smart-input').value = val;
+            sendGlobalSmartMsg();
+        }
+
+        function handleGlobalSmartFile(e) {
+            const files = Array.from(e.target.files || []);
+            if (!files.length) return;
+            const preview = document.getElementById('doc-preview');
+            const html = files.map(f => {
+                let icon = 'fa-file-lines text-gray-500';
+                if (/\.xlsx?|\.csv$/i.test(f.name)) icon = 'fa-file-excel text-green-600';
+                else if (/\.docx?$/i.test(f.name)) icon = 'fa-file-word text-blue-600';
+                else if (/\.pdf$/i.test(f.name)) icon = 'fa-file-pdf text-red-500';
+                else if (/\.json|\.ya?ml$/i.test(f.name)) icon = 'fa-file-code text-yellow-600';
+                else if (/\.txt$/i.test(f.name)) icon = 'fa-file-alt text-indigo-500';
+                const size = f.size > 1048576 ? (f.size/1048576).toFixed(2)+'MB' : (f.size/1024).toFixed(1)+'KB';
+                return `<div class="flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 mb-2 last:mb-0">
+                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                        <i class="fa-solid ${icon} text-lg"></i>
+                        <div class="min-w-0 flex-1">
+                            <div class="text-sm text-[#303133] truncate">${f.name}</div>
+                            <div class="text-xs text-[#909399]">${size} · 等待AI解析</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="this.closest('#doc-preview').querySelectorAll('div.flex.items-center.justify-between').length<=1?(document.getElementById('doc-preview').classList.add('hidden'),document.getElementById('doc-preview').innerHTML=''):this.closest('div.flex.items-center.justify-between').remove();document.getElementById('doc-upload').value='';"
+                        class="w-7 h-7 rounded-full hover:bg-white text-[#909399] hover:text-red-500 shrink-0 ml-2 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>`;
+            }).join('');
+            preview.innerHTML = html;
+            preview.classList.remove('hidden');
+            // 上传后自动触发AI解析（文档解析智能体）
+            const container = document.getElementById('doc-messages');
+            container.innerHTML += `
+                <div class="flex gap-3 justify-end">
+                    <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%]">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-regular fa-file-lines"></i>
+                            <span class="text-sm">已上传接口文档：${files.map(f=>f.name).join('、')}</span>
+                        </div>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user text-[#1c7ffd] text-xs"></i>
+                    </div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+            simulateDocParse();
+        }
+
+        // 文档解析智能体：模拟AI解析过程
+        function simulateDocParse() {
+            const container = document.getElementById('doc-messages');
+            const msgId = 'doc-msg-' + Date.now();
+            container.innerHTML += `
+                <div class="flex gap-3" id="${msgId}">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #1c7ffd">
+                        <i class="fa-solid fa-file-lines text-white text-xs"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-spinner fa-spin text-[#1c7ffd]"></i>
+                            <span class="text-sm text-[#606266]" id="${msgId}-text">正在解析接口文档...</span>
+                        </div>
+                        <div class="flex-1 h-2 bg-white rounded-full overflow-hidden w-[220px]">
+                            <div id="${msgId}-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+
+            let progress = 0;
+            const steps = ['正在读取文档结构...', '正在分析接口定义...', '正在识别参数信息...'];
+            let stepIdx = 0;
+            const timer = setInterval(() => {
+                progress += 2;
+                if (progress >= 30 && stepIdx === 0) { stepIdx = 1; document.getElementById(msgId + '-text').textContent = steps[1]; }
+                if (progress >= 60 && stepIdx === 1) { stepIdx = 2; document.getElementById(msgId + '-text').textContent = steps[2]; }
+                document.getElementById(msgId + '-bar').style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(timer);
+                    setTimeout(() => {
+                        const msg = document.getElementById(msgId);
+                        if (msg) msg.remove();
+                        const summary = mockSmartAnswer('接口文档解析');
+                        lastSmartAnswer = summary;
+                        container.innerHTML += `
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #1c7ffd">
+                                    <i class="fa-solid fa-file-lines text-white text-xs"></i>
+                                </div>
+                                <div class="flex-1">${buildAnswerBubble(summary)}</div>
+                            </div>
+                        `;
+                        document.getElementById('doc-apply-btn').classList.remove('hidden');
+                        container.scrollTop = container.scrollHeight;
+                    }, 500);
+                }
+            }, 40);
+        }
+
+        function addMsgRight(text) {
+            const msgs = getMsgContainer();
+            const d = document.createElement('div');
+            d.className = 'flex items-start gap-3 justify-end';
+            d.innerHTML = `<div class="max-w-[82%]">
+                <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm leading-relaxed">${text}</div>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" class="w-8 h-8 rounded-full">
+            </div>`;
+            msgs.appendChild(d);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function addMsgLeft(html) {
+            const msgs = getMsgContainer();
+            const d = document.createElement('div');
+            d.className = 'flex items-start gap-3';
+            d.innerHTML = `<div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-robot text-white text-base"></i>
+            </div><div class="flex-1">${html}</div>`;
+            msgs.appendChild(d);
+            msgs.scrollTop = msgs.scrollHeight;
+            return d;
+        }
+
+        function handleGlobalSmartKeydown(e) {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                sendGlobalSmartMsg();
+            }
+        }
+
+        function sendGlobalSmartMsg() {
+            const input = document.getElementById('global-smart-input');
+            const val = (input.value || '').trim();
+            if (!val) return;
+
+            // 用户消息（问答视图）
+            const container = document.getElementById('qa-messages');
+            container.innerHTML += `
+                <div class="flex gap-3 justify-end">
+                    <div class="bg-[#36c2aa] text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%]">
+                        <p class="text-sm">${val.replace(/\n/g, '<br>')}</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user text-[#36c2aa] text-xs"></i>
+                    </div>
+                </div>
+            `;
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+
+            // AI回复（加载中）
+            const msgId = 'qa-msg-' + Date.now();
+            container.innerHTML += `
+                <div class="flex gap-3" id="${msgId}">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
+                        <i class="fa-solid fa-message-question text-white text-xs"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3">
+                        <p class="text-sm text-[#606266] animate-pulse">智能问答生成智能体正在分析...</p>
+                    </div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+
+            setTimeout(() => {
+                const msg = document.getElementById(msgId);
+                if (msg) msg.remove();
+                const summary = mockSmartAnswer(val);
+                lastSmartAnswer = summary;
+                container.innerHTML += `
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
+                            <i class="fa-solid fa-message-question text-white text-xs"></i>
+                        </div>
+                        <div class="flex-1">${buildAnswerBubble(summary)}</div>
+                    </div>
+                `;
+                container.scrollTop = container.scrollHeight;
+            }, 1200);
+        }
+
+        function mockSmartAnswer(text) {
+            const t = text.toLowerCase();
+            let svcName = '自定义信息查询接口';
+            let svcType = '查询服务';
+            let callMethod = 'GET';
+            if (/身份证|公民|id_card|人口|个人/.test(t)) { svcName = '身份证号查询公民基本信息接口'; svcType = '查询服务'; callMethod = 'POST'; }
+            else if (/企业|工商|信用代码|credit/.test(t)) { svcName = '统一社会信用代码查询企业工商信息接口'; svcType = '查询服务'; callMethod = 'GET'; }
+            else if (/手机|phone|用户/.test(t)) { svcName = '手机号查询用户基础信息接口'; svcType = '查询服务'; callMethod = 'POST'; }
+            else if (/新增|创建|保存|insert|post/.test(t)) { svcType = '新增服务'; callMethod = 'POST'; }
+            else if (/修改|更新|update|put/.test(t)) { svcType = '更新服务'; callMethod = 'PUT'; }
+            else if (/删除|delete|移除/.test(t)) { svcType = '删除服务'; callMethod = 'DELETE'; }
+            else if (/post/.test(t)) callMethod = 'POST';
+
+            const defaultReq = [
+                { name:'id_card', desc:'身份证号', loc:'body', req:'是', order:1, def:'' },
+                { name:'name', desc:'姓名', loc:'body', req:'否', order:2, def:'' }
+            ];
+            const defaultResp = [
+                { name:'request_id', desc:'请求追踪ID' },
+                { name:'data.name', desc:'姓名' },
+                { name:'data.id_card', desc:'身份证号' }
+            ];
+            const defaultErr = [
+                { code:'400', desc:'参数错误' },
+                { code:'401', desc:'未授权' },
+                { code:'500', desc:'服务器内部错误' }
+            ];
+            const defaultFixed = [
+                { name:'app_id', desc:'应用ID', loc:'header', order:1, def:'APP-SERVICE-001' },
+                { name:'app_secret', desc:'应用密钥', loc:'header', order:2, def:'xxxx-secret' }
+            ];
+
+            if (/企业|工商|credit/.test(t)) {
+                return {
+                    svcName, svcType, callMethod,
+                    tags:['工商','企业','查询'],
+                    desc:'根据统一社会信用代码查询企业工商登记基本信息，适用于企业身份核验、信用监管等场景。',
+                    timeOut: 10,
+                    limitDay: 10000,
+                    req: [
+                        { name:'credit_code', desc:'统一社会信用代码', loc:'query', req:'是', order:1, def:'' },
+                        { name:'keyword', desc:'企业名称关键字', loc:'query', req:'否', order:2, def:'' }
+                    ],
+                    fixed: defaultFixed,
+                    resp: [
+                        { name:'request_id', desc:'请求追踪ID' },
+                        { name:'data.company_name', desc:'企业名称' },
+                        { name:'data.legal_person', desc:'法定代表人' },
+                        { name:'data.register_capital', desc:'注册资本' },
+                        { name:'data.register_date', desc:'成立日期' },
+                        { name:'data.register_address', desc:'注册地址' },
+                        { name:'data.business_scope', desc:'经营范围' }
+                    ],
+                    err: [
+                        { code:'400', desc:'请求参数错误，请检查credit_code格式' },
+                        { code:'404', desc:'未查询到该信用代码对应企业信息' },
+                        { code:'500', desc:'服务器内部错误' }
+                    ]
+                };
+            }
+            if (/身份证|公民|id_card|人口/.test(t)) {
+                return {
+                    svcName, svcType, callMethod,
+                    tags: ['人口','个人','查询'],
+                    desc: '根据身份证号查询公民基本信息，用于政务服务、核验类场景。',
+                    timeOut: 8, limitDay: 5000,
+                    req: [{ name:'id_card', desc:'身份证号码', loc:'body', req:'是', order:1, def:'' }],
+                    fixed: defaultFixed,
+                    resp: [
+                        { name:'request_id', desc:'请求追踪ID' },
+                        { name:'data.name', desc:'姓名' },
+                        { name:'data.gender', desc:'性别' },
+                        { name:'data.nation', desc:'民族' },
+                        { name:'data.birthday', desc:'出生日期' },
+                        { name:'data.address', desc:'户籍地址' },
+                        { name:'data.id_card', desc:'身份证号' }
+                    ],
+                    err: defaultErr
+                };
+            }
+            if (/手机|phone|用户/.test(t)) {
+                return {
+                    svcName, svcType, callMethod,
+                    tags: ['用户','移动','查询'],
+                    desc: '根据手机号查询注册用户基础信息，适用于会员体系、营销服务等场景。',
+                    timeOut: 6, limitDay: 20000,
+                    req: [{ name:'phone', desc:'手机号', loc:'body', req:'是', order:1, def:'' }],
+                    fixed: [
+                        { name:'app_id', desc:'应用ID', loc:'header', order:1, def:'APP-USER-001' },
+                        { name:'access_token', desc:'访问令牌', loc:'header', order:2, def:'${token}' }
+                    ],
+                    resp: [
+                        { name:'request_id', desc:'请求追踪ID' },
+                        { name:'data.user_id', desc:'用户ID' },
+                        { name:'data.nickname', desc:'昵称' },
+                        { name:'data.avatar', desc:'头像' },
+                        { name:'data.gender', desc:'性别' },
+                        { name:'data.register_date', desc:'注册时间' },
+                        { name:'data.vip_level', desc:'会员等级' }
+                    ],
+                    err: [
+                        { code:'400', desc:'手机号参数错误' },
+                        { code:'401', desc:'未授权或令牌无效' },
+                        { code:'403', desc:'无访问权限' },
+                        { code:'429', desc:'接口调用超限' },
+                        { code:'500', desc:'服务器内部错误' }
+                    ]
+                };
+            }
+            return { svcName, svcType, callMethod,
+                tags:['自定义','API'], desc:'基于描述/文档自动解析生成的服务信息，请检查修改。',
+                timeOut: 10, limitDay: 10000,
+                req: defaultReq, fixed: defaultFixed, resp: defaultResp, err: defaultErr };
+        }
+
+        function buildAnswerBubble(s) {
+            const tagHtml = (s.tags||[]).map(x=>`<span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded mr-1 mb-1 inline-block">${x}</span>`).join('');
+            return `<div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-4 text-sm text-[#303133] leading-relaxed">
+                ✅ 已为您生成「<b>${s.svcName}</b>」的推荐信息，可直接应用到表单：<br><br>
+                <div class="space-y-2 bg-white rounded-lg border border-gray-200 p-3 text-[13px]">
+                    <div><span class="text-[#909399] w-24 inline-block shrink-0">服务名称：</span><b>${s.svcName}</b></div>
+                    <div><span class="text-[#909399] w-24 inline-block shrink-0">服务类型：</span>${s.svcType}</div>
+                    <div><span class="text-[#909399] w-24 inline-block shrink-0">调用方式：</span><code class="px-1.5 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded">${s.callMethod}</code></div>
+                    <div><span class="text-[#909399] w-24 inline-block shrink-0 align-top">标签：</span>${tagHtml || '-'}</div>
+                    <div><span class="text-[#909399] w-24 inline-block shrink-0 align-top">服务描述：</span>${s.desc}</div>
+                    <div><span class="text-[#909399] w-24 inline-block shrink-0">超时时间：</span>${s.timeOut}秒 / 单日限 ${s.limitDay}次</div>
+                </div>
+                <div class="grid grid-cols-4 gap-3 mt-4">
+                    <div class="col-span-2 bg-white rounded-lg border border-gray-200 p-3 text-xs">
+                        <div class="flex items-center gap-1 mb-2 text-[#1c7ffd] font-medium"><i class="fa-solid fa-arrow-down w-3.5"></i>请求参数 <span class="text-[#909399] font-normal">(${s.req.length})</span></div>
+                        <div class="space-y-1 text-[#606266]">${s.req.map(r=>`
+                            <div class="flex justify-between gap-2"><span class="truncate">${r.name}</span><span class="truncate text-[#909399]">${r.desc}</span></div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg border border-gray-200 p-3 text-xs">
+                        <div class="flex items-center gap-1 mb-2 text-[#36c2aa] font-medium"><i class="fa-solid fa-wrench w-3.5"></i>常量参数 <span class="text-[#909399] font-normal">(${s.fixed.length})</span></div>
+                        <div class="space-y-1 text-[#606266]">${s.fixed.map(f=>`
+                            <div class="flex justify-between gap-2"><span class="truncate">${f.name}</span><span class="truncate text-[#909399]">${f.desc}</span></div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="col-span-2 bg-white rounded-lg border border-gray-200 p-3 text-xs">
+                        <div class="flex items-center gap-1 mb-2 text-indigo-600 font-medium"><i class="fa-solid fa-arrow-up w-3.5"></i>返回参数 <span class="text-[#909399] font-normal">(${s.resp.length})</span></div>
+                        <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[#606266]">${s.resp.map(r=>`
+                            <div class="flex justify-between gap-2"><span class="truncate">${r.name}</span><span class="truncate text-[#909399]">${r.desc}</span></div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="col-span-2 bg-white rounded-lg border border-gray-200 p-3 text-xs">
+                        <div class="flex items-center gap-1 mb-2 text-red-500 font-medium"><i class="fa-solid fa-triangle-exclamation w-3.5"></i>错误代码 <span class="text-[#909399] font-normal">(${s.err.length})</span></div>
+                        <div class="grid grid-cols-3 gap-x-3 gap-y-1 text-[#606266]">${s.err.map(e=>`
+                            <div class="flex items-center gap-2"><code class="px-1.5 py-0.5 bg-red-50 text-red-500 rounded text-[11px]">${e.code}</code><span class="truncate">${e.desc}</span></div>`).join('')}
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 text-xs text-[#909399]">点击下方「<b class="text-[#303133]">应用AI填写到表单</b>」按钮，一键填充以下内容～</div>
+            </div>`;
+        }
+
+        function fillWithLastAnswer() {
+            const s = lastSmartAnswer;
+            if (!s) { alert('请先让AI生成推荐内容再应用～'); return; }
+
+            const safeSet = (id, val) => { const el = document.getElementById(id); if (el) el.value = val ?? ''; };
+            safeSet('service-name', s.svcName);
+            const typeEl = document.getElementById('service-type');
+            if (typeEl) {
+                const v = s.svcType === '新增服务' ? '新增' : s.svcType === '更新服务' ? '更新' : s.svcType === '删除服务' ? '删除' : '查询';
+                typeEl.value = v;
+            }
+            safeSet('service-method', s.callMethod);
+            safeSet('service-desc', s.desc);
+            safeSet('service-timeout', s.timeOut);
+            safeSet('service-daily-limit', s.limitDay);
+
+            if (s.req && s.req.length) {
+                const tb = document.getElementById('requestParamsBody');
+                tb.innerHTML = s.req.map((r,i)=>`<tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="${r.name}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="${r.desc}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                        ${['body','query','header','path'].map(x=>`<option ${r.loc===x?'selected':''}>${x}</option>`).join('')}</select></td>
+                    <td class="py-3 px-4"><select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                        <option ${r.req==='是'?'selected':''}>是</option>
+                        <option ${r.req==='否'?'selected':''}>否</option></select></td>
+                    <td class="py-3 px-4"><input type="text" value="${r.order ?? (i+1)}" class="w-16 mx-auto border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="${r.def??''}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]"><a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a></td>
+                </tr>`).join('');
+            }
+            if (s.fixed && s.fixed.length) {
+                const tb = document.getElementById('fixedParamsBody');
+                tb.innerHTML = s.fixed.map((r,i)=>`<tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="${r.name}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="${r.desc}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                        ${['header','body','query','path'].map(x=>`<option ${r.loc===x?'selected':''}>${x}</option>`).join('')}</select></td>
+                    <td class="py-3 px-4"><input type="text" value="${r.order ?? (i+1)}" class="w-16 mx-auto border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="${r.def??''}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]"><a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a></td>
+                </tr>`).join('');
+            }
+            if (s.resp && s.resp.length) {
+                const tb = document.getElementById('responseParamsBody');
+                tb.innerHTML = s.resp.map(r=>`<tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="${r.name}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="${r.desc}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]"><a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a></td>
+                </tr>`).join('');
+            }
+            if (s.err && s.err.length) {
+                const tb = document.getElementById('errorCodesBody');
+                tb.innerHTML = s.err.map(e=>`<tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="${e.code}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="${e.desc}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]"><a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a></td>
+                </tr>`).join('');
+            }
+
+            closeGlobalSmartFill();
+            toast('✅ AI已自动填写以下内容：服务名称/类型/调用方式/描述 → 请求参数/常量参数/返回参数/错误代码');
+        }
+
+        function toast(msg) {
+            let el = document.getElementById('ai-fill-toast');
+            if (!el) {
+                el = document.createElement('div');
+                el.id = 'ai-fill-toast';
+                el.className = 'fixed top-6 left-1/2 -translate-x-1/2 z-[999] px-5 py-3 bg-[#303133] text-white text-sm rounded-lg shadow-2xl opacity-0 translate-y-[-10px] transition-all duration-300 max-w-[560px] text-center';
+                document.body.appendChild(el);
+            }
+            el.textContent = msg;
+            requestAnimationFrame(() => { el.classList.remove('opacity-0','translate-y-[-10px]'); });
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => el.classList.add('opacity-0','translate-y-[-10px]'), 3200);
+        }
+    </script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P45",
+      "title": "数据服务平台 - 服务注册新增",
+      "path": "service_register_add.html",
+      "route": "/service_register_add.html"
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P45-global-smart-drawer",
+      "type": "drawer",
+      "name": "智能助手 · 注册服务",
+      "pageKey": "P45",
+      "openSelector": "#global-smart-drawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "智能助手 · 注册服务"
+    },
+    {
+      "id": "surface-P45-quick-fill-modal",
+      "type": "modal",
+      "name": "快速填充",
+      "pageKey": "P45",
+      "openSelector": "#quick-fill-modal",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "快速填充"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P45-001",
+      "pageKey": "P45",
+      "target": {
+        "selector": "main",
+        "fallbackText": "返回列表 1 选择目录 2 注册服务 搜索 目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位",
+        "strategy": "tag",
+        "sourceElementId": "P45-E007",
+        "boundsHint": {
+          "text": "返回列表 1 选择目录 2 注册服务 搜索 目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位",
+          "tag": "main"
+        }
+      },
+      "title": "返回列表 1 选择目录 2 注册服… · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「返回列表 1 选择目录 2 注册服务 搜索 目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「返回列表 1 选择目录 2 注册服务 搜索 目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「返回列表 1 选择目录 2 注册服务 搜索 目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 请输入目录名称\n- 请输入\n- service-type\n- api-source\n- 请选择\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P45-E007"
+      },
+      "evidence": [
+        "页面：返回列表 1 选择目录 2 注册服务 搜索 目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位",
+        "路由：/service_register_add.html",
+        "页面文本：返回列表 1 选择目录 2 注册服务 搜索 目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被",
+        "selector：main"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P45-006",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P45-002",
+      "pageKey": "P45",
+      "target": {
+        "selector": "#step-1 table",
+        "fallbackText": "目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位-被申请人id、行政管理类别文字、创建人、最",
+        "strategy": "data-descendant",
+        "sourceElementId": "P45-E011",
+        "boundsHint": {
+          "text": "目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政管理类别编码、送达单位-被申请人名称、id、法定代表人名称、住所地、创建时间、是否有送达单位、管理类别编码、送达单位-被申请人id、行政管理类别文字、创建人、最",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P45-E011"
+      },
+      "evidence": [
+        "页面文本：目录名称 数据项 操作 行政复议被申请人信息 否主送、备注、被申请人id、案件id、被申请人名称、删除标志、顺序、被申请人分类、送达单位-住所地、案件类型、行政",
+        "selector：#step-1 table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P45-010",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P45-003",
+      "pageKey": "P45",
+      "target": {
+        "selector": "#step-2 table",
+        "fallbackText": "参数名称 参数描述 参数位置 是否必填 顺序 参数默认值 操作 暂无数据",
+        "strategy": "data-descendant",
+        "sourceElementId": "P45-E028",
+        "boundsHint": {
+          "text": "参数名称 参数描述 参数位置 是否必填 顺序 参数默认值 操作 暂无数据",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「参数名称 参数描述 参数位置 是否必填 顺序 参数默认值 操作…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P45-E028"
+      },
+      "evidence": [
+        "页面文本：参数名称 参数描述 参数位置 是否必填 顺序 参数默认值 操作 暂无数据",
+        "selector：#step-2 table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P45-027",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P45-004",
+      "pageKey": "P45",
+      "target": {
+        "selector": "#doc-upload",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P45-E044",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P45-E044"
+      },
+      "evidence": [
+        "selector：#doc-upload",
+        "二级界面：智能助手 · 注册服务"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P45-043",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P45-global-smart-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 4
+    },
+    {
+      "id": "ANN-P45-005",
+      "pageKey": "P45",
+      "target": {
+        "selector": "#global-smart-input",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P45-E046",
+        "boundsHint": {
+          "text": "",
+          "tag": "textarea"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P45-E046"
+      },
+      "evidence": [
+        "selector：#global-smart-input",
+        "二级界面：智能助手 · 注册服务"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P45-045",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P45-global-smart-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 5
+    },
+    {
+      "id": "ANN-P45-006",
+      "pageKey": "P45",
+      "target": {
+        "selector": "#quick-fill-overlay",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P45-E051",
+        "boundsHint": {
+          "text": "",
+          "tag": "div"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「跳转」用于连接当前页面与下一步业务流程。\n\n### 跳转规则\n\n- 用户完成当前操作后进入目标页面。\n- 跳转时需要带入当前业务对象的标识信息。\n- 返回时应保留用户上一次的筛选或编辑状态。\n\n### 跳转流程\n\n```mermaid\nflowchart LR\n  A[当前页面] --\u003e B[触发跳转]\n  B --\u003e C{校验通过}\n  C --\u003e|是| D[目标页面]\n  C --\u003e|否| E[停留并提示]\n  D --\u003e F[返回时保留上下文]\n```\n\n### 分支情况\n\n- 成功：进入目标页面。\n- 失败：停留当前页面并提示原因。\n- 权限不足：提示无权限或隐藏入口。\n\n### 待确认\n\n- 跳转目标页面是否已明确？\n- 是否需要区分不同角色的跳转路径？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "J",
+      "kind": "flow",
+      "topics": [
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Flow and navigation",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P45-E051"
+      },
+      "evidence": [
+        "selector：#quick-fill-overlay"
+      ],
+      "nextActions": [
+        "触发 `该元素` 后需要确认目标页面、返回路径或二级承载面。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P45-050",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 6
+    },
+    {
+      "id": "ANN-P45-007",
+      "pageKey": "P45",
+      "target": {
+        "selector": "#check-all-request",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P45-E054",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P45-E054"
+      },
+      "evidence": [
+        "selector：#check-all-request",
+        "二级界面：快速填充"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P45-053",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P45-quick-fill-modal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 7
+    },
+    {
+      "id": "ANN-P45-008",
+      "pageKey": "P45",
+      "target": {
+        "selector": "#check-all-response",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P45-E055",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P45-E055"
+      },
+      "evidence": [
+        "selector：#check-all-response",
+        "二级界面：快速填充"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P45-054",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P45-quick-fill-modal",
+      "displayWhenClosed": "sidebar-only",
+      "order": 8
+    },
+    {
+      "id": "ANN-P45-009",
+      "pageKey": "P45",
+      "target": {
+        "selector": "button[onclick=\"this.closest('#doc-preview').querySelectorAll('div.flex.items-center.justify-between').length\u003c=1?(document.getElementById('doc-preview').classList.add('hidden'),document.getElementById('doc-preview').innerHTML=''):this.closest('div.flex.items-center.justify-between').remove();document.getElementById('doc-upload').value='';\"]",
+        "fallbackText": "",
+        "strategy": "handler",
+        "sourceElementId": "P45-E078",
+        "boundsHint": {
+          "text": "",
+          "tag": "button"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「操作」关键操作入口。\n\n### 交互规则\n\n- 用户点击「操作」后，系统应执行与该入口对应的业务动作。\n- 操作前应校验当前用户、当前对象状态和必要输入是否满足条件。\n- 若操作在当前页完成，应给出明确成功反馈并更新相关区域。\n\n### 状态与异常\n\n- 操作完成后：20\n\n### 证据\n\n- selector：button[onclick=\"this.closest('#doc-preview').querySelectorAll('div.flex.items-center.justify-between').length\u003c=1?(document.getElementById('doc-preview').classList.add('hidden'),document.getElementById('doc-preview').innerHTML=''):this.closest('div.flex.items-center.justify-between').remove();document.getElementById('doc-upload').value='';\"]\n- 短暂反馈：20\n\n### 待确认\n\n- 点击后的目标页面、弹窗或状态变化是否已确认？\n- 是否存在角色权限、状态限制或二次确认要求？\n- 候选证据是否与 PRD 或上游页面级需求说明文档一致？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "business",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Primary action",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P45-E078"
+      },
+      "evidence": [
+        "selector：button[onclick=\"this.closest('#doc-preview').querySelectorAll('div.flex.items-center.justify-between').length\u003c=1?(document.getElementById('doc-preview').classList.add('hidden'),document.getElementById('doc-preview').innerHTML=''):this.closest('div.flex.items-center.justify-between').remove();document.getElementById('doc-upload').value='';\"]",
+        "短暂反馈：20"
+      ],
+      "nextActions": [
+        "点击 `该元素` 后需要确认页面/弹窗/状态变化、成功反馈和失败处理。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P45-077",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 9
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

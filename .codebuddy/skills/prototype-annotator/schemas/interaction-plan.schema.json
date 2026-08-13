@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prototype-annotator.local/schemas/interaction-plan.schema.json",
+  "title": "Interaction Plan",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["interactions"],
+  "properties": {
+    "interactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["name", "triggerSelector", "surfaceId", "surfaceType"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "pageRoute": {
+            "type": "string"
+          },
+          "triggerSelector": {
+            "type": "string"
+          },
+          "triggerAction": {
+            "type": "string",
+            "enum": ["click", "hover", "focus"],
+            "default": "click"
+          },
+          "preconditionSelector": {
+            "type": "string",
+            "description": "Optional selector that must be satisfied before triggering, e.g. select a table row first"
+          },
+          "waitForSelector": {
+            "type": "string"
+          },
+          "surfaceId": {
+            "type": "string"
+          },
+          "surfaceName": {
+            "type": "string"
+          },
+          "surfaceType": {
+            "type": "string",
+            "enum": ["modal", "drawer", "confirm", "popover", "dropdown"]
+          },
+          "closeSelector": {
+            "type": "string"
+          },
+          "contentSelector": {
+            "type": "string",
+            "description": "Selector that must exist inside the opened surface root"
+          },
+          "activeSelector": {
+            "type": "string",
+            "description": "Alias for contentSelector"
+          },
+          "titleSelector": {
+            "type": "string",
+            "description": "Selector for the title or heading inside the opened surface"
+          },
+          "titleText": {
+            "oneOf": [
+              {"type": "string"},
+              {"type": "array", "items": {"type": "string"}}
+            ],
+            "description": "Text that identifies this logical surface when a root is shared"
+          },
+          "textIncludes": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Text fragments that identify this logical surface when a root is shared"
+          },
+          "waitMs": {
+            "type": "number",
+            "default": 300
+          },
+          "scope": {
+            "type": "string",
+            "enum": ["document", "trigger-parent"],
+            "default": "document",
+            "description": "Where to search for the opened surface root"
+          }
+        }
+      }
+    }
+  }
+}

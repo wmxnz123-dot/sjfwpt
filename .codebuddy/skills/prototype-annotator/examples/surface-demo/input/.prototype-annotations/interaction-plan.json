@@ -1,0 +1,28 @@
+{
+  "interactions": [
+    {
+      "name": "打开新建应用抽屉",
+      "pageRoute": "/index.html",
+      "triggerSelector": "[data-ann='create-app']",
+      "triggerAction": "click",
+      "waitForSelector": "[data-ann='create-app-drawer'].open, [data-ann='create-app-drawer']",
+      "surfaceId": "surface-P01-create-app-drawer",
+      "surfaceName": "新建应用抽屉",
+      "surfaceType": "drawer",
+      "closeSelector": "[data-ann='close-create-app']",
+      "waitMs": 300
+    },
+    {
+      "name": "打开删除确认弹窗",
+      "pageRoute": "/index.html",
+      "triggerSelector": "[data-ann='delete-app']",
+      "triggerAction": "click",
+      "waitForSelector": "[data-ann='delete-confirm-modal'].open, [data-ann='delete-confirm-modal']",
+      "surfaceId": "surface-P01-delete-confirm-modal",
+      "surfaceName": "删除确认弹窗",
+      "surfaceType": "confirm",
+      "closeSelector": "[data-ann='cancel-delete']",
+      "waitMs": 300
+    }
+  ]
+}

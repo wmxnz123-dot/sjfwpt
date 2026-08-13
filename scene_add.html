@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 新增场景</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .section-title {
+            position: relative;
+            padding-left: 14px;
+            font-weight: 600;
+            color: #303133;
+        }
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            transform: translateY(-50%);
+            width: 4px; height: 14px;
+            border-radius: 2px;
+            background: #1c7ffd;
+        }
+        .color-swatch {
+            width: 36px; height: 36px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid #e5e7eb;
+            transition: transform .15s ease;
+        }
+        .color-swatch:hover { transform: scale(1.08); }
+        .color-swatch.active {
+            border-color: #1c7ffd;
+            box-shadow: 0 0 0 2px rgba(28,127,253,.25);
+        }
+        .icon-card {
+            width: 64px; height: 64px;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all .15s ease;
+            background: #fff;
+            font-size: 24px;
+            color: #606266;
+        }
+        .icon-card:hover { border-color: #1c7ffd; color: #1c7ffd; }
+        .icon-card.active {
+            border-color: #1c7ffd;
+            background: #eef4ff;
+            color: #1c7ffd;
+            box-shadow: 0 0 0 2px rgba(28,127,253,.15);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <!-- 面包屑 -->
+            <div class="h-[52px] flex items-center px-6 text-[#606266] shrink-0 bg-transparent text-sm">
+                <div class="flex items-center gap-2">
+                    <a href="config_center.html" class="hover:text-[#1c7ffd] transition-colors">配置中心</a>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
+                    <a href="config_center.html" class="hover:text-[#1c7ffd] transition-colors">场景配置</a>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
+                    <span class="text-[#303133] font-medium">新增场景</span>
+                </div>
+            </div>
+
+            <!-- 返回列表（样式与目录编制页面一致） -->
+            <div class="px-6 py-3 bg-white border-b border-gray-100 flex items-center shrink-0">
+                <a href="config_center.html" class="text-[#1c7ffd] hover:opacity-80 transition-colors flex items-center gap-1 font-medium text-[15px]">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> 返回列表
+                </a>
+            </div>
+
+            <!-- 内容区 -->
+            <div class="flex-1 p-6 pb-24 overflow-y-auto space-y-5">
+                <!-- ===== 基本信息配置 ===== -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+                    <h3 class="section-title text-[15px] mb-6">基本信息配置<span class="text-red-500 ml-1">*</span></h3>
+
+                    <div class="grid grid-cols-2 gap-x-10 gap-y-5">
+                        <!-- 场景名称 -->
+                        <div>
+                            <label class="block text-sm text-[#606266] mb-2">
+                                场景名称<span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <input type="text" id="scene-name" placeholder="请输入场景名称" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                        </div>
+
+                        <!-- 图标 -->
+                        <div>
+                            <label class="block text-sm text-[#606266] mb-2">
+                                图标<span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <div class="flex items-center gap-3">
+                                <input type="text" id="icon-input" value="fa-building" placeholder="请输入图标名称，如 fa-building" oninput="handleIconInput(this.value)" class="flex-1 h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                                <!-- 输入框右侧小预览，不换行 -->
+                                <div class="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-lg shrink-0" id="icon-inline-preview" style="background:#eef4ff;color:#3B82F6;">
+                                    <i class="fa-solid fa-building"></i>
+                                </div>
+                            </div>
+                            <p class="text-xs text-[#909399] mt-1">支持 Font Awesome 图标，输入类名如 fa-building、fa-rocket</p>
+                        </div>
+
+                        <!-- 图标颜色 -->
+                        <div>
+                            <label class="block text-sm text-[#606266] mb-2">
+                                图标颜色<span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <div class="flex items-center gap-3">
+                                <div class="color-swatch active" id="color-preview" style="background:#3B82F6" onclick="openColorPicker()"></div>
+                                <input type="text" id="color-hex" value="#3B82F6" maxlength="7" oninput="updateColor(this.value)" class="w-[110px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all font-mono">
+                                <div class="flex items-center gap-1.5 ml-1">
+                                    <div class="color-swatch" style="background:#3B82F6; width:24px; height:24px; border-width:1px;" onclick="setColor('#3B82F6')"></div>
+                                    <div class="color-swatch" style="background:#10B981; width:24px; height:24px; border-width:1px;" onclick="setColor('#10B981')"></div>
+                                    <div class="color-swatch" style="background:#F59E0B; width:24px; height:24px; border-width:1px;" onclick="setColor('#F59E0B')"></div>
+                                    <div class="color-swatch" style="background:#EF4444; width:24px; height:24px; border-width:1px;" onclick="setColor('#EF4444')"></div>
+                                    <div class="color-swatch" style="background:#8B5CF6; width:24px; height:24px; border-width:1px;" onclick="setColor('#8B5CF6')"></div>
+                                    <div class="color-swatch" style="background:#1c7ffd; width:24px; height:24px; border-width:1px;" onclick="setColor('#1c7ffd')"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 图标背景颜色 -->
+                        <div>
+                            <label class="block text-sm text-[#606266] mb-2">
+                                图标背景颜色<span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <div class="flex items-center gap-3">
+                                <div class="color-swatch active" id="bg-color-preview" style="background:#eef4ff" onclick="openBgColorPicker()"></div>
+                                <input type="text" id="bg-color-hex" value="#EEF4FF" maxlength="7" oninput="updateBgColor(this.value)" class="w-[110px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all font-mono">
+                                <div class="flex items-center gap-1.5 ml-1">
+                                    <div class="color-swatch" style="background:#eef4ff; width:24px; height:24px; border-width:1px;" onclick="setBgColor('#eef4ff')"></div>
+                                    <div class="color-swatch" style="background:#d1fae5; width:24px; height:24px; border-width:1px;" onclick="setBgColor('#d1fae5')"></div>
+                                    <div class="color-swatch" style="background:#fef3c7; width:24px; height:24px; border-width:1px;" onclick="setBgColor('#fef3c7')"></div>
+                                    <div class="color-swatch" style="background:#fee2e2; width:24px; height:24px; border-width:1px;" onclick="setBgColor('#fee2e2')"></div>
+                                    <div class="color-swatch" style="background:#ede9fe; width:24px; height:24px; border-width:1px;" onclick="setBgColor('#ede9fe')"></div>
+                                    <div class="color-swatch" style="background:#e0f2fe; width:24px; height:24px; border-width:1px;" onclick="setBgColor('#e0f2fe')"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 所属领域 -->
+                        <div>
+                            <label class="block text-sm text-[#606266] mb-2">
+                                所属领域<span class="text-red-500 ml-1">*</span>
+                            </label>
+                            <select id="scene-domain" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] bg-white transition-all">
+                                <option value="">请选择所属领域</option>
+                                <option value="yimin">一码一表</option>
+                                <option value="zhizao">智慧治理</option>
+                                <option value="minzheng">民生保障</option>
+                                <option value="shengtai">生态环保</option>
+                                <option value="wulian">物联网</option>
+                                <option value="shuzi">数字经济</option>
+                                <option value="jiaoyu">智慧教育</option>
+                            </select>
+                        </div>
+
+                        <!-- 场景描述（全宽） -->
+                        <div class="col-span-2">
+                            <label class="block text-sm text-[#606266] mb-2">场景描述</label>
+                            <textarea id="scene-desc" rows="3" placeholder="请输入场景描述（10-50字）" class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all resize-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 选择数据目录 ===== -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+                    <h3 class="section-title text-[15px] mb-2 flex items-center gap-2">
+                        目录选择<span class="text-red-500 ml-1">*</span>
+                    </h3>
+                    <p class="text-sm text-[#909399] mb-4 ml-[18px]">（可多选，至少选择一个目录）</p>
+
+                    <!-- 顶部操作栏 -->
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <input type="text" id="catalog-search" placeholder="目录名称 / 所属部门" oninput="renderCatalogs()" class="h-[32px] px-3 border border-gray-200 rounded-md text-sm w-[220px] outline-none focus:border-[#1c7ffd] transition-all">
+                            <button onclick="resetCatalogFilter()" class="h-[32px] px-3 border border-gray-200 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] text-sm transition-colors">重置</button>
+                        </div>
+                        <label class="flex items-center gap-1.5 text-sm text-[#606266] cursor-pointer select-none">
+                            <input type="checkbox" id="check-all" class="rounded text-[#1c7ffd]" onchange="toggleAllCatalogs()">
+                            <span>全选</span>
+                            <span class="text-[#909399]">已选 <span id="selected-count" class="text-[#1c7ffd] font-medium">0</span></span>
+                        </label>
+                    </div>
+
+                    <!-- 目录表格 -->
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <table class="w-full text-sm table-fixed">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <th class="w-16 py-3 text-center font-medium text-[#606266]">选择框</th>
+                                    <th class="px-4 py-3 text-left font-medium text-[#606266]">目录名称</th>
+                                    <th class="w-28 px-4 py-3 text-center font-medium text-[#606266]">服务类型</th>
+                                    <th class="px-4 py-3 text-left font-medium text-[#606266]">所属单位</th>
+                                    <th class="w-32 px-4 py-3 text-center font-medium text-[#606266]">发布时间</th>
+                                    <th class="w-28 px-4 py-3 text-center font-medium text-[#606266]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="catalog-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部操作栏 -->
+            <div class="bg-white border-t border-gray-100 px-8 py-4 flex items-center justify-end gap-3 shrink-0 shadow-[0_-4px_12px_rgba(0,0,0,0.04)]">
+                <button onclick="cancel()" class="h-[36px] px-6 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">取消</button>
+                <button onclick="saveDraft()" class="h-[36px] px-6 border border-[#1c7ffd] text-[#1c7ffd] rounded-md text-sm hover:bg-blue-50 transition-colors">暂存</button>
+                <button onclick="publish()" class="h-[36px] px-6 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#0d6efd] transition-colors shadow-sm">发布场景</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ===== 数据：可申请的数据资源 =====
+        const catalogs = [
+            { name: '企业基础信息库', service: '企业基础信息查询服务', type: 'API', provider: '市市场监督管理局', time: '2024-01-15' },
+            { name: '经营变更记录表', service: '企业变更信息查询服务', type: 'API', provider: '市市场监督管理局', time: '2024-01-18' },
+            { name: '婚姻登记信息', service: '婚姻登记信息查询服务', type: 'API', provider: '市民政局', time: '2024-02-10' },
+            { name: '常住人口基本信息', service: '人口信息核验服务', type: 'API', provider: '市公安局', time: '2024-02-22' },
+            { name: '不动产登记信息', service: '不动产信息核验服务', type: 'API', provider: '市自然资源局', time: '2024-03-05' },
+            { name: '税务登记信息', service: '企业税务核验服务', type: 'API', provider: '市税务局', time: '2024-03-12' },
+            { name: '社会信用评价信息', service: '企业信用查询服务', type: 'API', provider: '市发展改革委', time: '2024-03-20' },
+            { name: '电子证照信息', service: '证照核验服务', type: 'API', provider: '市政务服务中心', time: '2024-04-02' },
+            { name: '行政区划边界数据', service: '区划查询服务', type: 'API', provider: '市自然资源局', time: '2024-04-15' },
+            { name: '教育资源信息', service: '教育资源查询服务', type: 'API', provider: '市教育局', time: '2024-04-28' }
+        ];
+
+        let selectedCatalogs = new Set();
+        let currentColor = '#3B82F6';
+        let currentBgColor = '#eef4ff';
+
+        // ===== 图标输入 =====
+        function handleIconInput(val) {
+            const name = (val || '').trim();
+            if (!name) return;
+            const iconEl = document.getElementById('icon-inline-preview');
+            iconEl.innerHTML = `<i class="fa-solid ${name}"></i>`;
+        }
+
+        // ===== 颜色 =====
+        function openColorPicker() {
+            const val = document.getElementById('color-hex').value;
+            const input = document.createElement('input');
+            input.type = 'color';
+            input.value = /^#[0-9A-Fa-f]{6}$/.test(val) ? val : '#3B82F6';
+            input.onchange = e => setColor(e.target.value);
+            input.click();
+        }
+
+        function setColor(color) {
+            if (!/^#[0-9A-Fa-f]{6}$/.test(color)) return;
+            currentColor = color;
+            document.getElementById('color-preview').style.background = color;
+            document.getElementById('color-hex').value = color.toUpperCase();
+            document.getElementById('icon-inline-preview').style.color = color;
+        }
+
+        function updateColor(color) {
+            if (/^#[0-9A-Fa-f]{6}$/.test(color)) {
+                currentColor = color;
+                document.getElementById('color-preview').style.background = color;
+                document.getElementById('icon-inline-preview').style.color = color;
+            }
+        }
+
+        // ===== 图标背景颜色 =====
+        function openBgColorPicker() {
+            const val = document.getElementById('bg-color-hex').value;
+            const input = document.createElement('input');
+            input.type = 'color';
+            input.value = /^#[0-9A-Fa-f]{6}$/.test(val) ? val : '#eef4ff';
+            input.onchange = e => setBgColor(e.target.value);
+            input.click();
+        }
+
+        function setBgColor(color) {
+            if (!/^#[0-9A-Fa-f]{6}$/.test(color)) return;
+            currentBgColor = color;
+            document.getElementById('bg-color-preview').style.background = color;
+            document.getElementById('bg-color-hex').value = color.toUpperCase();
+            document.getElementById('icon-inline-preview').style.background = color;
+        }
+
+        function updateBgColor(color) {
+            if (/^#[0-9A-Fa-f]{6}$/.test(color)) {
+                currentBgColor = color;
+                document.getElementById('bg-color-preview').style.background = color;
+                document.getElementById('icon-inline-preview').style.background = color;
+            }
+        }
+
+        // ===== 目录列表 =====
+        function renderCatalogs() {
+            const keyword = (document.getElementById('catalog-search').value || '').trim();
+            let list = catalogs;
+            if (keyword) {
+                list = list.filter(c => c.name.includes(keyword) || c.service.includes(keyword));
+            }
+            const tbody = document.getElementById('catalog-table-body');
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-[#909399]"><i class="fa-regular fa-folder-open text-2xl mb-2 block opacity-30"></i>暂无目录数据</td></tr>`;
+                document.getElementById('check-all').checked = false;
+                updateSelectedCount();
+                return;
+            }
+            tbody.innerHTML = list.map((c, i) => `
+                <tr class="border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                    <td class="py-3.5 text-center">
+                        <input type="checkbox" class="catalog-check rounded text-[#1c7ffd]" data-idx="${i}" onchange="toggleCatalog(this, ${i})" ${selectedCatalogs.has(i) ? 'checked' : ''}>
+                    </td>
+                    <td class="px-4 py-3.5 text-[#303133] font-medium">${c.name}</td>
+                    <td class="px-4 py-3.5 text-center">
+                        <span class="px-2 py-0.5 rounded-md text-xs bg-blue-50 text-[#1c7ffd]">${c.type}</span>
+                    </td>
+                    <td class="px-4 py-3.5 text-[#606266]">${c.provider}</td>
+                    <td class="px-4 py-3.5 text-center text-[#909399]">${c.time}</td>
+                    <td class="px-4 py-3.5 text-center">
+                        <button onclick="viewCatalog(${i})" class="text-[#1c7ffd] hover:text-[#0d6efd] text-sm">查看详情</button>
+                    </td>
+                </tr>
+            `).join('');
+            updateSelectedCount();
+        }
+
+        function toggleCatalog(cb, idx) {
+            if (cb.checked) selectedCatalogs.add(idx);
+            else selectedCatalogs.delete(idx);
+            updateSelectedCount();
+        }
+
+        function toggleAllCatalogs() {
+            const checkAll = document.getElementById('check-all').checked;
+            const visibleBoxes = document.querySelectorAll('.catalog-check');
+            visibleBoxes.forEach(cb => {
+                cb.checked = checkAll;
+                const idx = parseInt(cb.dataset.idx);
+                if (checkAll) selectedCatalogs.add(idx);
+                else selectedCatalogs.delete(idx);
+            });
+            updateSelectedCount();
+        }
+
+        function updateSelectedCount() {
+            document.getElementById('selected-count').textContent = selectedCatalogs.size;
+            const visibleBoxes = document.querySelectorAll('.catalog-check');
+            document.getElementById('check-all').checked = visibleBoxes.length > 0 && Array.from(visibleBoxes).every(cb => cb.checked);
+        }
+
+        function resetCatalogFilter() {
+            document.getElementById('catalog-search').value = '';
+            renderCatalogs();
+        }
+
+        function viewCatalog(idx) {
+            const c = Array.from(document.querySelectorAll('.catalog-check')).map(cb => parseInt(cb.dataset.idx));
+            // 简单展示
+            alert('查看目录详情：' + catalogs[idx].name);
+        }
+
+        // ===== 底部按钮 =====
+        function cancel() {
+            if (confirm('确定取消编辑吗？已填写的内容将丢失。')) {
+                window.location.href = 'config_center.html';
+            }
+        }
+
+        function saveDraft() {
+            const name = document.getElementById('scene-name').value.trim();
+            if (!name) { alert('请先填写场景名称'); return; }
+            alert('已暂存草稿：' + name);
+        }
+
+        function publish() {
+            const name = document.getElementById('scene-name').value.trim();
+            const domain = document.getElementById('scene-domain').value;
+            if (!name) { alert('请填写场景名称'); return; }
+            if (!domain) { alert('请选择所属领域'); return; }
+            if (selectedCatalogs.size === 0) { alert('请至少选择一个目录'); return; }
+            alert('场景「' + name + '」发布成功！');
+            window.location.href = 'config_center.html';
+        }
+
+        // 初始化
+        renderCatalogs();
+    </script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P40",
+      "title": "数据服务平台 - 新增场景",
+      "path": "scene_add.html",
+      "route": "/scene_add.html"
+    }
+  ],
+  "surfaces": [],
+  "annotations": [
+    {
+      "id": "ANN-P40-001",
+      "pageKey": "P40",
+      "target": {
+        "selector": "main",
+        "fallbackText": "配置中心 场景配置 新增场景 返回列表 基本信息配置 * 场景名称 * 图标 * 支持 Font Awesome 图标，输入类名如 fa-building、fa-rocket 图标颜色 * 图标背景颜色 * 所属领域 * 请选择所属领域 一码一表 智慧治理 民生保障 生态环保 物联网 数字经济 智慧教育 场景描述 目录",
+        "strategy": "tag",
+        "sourceElementId": "P40-E005",
+        "boundsHint": {
+          "text": "配置中心 场景配置 新增场景 返回列表 基本信息配置 * 场景名称 * 图标 * 支持 Font Awesome 图标，输入类名如 fa-building、fa-rocket 图标颜色 * 图标背景颜色 * 所属领域 * 请选择所属领域 一码一表 智慧治理 民生保障 生态环保 物联网 数字经济 智慧教育 场景描述 目录",
+          "tag": "main"
+        }
+      },
+      "title": "配置中心 场景配置 新增场景 返回… · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「配置中心 场景配置 新增场景 返回列表 基本信息配置 * 场景名称 * 图标 * 支持 Font Awesome 图标，输入类名如 fa-building、fa-rocket 图标颜色 * 图标背景颜色 * 所属领域 * 请选择所属领域 一码一表 智慧治理 民生保障 生态环保 物联网 数字经济 智慧教育 场景描述 目录」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「配置中心 场景配置 新增场景 返回列表 基本信息配置 * 场景名称 * 图标 * 支持 Font Awesome 图标，输入类名如 fa-building、fa-rocket 图标颜色 * 图标背景颜色 * 所属领域 * 请选择所属领域 一码一表 智慧治理 民生保障 生态环保 物联网 数字经济 智慧教育 场景描述 目录」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「配置中心 场景配置 新增场景 返回列表 基本信息配置 * 场景名称 * 图标 * 支持 Font Awesome 图标，输入类名如 fa-building、fa-rocket 图标颜色 * 图标背景颜色 * 所属领域 * 请选择所属领域 一码一表 智慧治理 民生保障 生态环保 物联网 数字经济 智慧教育 场景描述 目录」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 请输入场景名称\n- 请输入图标名称，如 fa-building\n- 请选择所属领域 一码一表 智慧治理 民生保障 …\n- 目录名称 / 所属部门\n- 选择框 目录名称 服务类型 所属单位 发布时间…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P40-E005"
+      },
+      "evidence": [
+        "页面：配置中心 场景配置 新增场景 返回列表 基本信息配置 * 场景名称 * 图标 * 支持 Font Awesome 图标，输入类名如 fa-building、fa-rocket 图标颜色 * 图标背景颜色 * 所属领域 * 请选择所属领域 一码一表 智慧治理 民生保障 生态环保 物联网 数字经济 智慧教育 场景描述 目录",
+        "路由：/scene_add.html",
+        "页面文本：配置中心 场景配置 新增场景 返回列表 基本信息配置 * 场景名称 * 图标 * 支持 Font Awesome 图标，输入类名如 fa-building、fa",
+        "selector：main"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P40-004",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P40-002",
+      "pageKey": "P40",
+      "target": {
+        "selector": "main \u003e div:nth-of-type(4) \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e table",
+        "fallbackText": "选择框 目录名称 服务类型 所属单位 发布时间 操作",
+        "strategy": "path",
+        "sourceElementId": "P40-E034",
+        "boundsHint": {
+          "text": "选择框 目录名称 服务类型 所属单位 发布时间 操作",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「选择框 目录名称 服务类型 所属单位 发布时间 操作」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P40-E034"
+      },
+      "evidence": [
+        "页面文本：选择框 目录名称 服务类型 所属单位 发布时间 操作",
+        "selector：main \u003e div:nth-of-type(4) \u003e div:nth-of-type(2) \u003e div:nth-of-type(2) \u003e table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P40-033",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

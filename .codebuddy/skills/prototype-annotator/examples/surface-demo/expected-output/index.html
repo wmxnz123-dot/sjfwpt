@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="prototype-page-key" content="P01" />
+  <title>应用管理</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    .toolbar { margin-bottom: 16px; display: flex; gap: 8px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    .alert { background: #fff7e6; border: 1px solid #ffd591; padding: 12px; margin-bottom: 16px; }
+    .drawer, .modal { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: none; align-items: center; justify-content: center; }
+    .drawer .panel, .modal .panel { background: #fff; padding: 20px; min-width: 360px; border-radius: 8px; }
+    .drawer.open, .modal.open { display: flex; }
+    .drawer .panel { margin-left: auto; height: 100%; border-radius: 0; min-width: 420px; }
+    .field { margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; }
+    .actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+    .toast { position: fixed; top: 16px; right: 16px; background: #52c41a; color: #fff; padding: 10px 16px; border-radius: 6px; display: none; }
+    .toast.show { display: block; }
+  </style>
+</head>
+<body>
+  <h1>应用管理</h1>
+  <div data-ann="permission-alert" class="alert">当前用户仅可管理已授权应用</div>
+
+  <div class="toolbar">
+    <button data-ann="create-app" type="button">新建应用</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>应用名称</th><th>操作</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>报销助手</td>
+        <td><button data-ann="delete-app" type="button">删除</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div data-ann="create-app-drawer" class="drawer" aria-hidden="true">
+    <div class="panel">
+      <h2>新建应用</h2>
+      <div class="field">
+        <label for="app-name">应用名称</label>
+        <input data-ann="app-name-input" id="app-name" placeholder="请输入应用名称" />
+      </div>
+      <div class="actions">
+        <button data-ann="close-create-app" type="button">关闭</button>
+        <button data-ann="save-app" type="button">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <div data-ann="delete-confirm-modal" class="modal" aria-hidden="true">
+    <div class="panel">
+      <h2>确认删除</h2>
+      <p>删除后不可恢复，是否继续？</p>
+      <div class="actions">
+        <button data-ann="cancel-delete" type="button">取消</button>
+        <button data-ann="confirm-delete" type="button">确认删除</button>
+      </div>
+    </div>
+  </div>
+
+  <div data-ann="success-toast" class="toast">保存成功</div>
+
+  <script>
+    const drawer = document.querySelector('[data-ann="create-app-drawer"]');
+    const modal = document.querySelector('[data-ann="delete-confirm-modal"]');
+    const toast = document.querySelector('[data-ann="success-toast"]');
+
+    document.querySelector('[data-ann="create-app"]').addEventListener('click', () => {
+      drawer.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+    });
+    document.querySelector('[data-ann="close-create-app"]').addEventListener('click', () => {
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+    });
+    document.querySelector('[data-ann="save-app"]').addEventListener('click', () => {
+      toast.classList.add('show');
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+    document.querySelector('[data-ann="delete-app"]').addEventListener('click', () => {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    });
+    document.querySelector('[data-ann="cancel-delete"]').addEventListener('click', () => {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    });
+    document.querySelector('[data-ann="confirm-delete"]').addEventListener('click', () => {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,607 @@
+{
+  "version": 1,
+  "project": {
+    "id": "prototype",
+    "name": "prototype",
+    "source": "local-rule-draft"
+  },
+  "pages": [
+    {
+      "pageKey": "P01",
+      "title": "应用管理",
+      "path": "index.html",
+      "route": "/index.html"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P01-001",
+      "pageKey": "P01",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "应用管理",
+        "strategy": "tag",
+        "sourceElementId": "P01-E001",
+        "boundsHint": {
+          "text": "应用管理",
+          "tag": "h1"
+        }
+      },
+      "title": "应用管理 · 页面介绍",
+      "contentMarkdown": "### 页面说明\n\n本页面用于帮助【业务用户】完成与「应用管理」相关的核心任务。\n\n### 页面目标\n\n`应用管理` 是本原型中的一个页面，路由为 `/index.html`，包含列表/表格数据的浏览与操作。\n\n### 主要操作\n\n- 查看关键信息。\n- 进入下一步流程。\n- 处理异常或待办事项。\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E001"
+      },
+      "evidence": [
+        "页面：应用管理",
+        "路由：/index.html",
+        "页面文本：应用管理",
+        "selector：h1",
+        "文档匹配：PRD.md -> 应用管理"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-001",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z"
+    },
+    {
+      "id": "ANN-P01-002",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"permission-alert\"]",
+        "fallbackText": "当前用户仅可管理已授权应用",
+        "strategy": "data",
+        "sourceElementId": "P01-E002",
+        "boundsHint": {
+          "text": "当前用户仅可管理已授权应用",
+          "tag": "div"
+        }
+      },
+      "title": "当前用户仅可管理已授权…",
+      "contentMarkdown": "### 业务含义\n\n「当前用户仅可管理已授权应用」用于告诉用户当前事项所处阶段，并影响页面可执行操作。\n\n### 状态规则\n\n- 不同状态下，页面展示内容和可操作按钮可能不同。\n- 状态变化后，应及时刷新页面或给出明确提示。\n- 用户需要能够理解当前状态下还能做什么。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 空状态：提示暂无数据，并提供下一步操作建议。\n- 失败状态：提示失败原因，并支持重试或返回。\n\n### 待确认\n\n- 当前状态枚举是否完整？\n- 每个状态下的可操作按钮是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "S",
+      "kind": "state",
+      "topics": [
+        "state",
+        "exception"
+      ],
+      "dimension": "State and exception",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E002"
+      },
+      "evidence": [
+        "页面文本：当前用户仅可管理已授权应用",
+        "selector：[data-ann=\"permission-alert\"]",
+        "文档匹配：PRD.md -> 当前用户仅可管理已授权应用"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-002",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z"
+    },
+    {
+      "id": "ANN-P01-003",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"create-app\"]",
+        "fallbackText": "新建应用",
+        "strategy": "data",
+        "sourceElementId": "P01-E003",
+        "boundsHint": {
+          "text": "新建应用",
+          "tag": "button"
+        }
+      },
+      "title": "新建入口",
+      "contentMarkdown": "### 业务含义\n\n该操作用于打开「新建应用」，帮助用户在不离开当前页面的情况下完成进一步处理。\n\n### 打开规则\n\n- 用户点击「新建应用」后，系统打开对应的抽屉、弹窗或确认框。\n- 二级界面打开后，用户应在其中完成信息查看、填写、确认或提交。\n- 关闭后返回当前页面，当前页面状态应保持一致。\n\n### 状态与异常\n\n- 打开失败时，应提示用户稍后重试。\n- 如果用户在二级界面中填写了内容，关闭前应根据业务需要确认是否保存。\n- 操作成功后，应刷新当前页面或更新相关数据状态。\n\n### 待确认\n\n- 关闭时未保存内容是否需要二次确认？\n- 是否需要根据角色控制该入口是否可见？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "surface",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Surface trigger",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E003"
+      },
+      "evidence": [
+        "触发入口：新建应用",
+        "selector：[data-ann=\"create-app\"]",
+        "文档匹配：PRD.md -> 新建应用"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-003",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z",
+      "surfaceId": "surface-P01-create-app-drawer",
+      "displayWhenClosed": "on-trigger",
+      "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+    },
+    {
+      "id": "ANN-P01-004",
+      "pageKey": "P01",
+      "target": {
+        "selector": "table",
+        "fallbackText": "应用名称 操作 报销助手 删除",
+        "strategy": "tag",
+        "sourceElementId": "P01-E004",
+        "boundsHint": {
+          "text": "应用名称 操作 报销助手 删除",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「应用名称 操作 报销助手 删除」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E004"
+      },
+      "evidence": [
+        "页面文本：应用名称 操作 报销助手 删除",
+        "selector：table",
+        "文档匹配：PRD.md -> 应用名称, 操作, 删除"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-004",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z"
+    },
+    {
+      "id": "ANN-P01-005",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"close-create-app\"]",
+        "fallbackText": "关闭",
+        "strategy": "data",
+        "sourceElementId": "P01-E009",
+        "boundsHint": {
+          "text": "关闭",
+          "tag": "button"
+        }
+      },
+      "title": "关闭",
+      "contentMarkdown": "### 业务含义\n\n「关闭」用于提交、保存、取消或关闭当前二级界面中的处理结果。\n\n### 交互规则\n\n- 用户点击后，系统先校验当前二级界面中的内容。\n- 校验通过后执行保存、提交或关闭操作。\n- 校验失败时，停留在当前二级界面并提示错误原因。\n\n### 状态与异常\n\n- 操作处理中：按钮进入 loading 或禁用状态，避免重复提交。\n- 操作成功：关闭二级界面，并刷新主页面相关数据。\n- 操作失败：保留当前输入，并提示用户如何处理。\n\n### 待确认\n\n- 是否需要二次确认？\n- 成功后是否关闭二级界面？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "surface",
+        "interaction",
+        "action"
+      ],
+      "dimension": "Surface action",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E009"
+      },
+      "evidence": [
+        "页面文本：关闭",
+        "selector：[data-ann=\"close-create-app\"]",
+        "二级界面：create-app-drawer",
+        "文档匹配：PRD.md -> 关闭"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-008",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z",
+      "surfaceId": "surface-P01-create-app-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+    },
+    {
+      "id": "ANN-P01-006",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"save-app\"]",
+        "fallbackText": "保存",
+        "strategy": "data",
+        "sourceElementId": "P01-E010",
+        "boundsHint": {
+          "text": "保存",
+          "tag": "button"
+        }
+      },
+      "title": "保存",
+      "contentMarkdown": "### 业务含义\n\n「保存」用于提交、保存、取消或关闭当前二级界面中的处理结果。\n\n### 交互规则\n\n- 用户点击后，系统先校验当前二级界面中的内容。\n- 校验通过后执行保存、提交或关闭操作。\n- 校验失败时，停留在当前二级界面并提示错误原因。\n\n### 状态与异常\n\n- 操作处理中：按钮进入 loading 或禁用状态，避免重复提交。\n- 操作成功：关闭二级界面，并刷新主页面相关数据。\n- 操作失败：保留当前输入，并提示用户如何处理。\n\n### 待确认\n\n- 是否需要二次确认？\n- 成功后是否关闭二级界面？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "surface",
+        "interaction",
+        "action"
+      ],
+      "dimension": "Surface action",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E010"
+      },
+      "evidence": [
+        "页面文本：保存",
+        "selector：[data-ann=\"save-app\"]",
+        "二级界面：create-app-drawer",
+        "文档匹配：PRD.md -> 保存"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-009",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z",
+      "surfaceId": "surface-P01-create-app-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+    },
+    {
+      "id": "ANN-P01-007",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"cancel-delete\"]",
+        "fallbackText": "取消",
+        "strategy": "data",
+        "sourceElementId": "P01-E013",
+        "boundsHint": {
+          "text": "取消",
+          "tag": "button"
+        }
+      },
+      "title": "取消",
+      "contentMarkdown": "### 业务含义\n\n确认弹窗用于在用户执行高风险操作前进行二次确认，避免误操作造成数据或业务状态异常。\n\n### 确认规则\n\n- 用户触发「取消」相关操作后，不应立即执行。\n- 系统应展示确认弹窗，说明操作对象和影响范围。\n- 用户确认后才执行操作；用户取消后返回原页面，不改变数据状态。\n\n### 风险控制\n\n- 删除、停用、取消授权、重置密钥等操作建议记录操作日志。\n- 不可逆操作需要明确提示影响范围。\n- 权限不足时，不展示操作入口或禁止确认。\n\n### 待确认\n\n- 该操作是否可撤销？\n- 是否需要管理员权限？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "surface",
+        "interaction",
+        "risk"
+      ],
+      "dimension": "Surface confirm",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prd",
+        "ref": "page-map:P01-E013"
+      },
+      "evidence": [
+        "页面文本：取消",
+        "selector：[data-ann=\"cancel-delete\"]",
+        "二级界面：delete-confirm-modal",
+        "文档匹配：PRD.md -> 取消"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": "CAND-P01-011",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z",
+      "surfaceId": "surface-P01-delete-confirm-modal",
+      "displayWhenClosed": "sidebar-only",
+      "fallbackAnchorSelector": "[data-ann=\"delete-confirm-modal\"]"
+    },
+    {
+      "id": "ANN-P01-008",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"confirm-delete\"]",
+        "fallbackText": "确认删除",
+        "strategy": "data",
+        "sourceElementId": "P01-E014",
+        "boundsHint": {
+          "text": "确认删除",
+          "tag": "button"
+        }
+      },
+      "title": "确认删除",
+      "contentMarkdown": "### 业务含义\n\n确认弹窗用于在用户执行高风险操作前进行二次确认，避免误操作造成数据或业务状态异常。\n\n### 确认规则\n\n- 用户触发「确认删除」相关操作后，不应立即执行。\n- 系统应展示确认弹窗，说明操作对象和影响范围。\n- 用户确认后才执行操作；用户取消后返回原页面，不改变数据状态。\n\n### 风险控制\n\n- 删除、停用、取消授权、重置密钥等操作建议记录操作日志。\n- 不可逆操作需要明确提示影响范围。\n- 权限不足时，不展示操作入口或禁止确认。\n\n### 待确认\n\n- 该操作是否可撤销？\n- 是否需要管理员权限？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "surface",
+        "interaction",
+        "risk"
+      ],
+      "dimension": "Surface confirm",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P01-E014"
+      },
+      "evidence": [
+        "页面文本：确认删除",
+        "selector：[data-ann=\"confirm-delete\"]",
+        "二级界面：delete-confirm-modal",
+        "短暂反馈：保存成功"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、页面说明或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P01-012",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z",
+      "surfaceId": "surface-P01-delete-confirm-modal",
+      "displayWhenClosed": "sidebar-only",
+      "fallbackAnchorSelector": "[data-ann=\"delete-confirm-modal\"]"
+    },
+    {
+      "id": "ANN-P01-009",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"create-app\"]",
+        "fallbackText": "create-app-drawer",
+        "strategy": "data",
+        "sourceElementId": null,
+        "boundsHint": {
+          "text": "create-app-drawer",
+          "tag": "surface"
+        }
+      },
+      "title": "create-app-drawer · 页面介绍",
+      "contentMarkdown": "### 业务含义\n\n「create-app-drawer」用于承载当前页面中的补充操作，避免用户离开主页面即可完成信息填写、确认或处理。\n\n### 使用场景\n\n- 用户在主页面触发相关操作后进入该界面。\n- 用于完成当前对象的新增、编辑、查看、授权、审批或确认。\n\n### 交互规则\n\n- 打开后，主页面保持背景可见，但当前操作焦点进入二级界面。\n- 用户可以完成信息填写、确认或取消。\n- 保存成功后关闭二级界面，并刷新主页面相关数据。\n- 取消或关闭时，应根据是否存在未保存内容决定是否二次确认。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 保存失败：保留用户已填写内容，并提示失败原因。\n- 权限不足：不展示入口或提示无权限。\n\n### 待确认\n\n- 关闭未保存内容时是否需要二次确认？\n- 保存成功后是否需要保留筛选条件？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "flow",
+      "topics": [
+        "surface",
+        "business",
+        "flow"
+      ],
+      "dimension": "Surface overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "surface:surface-P01-create-app-drawer"
+      },
+      "evidence": [
+        "二级界面：create-app-drawer",
+        "触发入口：[data-ann=\"create-app\"]"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、页面说明或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P01-SURF-surface-P01-create-app-drawer-OV",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z",
+      "surfaceId": "surface-P01-create-app-drawer",
+      "displayWhenClosed": "on-trigger",
+      "fallbackAnchorSelector": "[data-ann=\"create-app\"]"
+    },
+    {
+      "id": "ANN-P01-010",
+      "pageKey": "P01",
+      "target": {
+        "selector": "[data-ann=\"delete-confirm-modal\"]",
+        "fallbackText": "delete-confirm-modal",
+        "strategy": "data",
+        "sourceElementId": null,
+        "boundsHint": {
+          "text": "delete-confirm-modal",
+          "tag": "surface"
+        }
+      },
+      "title": "delete-conf…",
+      "contentMarkdown": "### 业务含义\n\n该操作用于打开「delete-confirm-modal」，帮助用户在不离开当前页面的情况下完成进一步处理。\n\n### 打开规则\n\n- 用户点击「delete-confirm-modal」后，系统打开对应的抽屉、弹窗或确认框。\n- 二级界面打开后，用户应在其中完成信息查看、填写、确认或提交。\n- 关闭后返回当前页面，当前页面状态应保持一致。\n\n### 状态与异常\n\n- 打开失败时，应提示用户稍后重试。\n- 如果用户在二级界面中填写了内容，关闭前应根据业务需要确认是否保存。\n- 操作成功后，应刷新当前页面或更新相关数据状态。\n\n### 待确认\n\n- 关闭时未保存内容是否需要二次确认？\n- 是否需要根据角色控制该入口是否可见？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "surface",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Surface trigger",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "surface:surface-P01-delete-confirm-modal"
+      },
+      "evidence": [
+        "触发入口：delete-confirm-modal",
+        "selector：[data-ann=\"delete-confirm-modal\"]"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、页面说明或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P01-SURF-surface-P01-delete-confirm-modal-OV",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-06-12T13:36:04Z",
+      "surfaceId": "surface-P01-delete-confirm-modal",
+      "displayWhenClosed": "on-trigger",
+      "fallbackAnchorSelector": "[data-ann=\"delete-confirm-modal\"]"
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P01-create-app-drawer",
+      "type": "drawer",
+      "name": "create-app-drawer",
+      "pageKey": "P01",
+      "openSelector": "[data-ann=\"create-app-drawer\"]",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "triggerSelector": "[data-ann=\"create-app\"]"
+    },
+    {
+      "id": "surface-P01-delete-confirm-modal",
+      "type": "confirm",
+      "name": "delete-confirm-modal",
+      "pageKey": "P01",
+      "openSelector": "[data-ann=\"delete-confirm-modal\"]",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "triggerSelector": "[data-ann=\"delete-confirm-modal\"]"
+    }
+  ],
+  "audienceMode": "product-review"
+}

@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prototype-annotator.local/schemas/annotations.schema.json",
+  "title": "Prototype Annotator annotations.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["version", "pages", "annotations"],
+  "properties": {
+    "version": {
+      "type": ["integer", "string"]
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "productProfile": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "productName": {
+          "type": "string"
+        },
+        "productType": {
+          "type": "string"
+        },
+        "productForms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "primaryUsers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "annotationMode": {
+          "type": "string",
+          "enum": ["standard", "dev-handoff"],
+          "default": "standard"
+        },
+        "enabledAnnotationTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/annotationType"
+          }
+        }
+      }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["pageKey"],
+        "properties": {
+          "pageKey": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "route": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "surfaces": {
+      "type": "array",
+      "items": {
+        "$ref": "surface.schema.json"
+      }
+    },
+    "annotations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["id", "pageKey", "title", "contentMarkdown"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "pageKey": {
+            "type": "string"
+          },
+          "surfaceId": {
+            "type": "string",
+            "description": "Optional surface id when annotation belongs to a drawer, modal, or other secondary UI"
+          },
+          "displayWhenClosed": {
+            "type": "string",
+            "enum": ["on-trigger", "sidebar-only", "hidden-until-open"],
+            "description": "How to present the annotation when its surface is not open"
+          },
+          "fallbackAnchorSelector": {
+            "type": "string",
+            "description": "Fallback anchor when displayWhenClosed is on-trigger"
+          },
+          "annotationType": {
+            "$ref": "#/$defs/annotationType"
+          },
+          "target": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "selector": {
+                "type": "string"
+              },
+              "fallbackText": {
+                "type": "string"
+              },
+              "strategy": {
+                "type": "string"
+              },
+              "sourceElementId": {
+                "type": ["string", "null"]
+              }
+            }
+          },
+          "title": {
+            "type": "string"
+          },
+          "contentMarkdown": {
+            "type": "string"
+          },
+          "assets": {
+            "type": "array",
+            "description": "Optional local assets referenced by contentMarkdown or devNotesMarkdown, such as clipboard-pasted images.",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "required": ["type", "src"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["image"]
+                },
+                "src": {
+                  "type": "string"
+                },
+                "fileName": {
+                  "type": "string"
+                },
+                "mimeType": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "kind": {
+            "type": "string"
+          },
+          "dimension": {
+            "type": "string"
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "priority": {
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "annotationType": {
+      "type": "string",
+      "enum": [
+        "P",
+        "E",
+        "C",
+        "A",
+        "J",
+        "S",
+        "R",
+        "AI",
+        "PROMPT",
+        "CTX",
+        "HITL",
+        "FALLBACK",
+        "PERM",
+        "WF",
+        "DATA",
+        "TRACK",
+        "CV",
+        "REC",
+        "METRIC",
+        "SOURCE",
+        "FILTER",
+        "REFRESH",
+        "DRILL",
+        "PLAN",
+        "ROLE",
+        "TENANT",
+        "CONTENT",
+        "PUBLISH",
+        "MOD"
+      ]
+    }
+  }
+}

@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 运营看板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .stat-card { transition: all 0.3s ease; }
+        .stat-card:hover { box-shadow: 0 8px 16px rgba(28, 127, 253, 0.1); }
+        .ai-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .warning-card { border-left: 4px solid #f56c6c; }
+        .success-card { border-left: 4px solid #67c23a; }
+        .info-card { border-left: 4px solid #409eff; }
+        .pulse-animation { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        .agent-active { border-color: #667eea; background-color: #f3f0ff; }
+        .drawer-enter { transform: translateX(100%); }
+        .drawer-enter-active { transform: translateX(0); transition: transform 0.3s ease; }
+        .drawer-exit { transform: translateX(0); }
+        .drawer-exit-active { transform: translateX(100%); transition: transform 0.3s ease; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+            
+            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+                <div class="flex items-center justify-between mb-2">
+                    <div>
+                        <h1 class="text-xl font-bold text-[#303133]">统计看板</h1>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
+                            <span class="text-[#909399] text-sm">时间范围：</span>
+                            <select class="text-sm text-[#303133] outline-none">
+                                <option>本月</option>
+                                <option>上月</option>
+                                <option>本季度</option>
+                                <option>本年度</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
+                            <span class="text-[#909399] text-sm">统计维度：</span>
+                            <select class="text-sm text-[#303133] outline-none">
+                                <option>全部</option>
+                                <option>市直部门</option>
+                                <option>区县</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-9 h-9 rounded-lg ai-card flex items-center justify-center text-white shrink-0">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <div>
+                            <div class="text-[16px] font-bold text-[#303133] leading-tight">AI发现和优化建议</div>
+                            <div class="text-xs text-[#909399] leading-tight mt-1">智能识别问题并给出优先处理方向</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-5">
+                        <div class="warning-card bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-magnifying-glass-chart text-red-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-[#303133] mb-1">AI发现：挂接推进薄弱</h4>
+                                    <p class="text-sm text-[#606266] mb-2">市卫健委、市教育局挂接率偏低，仍是整体提升短板</p>
+                                    <button onclick="showDetail('ai-discovery-1')" class="text-[#1c7ffd] text-xs hover:underline">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-lightbulb text-blue-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-[#303133] mb-1">AI发现：共享策略待优化</h4>
+                                    <p class="text-sm text-[#606266] mb-2">不予共享目录占比13.9%，集中在少数部门，存在复核空间</p>
+                                    <button onclick="showDetail('ai-discovery-2')" class="text-[#1c7ffd] text-xs hover:underline">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="success-card bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-green-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-[#303133] mb-1">优化建议：优先两步推进</h4>
+                                    <p class="text-sm text-[#606266] mb-2">先补低挂接目录映射，再复核不予共享目录，提升整体质量</p>
+                                    <button onclick="showDetail('ai-advice')" class="text-[#1c7ffd] text-xs hover:underline">查看详情</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-catalog" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-[16px] font-bold text-[#303133]">数据目录统计</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="px-3 py-1.5 bg-blue-50 text-[#1c7ffd] rounded-lg text-xs hover:bg-blue-100 transition-colors">查看详情</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-5 mb-8">
+                        <div class="stat-card bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[#909399] text-sm">数据目录总数</span>
+                                <i class="fa-solid fa-database text-[#1c7ffd] opacity-50"></i>
+                            </div>
+                            <div class="text-[32px] font-bold text-[#303133] mb-1">12,580</div>
+                            <div class="flex items-center gap-1 text-xs">
+                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.5%</span>
+                                <span class="text-[#909399]">较上月</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[#909399] text-sm">已挂接资源目录数</span>
+                                <i class="fa-solid fa-link text-[#36c2aa] opacity-50"></i>
+                            </div>
+                            <div class="text-[32px] font-bold text-[#303133] mb-1">8,960</div>
+                            <div class="flex items-center gap-1 text-xs">
+                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 15.2%</span>
+                                <span class="text-[#909399]">较上月</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[#909399] text-sm">资源挂接率</span>
+                                <i class="fa-solid fa-percent text-[#e6a23c] opacity-50"></i>
+                            </div>
+                            <div class="text-[32px] font-bold text-[#303133] mb-1">71.2%</div>
+                            <div class="flex items-center gap-1 text-xs">
+                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 3.8%</span>
+                                <span class="text-[#909399]">较上月</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[#909399] text-sm">本月新增目录数</span>
+                                <i class="fa-solid fa-plus-circle text-[#7a6df4] opacity-50"></i>
+                            </div>
+                            <div class="text-[32px] font-bold text-[#303133] mb-1">1,350</div>
+                            <div class="flex items-center gap-1 text-xs">
+                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.3%</span>
+                                <span class="text-[#909399]">较上月</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="col-span-2">
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4">目录数月度趋势</h3>
+                            <div class="h-[300px]">
+                                <canvas id="catalogTrendChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4">目录共享类型分布</h3>
+                            <div class="h-[300px] flex items-center justify-center">
+                                <canvas id="catalogShareChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="text-[14px] font-medium text-[#606266] mb-4">目录开放类型分布</h3>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="flex items-center gap-4 p-4 bg-green-50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-check text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="text-lg font-bold text-[#303133]">5,230</div>
+                                    <div class="text-sm text-[#909399]">可对社会开放</div>
+                                    <div class="text-xs text-[#606266] mt-1">占比 41.6%</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-yellow-50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-minus text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="text-lg font-bold text-[#303133]">3,890</div>
+                                    <div class="text-sm text-[#909399]">部分对社会开放</div>
+                                    <div class="text-xs text-[#606266] mt-1">占比 30.9%</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-red-50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center">
+                                    <i class="fa-solid fa-xmark text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="text-lg font-bold text-[#303133]">3,460</div>
+                                    <div class="text-sm text-[#909399]">不可对社会开放</div>
+                                    <div class="text-xs text-[#606266] mt-1">占比 27.5%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="text-[14px] font-medium text-[#606266] mb-4">各部门数据目录情况</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-[13px] border-collapse">
+                                <thead class="bg-gray-50 text-[#606266]">
+                                    <tr>
+                                        <th class="py-3 px-4 text-left font-medium">部门名称</th>
+                                        <th class="py-3 px-4 text-center font-medium">目录总数</th>
+                                        <th class="py-3 px-4 text-center font-medium">已挂接目录数</th>
+                                        <th class="py-3 px-4 text-center font-medium">挂接率</th>
+                                        <th class="py-3 px-4 text-center font-medium">无条件共享</th>
+                                        <th class="py-3 px-4 text-center font-medium">有条件共享</th>
+                                        <th class="py-3 px-4 text-center font-medium">不予共享</th>
+                                        <th class="py-3 px-4 text-center font-medium">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4 text-[#303133]">市民政局</td>
+                                        <td class="py-3 px-4 text-center">1,250</td>
+                                        <td class="py-3 px-4 text-center">980</td>
+                                        <td class="py-3 px-4 text-center"><span class="text-[#00d9a6] font-medium">78.4%</span></td>
+                                        <td class="py-3 px-4 text-center">450</td>
+                                        <td class="py-3 px-4 text-center">680</td>
+                                        <td class="py-3 px-4 text-center">120</td>
+                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4 text-[#303133]">市公安局</td>
+                                        <td class="py-3 px-4 text-center">2,380</td>
+                                        <td class="py-3 px-4 text-center">1,820</td>
+                                        <td class="py-3 px-4 text-center"><span class="text-[#00d9a6] font-medium">76.5%</span></td>
+                                        <td class="py-3 px-4 text-center">850</td>
+                                        <td class="py-3 px-4 text-center">1,350</td>
+                                        <td class="py-3 px-4 text-center">180</td>
+                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4 text-[#303133]">市市场监管局</td>
+                                        <td class="py-3 px-4 text-center">1,890</td>
+                                        <td class="py-3 px-4 text-center">1,450</td>
+                                        <td class="py-3 px-4 text-center"><span class="text-[#00d9a6] font-medium">76.7%</span></td>
+                                        <td class="py-3 px-4 text-center">680</td>
+                                        <td class="py-3 px-4 text-center">1,050</td>
+                                        <td class="py-3 px-4 text-center">160</td>
+                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4 text-[#303133]">市卫健委</td>
+                                        <td class="py-3 px-4 text-center">1,560</td>
+                                        <td class="py-3 px-4 text-center">1,120</td>
+                                        <td class="py-3 px-4 text-center"><span class="text-[#e6a23c] font-medium">71.8%</span></td>
+                                        <td class="py-3 px-4 text-center">520</td>
+                                        <td class="py-3 px-4 text-center">890</td>
+                                        <td class="py-3 px-4 text-center">150</td>
+                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4 text-[#303133]">市教育局</td>
+                                        <td class="py-3 px-4 text-center">980</td>
+                                        <td class="py-3 px-4 text-center">720</td>
+                                        <td class="py-3 px-4 text-center"><span class="text-[#00d9a6] font-medium">73.5%</span></td>
+                                        <td class="py-3 px-4 text-center">380</td>
+                                        <td class="py-3 px-4 text-center">520</td>
+                                        <td class="py-3 px-4 text-center">80</td>
+                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex items-center justify-center mt-4 gap-2">
+                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="px-3 py-1.5 bg-[#1c7ffd] text-white rounded-lg text-xs hover:bg-[#1a73e8] transition-colors">1</button>
+                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors">2</button>
+                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors">3</button>
+                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-resource" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-[16px] font-bold text-[#303133]">数据资源统计</h2>
+                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
+                            <span class="text-[#909399] text-sm">统计范围：</span>
+                            <select class="text-sm text-[#303133] outline-none bg-transparent">
+                                <option>全部</option>
+                                <option>市直部门</option>
+                                <option>区县</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-4 mb-8">
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">数据资源总数</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">12,580</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1,350</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.5%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">接口资源总数</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">1,580</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">180</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 15.6%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">库表资源总数</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">8,240</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">850</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 11.2%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">文件资源总数</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">2,150</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">210</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.5%</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6 mb-8">
+                        <div class="border border-gray-100 rounded-lg p-4">
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">资源类型分布</h3>
+                            <div class="h-[220px]">
+                                <canvas id="resourceTypeChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 rounded-lg p-4">
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">共享类型分布</h3>
+                            <div class="h-[220px]">
+                                <canvas id="resourceShareChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 rounded-lg p-4">
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">开放类型分布</h3>
+                            <div class="h-[220px]">
+                                <canvas id="resourceOpenChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-[15px] font-bold text-[#303133] mb-4">各省直部门/各地市数据资源情况</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-[13px] border-collapse text-center">
+                            <thead class="bg-gray-50 text-[#606266]">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium text-left">部门/地市名称</th>
+                                    <th class="py-3 px-4 font-medium">资源总数</th>
+                                    <th class="py-3 px-4 font-medium">库表资源数</th>
+                                    <th class="py-3 px-4 font-medium">文件资源数</th>
+                                    <th class="py-3 px-4 font-medium">接口资源数</th>
+                                    <th class="py-3 px-4 font-medium">文件夹资源数</th>
+                                    <th class="py-3 px-4 font-medium">链接资源数</th>
+                                    <th class="py-3 px-4 font-medium">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">市民政局</td>
+                                    <td class="py-3 px-4">1,250</td>
+                                    <td class="py-3 px-4">820</td>
+                                    <td class="py-3 px-4">210</td>
+                                    <td class="py-3 px-4">150</td>
+                                    <td class="py-3 px-4">50</td>
+                                    <td class="py-3 px-4">20</td>
+                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openResourceDetailModal('市民政局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">市公安局</td>
+                                    <td class="py-3 px-4">2,380</td>
+                                    <td class="py-3 px-4">1,650</td>
+                                    <td class="py-3 px-4">420</td>
+                                    <td class="py-3 px-4">250</td>
+                                    <td class="py-3 px-4">45</td>
+                                    <td class="py-3 px-4">15</td>
+                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openResourceDetailModal('市公安局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">市卫健委</td>
+                                    <td class="py-3 px-4">1,560</td>
+                                    <td class="py-3 px-4">980</td>
+                                    <td class="py-3 px-4">350</td>
+                                    <td class="py-3 px-4">180</td>
+                                    <td class="py-3 px-4">30</td>
+                                    <td class="py-3 px-4">20</td>
+                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openResourceDetailModal('市卫健委')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex items-center justify-center mt-4 gap-2">
+                        <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="px-3 py-1.5 bg-[#1c7ffd] text-white rounded-lg text-xs hover:bg-[#1a73e8] transition-colors">1</button>
+                        <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors">2</button>
+                        <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div id="section-usage" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-[16px] font-bold text-[#303133]">数据使用统计</h2>
+                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
+                            <span class="text-[#909399] text-sm">统计范围：</span>
+                            <select class="text-sm text-[#303133] outline-none bg-transparent">
+                                <option>全部</option>
+                                <option>市直部门</option>
+                                <option>区县</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-5 gap-4 mb-8">
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">资源申请总数</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">3,450</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">420</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 15.2%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">资源申请率</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">27.4%</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">通过占比：<span class="text-[#303133] font-medium">85.6%</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 2.1%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">库表交换总量</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">12.5亿</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1.2亿</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 10.5%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">文件交换总量</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">56.8万</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">5.2万</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.9%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">接口调用总数</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">8.9亿</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">0.8亿</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.3%</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6 mb-8">
+                        <div class="border border-gray-100 rounded-lg p-4">
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">申请资源类型分布</h3>
+                            <div class="h-[220px]">
+                                <canvas id="usageResourceTypeChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 rounded-lg p-4 col-span-2">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-[14px] font-medium text-[#606266]">接口调用/库表交换趋势</h3>
+                                <div class="flex gap-2 text-xs">
+                                    <button class="px-2 py-1 bg-blue-50 text-[#1c7ffd] rounded">近7天</button>
+                                    <button class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">近30天</button>
+                                    <button class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">近12个月</button>
+                                </div>
+                            </div>
+                            <div class="h-[220px]">
+                                <canvas id="usageTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 flex items-center border-b border-gray-200">
+                        <button class="px-4 py-2 text-[14px] font-bold text-[#1c7ffd] border-b-2 border-[#1c7ffd]">各省直部门数据被使用情况</button>
+                        <button class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">各省直部门数据使用情况</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-[13px] border-collapse text-center whitespace-nowrap">
+                            <thead class="bg-gray-50 text-[#606266]">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium text-left">部门/地市名称</th>
+                                    <th class="py-3 px-4 font-medium">资源被申请次数</th>
+                                    <th class="py-3 px-4 font-medium">被申请资源数</th>
+                                    <th class="py-3 px-4 font-medium">资源被申请率</th>
+                                    <th class="py-3 px-4 font-medium">使用部门数</th>
+                                    <th class="py-3 px-4 font-medium">待受理/待审核</th>
+                                    <th class="py-3 px-4 font-medium">审核通过</th>
+                                    <th class="py-3 px-4 font-medium">已驳回/撤销</th>
+                                    <th class="py-3 px-4 font-medium">库表被交换量</th>
+                                    <th class="py-3 px-4 font-medium">接口被调用次数</th>
+                                    <th class="py-3 px-4 font-medium">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">市公安局</td>
+                                    <td class="py-3 px-4">850</td>
+                                    <td class="py-3 px-4">320</td>
+                                    <td class="py-3 px-4 text-[#00d9a6]">45.2%</td>
+                                    <td class="py-3 px-4">28</td>
+                                    <td class="py-3 px-4">12 / 8</td>
+                                    <td class="py-3 px-4 text-[#00d9a6]">805</td>
+                                    <td class="py-3 px-4 text-[#f56c6c]">15 / 10</td>
+                                    <td class="py-3 px-4">3.5亿</td>
+                                    <td class="py-3 px-4">2.8亿</td>
+                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openUsageDetailModal('市公安局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">市民政局</td>
+                                    <td class="py-3 px-4">560</td>
+                                    <td class="py-3 px-4">180</td>
+                                    <td class="py-3 px-4 text-[#00d9a6]">38.5%</td>
+                                    <td class="py-3 px-4">22</td>
+                                    <td class="py-3 px-4">5 / 3</td>
+                                    <td class="py-3 px-4 text-[#00d9a6]">530</td>
+                                    <td class="py-3 px-4 text-[#f56c6c]">12 / 10</td>
+                                    <td class="py-3 px-4">1.2亿</td>
+                                    <td class="py-3 px-4">1.5亿</td>
+                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openUsageDetailModal('市民政局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="section-objection" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-[16px] font-bold text-[#303133]">数据异议统计</h2>
+                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
+                            <span class="text-[#909399] text-sm">统计范围：</span>
+                            <select class="text-sm text-[#303133] outline-none bg-transparent">
+                                <option>全部</option>
+                                <option>市直部门</option>
+                                <option>区县</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-4 mb-8">
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">数据异议总数</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">1,250</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">85</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#f56c6c]"><i class="fa-solid fa-arrow-down"></i> 5.2%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">异议完成率</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">92.5%</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">已完成：<span class="text-[#303133] font-medium">1,156</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 1.5%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">异议受理通过率</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">88.4%</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">已受理：<span class="text-[#303133] font-medium">1,105</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 2.4%</span></span>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
+                            <div class="text-[#606266] text-sm mb-2">异议审查通过率</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">85.6%</div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-[#909399]">已审查：<span class="text-[#303133] font-medium">1,070</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 1.8%</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="border border-gray-100 rounded-lg p-4">
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">异议类型分布</h3>
+                            <div class="h-[220px]">
+                                <canvas id="objectionTypeChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 rounded-lg p-4">
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">异议状态分布</h3>
+                            <div class="h-[220px]">
+                                <canvas id="objectionStatusChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 flex items-center border-b border-gray-200">
+                        <button class="px-4 py-2 text-[14px] font-bold text-[#1c7ffd] border-b-2 border-[#1c7ffd]">各省直部门被异议情况</button>
+                        <button class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">各省直部门提出异议情况</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-[13px] border-collapse text-center whitespace-nowrap">
+                            <thead class="bg-gray-50 text-[#606266]">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium text-left">部门/地市名称</th>
+                                    <th class="py-3 px-4 font-medium">被异议总数</th>
+                                    <th class="py-3 px-4 font-medium">待核查异议数</th>
+                                    <th class="py-3 px-4 font-medium">待审查异议数</th>
+                                    <th class="py-3 px-4 font-medium">异议审查通过数</th>
+                                    <th class="py-3 px-4 font-medium">异议审查通过率</th>
+                                    <th class="py-3 px-4 font-medium">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">市卫健委</td>
+                                    <td class="py-3 px-4">320</td>
+                                    <td class="py-3 px-4">12</td>
+                                    <td class="py-3 px-4">8</td>
+                                    <td class="py-3 px-4 text-[#00d9a6]">280</td>
+                                    <td class="py-3 px-4 text-[#00d9a6]">87.5%</td>
+                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openObjectionDetailModal('市卫健委')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">市公安局</td>
+                                    <td class="py-3 px-4">250</td>
+                                    <td class="py-3 px-4">5</td>
+                                    <td class="py-3 px-4">3</td>
+                                    <td class="py-3 px-4 text-[#00d9a6]">230</td>
+                                    <td class="py-3 px-4 text-[#00d9a6]">92.0%</td>
+                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openObjectionDetailModal('市公安局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button onclick="toggleAIDrawer()" class="fixed bottom-8 right-8 flex items-center gap-3 px-5 py-3 ai-card text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 z-50">
+        <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center pulse-animation">
+            <i class="fa-solid fa-brain"></i>
+        </span>
+        <span class="font-medium">智能助手</span>
+        <i class="fa-solid fa-chevron-left text-sm" id="drawer-arrow"></i>
+    </button>
+
+    <div id="ai-drawer-overlay" class="fixed inset-0 bg-black/30 z-[60] hidden transition-opacity duration-300" onclick="toggleAIDrawer()"></div>
+    <div id="ai-drawer" class="fixed top-0 right-0 w-[900px] h-full bg-white z-[70] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-5 border-b border-gray-100 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg ai-card flex items-center justify-center">
+                    <i class="fa-solid fa-brain text-white"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-[#303133]">智能助手</h3>
+                    <p class="text-xs text-[#909399]">选择智能体开始对话</p>
+                </div>
+            </div>
+            <button onclick="toggleAIDrawer()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="p-4 border-b border-gray-100">
+            <div class="flex items-center gap-2 mb-3">
+                <i class="fa-solid fa-robot text-[#667eea]"></i>
+                <span class="text-sm font-medium text-[#303133]">选择智能体</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="selectAgent('report')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left" id="agent-report">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-file-pen text-[#e6a23c]"></i>
+                        <span class="font-medium text-sm">报告生成智能体</span>
+                    </div>
+                    <p class="text-xs text-[#909399]">上传报告模板，智能生成数据分析报告，支持下载</p>
+                </button>
+                <button onclick="selectAgent('qa')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left agent-active" id="agent-qa">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-message-question text-[#36c2aa]"></i>
+                        <span class="font-medium text-sm">智能问数智能体</span>
+                    </div>
+                    <p class="text-xs text-[#909399]">自然语言查询统计数据，问答式交互</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- ===== 智能问数 - 聊天视图 ===== -->
+        <div id="qa-content" class="flex-1 flex flex-col overflow-hidden">
+            <div class="flex-1 overflow-y-auto p-4" id="chat-container">
+                <div class="flex flex-col gap-4" id="chat-messages">
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
+                            <i class="fa-solid fa-message-question text-white text-xs"></i>
+                        </div>
+                        <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                            <p class="text-sm text-[#606266]">您好！我是<strong>智能问数智能体</strong>。您可以向我咨询各类统计数据，例如"本月挂接率是多少？"或"资源申请最多的部门是哪个？"。请问有什么需要了解的？</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-100">
+                <div class="flex gap-3">
+                    <input type="text" id="chat-input" placeholder="输入您的问题..." class="flex-1 px-4 py-2.5 border border-gray-200 rounded-full text-sm focus:outline-none focus:border-[#667eea] focus:ring-2 focus:ring-[#667eea]/20 transition-all">
+                    <button onclick="sendMessage()" class="w-10 h-10 rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity" style="background: #36c2aa">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="flex items-center gap-2 mt-3 flex-wrap">
+                    <button onclick="quickQuestion('挂接率最低的部门是哪个？')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">挂接率最低的部门</button>
+                    <button onclick="quickQuestion('本月新增目录多少个？')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">本月新增目录</button>
+                    <button onclick="quickQuestion('接口调用最多的部门是？')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">接口调用最多的部门</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 报告生成 - 聊天视图（与问数同风格） ===== -->
+        <div id="report-content" class="flex-1 flex flex-col overflow-hidden hidden">
+            <div class="flex-1 overflow-y-auto p-4" id="report-chat-container">
+                <div class="flex flex-col gap-4" id="report-chat-messages">
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #e6a23c">
+                            <i class="fa-solid fa-file-pen text-white text-xs"></i>
+                        </div>
+                        <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                            <p class="text-sm text-[#606266]">您好！我是<strong>报告生成智能体</strong>。点击下方按钮上传报告模板文件（支持 .docx / .xlsx / .pptx / .pdf），我将智能为您生成数据分析报告，生成后可下载。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-100">
+                <input type="file" id="report-file-input" accept=".docx,.xlsx,.pptx,.doc,.xls,.ppt,.pdf" class="hidden" onchange="handleReportFileUpload(event)">
+                <div class="flex gap-3">
+                    <button onclick="document.getElementById('report-file-input').click()" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-[#e6a23c] text-[#e6a23c] rounded-xl text-sm hover:bg-[#fffbf0] transition-all">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span id="report-input-label">上传报告模板文件</span>
+                    </button>
+                    <button id="report-generate-btn" onclick="generateReport()" class="px-5 py-2.5 flex items-center gap-1 text-white rounded-xl text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all" style="background: #e6a23c" disabled>
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> 生成
+                    </button>
+                </div>
+                <div class="flex items-center gap-2 mt-3 flex-wrap">
+                    <button onclick="quickReport('word')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors"><i class="fa-regular fa-file-word mr-1"></i>Word模板</button>
+                    <button onclick="quickReport('excel')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors"><i class="fa-regular fa-file-excel mr-1"></i>Excel模板</button>
+                    <button onclick="quickReport('pptx')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors"><i class="fa-regular fa-file-powerpoint mr-1"></i>PPT模板</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 资源情况详情弹窗 -->
+    <div id="resourceDetailModal" class="fixed inset-0 bg-black/30 z-[80] hidden flex items-center justify-center transition-opacity">
+        <div class="bg-white rounded-lg shadow-2xl w-[900px] max-h-[90vh] flex flex-col">
+            <div class="p-5 border-b border-gray-100 flex items-center justify-between shrink-0">
+                <h3 class="font-bold text-[#303133] text-[16px]" id="modalDeptTitle">资源情况详情</h3>
+                <button onclick="closeResourceDetailModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto flex-1">
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="border border-gray-100 rounded-lg p-3">
+                        <h4 class="text-xs font-medium text-[#606266] mb-2 text-center">资源类型分布</h4>
+                        <div class="h-[150px]"><canvas id="modalTypeChart"></canvas></div>
+                    </div>
+                    <div class="border border-gray-100 rounded-lg p-3">
+                        <h4 class="text-xs font-medium text-[#606266] mb-2 text-center">共享类型分布</h4>
+                        <div class="h-[150px]"><canvas id="modalShareChart"></canvas></div>
+                    </div>
+                    <div class="border border-gray-100 rounded-lg p-3">
+                        <h4 class="text-xs font-medium text-[#606266] mb-2 text-center">开放类型分布</h4>
+                        <div class="h-[150px]"><canvas id="modalOpenChart"></canvas></div>
+                    </div>
+                </div>
+                
+                <h4 class="text-[14px] font-bold text-[#303133] mb-3">资源详情</h4>
+                <table class="w-full text-[13px] border-collapse text-left">
+                    <thead class="bg-gray-50 text-[#606266]">
+                        <tr>
+                            <th class="py-2 px-3 font-medium">资源名称</th>
+                            <th class="py-2 px-3 font-medium">所属目录</th>
+                            <th class="py-2 px-3 font-medium">资源类型</th>
+                            <th class="py-2 px-3 font-medium">共享类型</th>
+                            <th class="py-2 px-3 font-medium">开放类型</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-2 px-3 text-[#1c7ffd] cursor-pointer">人口基础信息库</td>
+                            <td class="py-2 px-3">基础数据库/人口库</td>
+                            <td class="py-2 px-3"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">库表</span></td>
+                            <td class="py-2 px-3">有条件共享</td>
+                            <td class="py-2 px-3">不可对社会开放</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-2 px-3 text-[#1c7ffd] cursor-pointer">法人基础信息接口</td>
+                            <td class="py-2 px-3">基础数据库/法人库</td>
+                            <td class="py-2 px-3"><span class="px-2 py-0.5 bg-green-50 text-[#36c2aa] rounded text-xs">接口</span></td>
+                            <td class="py-2 px-3">无条件共享</td>
+                            <td class="py-2 px-3">可对社会开放</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-2 px-3 text-[#1c7ffd] cursor-pointer">电子证照目录文件</td>
+                            <td class="py-2 px-3">主题数据库/证照库</td>
+                            <td class="py-2 px-3"><span class="px-2 py-0.5 bg-orange-50 text-[#e6a23c] rounded text-xs">文件</span></td>
+                            <td class="py-2 px-3">不予共享</td>
+                            <td class="py-2 px-3">部分对社会开放</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAgent = 'qa';
+        const agents = {
+            report: { name: '报告生成智能体', icon: 'fa-file-pen', color: '#e6a23c', desc: '上传报告模板，智能生成分析报告，支持下载' },
+            qa: { name: '智能问数智能体', icon: 'fa-message-question', color: '#36c2aa', desc: '自然语言查询统计数据，问答式交互' }
+        };
+
+        function toggleAIDrawer() {
+            const drawer = document.getElementById('ai-drawer');
+            const overlay = document.getElementById('ai-drawer-overlay');
+            const arrow = document.getElementById('drawer-arrow');
+            
+            if (drawer.classList.contains('translate-x-full')) {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+                overlay.classList.remove('opacity-0');
+                arrow.classList.remove('fa-chevron-left');
+                arrow.classList.add('fa-chevron-right');
+            } else {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+                arrow.classList.remove('fa-chevron-right');
+                arrow.classList.add('fa-chevron-left');
+            }
+        }
+
+        function selectAgent(agentId) {
+            document.querySelectorAll('.agent-card').forEach(card => {
+                card.classList.remove('agent-active');
+            });
+            document.getElementById('agent-' + agentId).classList.add('agent-active');
+            
+            currentAgent = agentId;
+
+            // 切换视图
+            document.getElementById('qa-content').classList.toggle('hidden', agentId !== 'qa');
+            document.getElementById('report-content').classList.toggle('hidden', agentId !== 'report');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            input.value = '';
+            
+            const container = document.getElementById('chat-messages');
+            
+            container.innerHTML += `
+                <div class="flex gap-3 justify-end">
+                    <div class="bg-[#36c2aa] text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%]">
+                        <p class="text-sm">${message}</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user text-gray-500 text-xs"></i>
+                    </div>
+                </div>
+            `;
+            
+            const loadingHtml = `
+                <div class="flex gap-3" id="msg-loading">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
+                        <i class="fa-solid fa-message-question text-white text-xs"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3">
+                        <p class="text-sm text-[#606266] animate-pulse">智能问数智能体正在分析...</p>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += loadingHtml;
+            container.scrollTop = container.scrollHeight;
+            
+            setTimeout(() => {
+                const loading = document.getElementById('msg-loading');
+                if (loading) loading.remove();
+                container.innerHTML += `
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
+                            <i class="fa-solid fa-message-question text-white text-xs"></i>
+                        </div>
+                        <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                            <p class="text-sm text-[#606266]">${generateAnswer(message)}</p>
+                        </div>
+                    </div>
+                `;
+                container.scrollTop = container.scrollHeight;
+            }, 1200);
+        }
+
+        function generateAnswer(question) {
+            if (question.includes('挂接率') || question.includes('最低')) {
+                return '根据统计数据，挂接率最低的部门是<b>市卫健委</b>（71.8%），其次是<b>市教育局</b>（73.5%）。建议优先关注这些部门的挂接补全工作。';
+            } else if (question.includes('新增目录') || question.includes('本月新增')) {
+                return '本月新增目录共<b>1,350</b>个，同比增长12.5%。其中市大数据局贡献最大，新增380个。';
+            } else if (question.includes('接口') && (question.includes('最多') || question.includes('最大'))) {
+                return '接口调用最多的部门是<b>市公安局</b>（2.8亿次/月），其次是<b>市民政局</b>（1.5亿次/月）。';
+            } else if (question.includes('资源申请') || question.includes('申请最多')) {
+                return '资源被申请最多的部门是<b>市公安局</b>（被申请850次），覆盖28个使用部门，被申请率达45.2%。';
+            } else if (question.includes('共享') || question.includes('开放')) {
+                return '当前无条件共享目录4,580个（36.4%），有条件共享6,250个（49.7%），不予共享1,750个（13.9%）。建议对不予共享目录进行复核，挖掘共享潜力。';
+            } else {
+                return '当前数据目录总数<b>12,580</b>个，已挂接8,960个，挂接率71.2%。资源申请总数3,450件，通过率85.6%。如需更详细的分析，请提供具体的数据维度。';
+            }
+        }
+
+        function quickQuestion(question) {
+            document.getElementById('chat-input').value = question;
+            sendMessage();
+        }
+
+        // ===== 报告生成智能体（聊天风格） =====
+        let uploadedReportFile = null;
+
+        function handleReportFileUpload(e) {
+            const files = e.target.files;
+            if (!files || !files.length) return;
+            const file = files[0];
+            uploadedReportFile = file;
+            document.getElementById('report-generate-btn').disabled = false;
+            document.getElementById('report-input-label').innerHTML = '<i class="fa-regular fa-file-lines"></i> ' + file.name;
+        }
+
+        function quickReport(type) {
+            const icons = { word: 'fa-regular fa-file-word', excel: 'fa-regular fa-file-excel', pptx: 'fa-regular fa-file-powerpoint' };
+            const labels = { word: 'Word模板', excel: 'Excel模板', pptx: 'PPT模板' };
+            document.getElementById('report-input-label').innerHTML = '<i class="' + icons[type] + '"></i> ' + labels[type] + '（请选择文件）';
+            document.getElementById('report-file-input').click();
+        }
+
+        function generateReport() {
+            if (!uploadedReportFile) return;
+            const file = uploadedReportFile;
+            const ext = file.name.match(/\.[^.]+$/)?.[0] || '.docx';
+            const baseName = file.name.replace(/\.[^.]+$/, '');
+            const container = document.getElementById('report-chat-messages');
+
+            // 发送"用户消息"显示已上传文件
+            container.innerHTML += `
+                <div class="flex gap-3 justify-end">
+                    <div class="bg-[#e6a23c] text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%]">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-regular fa-file-lines"></i>
+                            <span class="text-sm">已上传模板：${file.name}</span>
+                        </div>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user text-gray-500 text-xs"></i>
+                    </div>
+                </div>
+            `;
+
+            // AI回复（含进度条）
+            const msgId = 'rmsg-' + Date.now();
+            container.innerHTML += `
+                <div class="flex gap-3" id="${msgId}">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #e6a23c">
+                        <i class="fa-solid fa-file-pen text-white text-xs"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%] min-w-[280px]">
+                        <div class="mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1 h-2 bg-white rounded-full overflow-hidden">
+                                    <div id="r-progress-bar" class="h-full bg-gradient-to-r from-[#e6a23c] to-[#f5a623] rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                                <span id="r-progress-text" class="text-sm text-[#606266] w-12 text-right shrink-0">0%</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2 text-xs">
+                                <span id="r-step1-icon" class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[9px] shrink-0">1</span>
+                                <span id="r-step1-text" class="text-[#909399]">正在解析模板结构...</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs">
+                                <span id="r-step2-icon" class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[9px] shrink-0">2</span>
+                                <span id="r-step2-text" class="text-[#909399]">正在查询统计数据...</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs">
+                                <span id="r-step3-icon" class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[9px] shrink-0">3</span>
+                                <span id="r-step3-text" class="text-[#909399]">正在生成报告文件...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+
+            const steps = [
+                { pct: 30, step: 1, td: '正在解析模板结构...', dd: '模板结构解析完成' },
+                { pct: 60, step: 2, td: '正在查询统计数据...', dd: '统计数据查询完成' },
+                { pct: 100, step: 3, td: '正在生成报告文件...', dd: '报告文件生成完成' }
+            ];
+            let cur = 0, progress = 0;
+            setRStepChat(1, 'doing');
+
+            const timer = setInterval(() => {
+                progress += 2;
+                if (progress >= steps[cur].pct) {
+                    setRStepChat(steps[cur].step, 'done', steps[cur].dd);
+                    cur++;
+                    if (cur < steps.length) setRStepChat(steps[cur].step, 'doing', steps[cur].td);
+                }
+                document.getElementById('r-progress-bar').style.width = progress + '%';
+                document.getElementById('r-progress-text').textContent = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(timer);
+                    setTimeout(() => {
+                        const msg = document.getElementById(msgId);
+                        if (msg) {
+                            msg.innerHTML = `
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #e6a23c">
+                                    <i class="fa-solid fa-file-pen text-white text-xs"></i>
+                                </div>
+                                <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+                                    <div class="flex items-center gap-2 text-green-600 font-medium mb-2">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        <span class="text-sm">报告已生成</span>
+                                    </div>
+                                    <p class="text-xs text-[#909399] mb-3">已根据模板 "<strong>${file.name}</strong>" 生成数据分析报告</p>
+                                    <div class="flex gap-2">
+                                        <a href="#" onclick="downloadReport(event, '${baseName}_分析报告${ext}')" class="px-4 py-1.5 bg-[#e6a23c] text-white rounded-lg text-xs hover:bg-[#d4942a] transition-colors flex items-center gap-1">
+                                            <i class="fa-solid fa-download"></i> 下载报告
+                                        </a>
+                                        <button onclick="resetReport()" class="px-4 py-1.5 border border-gray-200 text-[#606266] rounded-lg text-xs hover:bg-gray-50 transition-colors">重新生成</button>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        container.scrollTop = container.scrollHeight;
+                    }, 600);
+                }
+            }, 40);
+        }
+
+        function setRStepChat(step, state, text) {
+            const icon = document.getElementById('r-step' + step + '-icon');
+            const tEl = document.getElementById('r-step' + step + '-text');
+            if (!icon || !tEl) return;
+            if (state === 'doing') {
+                icon.className = 'w-4 h-4 rounded-full border-2 border-[#e6a23c] text-[#e6a23c] flex items-center justify-center text-[9px] shrink-0';
+                icon.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="font-size:8px"></i>';
+                tEl.className = 'text-[#303133] font-medium text-xs';
+            } else {
+                icon.className = 'w-4 h-4 rounded-full bg-[#e6a23c] text-white flex items-center justify-center text-[9px] shrink-0';
+                icon.innerHTML = '<i class="fa-solid fa-check" style="font-size:8px"></i>';
+                tEl.className = 'text-[#e6a23c] text-xs';
+            }
+            if (text) tEl.textContent = text;
+        }
+
+        function downloadReport(e, filename) {
+            e.preventDefault();
+            filename = filename || '分析报告.txt';
+            const content = '数据服务平台 - 分析报告\n\n一、总体概况\n数据目录总数：12,580个\n已挂接资源目录数：8,960个\n资源挂接率：71.2%\n本月新增目录：1,350个\n\n二、数据使用情况\n资源申请总数：3,450件\n资源申请率：27.4%\n库表交换总量：12.5亿\n接口调用总数：8.9亿\n\n三、各部门情况\n- 市卫健委挂接率最低：71.8%\n- 接口调用最多：市公安局 2.8亿次/月\n- 资源被申请最多：市公安局 850次\n\n生成时间：' + new Date().toLocaleString();
+            const blob = new Blob(['\ufeff' + content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename.replace(/\.\w+$/, '.txt');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function resetReport() {
+            uploadedReportFile = null;
+            document.getElementById('report-file-input').value = '';
+            document.getElementById('report-generate-btn').disabled = true;
+            document.getElementById('report-input-label').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 上传报告模板文件';
+        }
+
+        function showDetail(type) {
+            let title = '', content = '';
+            if (type === 'ai-discovery-1') {
+                title = 'AI发现：挂接推进薄弱';
+                content = 'AI识别到市卫健委（71.8%）、市教育局（73.5%）挂接率连续落后于平均水平。建议优先梳理未挂接目录清单，按部门建立补挂接任务台账。';
+            } else if (type === 'ai-discovery-2') {
+                title = 'AI发现：共享策略待优化';
+                content = '当前不予共享目录1,750个，占比13.9%，主要集中在少数部门。建议先对高频使用目录开展复核，识别可转为有条件共享或无条件共享的资源。';
+            } else if (type === 'ai-advice') {
+                title = '优化建议：优先两步推进';
+                content = '第一步，优先补齐低挂接部门的目录映射和资源挂接；第二步，针对不予共享目录建立复核清单，分类推进共享策略优化，预计可同步提升挂接率与共享率。';
+            }
+            alert(`${title}\n\n${content}`);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const ctx1 = document.getElementById('catalogTrendChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月预测', '2月预测', '3月预测'],
+                    datasets: [
+                        {
+                            label: '数据目录总数',
+                            data: [8500, 8900, 9200, 9600, 10100, 10500, 10900, 11300, 11700, 12100, 12350, 12580, null, null, null],
+                            borderColor: '#1c7ffd',
+                            backgroundColor: 'rgba(28, 127, 253, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: '已挂接资源目录数',
+                            data: [5800, 6100, 6400, 6800, 7200, 7500, 7800, 8100, 8400, 8700, 8850, 8960, null, null, null],
+                            borderColor: '#36c2aa',
+                            backgroundColor: 'rgba(54, 194, 170, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'AI预测趋势',
+                            data: [null, null, null, null, null, null, null, null, null, null, null, 12580, 12900, 13200, 13500],
+                            borderColor: '#f56c6c',
+                            backgroundColor: 'rgba(245, 108, 108, 0.05)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { usePointStyle: true, padding: 20 } }
+                    },
+                    scales: { y: { beginAtZero: true, grid: { color: '#f0f0f0' } }, x: { grid: { display: false } } }
+                }
+            });
+
+            const ctx2 = document.getElementById('catalogShareChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['无条件共享', '有条件共享', '不予共享'],
+                    datasets: [{ data: [4580, 6250, 1750], backgroundColor: ['#36c2aa', '#1c7ffd', '#e6a23c'], borderWidth: 0, hoverOffset: 10 }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
+                    cutout: '60%'
+                }
+            });
+
+            // 数据资源统计相关图表
+            new Chart(document.getElementById('resourceTypeChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['库表', '文件', '接口', '文件夹', '链接'],
+                    datasets: [{ data: [8240, 2150, 1580, 420, 190], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c', '#f56c6c', '#7a6df4'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
+            });
+            new Chart(document.getElementById('resourceShareChart').getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: ['无条件共享', '有条件共享', '不予共享'],
+                    datasets: [{ data: [4580, 6250, 1750], backgroundColor: ['#36c2aa', '#1c7ffd', '#e6a23c'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 10 } } } }
+            });
+            new Chart(document.getElementById('resourceOpenChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['可对社会开放', '部分对社会开放', '不可对社会开放'],
+                    datasets: [{ data: [5230, 3890, 3460], backgroundColor: ['#1c7ffd', '#e6a23c', '#f56c6c'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
+            });
+
+            new Chart(document.getElementById('usageResourceTypeChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['库表', '接口', '文件', '文件夹', '链接'],
+                    datasets: [{ data: [1620, 980, 620, 160, 70], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c', '#f56c6c', '#7a6df4'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
+            });
+
+            new Chart(document.getElementById('usageTrendChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                    datasets: [
+                        {
+                            label: '接口调用次数（万次）',
+                            data: [820, 910, 880, 1020, 1150, 980, 1080],
+                            borderColor: '#1c7ffd',
+                            backgroundColor: 'rgba(28, 127, 253, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: '库表交换量（万条）',
+                            data: [1050, 980, 1120, 1200, 1280, 1160, 1350],
+                            borderColor: '#36c2aa',
+                            backgroundColor: 'rgba(54, 194, 170, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 20 } } },
+                    scales: { y: { beginAtZero: true, grid: { color: '#f0f0f0' } }, x: { grid: { display: false } } }
+                }
+            });
+
+            new Chart(document.getElementById('objectionTypeChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['数据不一致', '数据缺失', '更新不及时', '字段含义', '其他'],
+                    datasets: [{ data: [420, 310, 260, 180, 80], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c', '#f56c6c', '#7a6df4'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
+            });
+
+            new Chart(document.getElementById('objectionStatusChart').getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: ['待核查', '待审查', '审查通过', '已关闭'],
+                    datasets: [{ data: [48, 32, 1070, 100], backgroundColor: ['#e6a23c', '#f56c6c', '#36c2aa', '#909399'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 10 } } } }
+            });
+        });
+
+        let modalChartsInit = false;
+        function openResourceDetailModal(deptName) {
+            document.getElementById('modalDeptTitle').innerText = deptName + ' 资源情况详情';
+            document.getElementById('resourceDetailModal').classList.remove('hidden');
+            if (!modalChartsInit) {
+                new Chart(document.getElementById('modalTypeChart').getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['库表', '文件', '接口', '其他'],
+                        datasets: [{ data: [820, 210, 150, 70], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c', '#f56c6c'], borderWidth: 0 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 } } } }, cutout: '50%' }
+                });
+                new Chart(document.getElementById('modalShareChart').getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['无条件', '有条件', '不予'],
+                        datasets: [{ data: [450, 680, 120], backgroundColor: ['#36c2aa', '#1c7ffd', '#e6a23c'], borderWidth: 0 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 } } } } }
+                });
+                new Chart(document.getElementById('modalOpenChart').getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['可开放', '部分开放', '不开放'],
+                        datasets: [{ data: [520, 380, 350], backgroundColor: ['#1c7ffd', '#e6a23c', '#f56c6c'], borderWidth: 0 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 } } } }, cutout: '50%' }
+                });
+                modalChartsInit = true;
+            }
+        }
+        function closeResourceDetailModal() {
+            document.getElementById('resourceDetailModal').classList.add('hidden');
+        }
+    </script>
+    <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
+
+<!-- Prototype Annotator runtime -->
+<script>
+window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
+</script>
+<link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
+<script id="prototype-annotations-data" type="application/json">
+{
+  "version": 1,
+  "pages": [
+    {
+      "pageKey": "P48",
+      "title": "数据服务平台 - 运营看板",
+      "path": "statistics_dashboard.html",
+      "route": "/statistics_dashboard.html"
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "surface-P48-ai-drawer-overlay",
+      "type": "drawer",
+      "name": "surface-P48-ai-drawer-overlay",
+      "pageKey": "P48",
+      "openSelector": "#ai-drawer-overlay",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred"
+    },
+    {
+      "id": "surface-P48-ai-drawer",
+      "type": "drawer",
+      "name": "智能助手",
+      "pageKey": "P48",
+      "openSelector": "#ai-drawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "智能助手"
+    },
+    {
+      "id": "surface-P48-resourcedetailmodal",
+      "type": "modal",
+      "name": "资源情况详情",
+      "pageKey": "P48",
+      "openSelector": "#resourceDetailModal",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "资源情况详情"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "ANN-P48-001",
+      "pageKey": "P48",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "统计看板",
+        "strategy": "tag",
+        "sourceElementId": "P48-E006",
+        "boundsHint": {
+          "text": "统计看板",
+          "tag": "h1"
+        }
+      },
+      "title": "统计看板 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「统计看板」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「统计看板」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「统计看板」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --\u003e B[识别对象与状态]\n  B --\u003e C[执行关键操作]\n  C --\u003e D[查看系统反馈]\n  D --\u003e E[进入下一步]\n```\n\n### 主要操作\n\n- 本月 上月 本季度 本年度\n- 全部 市直部门 区县\n- 部门名称 目录总数 已挂接目录数 挂接率 无条…\n- 部门/地市名称 资源总数 库表资源数 文件资源…\n- 部门/地市名称 资源被申请次数 被申请资源数 …\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P48-E006"
+      },
+      "evidence": [
+        "页面：统计看板",
+        "路由：/statistics_dashboard.html",
+        "页面文本：统计看板",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P48-005",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P48-002",
+      "pageKey": "P48",
+      "target": {
+        "selector": "#section-catalog table",
+        "fallbackText": "行级操作",
+        "strategy": "data-descendant",
+        "sourceElementId": "P48-E023",
+        "boundsHint": {
+          "text": "行级操作",
+          "tag": "table"
+        }
+      },
+      "title": "行级操作",
+      "contentMarkdown": "### 业务含义\n\n行级操作用于对列表中的单条数据进行查看、编辑、启用、停用、授权、下载或删除等管理动作。\n\n### 操作规则\n\n- 用户点击某一行的操作按钮时，仅影响当前行对应的数据。\n- 高风险操作，例如删除、停用、重置密钥，需要二次确认。\n- 不同状态下可执行操作不同，禁用状态下应隐藏或置灰不可用操作。\n- 权限不足时，应隐藏操作入口或置灰展示。\n\n### 状态与异常\n\n- 操作成功后刷新当前列表或更新当前行状态。\n- 操作失败时保留当前列表状态，并提示失败原因。\n- 高风险操作应记录操作日志。\n\n### 操作流程\n\n```mermaid\nflowchart TD\n  A[选择行记录] --\u003e B[点击行级操作]\n  B --\u003e C{是否高风险}\n  C --\u003e|是| D[二次确认]\n  C --\u003e|否| E[直接执行]\n  D --\u003e E\n  E --\u003e F[刷新列表状态]\n```\n\n### 待确认\n\n- 哪些角色可以执行编辑、删除、启用、停用、授权等操作？\n- 删除后是否允许恢复？\n- 下载或密钥类操作是否需要二次验证？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "table",
+        "row-action",
+        "permission",
+        "risk"
+      ],
+      "dimension": "Table row actions",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P48-E023"
+      },
+      "evidence": [
+        "合并操作：查看详情",
+        "页面文本：部门名称 目录总数 已挂接目录数 挂接率 无条件共享 有条件共享 不予共享 操作 市民政局 1,250 980 78.4% 450 680 120 查看详情 市",
+        "selector：#section-catalog table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P48-ROW-GROUP",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P48-003",
+      "pageKey": "P48",
+      "target": {
+        "selector": "#section-resource table",
+        "fallbackText": "部门/地市名称 资源总数 库表资源数 文件资源数 接口资源数 文件夹资源数 链接资源数 操作 市民政局 1,250 820 210 150 50 20 查看详情 市公安局 2,380 1,650 420 250 45 15 查看详情 市卫健委 1,560 980 350 180 30 20 查看详情",
+        "strategy": "data-descendant",
+        "sourceElementId": "P48-E043",
+        "boundsHint": {
+          "text": "部门/地市名称 资源总数 库表资源数 文件资源数 接口资源数 文件夹资源数 链接资源数 操作 市民政局 1,250 820 210 150 50 20 查看详情 市公安局 2,380 1,650 420 250 45 15 查看详情 市卫健委 1,560 980 350 180 30 20 查看详情",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「部门/地市名称 资源总数 库表资源数 文件资源数 接口资源数 …」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P48-E043"
+      },
+      "evidence": [
+        "页面文本：部门/地市名称 资源总数 库表资源数 文件资源数 接口资源数 文件夹资源数 链接资源数 操作 市民政局 1,250 820 210 150 50 20 查看详情",
+        "selector：#section-resource table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P48-042",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P48-004",
+      "pageKey": "P48",
+      "target": {
+        "selector": "#section-usage table",
+        "fallbackText": "部门/地市名称 资源被申请次数 被申请资源数 资源被申请率 使用部门数 待受理/待审核 审核通过 已驳回/撤销 库表被交换量 接口被调用次数 操作 市公安局 850 320 45.2% 28 12 / 8 805 15 / 10 3.5亿 2.8亿 查看详情 市民政局 560 180 38.5% 22 5 / 3 53",
+        "strategy": "data-descendant",
+        "sourceElementId": "P48-E062",
+        "boundsHint": {
+          "text": "部门/地市名称 资源被申请次数 被申请资源数 资源被申请率 使用部门数 待受理/待审核 审核通过 已驳回/撤销 库表被交换量 接口被调用次数 操作 市公安局 850 320 45.2% 28 12 / 8 805 15 / 10 3.5亿 2.8亿 查看详情 市民政局 560 180 38.5% 22 5 / 3 53",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「部门/地市名称 资源被申请次数 被申请资源数 资源被申请率 使…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P48-E062"
+      },
+      "evidence": [
+        "页面文本：部门/地市名称 资源被申请次数 被申请资源数 资源被申请率 使用部门数 待受理/待审核 审核通过 已驳回/撤销 库表被交换量 接口被调用次数 操作 市公安局 8",
+        "selector：#section-usage table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P48-061",
+      "selectorQuality": {
+        "level": "acceptable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 4
+    },
+    {
+      "id": "ANN-P48-005",
+      "pageKey": "P48",
+      "target": {
+        "selector": "div:nth-of-type(2) \u003e div:nth-of-type(6) \u003e div:nth-of-type(3) \u003e div:nth-of-type(2) \u003e h3",
+        "fallbackText": "异议状态分布",
+        "strategy": "path",
+        "sourceElementId": "P48-E069",
+        "boundsHint": {
+          "text": "异议状态分布",
+          "tag": "h3"
+        }
+      },
+      "title": "异议状态分布",
+      "contentMarkdown": "### 业务含义\n\n「异议状态分布」用于告诉用户当前事项所处阶段，并影响页面可执行操作。\n\n### 状态规则\n\n- 不同状态下，页面展示内容和可操作按钮可能不同。\n- 状态变化后，应及时刷新页面或给出明确提示。\n- 用户需要能够理解当前状态下还能做什么。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 空状态：提示暂无数据，并提供下一步操作建议。\n- 失败状态：提示失败原因，并支持重试或返回。\n\n### 状态流转\n\n```mermaid\nstateDiagram-v2\n  state \"默认\" as Default\n  state \"加载中\" as Loading\n  state \"成功\" as Success\n  state \"失败\" as Failed\n  state \"空状态\" as Empty\n  state \"禁用\" as Disabled\n  [*] --\u003e Default\n  Default --\u003e Loading: 发起操作\n  Loading --\u003e Success: 处理完成\n  Loading --\u003e Failed: 处理失败\n  Success --\u003e Default: 刷新或返回\n  Failed --\u003e Loading: 重试\n  Default --\u003e Empty: 无数据\n  Default --\u003e Disabled: 权限或条件不满足\n```\n\n### 待确认\n\n- 当前状态枚举是否完整？\n- 每个状态下的可操作按钮是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "S",
+      "kind": "state",
+      "topics": [
+        "state",
+        "exception"
+      ],
+      "dimension": "State and exception",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P48-E069"
+      },
+      "evidence": [
+        "页面文本：异议状态分布",
+        "selector：div:nth-of-type(2) \u003e div:nth-of-type(6) \u003e div:nth-of-type(3) \u003e div:nth-of-type(2) \u003e h3"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P48-068",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 5
+    },
+    {
+      "id": "ANN-P48-006",
+      "pageKey": "P48",
+      "target": {
+        "selector": "#chat-input",
+        "fallbackText": "输入您的问题...",
+        "strategy": "id",
+        "sourceElementId": "P48-E081",
+        "boundsHint": {
+          "text": "输入您的问题...",
+          "tag": "input"
+        }
+      },
+      "title": "输入您的问题",
+      "contentMarkdown": "### 业务含义\n\n「输入您的问题...」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P48-E081"
+      },
+      "evidence": [
+        "页面文本：输入您的问题...",
+        "selector：#chat-input",
+        "二级界面：智能助手"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P48-079",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P48-ai-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 6
+    },
+    {
+      "id": "ANN-P48-007",
+      "pageKey": "P48",
+      "target": {
+        "selector": "#report-file-input",
+        "fallbackText": "",
+        "strategy": "id",
+        "sourceElementId": "P48-E086",
+        "boundsHint": {
+          "text": "",
+          "tag": "input"
+        }
+      },
+      "title": "未命名标注",
+      "contentMarkdown": "### 业务含义\n\n「当前区域」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P48-E086"
+      },
+      "evidence": [
+        "selector：#report-file-input",
+        "二级界面：智能助手"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P48-083",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P48-ai-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 7
+    }
+  ],
+  "project": {
+    "id": "prototype",
+    "name": "数据服务平台 - 门户首页",
+    "source": "inline"
+  },
+  "productProfile": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品",
+      "数据产品",
+      "SaaS产品",
+      "内容/工具产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "annotationMode": "standard",
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK",
+      "METRIC",
+      "SOURCE",
+      "FILTER",
+      "REFRESH",
+      "DRILL",
+      "ROLE",
+      "PLAN",
+      "TENANT",
+      "CONTENT",
+      "PUBLISH",
+      "MOD",
+      "REC",
+      "TRACK"
+    ],
+    "inferred": true
+  },
+  "audienceMode": "product-review",
+  "productContext": {
+    "productName": "数据服务平台 20 yiyun",
+    "productType": "ai_enterprise_app",
+    "productForms": [
+      "B端应用",
+      "AI产品"
+    ],
+    "primaryUsers": [
+      "业务用户"
+    ],
+    "enabledAnnotationTypes": [
+      "P",
+      "E",
+      "C",
+      "A",
+      "J",
+      "S",
+      "R",
+      "PERM",
+      "DATA",
+      "AI",
+      "PROMPT",
+      "CTX",
+      "HITL",
+      "FALLBACK"
+    ],
+    "roles": [],
+    "coreObjects": [],
+    "coreFlows": [],
+    "pages": [
+      {
+        "pageKey": "P01",
+        "pageName": "_app_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_app_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P02",
+        "pageName": "_flow_test",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「_flow_test」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P03",
+        "pageName": "添加弹窗组件 - 占位",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「添加弹窗组件 - 占位」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P04",
+        "pageName": "数据服务平台 - 工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。",
+        "primaryTasks": [
+          "5 目录发布审核",
+          "2 需求审核"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P05",
+        "pageName": "数据服务平台 - 告警消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 告警消息」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择",
+          "10 条/页",
+          "序号 任务名称 告警底座 消息内容 告警时间 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P06",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P07",
+        "pageName": "数据服务平台 - 已授权数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已授权数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 接口 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 资源所属方 资源申请…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P08",
+        "pageName": "数据服务平台 - 能力封装申请",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 能力封装申请」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 \\u6761/\\u9875",
+          "序号 模型名称 任务名称 关联接口名称 状态 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P09",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "以概况政务数据资源目录内容的标题和“信息”字样…",
+          "请选择 经济建设 教育科技 社会保障 医疗卫生…",
+          "请选择 人口基础信息 法人基础信息 空间地理基…",
+          "has-license",
+          "请选择 政务服务 市场监管 公共安全 城市治理…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P10",
+        "pageName": "数据服务平台 - 目录审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 人民出版社有限公司 xx市民政局 xx…",
+          "序号 数据资源目录代码 数据资源名称 数据资源…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P11",
+        "pageName": "数据服务平台 - 目录编制",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 无条件共享 有条件共享 不予共享",
+          "10条/页 20条/页 50条/页 100条/页",
+          "序号 数据资源目录代码 数据资源目录名称 共享…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P12",
+        "pageName": "数据服务平台 - 数据模型",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据模型」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 数据模型名称 数据模型描述 数据资源提供…",
+          "连接状态"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P13",
+        "pageName": "数据服务平台 - 场景配置",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景配置」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 场景名称 数据目录数 状态 更新时间 操作",
+          "选择 目录名称 服务类型 所属单位"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P14",
+        "pageName": "数据服务平台 - 数据篮",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。",
+        "primaryTasks": [
+          "需求级别 需求目录 需求服务 服务类型 数据提…",
+          "序号 附件名称 附件类型 上传人 所属数据 说…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P15",
+        "pageName": "数据服务平台 - 已申请数据",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 已申请数据」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P16",
+        "pageName": "数据服务平台 - 数据申请审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据申请审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 资源名称 资源类型 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P17",
+        "pageName": "数据服务平台 - 资源续期工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 服务类型 数据申请方…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P18",
+        "pageName": "数据服务平台 - 资源续期审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源续期审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "全部 API 库表",
+          "10 条/页",
+          "序号 目录名称 服务名称 数据申请方 数据所属…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P19",
+        "pageName": "数据服务平台 - 需求受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 需求受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 需求场景 需求类型 需求目录 需求服务 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P20",
+        "pageName": "数据服务平台 - 帮助中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 帮助中心」相关的业务操作。",
+        "primaryTasks": [
+          "查看解答\u003e\u003e",
+          "请输入",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P21",
+        "pageName": "数据服务平台 - 门户首页",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。",
+        "primaryTasks": [
+          "01 2026-08 数据服务平台 3.0 版…",
+          "28 2026-07 智能问答助手升级：支持自…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P22",
+        "pageName": "数据服务平台 - 监控看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 监控看板」相关的业务操作。",
+        "primaryTasks": [
+          "今日 本周 本月 本季度"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P23",
+        "pageName": "数据服务平台 - 供给服务监控",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 供给服务监控」相关的业务操作。",
+        "primaryTasks": [
+          "请输入服务名称",
+          "请选择 市民政局 市公安局 市市场监管局 市卫…",
+          "序号 服务名称 所属部门 更新时间 操作 1 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P24",
+        "pageName": "数据服务平台 - 我的消息",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 我的消息」相关的业务操作。",
+        "primaryTasks": [
+          "10 条/页",
+          "序号 消息 审批结果 发送时间 操作 1 【进…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P25",
+        "pageName": "数据服务平台 - 异议受理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 异议受理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 资源申请 其他",
+          "10条/页 20条/页 50条/页",
+          "异议标题 异议对象 服务名称 异议提出单位 创…",
+          "异议标题 异议对象 服务名称 异议提出单位 受…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P26",
+        "pageName": "数据服务平台 - 在线开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 在线开发」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P27",
+        "pageName": "数据服务平台 - 应用中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索应用名称..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P28",
+        "pageName": "应用详情 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「应用详情 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P29",
+        "pageName": "数据服务平台 - 数据中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。",
+        "primaryTasks": [
+          "请输入关键词搜索数据目录...",
+          "税务登记信息 有条件共享 有条件开放 提供机构…",
+          "电子证照信息 无条件共享 无条件开放 提供机构…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P30",
+        "pageName": "数据服务平台 - 数据详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。",
+        "primaryTasks": [
+          "字段名称 字段描述 类型 是否必填 enter…",
+          "字段名称 字段描述 字段类型 字段长度 是否主…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P31",
+        "pageName": "数据服务平台 - 材料中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索材料名称...",
+          "最新发布 下载量 名称"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P32",
+        "pageName": "数据服务平台 - 场景中心",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。",
+        "primaryTasks": [
+          "搜索场景名称...",
+          "政务服务 婚姻登记查询 提供婚姻登记信息查询服…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P33",
+        "pageName": "数据服务平台 - 场景详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景详情」相关的业务操作。",
+        "primaryTasks": [
+          "搜索数据资源..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P34",
+        "pageName": "数据服务平台 - 工作动态",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。",
+        "primaryTasks": [
+          "搜索动态标题..."
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P35",
+        "pageName": "数据服务平台 - 配额申请工单",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额申请工单」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页 20 条/页 50 条/页",
+          "序号 部门名称 申请时间 状态 操作 1 数据…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P36",
+        "pageName": "数据服务平台 - 配额分配审核",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 配额分配审核」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "10 条/页",
+          "序号 部门名称 申请时间 操作 1 数据要素事…",
+          "序号 部门名称 审核结果 已分配 已驳回 确定…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P37",
+        "pageName": "数据服务平台 - 数据超市",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据超市」相关的业务操作。",
+        "primaryTasks": [
+          "搜索",
+          "请输入关键词"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P38",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 字段名称 字段类型 字段描述 1 id …",
+          "id ip type create_by up…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P39",
+        "pageName": "数据服务平台 - 资源详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 资源详情」相关的业务操作。",
+        "primaryTasks": [
+          "序号 名称 描述 1 creditCode 统…",
+          "错误代码"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P40",
+        "pageName": "数据服务平台 - 新增场景",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 新增场景」相关的业务操作。",
+        "primaryTasks": [
+          "请输入场景名称",
+          "请输入图标名称，如 fa-building",
+          "请选择所属领域 一码一表 智慧治理 民生保障 …",
+          "目录名称 / 所属部门",
+          "选择框 目录名称 服务类型 所属单位 发布时间…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P41",
+        "pageName": "数据服务平台 - 场景管理",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景管理」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 已关联 未关联",
+          "10 条/页"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P42",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "序号 服务名称 接口来源 数据资源目录名称 数…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P43",
+        "pageName": "数据服务平台 - 服务交付",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务交付」相关的业务操作。",
+        "primaryTasks": [
+          "service-type",
+          "请输入",
+          "行政复议主表信息接口服务",
+          "api-type",
+          "return-type"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P44",
+        "pageName": "数据服务平台 - 服务注册",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册」相关的业务操作。",
+        "primaryTasks": [
+          "请输入",
+          "请选择 接口 库表 文件",
+          "序号 服务名称 服务类型 数据资源目录名称 业…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P45",
+        "pageName": "数据服务平台 - 服务注册新增",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 服务注册新增」相关的业务操作。",
+        "primaryTasks": [
+          "请输入目录名称",
+          "请输入",
+          "service-type",
+          "api-source",
+          "请选择"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P46",
+        "pageName": "智能问答助手 - 数据服务平台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「智能问答助手 - 数据服务平台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P47",
+        "pageName": "数据服务平台 - SQL开发",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - SQL开发」相关的业务操作。",
+        "primaryTasks": [
+          "运行SQL",
+          "enterprise_name credit_…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P48",
+        "pageName": "数据服务平台 - 运营看板",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 运营看板」相关的业务操作。",
+        "primaryTasks": [
+          "本月 上月 本季度 本年度",
+          "全部 市直部门 区县",
+          "部门名称 目录总数 已挂接目录数 挂接率 无条…",
+          "部门/地市名称 资源总数 库表资源数 文件资源…",
+          "部门/地市名称 资源被申请次数 被申请资源数 …"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P49",
+        "pageName": "数据服务平台 - 任务详情",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 任务详情」相关的业务操作。",
+        "primaryTasks": [
+          "目录名称 服务名称 服务类型 授权开始时间 授…",
+          "资源名称 资源类型 更新时间 操作 企业标签接…",
+          "姓名 账号 电话 单位名称 张三 zhangs…"
+        ],
+        "mainUser": ""
+      },
+      {
+        "pageKey": "P50",
+        "pageName": "数据服务平台 - 开发工作台",
+        "purpose": "帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 开发工作台」相关的业务操作。",
+        "primaryTasks": [],
+        "mainUser": ""
+      }
+    ],
+    "generatedAt": "2026-08-13T07:42:38Z",
+    "sources": []
+  }
+}
+</script>
+<script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
+<script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<!-- /Prototype Annotator runtime -->
+</body>
+</html>

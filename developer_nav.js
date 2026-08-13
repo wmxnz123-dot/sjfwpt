@@ -1,119 +1,93 @@
 const developerTopNavItems = [
-    { id: 'workbench', label: '工作台', href: 'workbench.html' },
-    { id: 'resource', label: '资源中心', href: 'data_source_manage.html?nav=resource-datasource' },
-    { id: 'sandbox', label: '数据沙箱', href: 'scene_center.html?nav=sandbox-task' },
-    { id: 'model', label: '数据模型', href: 'image_repo_manage.html?nav=result-repo' },
-    { id: 'approval', label: '审批中心', href: 'data_resource_apply.html?nav=initiated-resource' },
-    { id: 'monitor', label: '监控中心', href: 'call_alarm.html?nav=monitor-call' },
-    { id: 'help', label: '帮助中心', href: 'help_center.html?nav=help' }
+    { id: 'workbench', label: '工作台', href: 'admin_workbench.html' },
+    { id: 'resource_mgmt', label: '资源中心', href: 'catalog_manage.html?nav=resource-catalog' },
+    { id: 'supply_demand', label: '供需中心', href: 'scene_center.html?nav=demand-scene' },
+    { id: 'objection', label: '异议中心', href: 'objection_accept.html?nav=objection-accept' },
+    { id: 'monitor', label: '监控中心', href: 'monitor_dashboard.html?nav=monitor-dashboard' },
+    { id: 'statistics', label: '统计中心', href: 'statistics_dashboard.html?nav=statistics-dashboard' },
+    { id: 'config', label: '配置中心', href: 'config_center.html?nav=config-scene' }
 ];
 
 const developerSideNavMap = {
     workbench: [
-        { type: 'link', label: '开发工作台', href: 'workbench.html', navKey: 'workbench-home', icon: 'fa-desktop' },
-        { type: 'link', label: '管理工作台', href: 'admin_workbench.html', navKey: 'workbench-admin', icon: 'fa-chart-line' }
+        { type: 'link', label: '工作台', href: 'admin_workbench.html', navKey: 'workbench-admin', icon: 'fa-chart-line' }
     ],
-    resource: [
+    resource_mgmt: [
         {
             type: 'group',
-            label: '数据资源接入',
-            icon: 'fa-plug',
+            label: '目录管理',
+            icon: 'fa-list',
             children: [
-                { type: 'link', label: '数据源管理', href: 'data_source_manage.html?nav=resource-source', navKey: 'resource-source' },
-                { type: 'link', label: '对外数据发布', href: '', navKey: 'resource-publish', disabled: true },
-                { type: 'link', label: '对外数据分类', href: '', navKey: 'resource-category', disabled: true },
-                { type: 'link', label: '自用数据管理', href: 'own_data_manage.html?nav=resource-own', navKey: 'resource-own' }
+                { type: 'link', label: '目录编制', href: 'catalog_manage.html?nav=resource-catalog', navKey: 'resource-catalog' },
+                { type: 'link', label: '目录审核', href: 'catalog_audit.html?nav=resource-catalog-audit', navKey: 'resource-catalog-audit' },
+                { type: 'link', label: '数据表', href: 'catalog_tables.html?nav=resource-catalog-tables', navKey: 'resource-catalog-tables' }
             ]
         },
         {
             type: 'group',
-            label: '数据资源申请',
-            icon: 'fa-file-signature',
+            label: '服务管理',
+            icon: 'fa-server',
             children: [
-                { type: 'link', label: '资源超市', href: 'resource_supermarket.html?nav=resource-market', navKey: 'resource-market' },
-                { type: 'link', label: '已申请数据资源', href: 'applied_data_resources.html?nav=resource-applied', navKey: 'resource-applied' }
-            ]
-        },
-        {
-            type: 'group',
-            label: '数据资源授权',
-            icon: 'fa-key',
-            children: [
-                { type: 'link', label: '已授权数据资源', href: 'authorized_data_resources.html?nav=resource-authorized', navKey: 'resource-authorized' }
+                { type: 'link', label: '服务注册', href: 'service_register.html?nav=resource-service', navKey: 'resource-service' },
+                { type: 'link', label: '服务审核', href: 'service_audit.html?nav=resource-service-audit', navKey: 'resource-service-audit', disabled: true },
+                { type: 'link', label: '服务交付', href: 'service_delivery.html?nav=resource-service-delivery', navKey: 'resource-service-delivery' }
             ]
         }
     ],
-    sandbox: [
+    supply_demand: [
         {
             type: 'group',
-            label: '配额管理',
-            icon: 'fa-chart-pie',
+            label: '需求管理',
+            icon: 'fa-file-signature',
             children: [
-                { type: 'link', label: '总配额管理', href: '', navKey: 'sandbox-quota-total', disabled: true },
-                { type: 'link', label: '部门配额管理', href: '', navKey: 'sandbox-quota-dept', disabled: true }
+                { type: 'link', label: '场景管理', href: 'scene_center.html?nav=demand-scene', navKey: 'demand-scene' },
+                { type: 'link', label: '我的需求', disabled: true }
             ]
         },
         {
             type: 'group',
-            label: '正式区',
-            icon: 'fa-server',
+            label: '供给管理',
+            icon: 'fa-handshake',
             children: [
-                { type: 'link', label: '沙箱容器监控', href: '', navKey: 'sandbox-prod-container1', disabled: true },
-                { type: 'link', label: '空间集群监控', href: '', navKey: 'sandbox-prod-cluster', disabled: true },
-                { type: 'link', label: '沙箱容器监控', href: '', navKey: 'sandbox-prod-container2', disabled: true },
-                { type: 'link', label: '库表授权管理', href: '', navKey: 'sandbox-prod-auth', disabled: true }
+                { type: 'link', label: '需求审核', disabled: true },
+                { type: 'link', label: '需求交付', disabled: true },
+                { type: 'link', label: '我的供给', disabled: true }
             ]
         },
         {
             type: 'group',
-            label: '测试区',
-            icon: 'fa-vial',
+            label: '供需管理',
+            icon: 'fa-scale-balanced',
             children: [
-                { type: 'link', label: '测试区使用说明', href: '', navKey: 'sandbox-test-doc', disabled: true },
-                { type: 'link', label: '库表权限查看', href: '', navKey: 'sandbox-test-auth', disabled: true },
-                { type: 'link', label: '库表资源查看', href: '', navKey: 'sandbox-test-resource-db', disabled: true },
-                { type: 'link', label: '接口资源查看', href: '', navKey: 'sandbox-test-resource-api', disabled: true }
+                { type: 'link', label: '需求受理', href: 'demand_accept.html?nav=demand-accept', navKey: 'demand-accept' },
+                { type: 'link', label: '扩容审核', disabled: true }
             ]
-        },
-        { type: 'link', label: '开发任务', href: 'scene_center.html?nav=sandbox-task', navKey: 'sandbox-task', icon: 'fa-tasks' }
+        }
     ],
-    model: [
+    objection: [
         {
             type: 'group',
-            label: '开发成果管理',
-            icon: 'fa-code-branch',
+            label: '异议管理',
+            icon: 'fa-circle-exclamation',
             children: [
-                { type: 'link', label: '镜像仓库管理', href: 'image_repo_manage.html?nav=result-repo', navKey: 'result-repo' },
-                { type: 'link', label: '镜像上传', href: 'image_upload.html?nav=result-upload', navKey: 'result-upload' },
-                { type: 'link', label: 'API列表', href: 'api_list.html?nav=result-api', navKey: 'result-api' }
+                { type: 'link', label: '异议提出', disabled: true },
+                { type: 'link', label: '异议受理', href: 'objection_accept.html?nav=objection-accept', navKey: 'objection-accept' },
+                { type: 'link', label: '异议核查', disabled: true },
+                { type: 'link', label: '异议审查', disabled: true },
+                { type: 'link', label: '异议评价', disabled: true },
+                { type: 'link', label: '我收到的评价', disabled: true }
             ]
         },
         {
             type: 'group',
-            label: '模型管理',
-            icon: 'fa-cube',
+            label: '数据质量管理',
+            icon: 'fa-chart-line',
             children: [
-                { type: 'link', label: '模型注册', href: 'model_deploy_list.html?nav=model-register', navKey: 'model-register' },
-                { type: 'link', label: '已注册模型', href: 'deployed_model_list.html?nav=model-registered', navKey: 'model-registered' }
+                { type: 'link', label: '数据质量反馈', disabled: true },
+                { type: 'link', label: '数据质量核查', disabled: true },
+                { type: 'link', label: '数据质量审查', disabled: true }
             ]
-        },
-        {
-                            type: 'group',
-                            label: '模型申请',
-                            icon: 'fa-paper-plane',
-                            children: [
-                                { type: 'link', label: '模型超市', href: 'model_market.html?nav=model-market', navKey: 'model-market' },
-                                { type: 'link', label: '已申请模型', href: 'model_applied.html?nav=model-applied', navKey: 'model-applied' }
-                            ]
-                        },
-                        {
-                            type: 'group',
-                            label: '模型授权',
-                            icon: 'fa-key',
-                            children: [
-                                { type: 'link', label: '已授权模型', href: 'model_authorized.html?nav=model-authorized', navKey: 'model-authorized' }
-                            ]
-                        }
+        }
     ],
     approval: [
         {
@@ -121,11 +95,8 @@ const developerSideNavMap = {
             label: '已发起',
             icon: 'fa-paper-plane',
             children: [
-                { type: 'link', label: '数据资源申请工单', href: 'data_resource_apply.html?nav=initiated-resource', navKey: 'initiated-resource' },
-                { type: 'link', label: '数据资源续期工单', href: 'data_resource_renew.html?nav=initiated-renew', navKey: 'initiated-renew' },
-                { type: 'link', label: '模型部署申请工单', href: 'model_deploy_work_order.html?nav=initiated-deploy', navKey: 'initiated-deploy' },
-                { type: 'link', label: '模型变更申请工单', href: 'model_change_work_order.html?nav=initiated-change', navKey: 'initiated-change' },
-                { type: 'link', label: '模型申请工单', href: 'model_apply_work_order.html?nav=initiated-model-apply', navKey: 'initiated-model-apply' }
+                { type: 'link', label: '数据申请工单', href: 'data_resource_apply.html?nav=initiated-resource', navKey: 'initiated-resource' },
+                { type: 'link', label: '配额申请工单', href: 'quota_apply_work_order.html?nav=initiated-quota', navKey: 'initiated-quota' }
             ]
         },
         {
@@ -134,25 +105,77 @@ const developerSideNavMap = {
             icon: 'fa-clock',
             children: [
                 { type: 'link', label: '数据资源审核', href: 'data_resource_audit.html?nav=pending-resource', navKey: 'pending-resource' },
-                { type: 'link', label: '数据续期审核', href: 'data_resource_renew_audit.html?nav=pending-renew', navKey: 'pending-renew' },
-                { type: 'link', label: '模型注册部署', href: 'model_deploy_audit.html?nav=pending-deploy', navKey: 'pending-deploy' },
-                { type: 'link', label: '模型变更部署', href: 'model_change_audit.html?nav=pending-change', navKey: 'pending-change' },
-                { type: 'link', label: '模型申请审核', href: 'model_apply_audit.html?nav=pending-model-apply', navKey: 'pending-model-apply' }
+                { type: 'link', label: '配额分配审核', href: 'quota_audit.html?nav=pending-quota', navKey: 'pending-quota' }
+            ]
+        }
+    ],
+    statistics: [
+        { type: 'link', label: '统计看板', href: 'statistics_dashboard.html?nav=statistics-dashboard', navKey: 'statistics-dashboard', icon: 'fa-chart-pie' },
+        {
+            type: 'group',
+            label: '目录服务统计',
+            icon: 'fa-table',
+            children: [
+                { type: 'link', label: '目录服务总览', href: '', navKey: 'statistics-overview', disabled: true },
+                { type: 'link', label: '部门目录基本情况', href: '', navKey: 'statistics-dept-catalog', disabled: true },
+                { type: 'link', label: '区划目录基本情况', href: '', navKey: 'statistics-region-catalog', disabled: true },
+                { type: 'link', label: '部门服务基本情况', href: '', navKey: 'statistics-dept-service', disabled: true },
+                { type: 'link', label: '区划服务基本情况', href: '', navKey: 'statistics-region-service', disabled: true }
+            ]
+        },
+        {
+            type: 'group',
+            label: '申请使用统计',
+            icon: 'fa-file-circle-check',
+            children: [
+                { type: 'link', label: '部门申请服务情况', href: '', navKey: 'statistics-dept-apply', disabled: true },
+                { type: 'link', label: '区划申请服务情况', href: '', navKey: 'statistics-region-apply', disabled: true },
+                { type: 'link', label: '部门服务被申请情况', href: '', navKey: 'statistics-dept-applied', disabled: true },
+                { type: 'link', label: '区划服务被申请情况', href: '', navKey: 'statistics-region-applied', disabled: true },
+                { type: 'link', label: '服务被调用情况', href: '', navKey: 'statistics-service-called', disabled: true },
+                { type: 'link', label: '部门调用情况', href: '', navKey: 'statistics-dept-call', disabled: true },
+                { type: 'link', label: '区划调用情况', href: '', navKey: 'statistics-region-call', disabled: true },
+                { type: 'link', label: '部门接口调用情况', href: '', navKey: 'statistics-dept-api-call', disabled: true }
+            ]
+        },
+        { type: 'link', label: '基础库统计', href: '', navKey: 'statistics-database', disabled: true, icon: 'fa-database' },
+        { type: 'link', label: '数据归集查询', href: '', navKey: 'statistics-data-collection', disabled: true, icon: 'fa-database' },
+        { type: 'link', label: '清单中心', href: '', navKey: 'statistics-inventory-center', disabled: true, icon: 'fa-list-check' }
+    ],
+    config: [
+        {
+            type: 'group',
+            label: '配置管理',
+            icon: 'fa-sliders',
+            children: [
+                { type: 'link', label: '场景配置', href: 'config_center.html?nav=config-scene', navKey: 'config-scene' }
             ]
         }
     ],
     monitor: [
-        { type: 'link', label: '数据源监控', href: '', navKey: 'monitor-datasource', disabled: true, icon: 'fa-database' },
+        { type: 'link', label: '监控看板', href: 'monitor_dashboard.html?nav=monitor-dashboard', navKey: 'monitor-dashboard', icon: 'fa-chart-pie' },
         {
             type: 'group',
-            label: '资源监控',
-            icon: 'fa-desktop',
+            label: '服务使用监控',
+            icon: 'fa-eye',
             children: [
-                { type: 'link', label: '调用告警', href: 'call_alarm.html?nav=monitor-call', navKey: 'monitor-call' }
+                { type: 'link', label: '供给服务监控', href: 'monitor_service_monitor.html?nav=monitor-service-monitor', navKey: 'monitor-service-monitor' },
+                { type: 'link', label: '申请服务监控', href: '', navKey: 'monitor-apply-monitor', disabled: true },
+                { type: 'link', label: '场景使用监控', href: '', navKey: 'monitor-scene-monitor', disabled: true },
+                { type: 'link', label: '服务使用监控', href: '', navKey: 'monitor-service-usage', disabled: true }
             ]
         },
-        { type: 'link', label: '模型监控', href: '', navKey: 'monitor-model', disabled: true, icon: 'fa-chart-line' },
-        { type: 'link', label: '配额告警', href: 'quota_alarm.html?nav=monitor-quota', navKey: 'monitor-quota', icon: 'fa-bell' }
+        {
+            type: 'group',
+            label: '服务使用告警',
+            icon: 'fa-bell',
+            children: [
+                { type: 'link', label: '供给服务告警', href: '', navKey: 'monitor-service-alarm', disabled: true },
+                { type: 'link', label: '申请服务告警', href: '', navKey: 'monitor-apply-alarm', disabled: true },
+                { type: 'link', label: '服务异常告警', href: '', navKey: 'monitor-exception-alarm', disabled: true }
+            ]
+        },
+        { type: 'link', label: '心跳检测', href: '', navKey: 'monitor-heartbeat', disabled: true, icon: 'fa-heartbeat' }
     ],
     help: [
         { type: 'link', label: '帮助中心', href: 'help_center.html?nav=help', navKey: 'help', icon: 'fa-circle-question' }
@@ -160,49 +183,31 @@ const developerSideNavMap = {
 };
 
 const developerPathDefaults = {
-    'workbench.html': { group: 'workbench', navKey: 'workbench-home' },
+    'index.html': { group: 'workbench', navKey: 'workbench-admin' },
     'admin_workbench.html': { group: 'workbench', navKey: 'workbench-admin' },
-    'data_resources.html': { group: 'sandbox', navKey: 'sandbox-quota' },
-    'own_data_manage.html': { group: 'resource', navKey: 'resource-own' },
-    'own_data_manage_add.html': { group: 'resource', navKey: 'resource-own' },
-    'own_data_manage_add_step2.html': { group: 'resource', navKey: 'resource-own' },
-    'resource_supermarket.html': { group: 'resource', navKey: 'resource-market' },
-    'resource_supermarket_detail.html': { group: 'resource', navKey: 'resource-market' },
-    'applied_data_resources.html': { group: 'resource', navKey: 'resource-applied' },
-    'authorized_data_resources.html': { group: 'resource', navKey: 'resource-authorized' },
-    'data_source_manage.html': { group: 'resource', navKey: 'resource-source' },
     'data_resource_apply.html': { group: 'approval', navKey: 'initiated-resource' },
-    'scene_center.html': { group: 'sandbox', navKey: 'sandbox-task' },
-    'scene_detail.html': { group: 'sandbox', navKey: 'sandbox-quota' },
-    'dev_team.html': { group: 'sandbox', navKey: 'sandbox-test' },
-    'dev_task_create.html': { group: 'sandbox', navKey: 'sandbox-task' },
-    'image_repo_manage.html': { group: 'model', navKey: 'result-repo' },
-    'image_upload.html': { group: 'model', navKey: 'result-upload' },
-    'api_list.html': { group: 'model', navKey: 'result-api' },
-    'model_deploy_list.html': { group: 'model', navKey: 'model-register' },
-    'model_deploy_add.html': { group: 'model', navKey: 'model-register' },
-    'model_deploy_add_step2.html': { group: 'model', navKey: 'model-register' },
-    'model_deploy_add_step3.html': { group: 'model', navKey: 'model-register' },
-    'deployed_model_list.html': { group: 'model', navKey: 'model-registered' },
-    'model_deploy_work_order.html': { group: 'approval', navKey: 'initiated-deploy' },
-    'model_change_work_order.html': { group: 'approval', navKey: 'initiated-change' },
-    'resource_alert.html': { group: 'monitor', navKey: 'monitor-call' },
-    'call_alarm.html': { group: 'monitor', navKey: 'monitor-call' },
-    'quota_alarm.html': { group: 'monitor', navKey: 'monitor-quota' },
+    'quota_apply_work_order.html': { group: 'approval', navKey: 'initiated-quota' },
+    'quota_audit.html': { group: 'approval', navKey: 'pending-quota' },
+    'scene_center.html': { group: 'supply_demand', navKey: 'demand-scene' },
+    'demand_accept.html': { group: 'supply_demand', navKey: 'demand-accept' },
+    'objection_accept.html': { group: 'objection', navKey: 'objection-accept' },
+    
+    'statistics_dashboard.html': { group: 'statistics', navKey: 'statistics-dashboard' },
+    'config_center.html': { group: 'config', navKey: 'config-scene' },
+    'scene_add.html': { group: 'config', navKey: 'config-scene' },
+    'monitor_service_monitor.html': { group: 'monitor', navKey: 'monitor-service-monitor' },
+    'monitor_dashboard.html': { group: 'monitor', navKey: 'monitor-dashboard' },
     'help_center.html': { group: 'help', navKey: 'help' },
     'data_resource_audit.html': { group: 'approval', navKey: 'pending-resource' },
-    'data_resource_renew.html': { group: 'approval', navKey: 'initiated-renew' },
-    'data_resource_renew_audit.html': { group: 'approval', navKey: 'pending-renew' },
-    'model_deploy_audit.html': { group: 'approval', navKey: 'pending-deploy' },
-    'model_change_audit.html': { group: 'approval', navKey: 'pending-change' },
-    'model_apply_work_order.html': { group: 'approval', navKey: 'initiated-model-apply' },
-    'model_apply_audit.html': { group: 'approval', navKey: 'pending-model-apply' },
-    'model_change_record.html': { group: 'model', navKey: 'model-market' },
-    'offline_model_list.html': { group: 'model', navKey: 'model-registered' },
-    'capability_pack_list.html': { group: 'model', navKey: 'model-market' },
-    'model_market.html': { group: 'model', navKey: 'model-market' },
-    'model_applied.html': { group: 'model', navKey: 'model-applied' },
-    'model_authorized.html': { group: 'model', navKey: 'model-authorized' }
+    'catalog_manage.html': { group: 'resource_mgmt', navKey: 'resource-catalog' },
+    'catalog_add.html': { group: 'resource_mgmt', navKey: 'resource-catalog' },
+    'catalog_audit.html': { group: 'resource_mgmt', navKey: 'resource-catalog-audit' },
+    'catalog_tables.html': { group: 'resource_mgmt', navKey: 'resource-catalog-tables' },
+    'service_register.html': { group: 'resource_mgmt', navKey: 'resource-service' },
+    'service_register_add.html': { group: 'resource_mgmt', navKey: 'resource-service' },
+    'service_audit.html': { group: 'resource_mgmt', navKey: 'resource-service-audit' },
+    'service_delivery.html': { group: 'resource_mgmt', navKey: 'resource-service-delivery' },
+    'service_delivery_add.html': { group: 'resource_mgmt', navKey: 'resource-service-delivery' }
 };
 
 const developerNavKeyToGroup = {};
@@ -221,9 +226,9 @@ Object.keys(developerSideNavMap).forEach((groupId) => {
 
 function getDeveloperNavState() {
     const url = new URL(window.location.href);
-    const currentPath = window.location.pathname.split('/').pop() || 'workbench.html';
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
     const currentNav = url.searchParams.get('nav');
-    const fallback = developerPathDefaults[currentPath] || developerPathDefaults['workbench.html'];
+    const fallback = developerPathDefaults[currentPath] || developerPathDefaults['index.html'];
     const activeGroup = currentNav ? (developerNavKeyToGroup[currentNav] || fallback.group) : fallback.group;
     const activeNav = currentNav || fallback.navKey;
 
@@ -262,20 +267,35 @@ function renderDeveloperTopNav(state) {
     }
 
     container.innerHTML = developerTopNavItems.map((item) => {
-        const isActive = item.id === state.activeGroup;
-        return `
-            <a
-                href="${item.href}"
-                class="px-4 h-[34px] inline-flex items-center rounded-md border transition-colors whitespace-nowrap text-[14px] ${
-                    isActive
-                        ? 'bg-white/18 border-white/30 text-white font-medium shadow-sm'
-                        : 'border-transparent text-white/80 hover:text-white hover:bg-white/10'
-                }"
-            >
-                ${item.label}
-            </a>
-        `;
-    }).join('');
+            const isActive = item.id === state.activeGroup;
+            // 临时隐藏审批中心、帮助中心（保留代码，后续可恢复）
+            const hiddenStyle = (item.id === 'approval' || item.id === 'help') ? ' style="display:none"' : '';
+            if (!item.href) {
+                return `
+                    <span${hiddenStyle}
+                        class="px-4 h-[34px] inline-flex items-center rounded-md border transition-colors whitespace-nowrap text-[14px] cursor-default ${
+                                isActive
+                                    ? 'bg-white/18 border-white/30 text-white font-medium shadow-sm'
+                                    : 'border-transparent text-white/80'
+                        }"
+                    >
+                        ${item.label}
+                    </span>
+                `;
+            }
+            return `
+                <a${hiddenStyle}
+                    href="${item.href}"
+                    class="px-4 h-[34px] inline-flex items-center rounded-md border transition-colors whitespace-nowrap text-[14px] ${
+                            isActive
+                                ? 'bg-white/18 border-white/30 text-white font-medium shadow-sm'
+                                : 'border-transparent text-white/80 hover:text-white hover:bg-white/10'
+                    }"
+                >
+                    ${item.label}
+                </a>
+            `;
+        }).join('');
 }
 
 window.toggleNavGroup = function(groupId) {

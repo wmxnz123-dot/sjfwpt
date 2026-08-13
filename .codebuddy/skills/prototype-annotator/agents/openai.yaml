@@ -1,0 +1,7 @@
+interface:
+  display_name: "Prototype Annotator"
+  short_description: "为产品原型生成可编辑富文本标注"
+  brand_color: "#1677FF"
+  default_prompt: "Use $prototype-annotator to generate or update editable annotations for the current product prototype; infer the current project directory when no path is provided."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 服务交付</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1c7ffd 0%, #0d6efd 100%); }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden relative">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <div class="px-6 py-3 bg-white border-b border-gray-100 flex items-center shrink-0">
+                <a href="service_delivery.html?nav=resource-service-delivery" class="text-[#1c7ffd] hover:opacity-80 transition-colors flex items-center gap-1 font-medium text-[15px]">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> 返回列表
+                </a>
+            </div>
+
+            <div id="step-1" class="flex-1 p-6 pb-[88px] overflow-y-auto">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                    <div class="py-8 px-10">
+                        <div class="flex items-center justify-between relative">
+                            <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2"></div>
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center font-bold text-base">1</div>
+                                <span class="mt-3 font-medium text-[#303133]">服务配置</span>
+                            </div>
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-base">2</div>
+                                <span class="mt-3 font-medium text-[#909399]">服务测试</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-10 pb-8 space-y-5">
+                        <div class="text-center py-3">
+                            <span class="text-[#606266]">资源目录名称：</span>
+                            <span class="font-medium text-[#303133]" id="selected-catalog-name">行政复议被申请人信息</span>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>服务类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="service-type" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> 接口
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="service-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> 库表
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="service-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> 文件
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>服务名称：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="service-name" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]" value="行政处罚基本信息接口服务">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]">API交付：</label>
+                            <div class="ml-4 flex-1">
+                                <select class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                    <option>行政复议主表信息接口服务</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>接口path：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="api-path" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]" value="/xfwybsqxx">
+                                <button class="absolute right-3 top-1/2 -translate-y-1/2 text-[#909399] hover:text-[#1c7ffd] transition-colors">
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>代理前地址：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="proxy-before" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]" value="http://10.133.0.37:30311/dubhe-api-generation-1/204570348893227008/1">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>代理后地址：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="proxy-after" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]" value="http://10.133.0.58:55555/apiRoute/gateway/xfwybsqxx">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>接口类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="api-type" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> rest
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="api-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> webservice
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>返回类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="return-type" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> json
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="return-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> xml
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="return-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> string
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>请求类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="request-method" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> GET
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="request-method" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> POST
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>API并发（次/秒）：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="api-concurrent" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]">
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266] mt-1.5"><span class="text-red-500 mr-1">*</span>上传说明文件：</label>
+                            <div class="ml-4 flex flex-col gap-2">
+                                <button class="border border-gray-300 rounded px-4 py-1.5 text-sm w-fit hover:border-[#1c7ffd] hover:text-[#1c7ffd] transition-colors bg-white shadow-sm">
+                                    <i class="fa-solid fa-arrow-up-from-bracket mr-1"></i> 上传文件
+                                </button>
+                                <span class="text-[#909399] text-[13px]">支持扩展名：.doc .docx 文件最大不能超过10MB 最多上传一个文件</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266] mt-2">服务描述：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <textarea rows="3" id="service-desc" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133] resize-none"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="text-[#606266] font-medium"><span class="text-red-500 mr-1">*</span>请求参数列表：</div>
+                                <button onclick="openSmartFillModal('request')" class="text-[#1c7ffd] text-sm flex items-center gap-1 hover:opacity-80 transition-opacity">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> 智能填写
+                                </button>
+                            </div>
+                            <div class="bg-[#fffbe6] border border-[#ffe58f] text-[#d4a76a] text-sm px-4 py-2 rounded">
+                                <i class="fa-solid fa-exclamation-circle mr-1"></i>
+                                对于webservice类型接口,创建请求参数的顺序请与原接口参数顺序保持一致,否则可能会无法代理。另外,接口参数类型建议选字符串型!
+                            </div>
+                            <table class="w-full text-center text-[13px] text-[#606266] border-collapse">
+                                <thead class="bg-[#f8f8f9] text-[#909399] font-medium">
+                                    <tr>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数名称</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数描述</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数位置</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">是否必填</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">顺序</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数默认值</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="requestParamsBody">
+                                    <tr>
+                                        <td colspan="7" class="py-10 text-[#909399]">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                                <span>暂无数据</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button onclick="addParamRow('request')" class="w-full py-2 border border-dashed border-[#1c7ffd] text-[#1c7ffd] rounded hover:bg-blue-50 transition-colors text-sm flex items-center justify-center gap-1 mt-1">
+                                <i class="fa-solid fa-plus text-xs"></i> 添加一行数据
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="text-[#606266] font-medium">固定参数列表：</div>
+                                <button onclick="openSmartFillModal('fixed')" class="text-[#1c7ffd] text-sm flex items-center gap-1 hover:opacity-80 transition-opacity">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> 智能填写
+                                </button>
+                            </div>
+                            <table class="w-full text-center text-[13px] text-[#606266] border-collapse">
+                                <thead class="bg-[#f8f8f9] text-[#909399] font-medium">
+                                    <tr>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数名称</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数描述</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数位置</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">顺序</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数默认值</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fixedParamsBody">
+                                    <tr>
+                                        <td colspan="6" class="py-10 text-[#909399]">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                                <span>暂无数据</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button onclick="addParamRow('fixed')" class="w-full py-2 border border-dashed border-[#1c7ffd] text-[#1c7ffd] rounded hover:bg-blue-50 transition-colors text-sm flex items-center justify-center gap-1 mt-1">
+                                <i class="fa-solid fa-plus text-xs"></i> 添加一行数据
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="text-[#606266] font-medium"><span class="text-red-500 mr-1">*</span>返回参数列表：</div>
+                                <button onclick="openSmartFillModal('response')" class="text-[#1c7ffd] text-sm flex items-center gap-1 hover:opacity-80 transition-opacity">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> 智能填写
+                                </button>
+                            </div>
+                            <table class="w-full text-center text-[13px] text-[#606266] border-collapse">
+                                <thead class="bg-[#f8f8f9] text-[#909399] font-medium">
+                                    <tr>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数名称</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">参数描述</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="responseParamsBody">
+                                    <tr>
+                                        <td colspan="3" class="py-10 text-[#909399]">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                                <span>暂无数据</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button onclick="addParamRow('response')" class="w-full py-2 border border-dashed border-[#1c7ffd] text-[#1c7ffd] rounded hover:bg-blue-50 transition-colors text-sm flex items-center justify-center gap-1 mt-1">
+                                <i class="fa-solid fa-plus text-xs"></i> 添加一行数据
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col gap-3">
+                            <div class="flex justify-between items-center">
+                                <div class="text-[#606266] font-medium">错误代码：</div>
+                                <button onclick="openSmartFillModal('error')" class="text-[#1c7ffd] text-sm flex items-center gap-1 hover:opacity-80 transition-opacity">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> 智能填写
+                                </button>
+                            </div>
+                            <table class="w-full text-center text-[13px] text-[#606266] border-collapse">
+                                <thead class="bg-[#f8f8f9] text-[#909399] font-medium">
+                                    <tr>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">错误代码</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">错误描述</th>
+                                        <th class="py-3 px-4 font-medium border-b border-gray-100">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="errorCodesBody">
+                                    <tr>
+                                        <td colspan="3" class="py-10 text-[#909399]">
+                                            <div class="flex flex-col items-center gap-2">
+                                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                                <span>暂无数据</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button onclick="addParamRow('error')" class="w-full py-2 border border-dashed border-[#1c7ffd] text-[#1c7ffd] rounded hover:bg-blue-50 transition-colors text-sm flex items-center justify-center gap-1 mt-1">
+                                <i class="fa-solid fa-plus text-xs"></i> 添加一行数据
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-2" class="flex-1 p-6 pb-[88px] overflow-y-auto hidden">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                    <div class="py-8 px-10">
+                        <div class="flex items-center justify-between relative">
+                            <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2"></div>
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-gray-200 text-white flex items-center justify-center font-bold text-base">
+                                    <i class="fa-solid fa-check text-sm"></i>
+                                </div>
+                                <span class="mt-3 font-medium text-[#303133]">服务配置</span>
+                            </div>
+                            <div class="relative z-10 flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center font-bold text-base">2</div>
+                                <span class="mt-3 font-medium text-[#303133]">服务测试</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-10 pb-8 space-y-5">
+
+                        <div class="text-center py-3">
+                            <span class="text-[#606266]">资源目录名称：</span>
+                            <span class="font-medium text-[#303133]" id="test-catalog-name">行政复议被申请人信息</span>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>服务名称：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="test-service-name" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]" value="行政处罚基本信息接口服务">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>代理前地址：</label>
+                            <div class="ml-4 flex-1 relative">
+                                <input type="text" id="test-proxy-before" placeholder="请输入" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133]" value="http://10.133.0.37:30311/dubhe-api-generation-1/204570348893227008/1">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>接口类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="test-api-type" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> rest
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="test-api-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> webservice
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>返回类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="test-return-type" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> json
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="test-return-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> xml
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="test-return-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> string
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>请求类型：</label>
+                            <div class="ml-4 flex gap-6">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="test-request-method" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> GET
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="test-request-method" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> POST
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex border-b border-gray-100">
+                            <button onclick="switchTestTab('params')" id="test-tab-params" class="px-6 py-3 font-medium text-sm text-[#1c7ffd] border-b-2 border-[#1c7ffd] cursor-pointer">
+                                Params
+                            </button>
+                            <button onclick="switchTestTab('header')" id="test-tab-header" class="px-6 py-3 font-medium text-sm text-[#606266] border-b-2 border-transparent hover:text-[#1c7ffd] cursor-pointer">
+                                Header
+                            </button>
+                            <button onclick="switchTestTab('body')" id="test-tab-body" class="px-6 py-3 font-medium text-sm text-[#606266] border-b-2 border-transparent hover:text-[#1c7ffd] cursor-pointer">
+                                Body
+                            </button>
+                        </div>
+
+                        <div id="test-content-params" class="bg-gray-50 rounded-lg p-4">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="px-4 py-3 text-left font-medium text-[#909399]">参数名称</th>
+                                        <th class="px-4 py-3 text-left font-medium text-[#909399]">参数值</th>
+                                        <th class="px-4 py-3 text-left font-medium text-[#909399]">描述</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="px-4 py-3 text-[#303133]">AR_ID</td>
+                                        <td class="px-4 py-3">
+                                            <input type="text" placeholder="请输入" class="w-full border border-gray-200 rounded px-3 py-1.5 text-sm outline-none focus:border-[#1c7ffd]">
+                                        </td>
+                                        <td class="px-4 py-3 text-[#606266]">复议案件ID</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="test-content-header" class="bg-gray-50 rounded-lg p-4 hidden">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="px-4 py-3 text-left font-medium text-[#909399]">参数名称</th>
+                                        <th class="px-4 py-3 text-left font-medium text-[#909399]">参数值</th>
+                                        <th class="px-4 py-3 text-left font-medium text-[#909399]">描述</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" class="py-10 text-center text-[#909399]">暂无数据</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="test-content-body" class="bg-gray-50 rounded-lg p-4 hidden">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="px-4 py-3 text-left font-medium text-[#909399]">参数名称</th>
+                                        <th class="px-4 py-3 text-left font-medium text-[#909399]">参数值</th>
+                                        <th class="px-4 py-3 text-left font-medium text-[#909399]">描述</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" class="py-10 text-center text-[#909399]">暂无数据</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex justify-end gap-3">
+                            <button onclick="testService()" class="px-5 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors">
+                                测试
+                            </button>
+                            <button onclick="goToStep(1)" class="px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                                修改
+                            </button>
+                        </div>
+
+                        <div id="test-result" class="bg-gray-50 rounded-lg p-4 hidden">
+                            <div class="flex items-center gap-2 mb-3">
+                                <i class="fa-solid fa-code text-[#1c7ffd]"></i>
+                                <span class="font-medium text-[#303133]">Response：</span>
+                            </div>
+                            <pre class="text-sm text-[#606266] bg-white p-4 rounded border border-gray-200 overflow-auto max-h-[200px]"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 left-0 right-0 h-[64px] px-6 flex items-center justify-end gap-3 bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] z-20">
+                <button id="btn-prev" onclick="goToStep(1)" class="px-6 py-1.5 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-sm bg-white shadow-sm hidden">上一步</button>
+                <button id="btn-save" class="px-6 py-1.5 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-sm bg-white shadow-sm">暂存</button>
+                <button id="btn-next" onclick="goToStep(2)" class="px-6 py-1.5 bg-[#1c7ffd] text-white rounded hover:bg-blue-500 transition-colors text-sm shadow-sm">下一步</button>
+                <button id="btn-submit" onclick="submitForm()" class="px-6 py-1.5 bg-[#1c7ffd] text-white rounded hover:bg-blue-500 transition-colors text-sm shadow-sm hidden">提交</button>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="smart-fill-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeSmartFillModal()"></div>
+    <div id="smart-fill-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] bg-white z-[90] rounded-lg shadow-2xl opacity-0 invisible transition-all duration-300">
+        <div class="h-12 flex items-center justify-between px-5 border-b border-gray-100">
+            <h3 class="font-semibold text-base text-[#303133]">智能填写</h3>
+            <button onclick="closeSmartFillModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        <div class="p-5">
+            <div class="mb-4">
+                <label class="block text-sm text-[#606266] mb-2">请输入接口描述：</label>
+                <textarea id="smart-fill-input" rows="4" placeholder="例如：根据身份证号查询企业工商信息，返回企业名称、统一社会信用代码、注册资本等信息" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133] resize-none"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeSmartFillModal()" class="flex-1 px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+                <button onclick="doSmartFill()" class="flex-1 px-5 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors">
+                    开始智能填写
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let currentFillType = '';
+
+        function goToStep(step) {
+            currentStep = step;
+            if (step === 1) {
+                document.getElementById('step-1').classList.remove('hidden');
+                document.getElementById('step-2').classList.add('hidden');
+                document.getElementById('btn-prev').classList.add('hidden');
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-submit').classList.add('hidden');
+            } else {
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.remove('hidden');
+                document.getElementById('btn-prev').classList.remove('hidden');
+                document.getElementById('btn-next').classList.add('hidden');
+                document.getElementById('btn-submit').classList.remove('hidden');
+                setTimeout(() => startAutoTestInPage(), 250);
+            }
+        }
+
+
+        function showToast(msg) {
+            let t = document.getElementById('global-toast');
+            if (!t) {
+                t = document.createElement('div');
+                t.id = 'global-toast';
+                t.className = 'fixed top-6 left-1/2 -translate-x-1/2 z-[200] px-5 py-2.5 rounded-lg shadow-xl text-white text-sm bg-gradient-to-r from-[#1c7ffd] to-[#0d6efd] opacity-0 translate-y-[-20px] transition-all duration-300 pointer-events-none';
+                document.body.appendChild(t);
+            }
+            t.textContent = msg;
+            requestAnimationFrame(() => {
+                t.classList.remove('opacity-0', 'translate-y-[-20px]');
+                t.classList.add('opacity-100', 'translate-y-0');
+            });
+            setTimeout(() => {
+                t.classList.add('opacity-0', 'translate-y-[-20px]');
+                t.classList.remove('opacity-100', 'translate-y-0');
+            }, 2500);
+        }
+
+        function switchTestTab(tab) {
+            ['params', 'header', 'body'].forEach(t => {
+                document.getElementById('test-tab-' + t).className = t === tab ? 'px-6 py-3 font-medium text-sm text-[#1c7ffd] border-b-2 border-[#1c7ffd] cursor-pointer' : 'px-6 py-3 font-medium text-sm text-[#606266] border-b-2 border-transparent hover:text-[#1c7ffd] cursor-pointer';
+                document.getElementById('test-content-' + t).className = t === tab ? 'bg-gray-50 rounded-lg p-4' : 'bg-gray-50 rounded-lg p-4 hidden';
+            });
+        }
+
+        function testService() {
+            const result = document.getElementById('test-result');
+            result.classList.remove('hidden');
+            result.querySelector('pre').textContent = '{\n  "code": 200,\n  "message": "success",\n  "data": {\n    "AR_ID": "123456",\n    "CASE_NAME": "测试案件",\n    "APPLICANT_NAME": "张三"\n  }\n}';
+        }
+
+        function openSmartFillModal(type) {
+            currentFillType = type;
+            document.getElementById('smart-fill-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('smart-fill-modal').classList.remove('opacity-0', 'invisible');
+        }
+
+        function closeSmartFillModal() {
+            document.getElementById('smart-fill-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('smart-fill-modal').classList.add('opacity-0', 'invisible');
+        }
+
+        function doSmartFill() {
+            const input = document.getElementById('smart-fill-input').value;
+            if (!input.trim()) {
+                alert('请输入接口描述');
+                return;
+            }
+            closeSmartFillModal();
+            if (currentFillType === 'request') fillRequestParams();
+            else if (currentFillType === 'response') fillResponseParams();
+            else if (currentFillType === 'fixed') fillFixedParams();
+            else if (currentFillType === 'error') fillErrorCodes();
+        }
+
+        function fillRequestParams() {
+            const tbody = document.getElementById('requestParamsBody');
+            tbody.innerHTML = `
+                <tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="id_card" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="身份证号" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>body</option>
+                            <option>query</option>
+                            <option>header</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>是</option>
+                            <option>否</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4"><input type="text" value="1" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto"></td>
+                    <td class="py-3 px-4"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function fillResponseParams() {
+            const tbody = document.getElementById('responseParamsBody');
+            tbody.innerHTML = `
+                <tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="request_id" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="请求追踪ID" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                </tr>
+                <tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="data.name" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="企业名称" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function fillFixedParams() {
+            const tbody = document.getElementById('fixedParamsBody');
+            tbody.innerHTML = `
+                <tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="app_id" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="应用ID" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>header</option>
+                            <option>body</option>
+                            <option>query</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4"><input type="text" value="1" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto"></td>
+                    <td class="py-3 px-4"><input type="text" value="APP001" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function fillErrorCodes() {
+            const tbody = document.getElementById('errorCodesBody');
+            tbody.innerHTML = `
+                <tr class="border-b border-gray-100">
+                    <td class="py-3 px-4"><input type="text" value="400" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="参数错误" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-3 px-4"><input type="text" value="500" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" value="服务器错误" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function addParamRow(type) {
+            let tbody, cols;
+            if (type === 'request') { tbody = document.getElementById('requestParamsBody'); cols = 7; }
+            else if (type === 'fixed') { tbody = document.getElementById('fixedParamsBody'); cols = 6; }
+            else if (type === 'response') { tbody = document.getElementById('responseParamsBody'); cols = 3; }
+            else { tbody = document.getElementById('errorCodesBody'); cols = 3; }
+
+            if (tbody.querySelector('td[colspan]')) tbody.innerHTML = '';
+
+            let html = '<tr class="border-b border-gray-100">';
+            if (type === 'request') {
+                html += `
+                    <td class="py-3 px-4"><input type="text" placeholder="参数名称" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="参数描述" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>body</option>
+                            <option>query</option>
+                            <option>header</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>否</option>
+                            <option>是</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="默认值" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                `;
+            } else if (type === 'fixed') {
+                html += `
+                    <td class="py-3 px-4"><input type="text" placeholder="参数名称" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="参数描述" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4">
+                        <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                            <option>header</option>
+                            <option>body</option>
+                            <option>query</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="默认值" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                `;
+            } else if (type === 'response') {
+                html += `
+                    <td class="py-3 px-4"><input type="text" placeholder="参数名称" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="参数描述" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                `;
+            } else {
+                html += `
+                    <td class="py-3 px-4"><input type="text" placeholder="错误代码" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4"><input type="text" placeholder="错误描述" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                    <td class="py-3 px-4 text-[#1c7ffd]">
+                        <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                    </td>
+                `;
+            }
+            html += '</tr>';
+            tbody.innerHTML += html;
+        }
+
+        function deleteRow(el) {
+            el.closest('tr').remove();
+            const tbody = el.closest('tbody');
+            if (tbody.children.length === 0) {
+                const cols = tbody.querySelectorAll('th').length;
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="${cols}" class="py-10 text-[#909399]">
+                            <div class="flex flex-col items-center gap-2">
+                                <i class="fa-solid fa-folder-open text-3xl opacity-50"></i>
+                                <span>暂无数据</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function submitForm() {
+            alert('提交成功');
+            window.location.href = 'service_delivery.html?nav=resource-service-delivery';
+        }
+
+        function openAutoConfig() {
+            document.getElementById('auto-config-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('auto-config-modal').classList.remove('opacity-0', 'invisible', 'scale-95');
+        }
+
+        function closeAutoConfig() {
+            document.getElementById('auto-config-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('auto-config-modal').classList.add('opacity-0', 'invisible', 'scale-95');
+            document.getElementById('auto-config-content').classList.remove('hidden');
+            document.getElementById('auto-config-footer').classList.remove('hidden');
+            document.getElementById('auto-config-progress').classList.add('hidden');
+        }
+
+        function startAutoConfig() {
+            document.getElementById('auto-config-content').classList.add('hidden');
+            document.getElementById('auto-config-footer').classList.add('hidden');
+            document.getElementById('auto-config-progress').classList.remove('hidden');
+
+            const steps = [
+                { icon: 'config-step-1-icon', text: 'config-step-1-text', label: '正在分析服务类型...' },
+                { icon: 'config-step-2-icon', text: 'config-step-2-text', label: '正在生成请求参数...' },
+                { icon: 'config-step-3-icon', text: 'config-step-3-text', label: '正在生成返回参数...' },
+                { icon: 'config-step-4-icon', text: 'config-step-4-text', label: '正在填充表单...' }
+            ];
+
+            let currentStep = 0;
+            const progressBar = document.getElementById('config-progress-bar');
+            const progressText = document.getElementById('config-progress-text');
+
+            function nextStep() {
+                if (currentStep > 0) {
+                    const prevStep = steps[currentStep - 1];
+                    document.getElementById(prevStep.icon).innerHTML = '<i class="fa-solid fa-check text-xs text-white"></i>';
+                    document.getElementById(prevStep.icon).classList.add('bg-green-500', 'border-green-500');
+                    document.getElementById(prevStep.text).classList.add('text-green-600');
+                }
+
+                if (currentStep < steps.length) {
+                    const step = steps[currentStep];
+                    document.getElementById(step.icon).classList.add('border-[#1c7ffd]', 'text-[#1c7ffd]');
+                    document.getElementById(step.text).classList.add('text-[#303133]', 'font-medium');
+                    
+                    const progress = Math.round(((currentStep + 1) / steps.length) * 100);
+                    progressBar.style.width = progress + '%';
+                    progressText.textContent = progress + '%';
+                    
+                    currentStep++;
+                    setTimeout(nextStep, 800);
+                } else {
+                    setTimeout(() => {
+                        closeAutoConfig();
+                        fillAutoConfigForm();
+                        alert('智能配置完成！');
+                    }, 500);
+                }
+            }
+
+            setTimeout(nextStep, 300);
+        }
+
+        function fillAutoConfigForm() {
+            const selectedTemplate = document.querySelector('input[name="template-select"]:checked').value;
+            const templates = {
+                query: {
+                    name: '数据查询接口服务',
+                    path: '/queryData',
+                    method: 'GET',
+                    requestParams: [
+                        { name: 'pageNum', desc: '页码', type: 'query', required: '否', order: '1' },
+                        { name: 'pageSize', desc: '每页条数', type: 'query', required: '否', order: '2' },
+                        { name: 'keyword', desc: '搜索关键词', type: 'query', required: '否', order: '3' }
+                    ],
+                    responseParams: [
+                        { name: 'code', desc: '状态码' },
+                        { name: 'message', desc: '返回消息' },
+                        { name: 'data.total', desc: '总条数' },
+                        { name: 'data.list', desc: '数据列表' }
+                    ],
+                    errorCodes: [
+                        { code: '200', desc: '成功' },
+                        { code: '400', desc: '参数错误' },
+                        { code: '500', desc: '服务器错误' }
+                    ]
+                },
+                create: {
+                    name: '数据新增接口服务',
+                    path: '/createData',
+                    method: 'POST',
+                    requestParams: [
+                        { name: 'data', desc: '数据对象', type: 'body', required: '是', order: '1' }
+                    ],
+                    responseParams: [
+                        { name: 'code', desc: '状态码' },
+                        { name: 'message', desc: '返回消息' },
+                        { name: 'data.id', desc: '新增数据ID' }
+                    ],
+                    errorCodes: [
+                        { code: '200', desc: '成功' },
+                        { code: '400', desc: '参数错误' },
+                        { code: '500', desc: '服务器错误' }
+                    ]
+                },
+                update: {
+                    name: '数据更新接口服务',
+                    path: '/updateData',
+                    method: 'POST',
+                    requestParams: [
+                        { name: 'id', desc: '数据ID', type: 'body', required: '是', order: '1' },
+                        { name: 'data', desc: '更新数据', type: 'body', required: '是', order: '2' }
+                    ],
+                    responseParams: [
+                        { name: 'code', desc: '状态码' },
+                        { name: 'message', desc: '返回消息' },
+                        { name: 'data.success', desc: '是否成功' }
+                    ],
+                    errorCodes: [
+                        { code: '200', desc: '成功' },
+                        { code: '400', desc: '参数错误' },
+                        { code: '404', desc: '数据不存在' },
+                        { code: '500', desc: '服务器错误' }
+                    ]
+                },
+                delete: {
+                    name: '数据删除接口服务',
+                    path: '/deleteData',
+                    method: 'POST',
+                    requestParams: [
+                        { name: 'id', desc: '数据ID', type: 'body', required: '是', order: '1' }
+                    ],
+                    responseParams: [
+                        { name: 'code', desc: '状态码' },
+                        { name: 'message', desc: '返回消息' },
+                        { name: 'data.success', desc: '是否成功' }
+                    ],
+                    errorCodes: [
+                        { code: '200', desc: '成功' },
+                        { code: '400', desc: '参数错误' },
+                        { code: '404', desc: '数据不存在' },
+                        { code: '500', desc: '服务器错误' }
+                    ]
+                },
+                complex: {
+                    name: '复杂业务接口服务',
+                    path: '/complexBusiness',
+                    method: 'POST',
+                    requestParams: [
+                        { name: 'bizType', desc: '业务类型', type: 'body', required: '是', order: '1' },
+                        { name: 'bizData', desc: '业务数据', type: 'body', required: '是', order: '2' },
+                        { name: 'operator', desc: '操作人', type: 'body', required: '否', order: '3' }
+                    ],
+                    responseParams: [
+                        { name: 'code', desc: '状态码' },
+                        { name: 'message', desc: '返回消息' },
+                        { name: 'data.bizId', desc: '业务ID' },
+                        { name: 'data.status', desc: '业务状态' }
+                    ],
+                    errorCodes: [
+                        { code: '200', desc: '成功' },
+                        { code: '400', desc: '参数错误' },
+                        { code: '401', desc: '未授权' },
+                        { code: '403', desc: '无权限' },
+                        { code: '500', desc: '服务器错误' }
+                    ]
+                }
+            };
+
+            const template = templates[selectedTemplate];
+            if (template) {
+                document.getElementById('service-name').value = template.name;
+                document.getElementById('api-path').value = template.path;
+
+                const methodRadios = document.querySelectorAll('input[name="request-method"]');
+                methodRadios.forEach(radio => {
+                    radio.checked = radio.value === template.method || radio.nextElementSibling.textContent.trim() === template.method;
+                    if (template.method === 'GET' && radio.nextElementSibling.textContent.trim() === 'GET') radio.checked = true;
+                    if (template.method === 'POST' && radio.nextElementSibling.textContent.trim() === 'POST') radio.checked = true;
+                });
+
+                const requestTbody = document.getElementById('requestParamsBody');
+                requestTbody.innerHTML = template.requestParams.map((p, i) => `
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4"><input type="text" value="${p.name}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                        <td class="py-3 px-4"><input type="text" value="${p.desc}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                        <td class="py-3 px-4">
+                            <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                                <option ${p.type === 'body' ? 'selected' : ''}>body</option>
+                                <option ${p.type === 'query' ? 'selected' : ''}>query</option>
+                                <option ${p.type === 'header' ? 'selected' : ''}>header</option>
+                            </select>
+                        </td>
+                        <td class="py-3 px-4">
+                            <select class="w-full border border-gray-200 rounded px-2 py-1 text-xs">
+                                <option ${p.required === '是' ? 'selected' : ''}>是</option>
+                                <option ${p.required === '否' ? 'selected' : ''}>否</option>
+                            </select>
+                        </td>
+                        <td class="py-3 px-4"><input type="text" value="${p.order}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs w-16 mx-auto"></td>
+                        <td class="py-3 px-4"><input type="text" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                        <td class="py-3 px-4 text-[#1c7ffd]">
+                            <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                        </td>
+                    </tr>
+                `).join('');
+
+                const responseTbody = document.getElementById('responseParamsBody');
+                responseTbody.innerHTML = template.responseParams.map(p => `
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4"><input type="text" value="${p.name}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                        <td class="py-3 px-4"><input type="text" value="${p.desc}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                        <td class="py-3 px-4 text-[#1c7ffd]">
+                            <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                        </td>
+                    </tr>
+                `).join('');
+
+                const errorTbody = document.getElementById('errorCodesBody');
+                errorTbody.innerHTML = template.errorCodes.map(e => `
+                    <tr class="border-b border-gray-100">
+                        <td class="py-3 px-4"><input type="text" value="${e.code}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                        <td class="py-3 px-4"><input type="text" value="${e.desc}" class="w-full border border-gray-200 rounded px-2 py-1 text-xs"></td>
+                        <td class="py-3 px-4 text-[#1c7ffd]">
+                            <a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function openSmartConfig() {
+            document.getElementById('smart-config-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('smart-config-drawer').classList.remove('translate-x-full');
+        }
+
+        function closeSmartConfig() {
+            document.getElementById('smart-config-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('smart-config-drawer').classList.add('translate-x-full');
+        }
+
+        function handleSmartConfigKeydown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                generateServiceConfig();
+            }
+        }
+
+        function generateServiceConfig() {
+            const input = document.getElementById('smart-config-input').value;
+            if (!input.trim()) return;
+
+            const messagesDiv = document.getElementById('smart-config-messages');
+            
+            messagesDiv.innerHTML += `
+                <div class="flex items-start gap-3 justify-end">
+                    <div class="max-w-[80%]">
+                        <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm leading-relaxed">
+                            ${input}
+                        </div>
+                    </div>
+                    <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user text-gray-500 text-sm"></i>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('smart-config-input').value = '';
+            
+            messagesDiv.innerHTML += `
+                <div class="flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-full gradient-bg flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-3 text-sm text-[#303133] leading-relaxed">
+                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>正在为您生成服务配置...
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            setTimeout(() => {
+                const lastBotMessage = messagesDiv.querySelectorAll('.bg-gray-100');
+                const lastMsg = lastBotMessage[lastBotMessage.length - 1];
+                lastMsg.innerHTML = `
+                    好的，我已根据您的描述生成了服务配置方案：
+                    <br><br>
+                    <strong>服务名称：</strong>智能生成的服务
+                    <br>
+                    <strong>接口类型：</strong>REST API
+                    <br>
+                    <strong>请求方式：</strong>POST
+                    <br>
+                    <strong>已生成：</strong>请求参数、返回参数、错误代码
+                    <br><br>
+                    是否应用此配置到表单？
+                    <div class="flex gap-2 mt-3">
+                        <button onclick="applySmartConfig()" class="px-3 py-1 bg-[#1c7ffd] text-white rounded text-xs hover:bg-[#1a73e8] transition-colors">应用配置</button>
+                        <button onclick="regenerateConfig()" class="px-3 py-1 border border-gray-300 text-[#606266] rounded text-xs hover:border-[#1c7ffd] hover:text-[#1c7ffd] transition-colors">重新生成</button>
+                    </div>
+                `;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 1500);
+        }
+
+        function applySmartConfig() {
+            fillAutoConfigForm();
+            closeSmartConfig();
+            alert('配置已应用到表单！');
+        }
+
+        function regenerateConfig() {
+            const messagesDiv = document.getElementById('smart-config-messages');
+            messagesDiv.innerHTML += `
+                <div class="flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-full gradient-bg flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-3 text-sm text-[#303133] leading-relaxed">
+                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>正在重新生成...
+                        </div>
+                    </div>
+                </div>
+            `;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            setTimeout(() => {
+                const lastBotMessage = messagesDiv.querySelectorAll('.bg-gray-100');
+                const lastMsg = lastBotMessage[lastBotMessage.length - 1];
+                lastMsg.innerHTML = `
+                    已重新生成配置方案：
+                    <br><br>
+                    <strong>服务名称：</strong>优化版智能服务
+                    <br>
+                    <strong>接口类型：</strong>REST API
+                    <br>
+                    <strong>请求方式：</strong>GET
+                    <br>
+                    <strong>优化点：</strong>增加了分页参数、完善了错误码
+                    <br><br>
+                    是否应用此配置到表单？
+                    <div class="flex gap-2 mt-3">
+                        <button onclick="applySmartConfig()" class="px-3 py-1 bg-[#1c7ffd] text-white rounded text-xs hover:bg-[#1a73e8] transition-colors">应用配置</button>
+                        <button onclick="regenerateConfig()" class="px-3 py-1 border border-gray-300 text-[#606266] rounded text-xs hover:border-[#1c7ffd] hover:text-[#1c7ffd] transition-colors">重新生成</button>
+                    </div>
+                `;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

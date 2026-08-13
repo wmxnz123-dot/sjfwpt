@@ -1,0 +1,30 @@
+{
+  "productName": "智能报销助手",
+  "productType": "ai_enterprise_app",
+  "productForms": [
+    "B端应用",
+    "AI产品",
+    "审批系统"
+  ],
+  "primaryUsers": [
+    "员工",
+    "领导",
+    "财务"
+  ],
+  "annotationMode": "standard",
+  "enabledAnnotationTypes": [
+    "P",
+    "E",
+    "C",
+    "A",
+    "J",
+    "S",
+    "R",
+    "AI",
+    "PERM",
+    "WF",
+    "DATA",
+    "HITL",
+    "FALLBACK"
+  ]
+}
