@@ -201,10 +201,21 @@
     if (keyed) return keyed.getAttribute("data-page-key");
 
     var path = location.pathname.split("/").pop() || "index.html";
-    var exactPath = state.data.pages.find(function (page) { return page.path === path || page.path === location.pathname; });
+    // Cloudflare Pages 等静态托管会启用 Clean URLs（去掉 .html 后缀），
+    // 此处对 path 和 pathname 同时尝试带/不带 .html 的匹配，保证两种 URL 均可命中
+    var pathWithHtml = path.indexOf(".") < 0 ? path + ".html" : path;
+    var pathnameWithHtml = /\.html$/.test(location.pathname) ? location.pathname : location.pathname + ".html";
+
+    var exactPath = state.data.pages.find(function (page) {
+      return page.path === path || page.path === location.pathname
+        || page.path === pathWithHtml || page.path === pathnameWithHtml;
+    });
     if (exactPath) return exactPath.pageKey;
 
-    var exactRoute = state.data.pages.find(function (page) { return page.route === location.pathname || page.route === location.hash; });
+    var exactRoute = state.data.pages.find(function (page) {
+      return page.route === location.pathname || page.route === location.hash
+        || page.route === pathnameWithHtml;
+    });
     if (exactRoute) return exactRoute.pageKey;
 
     return state.data.pages[0] ? state.data.pages[0].pageKey : "P01";
