@@ -16,9 +16,6 @@
         .stat-card { transition: all 0.3s ease; }
         .stat-card:hover { box-shadow: 0 8px 16px rgba(28, 127, 253, 0.1); }
         .ai-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .warning-card { border-left: 4px solid #f56c6c; }
-        .success-card { border-left: 4px solid #67c23a; }
-        .info-card { border-left: 4px solid #409eff; }
         .pulse-animation { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
         .agent-active { border-color: #667eea; background-color: #f3f0ff; }
@@ -78,59 +75,6 @@
                                 <option>市直部门</option>
                                 <option>区县</option>
                             </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-9 h-9 rounded-lg ai-card flex items-center justify-center text-white shrink-0">
-                            <i class="fa-solid fa-brain"></i>
-                        </div>
-                        <div>
-                            <div class="text-[16px] font-bold text-[#303133] leading-tight">AI发现和优化建议</div>
-                            <div class="text-xs text-[#909399] leading-tight mt-1">智能识别问题并给出优先处理方向</div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-5">
-                        <div class="warning-card bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
-                            <div class="flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
-                                    <i class="fa-solid fa-magnifying-glass-chart text-red-500"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-[#303133] mb-1">AI发现：挂接推进薄弱</h4>
-                                    <p class="text-sm text-[#606266] mb-2">市卫健委、市教育局挂接率偏低，仍是整体提升短板</p>
-                                    <button onclick="showDetail('ai-discovery-1')" class="text-[#1c7ffd] text-xs hover:underline">查看详情</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="info-card bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
-                            <div class="flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-                                    <i class="fa-solid fa-lightbulb text-blue-500"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-[#303133] mb-1">AI发现：共享策略待优化</h4>
-                                    <p class="text-sm text-[#606266] mb-2">不予共享目录占比13.9%，集中在少数部门，存在复核空间</p>
-                                    <button onclick="showDetail('ai-discovery-2')" class="text-[#1c7ffd] text-xs hover:underline">查看详情</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="success-card bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
-                            <div class="flex items-start gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center shrink-0">
-                                    <i class="fa-solid fa-wand-magic-sparkles text-green-500"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-[#303133] mb-1">优化建议：优先两步推进</h4>
-                                    <p class="text-sm text-[#606266] mb-2">先补低挂接目录映射，再复核不予共享目录，提升整体质量</p>
-                                    <button onclick="showDetail('ai-advice')" class="text-[#1c7ffd] text-xs hover:underline">查看详情</button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
