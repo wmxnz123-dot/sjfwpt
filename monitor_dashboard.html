@@ -134,172 +134,6 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-5">
-                    <div class="col-span-1 bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
-                        <h3 class="text-[16px] font-bold text-[#303133] mb-4">服务健康度分布</h3>
-                        <div class="flex justify-center">
-                            <div class="relative w-48 h-48">
-                                <canvas id="healthChart"></canvas>
-                                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                    <span class="text-[32px] font-bold text-[#303133]">93.8%</span>
-                                    <span class="text-sm text-[#909399]">健康度</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-6 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-                                    <span class="text-sm text-[#606266]">正常</span>
-                                </div>
-                                <span class="text-sm font-medium text-[#303133]">120 (93.8%)</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
-                                    <span class="text-sm text-[#606266]">警告</span>
-                                </div>
-                                <span class="text-sm font-medium text-[#303133]">5 (3.9%)</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                                    <span class="text-sm text-[#606266]">异常</span>
-                                </div>
-                                <span class="text-sm font-medium text-[#303133]">3 (2.3%)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-span-2 bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-[16px] font-bold text-[#303133]">服务健康度实时监控</h3>
-                            <div class="flex items-center gap-2">
-                                <button class="px-3 py-1.5 bg-green-50 text-green-600 rounded-md text-xs hover:bg-green-100 transition-colors">全部</button>
-                                <button class="px-3 py-1.5 bg-red-50 text-red-600 rounded-md text-xs hover:bg-red-100 transition-colors">异常</button>
-                                <button class="px-3 py-1.5 bg-yellow-50 text-yellow-600 rounded-md text-xs hover:bg-yellow-100 transition-colors">警告</button>
-                            </div>
-                        </div>
-                        <div class="space-y-3 max-h-[300px] overflow-y-auto">
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                    <div>
-                                        <div class="text-sm font-medium text-[#303133]">婚姻状态查询接口</div>
-                                        <div class="text-xs text-[#909399]">市民政局</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-6">
-                                    <div class="text-center">
-                                        <div class="text-sm text-green-600">正常</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-[#303133]">23ms</div>
-                                        <div class="text-xs text-[#909399]">响应时间</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-[#303133]">1,258</div>
-                                        <div class="text-xs text-[#909399]">今日调用</div>
-                                    </div>
-                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                    <div>
-                                        <div class="text-sm font-medium text-[#303133]">人口数据服务接口</div>
-                                        <div class="text-xs text-[#909399]">市公安局</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-6">
-                                    <div class="text-center">
-                                        <div class="text-sm text-green-600">正常</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-[#303133]">18ms</div>
-                                        <div class="text-xs text-[#909399]">响应时间</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-[#303133]">2,896</div>
-                                        <div class="text-xs text-[#909399]">今日调用</div>
-                                    </div>
-                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                                    <div>
-                                        <div class="text-sm font-medium text-[#303133]">健康医疗数据接口</div>
-                                        <div class="text-xs text-[#909399]">市卫健委</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-6">
-                                    <div class="text-center">
-                                        <div class="text-sm text-yellow-600">警告</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-red-500">156ms</div>
-                                        <div class="text-xs text-[#909399]">响应时间</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-[#303133]">875</div>
-                                        <div class="text-xs text-[#909399]">今日调用</div>
-                                    </div>
-                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-2 h-2 bg-red-500 rounded-full"></span>
-                                    <div>
-                                        <div class="text-sm font-medium text-[#303133]">科技项目审批接口</div>
-                                        <div class="text-xs text-[#909399]">市科技局</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-6">
-                                    <div class="text-center">
-                                        <div class="text-sm text-red-600">异常</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-red-500">520ms</div>
-                                        <div class="text-xs text-[#909399]">响应时间</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-[#303133]">189</div>
-                                        <div class="text-xs text-[#909399]">今日调用</div>
-                                    </div>
-                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                    <div>
-                                        <div class="text-sm font-medium text-[#303133]">企业工商登记接口</div>
-                                        <div class="text-xs text-[#909399]">市市场监管局</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-6">
-                                    <div class="text-center">
-                                        <div class="text-sm text-green-600">正常</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-[#303133]">35ms</div>
-                                        <div class="text-xs text-[#909399]">响应时间</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="text-sm text-[#303133]">1,532</div>
-                                        <div class="text-xs text-[#909399]">今日调用</div>
-                                    </div>
-                                    <button class="px-3 py-1 border border-gray-200 text-[#606266] rounded-md text-xs hover:bg-gray-100 transition-colors">查看</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="grid grid-cols-2 gap-5">
                     <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
                         <h3 class="text-[16px] font-bold text-[#303133] mb-4">调用量趋势</h3>
@@ -323,9 +157,9 @@
                         </div>
                     </div>
                     <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
-                        <h3 class="text-[16px] font-bold text-[#303133] mb-4">服务响应时长Top5</h3>
+                        <h3 class="text-[16px] font-bold text-[#303133] mb-4">服务告警量Top5</h3>
                         <div class="h-[220px]">
-                            <canvas id="topResponseTimeChart"></canvas>
+                            <canvas id="topAlertSceneChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -336,29 +170,6 @@
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            const healthCanvas = document.getElementById('healthChart');
-            if (healthCanvas) {
-                const healthCtx = healthCanvas.getContext('2d');
-                new Chart(healthCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['正常', '警告', '异常'],
-                        datasets: [{
-                            data: [120, 5, 3],
-                            backgroundColor: ['#22c55e', '#eab308', '#ef4444'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        cutout: '75%',
-                        animation: { animateScale: true, animateRotate: true }
-                    }
-                });
-            }
-
             const callTrendCanvas = document.getElementById('callTrendChart');
             if (callTrendCanvas) {
                 const callTrendCtx = callTrendCanvas.getContext('2d');
@@ -445,16 +256,16 @@
                 });
             }
 
-            const topResponseTimeCanvas = document.getElementById('topResponseTimeChart');
-            if (topResponseTimeCanvas) {
-                const topResponseTimeCtx = topResponseTimeCanvas.getContext('2d');
-                new Chart(topResponseTimeCtx, {
+            const topAlertSceneCanvas = document.getElementById('topAlertSceneChart');
+            if (topAlertSceneCanvas) {
+                const topAlertSceneCtx = topAlertSceneCanvas.getContext('2d');
+                new Chart(topAlertSceneCtx, {
                     type: 'bar',
                     data: {
-                        labels: ['科技项目审批', '健康医疗数据', '财政资金查询', '企业工商登记', '人口数据服务'],
+                        labels: ['科技项目审批接口', '健康医疗数据接口', '财政资金查询接口', '企业工商登记接口', '人口数据服务接口'],
                         datasets: [{
-                            label: '响应时长(ms)',
-                            data: [520, 156, 85, 35, 18],
+                            label: '告警次数(次)',
+                            data: [38, 25, 18, 12, 8],
                             backgroundColor: '#f56c6c',
                             borderRadius: 4
                         }]
@@ -471,21 +282,6 @@
                 });
             }
         });
-
-        function showMonitorDetail(type) {
-            let title = '', content = '';
-            if (type === 'slow') {
-                title = '慢接口预警详情';
-                content = '科技项目审批接口 P99 520ms，较近7日基线提升约3.2倍。\n建议优先检查下游依赖与线程池/连接池水位，并结合链路诊断确认瓶颈位置。';
-            } else if (type === 'health') {
-                title = '整体健康度详情';
-                content = '服务总数128：正常120、警告5、异常3。\n当前整体健康度93.8%，建议优先处置异常服务并关注告警集中度。';
-            } else if (type === 'alert') {
-                title = '告警聚合建议详情';
-                content = '今日告警15条，存在同一故障域集中触发的特征。\n建议先按服务/节点聚合去噪，定位根告警后再派单处置。';
-            }
-            alert(`${title}\n\n${content}`);
-        }
 
     </script>
     <!-- 通用页面标注工具栏（自动注入，每页可复用） -->

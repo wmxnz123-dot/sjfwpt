@@ -53,21 +53,16 @@
         <main class="flex-1 flex flex-col overflow-hidden bg-[#f0f2f5]">
             <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
             
-            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+            <div id="stat-scroll-container" class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
                 <div class="flex items-center justify-between mb-2">
                     <div>
                         <h1 class="text-xl font-bold text-[#303133]">统计看板</h1>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
-                            <span class="text-[#909399] text-sm">时间范围：</span>
-                            <select class="text-sm text-[#303133] outline-none">
-                                <option>本月</option>
-                                <option>上月</option>
-                                <option>本季度</option>
-                                <option>本年度</option>
-                            </select>
-                        </div>
+                </div>
+
+                <div id="section-catalog" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-[16px] font-bold text-[#303133]">数据目录统计</h2>
                         <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
                             <span class="text-[#909399] text-sm">统计维度：</span>
                             <select class="text-sm text-[#303133] outline-none">
@@ -75,15 +70,6 @@
                                 <option>市直部门</option>
                                 <option>区县</option>
                             </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="section-catalog" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-[16px] font-bold text-[#303133]">数据目录统计</h2>
-                        <div class="flex items-center gap-2">
-                            <button class="px-3 py-1.5 bg-blue-50 text-[#1c7ffd] rounded-lg text-xs hover:bg-blue-100 transition-colors">查看详情</button>
                         </div>
                     </div>
 
@@ -114,7 +100,7 @@
 
                         <div class="stat-card bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-5">
                             <div class="flex items-center justify-between mb-3">
-                                <span class="text-[#909399] text-sm">资源挂接率</span>
+                                <span class="text-[#909399] text-sm">服务挂载率</span>
                                 <i class="fa-solid fa-percent text-[#e6a23c] opacity-50"></i>
                             </div>
                             <div class="text-[32px] font-bold text-[#303133] mb-1">71.2%</div>
@@ -190,7 +176,10 @@
                     </div>
 
                     <div class="mt-6">
-                        <h3 class="text-[14px] font-medium text-[#606266] mb-4">各部门数据目录情况</h3>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-[14px] font-medium text-[#606266]">各部门数据目录情况</h3>
+                            <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                        </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-[13px] border-collapse">
                                 <thead class="bg-gray-50 text-[#606266]">
@@ -259,19 +248,12 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="flex items-center justify-center mt-4 gap-2">
-                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled><i class="fa-solid fa-chevron-left"></i></button>
-                            <button class="px-3 py-1.5 bg-[#1c7ffd] text-white rounded-lg text-xs hover:bg-[#1a73e8] transition-colors">1</button>
-                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors">2</button>
-                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors">3</button>
-                            <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors"><i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
                     </div>
                 </div>
 
                 <div id="section-resource" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-[16px] font-bold text-[#303133]">数据资源统计</h2>
+                        <h2 class="text-[16px] font-bold text-[#303133]">服务统计</h2>
                         <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
                             <span class="text-[#909399] text-sm">统计范围：</span>
                             <select class="text-sm text-[#303133] outline-none bg-transparent">
@@ -284,7 +266,7 @@
 
                     <div class="grid grid-cols-4 gap-4 mb-8">
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">数据资源总数</div>
+                            <div class="text-[#606266] text-sm mb-2">服务总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">12,580</div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1,350</span></span>
@@ -292,7 +274,7 @@
                             </div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">接口资源总数</div>
+                            <div class="text-[#606266] text-sm mb-2">接口服务总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">1,580</div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">180</span></span>
@@ -300,7 +282,7 @@
                             </div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">库表资源总数</div>
+                            <div class="text-[#606266] text-sm mb-2">库表服务总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">8,240</div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">850</span></span>
@@ -308,7 +290,7 @@
                             </div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">文件资源总数</div>
+                            <div class="text-[#606266] text-sm mb-2">文件服务总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">2,150</div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">210</span></span>
@@ -317,39 +299,36 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-6 mb-8">
+                    <div class="grid grid-cols-2 gap-6 mb-8">
                         <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">资源类型分布</h3>
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">服务数月度趋势</h3>
+                            <div class="h-[220px]">
+                                <canvas id="serviceTrendChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 rounded-lg p-4">
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">服务类型分布</h3>
                             <div class="h-[220px]">
                                 <canvas id="resourceTypeChart"></canvas>
                             </div>
                         </div>
-                        <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">共享类型分布</h3>
-                            <div class="h-[220px]">
-                                <canvas id="resourceShareChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">开放类型分布</h3>
-                            <div class="h-[220px]">
-                                <canvas id="resourceOpenChart"></canvas>
-                            </div>
-                        </div>
                     </div>
 
-                    <h3 class="text-[15px] font-bold text-[#303133] mb-4">各省直部门/各地市数据资源情况</h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-[15px] font-bold text-[#303133]">各地市服务注册情况</h3>
+                        <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-[13px] border-collapse text-center">
                             <thead class="bg-gray-50 text-[#606266]">
                                 <tr>
-                                    <th class="py-3 px-4 font-medium text-left">部门/地市名称</th>
-                                    <th class="py-3 px-4 font-medium">资源总数</th>
-                                    <th class="py-3 px-4 font-medium">库表资源数</th>
-                                    <th class="py-3 px-4 font-medium">文件资源数</th>
-                                    <th class="py-3 px-4 font-medium">接口资源数</th>
-                                    <th class="py-3 px-4 font-medium">文件夹资源数</th>
-                                    <th class="py-3 px-4 font-medium">链接资源数</th>
+                                    <th class="py-3 px-4 font-medium text-left">地市名称</th>
+                                    <th class="py-3 px-4 font-medium">服务总数</th>
+                                    <th class="py-3 px-4 font-medium">库表服务数</th>
+                                    <th class="py-3 px-4 font-medium">文件服务数</th>
+                                    <th class="py-3 px-4 font-medium">接口服务数</th>
+                                    <th class="py-3 px-4 font-medium">文件夹服务数</th>
+                                    <th class="py-3 px-4 font-medium">链接服务数</th>
                                     <th class="py-3 px-4 font-medium">操作</th>
                                 </tr>
                             </thead>
@@ -387,12 +366,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="flex items-center justify-center mt-4 gap-2">
-                        <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled><i class="fa-solid fa-chevron-left"></i></button>
-                        <button class="px-3 py-1.5 bg-[#1c7ffd] text-white rounded-lg text-xs hover:bg-[#1a73e8] transition-colors">1</button>
-                        <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors">2</button>
-                        <button class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-[#606266] hover:bg-gray-50 transition-colors"><i class="fa-solid fa-chevron-right"></i></button>
-                    </div>
                 </div>
 
                 <div id="section-usage" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
@@ -408,9 +381,9 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-5 gap-4 mb-8">
+                    <div class="grid grid-cols-4 gap-4 mb-8">
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">资源申请总数</div>
+                            <div class="text-[#606266] text-sm mb-2">服务使用总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">3,450</div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">420</span></span>
@@ -418,15 +391,15 @@
                             </div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">资源申请率</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">27.4%</div>
+                            <div class="text-[#606266] text-sm mb-2">接口使用数量</div>
+                            <div class="text-2xl font-bold text-[#303133] mb-2">8.9亿</div>
                             <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">通过占比：<span class="text-[#303133] font-medium">85.6%</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 2.1%</span></span>
+                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">0.8亿</span></span>
+                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.3%</span></span>
                             </div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">库表交换总量</div>
+                            <div class="text-[#606266] text-sm mb-2">库表使用数量</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">12.5亿</div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1.2亿</span></span>
@@ -434,33 +407,25 @@
                             </div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">文件交换总量</div>
+                            <div class="text-[#606266] text-sm mb-2">文件使用数量</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">56.8万</div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">5.2万</span></span>
                                 <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.9%</span></span>
                             </div>
                         </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">接口调用总数</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">8.9亿</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">0.8亿</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.3%</span></span>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="grid grid-cols-3 gap-6 mb-8">
                         <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">申请资源类型分布</h3>
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">服务类型分布</h3>
                             <div class="h-[220px]">
                                 <canvas id="usageResourceTypeChart"></canvas>
                             </div>
                         </div>
                         <div class="border border-gray-100 rounded-lg p-4 col-span-2">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-[14px] font-medium text-[#606266]">接口调用/库表交换趋势</h3>
+                                <h3 class="text-[14px] font-medium text-[#606266]">接口调用/库表交换/文件使用趋势</h3>
                                 <div class="flex gap-2 text-xs">
                                     <button class="px-2 py-1 bg-blue-50 text-[#1c7ffd] rounded">近7天</button>
                                     <button class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">近30天</button>
@@ -630,6 +595,25 @@
                     </div>
                 </div>
             </div>
+
+            <nav class="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3 bg-white/80 backdrop-blur rounded-xl shadow-md px-2 py-3 border border-gray-200">
+                <a href="#section-catalog" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-catalog">
+                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
+                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据目录统计</span>
+                </a>
+                <a href="#section-resource" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-resource">
+                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
+                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">服务统计</span>
+                </a>
+                <a href="#section-usage" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-usage">
+                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
+                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据使用统计</span>
+                </a>
+                <a href="#section-objection" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-objection">
+                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
+                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据异议统计</span>
+                </a>
+            </nav>
         </main>
     </div>
 
@@ -910,7 +894,7 @@
             } else if (question.includes('共享') || question.includes('开放')) {
                 return '当前无条件共享目录4,580个（36.4%），有条件共享6,250个（49.7%），不予共享1,750个（13.9%）。建议对不予共享目录进行复核，挖掘共享潜力。';
             } else {
-                return '当前数据目录总数<b>12,580</b>个，已挂接8,960个，挂接率71.2%。资源申请总数3,450件，通过率85.6%。如需更详细的分析，请提供具体的数据维度。';
+                return '当前数据目录总数<b>12,580</b>个，已挂接8,960个，挂接率71.2%。服务使用总数3,450件。如需更详细的分析，请提供具体的数据维度。';
             }
         }
 
@@ -1162,36 +1146,45 @@
             });
 
             // 数据资源统计相关图表
+            new Chart(document.getElementById('serviceTrendChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    datasets: [{
+                        label: '服务总数',
+                        data: [8500, 8900, 9200, 9800, 10500, 11200, 11800, 12580, null, null, null, null],
+                        borderColor: '#1c7ffd',
+                        backgroundColor: 'rgba(28, 127, 253, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 15 } } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
             new Chart(document.getElementById('resourceTypeChart').getContext('2d'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['库表', '文件', '接口', '文件夹', '链接'],
-                    datasets: [{ data: [8240, 2150, 1580, 420, 190], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c', '#f56c6c', '#7a6df4'], borderWidth: 0 }]
+                    labels: ['库表', '文件', '接口'],
+                    datasets: [{ data: [8240, 2150, 1580], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c'], borderWidth: 0 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
-            });
-            new Chart(document.getElementById('resourceShareChart').getContext('2d'), {
-                type: 'pie',
-                data: {
-                    labels: ['无条件共享', '有条件共享', '不予共享'],
-                    datasets: [{ data: [4580, 6250, 1750], backgroundColor: ['#36c2aa', '#1c7ffd', '#e6a23c'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 10 } } } }
-            });
-            new Chart(document.getElementById('resourceOpenChart').getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['可对社会开放', '部分对社会开放', '不可对社会开放'],
-                    datasets: [{ data: [5230, 3890, 3460], backgroundColor: ['#1c7ffd', '#e6a23c', '#f56c6c'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
             });
 
             new Chart(document.getElementById('usageResourceTypeChart').getContext('2d'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['库表', '接口', '文件', '文件夹', '链接'],
-                    datasets: [{ data: [1620, 980, 620, 160, 70], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c', '#f56c6c', '#7a6df4'], borderWidth: 0 }]
+                    labels: ['库表', '接口', '文件'],
+                    datasets: [{ data: [1620, 980, 620], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c'], borderWidth: 0 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
             });
@@ -1212,10 +1205,20 @@
                             pointHoverRadius: 6
                         },
                         {
-                            label: '库表交换量（万条）',
+                            label: '库表使用量（万条）',
                             data: [1050, 980, 1120, 1200, 1280, 1160, 1350],
                             borderColor: '#36c2aa',
                             backgroundColor: 'rgba(54, 194, 170, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: '文件使用量（万份）',
+                            data: [320, 380, 350, 420, 460, 390, 450],
+                            borderColor: '#e6a23c',
+                            backgroundColor: 'rgba(230, 162, 60, 0.1)',
                             fill: true,
                             tension: 0.4,
                             pointRadius: 4,
@@ -1285,6 +1288,53 @@
         function closeResourceDetailModal() {
             document.getElementById('resourceDetailModal').classList.add('hidden');
         }
+
+        // 右侧路径导航 - 滚动监听高亮
+        const navItems = document.querySelectorAll('.nav-item');
+        const navDots = document.querySelectorAll('.nav-dot');
+        const navLabels = document.querySelectorAll('.nav-label');
+        const scrollContainer = document.getElementById('stat-scroll-container');
+        const sections = ['section-catalog', 'section-resource', 'section-usage', 'section-objection'].map(id => document.getElementById(id));
+
+        function updateActiveNav() {
+            const scrollTop = scrollContainer ? scrollContainer.scrollTop : (window.scrollY || document.documentElement.scrollTop);
+            let activeIndex = 0;
+            sections.forEach((sec, i) => {
+                if (sec && sec.offsetTop - 120 <= scrollTop) activeIndex = i;
+            });
+            navItems.forEach((item, i) => {
+                const dot = item.querySelector('.nav-dot');
+                const label = item.querySelector('.nav-label');
+                if (i === activeIndex) {
+                    dot.classList.remove('bg-gray-300');
+                    dot.classList.add('bg-[#1c7ffd]', 'w-3', 'h-3');
+                    label.classList.remove('text-gray-500');
+                    label.classList.add('text-[#1c7ffd]', 'font-medium');
+                } else {
+                    dot.classList.add('bg-gray-300');
+                    dot.classList.remove('bg-[#1c7ffd]', 'w-3', 'h-3');
+                    label.classList.add('text-gray-500');
+                    label.classList.remove('text-[#1c7ffd]', 'font-medium');
+                }
+            });
+        }
+
+        // 点击导航项平滑滚动
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+                if (target && scrollContainer) {
+                    scrollContainer.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+                }
+            });
+        });
+
+        if (scrollContainer) {
+            scrollContainer.addEventListener('scroll', updateActiveNav);
+        }
+        updateActiveNav();
     </script>
     <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
 
