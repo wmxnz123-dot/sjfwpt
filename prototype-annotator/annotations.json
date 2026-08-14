@@ -13947,16 +13947,16 @@
       "id": "ANN-P19-AUDIT-01",
       "pageKey": "P19",
       "target": {
-        "selector": "#info-scene",
-        "fallbackText": "需求场景：协同",
+        "selector": "#smart-audit-drawer",
+        "fallbackText": "智能审核",
         "strategy": "id",
         "boundsHint": {
-          "text": "需求场景：协同",
+          "text": "智能审核",
           "tag": "div"
         }
       },
-      "title": "场景明确性审核要点",
-      "contentMarkdown": "### 审核要点\n\n需求场景必须明确具体，不能使用模糊的描述。\n\n### 错误样例\n\n- 数据比对\n- 数据分析\n\n这些描述过于笼统，无法明确应用场景。\n\n### 正确样例\n\n- 退役军人事务局退役军人优抚补贴核验\n- 应用于县级节点校验残疾学生教育资助补贴\n\n### 审核标准\n\n- 场景描述应包含具体的应用部门、应用对象和应用目的。\n- 不能使用\"数据比对\"、\"数据分析\"等模糊词汇。\n- 场景应与实际业务需求匹配。",
+      "title": "智能审核逻辑与标准",
+      "contentMarkdown": "### 智能审核逻辑\n\n智能审核基于以下4个维度对需求进行自动分析，任一维度不通过即可驳回：\n\n1. **场景明确性** —— 需求场景必须明确具体，不能使用模糊描述。\n2. **系统名称规范性** —— 系统名称应规范，不能使用明显非系统名称的内容。\n3. **附件完整性** —— 附件应为标准模板，且内容不能为空，需要签字盖章。\n4. **申请依据有效性** —— 申请依据需明确法律条文或者省市下发的重要通知。\n\n---\n\n### 一、场景明确性审核要点\n\n**错误样例**\n- 数据比对\n- 数据分析\n\n这些描述过于笼统，无法明确应用场景。\n\n**正确样例**\n- 退役军人事务局退役军人优抚补贴核验\n- 应用于县级节点校验残疾学生教育资助补贴\n\n**审核标准**\n- 场景描述应包含具体的应用部门、应用对象和应用目的。\n- 不能使用\"数据比对\"、\"数据分析\"等模糊词汇。\n- 场景应与实际业务需求匹配。\n\n---\n\n### 二、系统名称审核要点\n\n**错误样例**\n- 测试\n- 1\n- 其他明显非系统名称的内容\n\n**审核标准**\n- 系统名称应为正式的系统名称或服务名称。\n- 不能使用测试数据、数字等无意义内容。\n- 名称应能反映系统或服务的实际功能。\n\n---\n\n### 三、附件审核要点\n\n**驳回情形**\n1. 附件非标准模板，格式不符合要求。\n2. 附件内容为空，未填写必要信息。\n3. 附件未签字盖章。\n\n**审核标准**\n- 附件必须使用平台下发的标准模板。\n- 附件内容应完整填写，不得为空。\n- 附件必须有申请人签字和单位盖章。\n- 附件内容应与申请信息一致。\n\n---\n\n### 四、申请依据审核要点\n\n**驳回情形**\n1. 申请依据未填写。\n2. 申请依据为模糊描述，未引用具体法律条文。\n3. 申请依据与实际需求不符。\n\n**审核标准**\n- 申请依据应明确引用法律条文（如《XX法第X条》）。\n- 或引用省市下发的重要通知（如《XX省关于XX的通知》文号）。\n- 申请依据应与申请的数据资源、应用场景匹配。",
       "devNotesMarkdown": null,
       "audienceMode": "product-review",
       "annotationType": "C",
@@ -13989,159 +13989,9 @@
         "status": "approved",
         "reason": "manual-audit-standard"
       },
-      "updatedAt": "2026-08-13T09:31:36Z",
+      "updatedAt": "2026-08-14T00:00:00Z",
       "order": 1,
-      "surfaceId": "surface-P19-accept-drawer"
-    },
-    {
-      "id": "ANN-P19-AUDIT-02",
-      "pageKey": "P19",
-      "target": {
-        "selector": "#info-service",
-        "fallbackText": "需求服务：行政复议被申请人信息",
-        "strategy": "id",
-        "boundsHint": {
-          "text": "需求服务：行政复议被申请人信息",
-          "tag": "div"
-        }
-      },
-      "title": "系统名称审核要点",
-      "contentMarkdown": "### 审核要点\n\n系统名称应规范，不能使用明显非系统名称的内容。\n\n### 错误样例\n\n- 测试\n- 1\n- 其他明显非系统名称的内容\n\n### 审核标准\n\n- 系统名称应为正式的系统名称或服务名称。\n- 不能使用测试数据、数字等无意义内容。\n- 名称应能反映系统或服务的实际功能。",
-      "devNotesMarkdown": null,
-      "audienceMode": "product-review",
-      "annotationType": "C",
-      "kind": "note",
-      "topics": [
-        "audit",
-        "business",
-        "standard"
-      ],
-      "dimension": "Audit standard",
-      "priority": "high",
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "智能审核标准"
-      },
-      "evidence": [],
-      "nextActions": [],
-      "dependencies": [],
-      "risks": [],
-      "openQuestions": [],
-      "candidateId": null,
-      "selectorQuality": {
-        "level": "stable",
-        "issues": []
-      },
-      "createdBy": "manual",
-      "review": {
-        "required": false,
-        "status": "approved",
-        "reason": "manual-audit-standard"
-      },
-      "updatedAt": "2026-08-13T09:31:36Z",
-      "order": 2,
-      "surfaceId": "surface-P19-accept-drawer"
-    },
-    {
-      "id": "ANN-P19-AUDIT-03",
-      "pageKey": "P19",
-      "target": {
-        "selector": "#smart-audit-tip",
-        "fallbackText": "智能审核提示条",
-        "strategy": "id",
-        "boundsHint": {
-          "text": "智能审核提示条",
-          "tag": "div"
-        }
-      },
-      "title": "附件审核要点",
-      "contentMarkdown": "### 审核要点\n\n附件应为标准模板，且内容不能为空，需要签字盖章。\n\n### 驳回情形\n\n1. 附件非标准模板，格式不符合要求。\n2. 附件内容为空，未填写必要信息。\n3. 附件未签字盖章。\n\n### 审核标准\n\n- 附件必须使用平台下发的标准模板。\n- 附件内容应完整填写，不得为空。\n- 附件必须有申请人签字和单位盖章。\n- 附件内容应与申请信息一致。",
-      "devNotesMarkdown": null,
-      "audienceMode": "product-review",
-      "annotationType": "C",
-      "kind": "note",
-      "topics": [
-        "audit",
-        "business",
-        "standard"
-      ],
-      "dimension": "Audit standard",
-      "priority": "high",
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "智能审核标准"
-      },
-      "evidence": [],
-      "nextActions": [],
-      "dependencies": [],
-      "risks": [],
-      "openQuestions": [],
-      "candidateId": null,
-      "selectorQuality": {
-        "level": "stable",
-        "issues": []
-      },
-      "createdBy": "manual",
-      "review": {
-        "required": false,
-        "status": "approved",
-        "reason": "manual-audit-standard"
-      },
-      "updatedAt": "2026-08-13T09:31:36Z",
-      "order": 3,
-      "surfaceId": "surface-P19-accept-drawer"
-    },
-    {
-      "id": "ANN-P19-AUDIT-04",
-      "pageKey": "P19",
-      "target": {
-        "selector": "#info-catalog",
-        "fallbackText": "需求目录：行政复议被申请人信息",
-        "strategy": "id",
-        "boundsHint": {
-          "text": "需求目录：行政复议被申请人信息",
-          "tag": "div"
-        }
-      },
-      "title": "申请依据审核要点",
-      "contentMarkdown": "### 审核要点\n\n申请依据需明确法律条文或者省市下发的重要通知。\n\n### 驳回情形\n\n1. 申请依据未填写。\n2. 申请依据为模糊描述，未引用具体法律条文。\n3. 申请依据与实际需求不符。\n\n### 审核标准\n\n- 申请依据应明确引用法律条文（如《XX法第X条》）。\n- 或引用省市下发的重要通知（如《XX省关于XX的通知》文号）。\n- 申请依据应与申请的数据资源、应用场景匹配。",
-      "devNotesMarkdown": null,
-      "audienceMode": "product-review",
-      "annotationType": "C",
-      "kind": "note",
-      "topics": [
-        "audit",
-        "business",
-        "standard"
-      ],
-      "dimension": "Audit standard",
-      "priority": "high",
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "智能审核标准"
-      },
-      "evidence": [],
-      "nextActions": [],
-      "dependencies": [],
-      "risks": [],
-      "openQuestions": [],
-      "candidateId": null,
-      "selectorQuality": {
-        "level": "stable",
-        "issues": []
-      },
-      "createdBy": "manual",
-      "review": {
-        "required": false,
-        "status": "approved",
-        "reason": "manual-audit-standard"
-      },
-      "updatedAt": "2026-08-13T09:31:36Z",
-      "order": 4,
-      "surfaceId": "surface-P19-accept-drawer"
+      "surfaceId": "surface-P19-smart-audit-drawer"
     }
   ],
   "project": {

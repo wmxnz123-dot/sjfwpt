@@ -257,102 +257,161 @@
     </div>
 
     <div id="accept-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeAcceptDrawer()"></div>
-    <div id="accept-drawer" class="fixed top-0 right-0 bottom-0 w-[800px] bg-white z-[90] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="h-14 flex items-center justify-between px-5 border-b border-gray-100 shrink-0">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                    <i class="fa-solid fa-file-signature text-[#1c7ffd] text-xl"></i>
-                </div>
-                <div>
-                    <h3 class="font-semibold text-base text-[#303133]">需求受理</h3>
-                </div>
-            </div>
+    <div id="accept-drawer" class="fixed top-0 right-0 bottom-0 w-[860px] bg-white z-[90] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="h-14 flex items-center justify-between px-6 shrink-0">
+            <h3 class="font-semibold text-base text-[#303133]">需求详情</h3>
             <button onclick="closeAcceptDrawer()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
 
         <div class="flex-1 overflow-y-auto">
-            <div id="smart-audit-tip" class="mx-5 mt-4 p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div id="smart-audit-icon" class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                        <i class="fa-solid fa-spinner fa-spin text-green-500 text-sm"></i>
-                    </div>
-                    <div>
-                        <span id="smart-audit-status" class="text-sm font-medium text-green-700">正在智能审核中...</span>
-                        <p id="smart-audit-desc" class="text-xs text-green-600 mt-0.5">AI正在分析需求数据，请稍候</p>
-                    </div>
-                </div>
-                <button id="smart-audit-view-btn" onclick="openSmartAudit()" class="text-sm text-green-600 hover:text-green-700 font-medium">
-                    查看 <i class="fa-solid fa-chevron-right text-xs"></i>
-                </button>
-            </div>
-
-            <div class="px-5 py-4">
-                <div class="font-medium text-[#303133] mb-4">需求基本信息</div>
-                <div class="space-y-3">
-                    <div class="flex items-center">
-                        <span class="w-[180px] text-right text-[#606266]">需求场景：</span>
-                        <span id="info-scene" class="ml-4 flex-1 text-[#303133]">协同</span>
-                        <span class="w-[180px] text-right text-[#606266]">需求类型：</span>
-                        <span id="info-type" class="ml-4 text-[#303133]">申请</span>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="w-[180px] text-right text-[#606266]">需求目录：</span>
-                        <span id="info-catalog" class="ml-4 flex-1 text-[#303133]">行政复议被申请人信息</span>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="w-[180px] text-right text-[#606266]">需求服务：</span>
-                        <span id="info-service" class="ml-4 flex-1 text-[#303133]">行政复议被申请人信息</span>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="w-[180px] text-right text-[#606266]">数据需求单位：</span>
-                        <span id="info-demand-dept" class="ml-4 flex-1 text-[#303133]">人民检察院</span>
-                        <span class="w-[180px] text-right text-[#606266]">数据提供单位：</span>
-                        <span id="info-supply-dept" class="ml-4 text-[#303133]">大数据局</span>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="w-[180px] text-right text-[#606266]">是否数据运营需求：</span>
-                        <span id="info-is-operation" class="ml-4 text-[#303133]">否</span>
-                        <span class="w-[180px] text-right text-[#606266]">创建时间：</span>
-                        <span id="info-create-time" class="ml-4 text-[#303133]">2026-04-19 15:38:45</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="px-5 py-4 border-t border-gray-100">
-                <div class="font-medium text-[#303133] mb-4">需求描述</div>
-                <div class="text-[#606266] text-sm leading-relaxed">
-                    为满足行政复议工作需要，申请查询行政复议被申请人相关信息，用于行政复议案件办理过程中的被申请人身份核实、资料调取等工作。
-                    数据使用范围仅限于本单位行政复议业务办理，严格按照相关规定进行数据安全管理，确保数据不被泄露、滥用。
-                </div>
-            </div>
-
-            <div class="px-5 py-4 border-t border-gray-100">
-                <div class="font-medium text-[#303133] mb-4">申请依据</div>
-                <div id="demand-apply-basis" class="text-[#606266] text-sm leading-relaxed">
-                    依据《中华人民共和国行政复议法》第二十三条，申请人因行政复议案件办理需要，可向相关行政机关申请查询与案件相关的信息。
-                </div>
-            </div>
-
-            <div class="px-5 py-4 border-t border-gray-100">
-                <div class="font-medium text-[#303133] mb-4">附件材料</div>
-                <div id="demand-attachments" class="space-y-2">
-                    <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-file-pdf text-red-500"></i>
-                            <span class="text-[#303133] text-sm">数据需求申请表.pdf</span>
+            <!-- 顶部信息区 -->
+            <div class="px-6 py-4 border-b border-gray-100">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-folder-open text-[#1c7ffd] text-xl"></i>
                         </div>
-                        <a href="#" class="text-sm text-[#1c7ffd] hover:underline">下载</a>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-base font-medium text-[#303133]">需求目录：</span>
+                                <span id="info-catalog" class="text-base font-medium text-[#1c7ffd]">行政复议被申请人信息</span>
+                                <span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded">申请</span>
+                            </div>
+                            <div class="text-sm text-[#606266]">需求单位：<span id="info-demand-dept" class="text-[#303133]">人民检察院</span></div>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="flex items-center gap-1.5 text-sm text-[#606266] mb-1">
+                            <span class="w-2 h-2 rounded-full bg-blue-500 inline-block"></span>
+                            <span>市大数据局审核中</span>
+                        </div>
+                        <div class="text-sm text-[#909399]">创建时间：<span id="info-create-time">2026-04-19 15:38:45</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 智能审核提示 -->
+            <div class="px-6 py-3">
+                <div id="smart-audit-tip" class="p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div id="smart-audit-icon" class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                            <i class="fa-solid fa-spinner fa-spin text-green-500 text-sm"></i>
+                        </div>
+                        <div>
+                            <span id="smart-audit-status" class="text-sm font-medium text-green-700">正在智能审核中...</span>
+                            <p id="smart-audit-desc" class="text-xs text-green-600 mt-0.5">AI正在分析需求数据，请稍候</p>
+                        </div>
+                    </div>
+                    <button id="smart-audit-view-btn" onclick="openSmartAudit()" class="text-sm text-green-600 hover:text-green-700 font-medium">
+                        查看 <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab栏 -->
+            <div class="px-6 border-b border-gray-100">
+                <div class="flex gap-6">
+                    <div id="accept-tab-basic" class="py-3 text-sm font-medium text-[#1c7ffd] border-b-2 border-[#1c7ffd] cursor-pointer" onclick="switchAcceptTab('basic')">基本信息</div>
+                    <div id="accept-tab-record" class="py-3 text-sm text-[#606266] hover:text-[#1c7ffd] cursor-pointer" onclick="switchAcceptTab('record')">审批记录</div>
+                </div>
+            </div>
+
+            <!-- Tab内容 -->
+            <div class="px-6 py-5">
+                <!-- 基本信息 -->
+                <div id="accept-panel-basic">
+                    <div class="border border-gray-100 rounded-lg p-5 mb-5">
+                        <div class="font-medium text-[#303133] mb-5">基本信息</div>
+                        <div class="space-y-4">
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">需求场景：</span>
+                                <span id="info-scene" class="ml-4 flex-1 text-[#303133] text-sm">协同</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">申请依据：</span>
+                                <span id="info-basis" class="ml-4 flex-1 text-[#303133] text-sm">协同</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">用数系统名称：</span>
+                                <span id="info-system" class="ml-4 flex-1 text-[#303133] text-sm">协同</span>
+                                <span class="w-32 text-right text-[#606266] text-sm ml-8">使用范围：</span>
+                                <span id="info-scope" class="ml-4 text-[#303133] text-sm">行政依据</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">使用期限：</span>
+                                <span id="info-duration" class="ml-4 flex-1 text-[#303133] text-sm">1000天</span>
+                                <span class="w-32 text-right text-[#606266] text-sm ml-8">需求单位：</span>
+                                <span id="info-demand-dept-2" class="ml-4 text-[#303133] text-sm">人民检察院</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">联系人：</span>
+                                <span id="info-contact" class="ml-4 flex-1 text-[#303133] text-sm">市检察院</span>
+                                <span class="w-32 text-right text-[#606266] text-sm ml-8">联系电话：</span>
+                                <span id="info-phone" class="ml-4 text-[#303133] text-sm">15090098567</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">联系邮箱：</span>
+                                <span id="info-email" class="ml-4 flex-1 text-[#303133] text-sm">15090098567@qq.com</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">附件：</span>
+                                <span class="ml-4 flex-1">
+                                    <a href="#" class="text-[#1c7ffd] text-sm hover:underline">说明.pdf</a>
+                                </span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">是否数据运营需求：</span>
+                                <span id="info-is-operation" class="ml-4 text-[#303133] text-sm">否</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-100 rounded-lg p-5">
+                        <div class="font-medium text-[#303133] mb-5">需求服务信息</div>
+                        <div class="space-y-4">
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">需求目录：</span>
+                                <span id="info-catalog-2" class="ml-4 text-[#1c7ffd] text-sm">行政复议被申请人信息</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">需求服务：</span>
+                                <span id="info-service" class="ml-4 flex-1 text-[#303133] text-sm">行政复议被申请人信息</span>
+                            </div>
+                            <div class="flex">
+                                <span class="w-32 text-right text-[#606266] text-sm">数据提供单位：</span>
+                                <span id="info-supply-dept" class="ml-4 text-[#303133] text-sm">市大数据局</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 审批记录 -->
+                <div id="accept-panel-record" class="hidden">
+                    <div class="relative pl-6">
+                        <div class="absolute left-2 top-2 bottom-2 w-px bg-gray-200"></div>
+                        <div class="space-y-5">
+                            <div class="relative">
+                                <div class="absolute -left-5 top-1.5 w-3 h-3 rounded-full bg-green-500 border-2 border-white"></div>
+                                <div class="text-sm text-[#303133] font-medium">提交申请</div>
+                                <div class="text-xs text-[#909399] mt-0.5">2026-04-19 15:38:45 · 人民检察院</div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-5 top-1.5 w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></div>
+                                <div class="text-sm text-[#303133] font-medium">市大数据局审核中</div>
+                                <div class="text-xs text-[#909399] mt-0.5">2026-04-19 16:00:00 · 市大数据局</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-end shrink-0 bg-white">
+        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-end shrink-0 bg-white">
             <div class="flex items-center gap-3">
                 <button onclick="closeAcceptDrawer()" class="px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
-                    拒绝
+                    退回
                 </button>
                 <button class="px-5 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors">
                     通过
@@ -390,7 +449,7 @@
             <div class="flex-1 space-y-4">
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">需求完整性检查</span>
+                        <span class="text-sm text-[#606266]">场景明确性检查</span>
                         <span id="step-1-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -399,7 +458,7 @@
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">供需匹配度分析</span>
+                        <span class="text-sm text-[#606266]">系统名称规范性检查</span>
                         <span id="step-2-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -408,7 +467,7 @@
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">数据安全合规性检测</span>
+                        <span class="text-sm text-[#606266]">附件完整性检查</span>
                         <span id="step-3-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -417,7 +476,7 @@
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">需求合理性评估</span>
+                        <span class="text-sm text-[#606266]">申请依据有效性检查</span>
                         <span id="step-4-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -474,37 +533,49 @@
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">需求完整性检查</span>
+                        <span class="font-medium text-[#303133]">场景明确性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">需求信息完整，所有必填字段均已填写，需求描述清晰明确。</p>
+                    <p class="text-sm text-[#606266] mb-2">需求场景为"协同"，描述包含具体的应用部门、应用对象和应用目的，未使用"数据比对""数据分析"等模糊词汇，与实际业务需求匹配。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>场景描述应包含具体的应用部门、应用对象和应用目的，不能使用模糊词汇。
+                    </div>
                 </div>
 
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">供需匹配度分析</span>
+                        <span class="font-medium text-[#303133]">系统名称规范性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">需求与现有数据资源目录匹配度高，数据提供单位具备相应数据资源。</p>
+                    <p class="text-sm text-[#606266] mb-2">需求服务名称"行政复议被申请人信息"为正式服务名称，未使用测试数据、数字等无意义内容，能够反映服务的实际功能。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>系统名称应为正式名称，不能使用测试数据、数字等无意义内容，名称应能反映实际功能。
+                    </div>
                 </div>
 
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">数据安全合规性检测</span>
+                        <span class="font-medium text-[#303133]">附件完整性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">需求用途合规，数据使用范围明确，符合数据安全管理相关规定。</p>
+                    <p class="text-sm text-[#606266] mb-2">附件"数据需求申请表.pdf"使用了平台标准模板，内容完整填写，含申请人签字和单位盖章，与申请信息一致。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>附件须为标准模板，内容不得为空，必须有签字盖章且与申请信息一致。
+                    </div>
                 </div>
 
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">需求合理性评估</span>
+                        <span class="font-medium text-[#303133]">申请依据有效性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">需求场景合理，申请单位职责与数据用途匹配，需求具有必要性。</p>
+                    <p class="text-sm text-[#606266] mb-2">申请依据引用《中华人民共和国行政复议法》第二十三条，明确引用了法律条文，且与申请的数据资源、应用场景匹配。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>申请依据应明确引用法律条文或省市下发的重要通知，且与申请资源、场景匹配。
+                    </div>
                 </div>
             </div>
 
@@ -541,9 +612,18 @@
                 catalog: '行政复议被申请人信息',
                 service: '行政复议被申请人信息',
                 demandDept: '人民检察院',
-                supplyDept: '大数据局',
+                supplyDept: '市大数据局',
                 isOperation: '否',
-                createTime: '2026-04-19 15:38:45'
+                createTime: '2026-04-19 15:38:45',
+                basis: '协同',
+                system: '协同',
+                scope: '行政依据',
+                duration: '1000天',
+                contact: '市检察院',
+                phone: '15090098567',
+                email: '15090098567@qq.com',
+                attachment: '说明.pdf',
+                status: '市大数据局审核中'
             },
             2: {
                 scene: '需求场景名称:v1.9版本测试',
@@ -553,7 +633,16 @@
                 demandDept: '人民出版社有限公司',
                 supplyDept: '文艺出版社有限公司',
                 isOperation: '否',
-                createTime: '2025-05-08 11:37:46'
+                createTime: '2025-05-08 11:37:46',
+                basis: '测试依据',
+                system: '测试系统',
+                scope: '测试范围',
+                duration: '365天',
+                contact: '张三',
+                phone: '13800000000',
+                email: 'test@test.com',
+                attachment: '测试附件.pdf',
+                status: '审核中'
             },
             3: {
                 scene: '需求场景名称:v1.9版本测试',
@@ -563,7 +652,16 @@
                 demandDept: '人民出版社有限公司',
                 supplyDept: '临沂市',
                 isOperation: '否',
-                createTime: '2025-05-08 11:37:46'
+                createTime: '2025-05-08 11:37:46',
+                basis: '疫情防控依据',
+                system: '疫情防控系统',
+                scope: '疫情防控',
+                duration: '730天',
+                contact: '李四',
+                phone: '13900000000',
+                email: 'test2@test.com',
+                attachment: '疫情防控说明.pdf',
+                status: '审核中'
             }
         };
 
@@ -587,26 +685,56 @@
             const data = demandData[id];
             if (data) {
                 document.getElementById('info-scene').textContent = data.scene;
-                document.getElementById('info-type').textContent = data.type;
+                document.getElementById('info-basis').textContent = data.basis;
+                document.getElementById('info-system').textContent = data.system;
+                document.getElementById('info-scope').textContent = data.scope;
+                document.getElementById('info-duration').textContent = data.duration;
                 document.getElementById('info-catalog').textContent = data.catalog;
+                document.getElementById('info-catalog-2').textContent = data.catalog;
                 document.getElementById('info-service').textContent = data.service;
                 document.getElementById('info-demand-dept').textContent = data.demandDept;
+                document.getElementById('info-demand-dept-2').textContent = data.demandDept;
                 document.getElementById('info-supply-dept').textContent = data.supplyDept;
                 document.getElementById('info-is-operation').textContent = data.isOperation;
                 document.getElementById('info-create-time').textContent = data.createTime;
+                document.getElementById('info-contact').textContent = data.contact;
+                document.getElementById('info-phone').textContent = data.phone;
+                document.getElementById('info-email').textContent = data.email;
             }
 
             document.getElementById('accept-drawer').classList.remove('translate-x-full');
             document.getElementById('accept-overlay').classList.remove('opacity-0', 'invisible');
             document.body.style.overflow = 'hidden';
 
+            switchAcceptTab('basic');
+
             const tip = document.getElementById('smart-audit-tip');
-            tip.className = 'mx-5 mt-4 p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between';
+            tip.className = 'px-6 py-3';
+            tip.querySelector('div').className = 'p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between';
             document.getElementById('smart-audit-icon').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-green-500 text-sm"></i>';
             document.getElementById('smart-audit-status').textContent = '正在智能审核中...';
             document.getElementById('smart-audit-desc').textContent = 'AI正在分析需求数据，请稍候';
 
             setTimeout(performSmartAudit, 500);
+        }
+
+        function switchAcceptTab(tab) {
+            const tabBasic = document.getElementById('accept-tab-basic');
+            const tabRecord = document.getElementById('accept-tab-record');
+            const panelBasic = document.getElementById('accept-panel-basic');
+            const panelRecord = document.getElementById('accept-panel-record');
+
+            if (tab === 'basic') {
+                tabBasic.className = 'py-3 text-sm font-medium text-[#1c7ffd] border-b-2 border-[#1c7ffd] cursor-pointer';
+                tabRecord.className = 'py-3 text-sm text-[#606266] hover:text-[#1c7ffd] cursor-pointer';
+                panelBasic.classList.remove('hidden');
+                panelRecord.classList.add('hidden');
+            } else {
+                tabBasic.className = 'py-3 text-sm text-[#606266] hover:text-[#1c7ffd] cursor-pointer';
+                tabRecord.className = 'py-3 text-sm font-medium text-[#1c7ffd] border-b-2 border-[#1c7ffd] cursor-pointer';
+                panelBasic.classList.add('hidden');
+                panelRecord.classList.remove('hidden');
+            }
         }
 
         function closeAcceptDrawer() {
@@ -14676,16 +14804,16 @@ window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR
       "id": "ANN-P19-AUDIT-01",
       "pageKey": "P19",
       "target": {
-        "selector": "#info-scene",
-        "fallbackText": "需求场景：协同",
+        "selector": "#smart-audit-drawer",
+        "fallbackText": "智能审核",
         "strategy": "id",
         "boundsHint": {
-          "text": "需求场景：协同",
+          "text": "智能审核",
           "tag": "div"
         }
       },
-      "title": "场景明确性审核要点",
-      "contentMarkdown": "### 审核要点\n\n需求场景必须明确具体，不能使用模糊的描述。\n\n### 错误样例\n\n- 数据比对\n- 数据分析\n\n这些描述过于笼统，无法明确应用场景。\n\n### 正确样例\n\n- 退役军人事务局退役军人优抚补贴核验\n- 应用于县级节点校验残疾学生教育资助补贴\n\n### 审核标准\n\n- 场景描述应包含具体的应用部门、应用对象和应用目的。\n- 不能使用\"数据比对\"、\"数据分析\"等模糊词汇。\n- 场景应与实际业务需求匹配。",
+      "title": "智能审核逻辑与标准",
+      "contentMarkdown": "### 智能审核逻辑\n\n智能审核基于以下4个维度对需求进行自动分析，任一维度不通过即可驳回：\n\n1. **场景明确性** —— 需求场景必须明确具体，不能使用模糊描述。\n2. **系统名称规范性** —— 系统名称应规范，不能使用明显非系统名称的内容。\n3. **附件完整性** —— 附件应为标准模板，且内容不能为空，需要签字盖章。\n4. **申请依据有效性** —— 申请依据需明确法律条文或者省市下发的重要通知。\n\n---\n\n### 一、场景明确性审核要点\n\n**错误样例**\n- 数据比对\n- 数据分析\n\n这些描述过于笼统，无法明确应用场景。\n\n**正确样例**\n- 退役军人事务局退役军人优抚补贴核验\n- 应用于县级节点校验残疾学生教育资助补贴\n\n**审核标准**\n- 场景描述应包含具体的应用部门、应用对象和应用目的。\n- 不能使用\"数据比对\"、\"数据分析\"等模糊词汇。\n- 场景应与实际业务需求匹配。\n\n---\n\n### 二、系统名称审核要点\n\n**错误样例**\n- 测试\n- 1\n- 其他明显非系统名称的内容\n\n**审核标准**\n- 系统名称应为正式的系统名称或服务名称。\n- 不能使用测试数据、数字等无意义内容。\n- 名称应能反映系统或服务的实际功能。\n\n---\n\n### 三、附件审核要点\n\n**驳回情形**\n1. 附件非标准模板，格式不符合要求。\n2. 附件内容为空，未填写必要信息。\n3. 附件未签字盖章。\n\n**审核标准**\n- 附件必须使用平台下发的标准模板。\n- 附件内容应完整填写，不得为空。\n- 附件必须有申请人签字和单位盖章。\n- 附件内容应与申请信息一致。\n\n---\n\n### 四、申请依据审核要点\n\n**驳回情形**\n1. 申请依据未填写。\n2. 申请依据为模糊描述，未引用具体法律条文。\n3. 申请依据与实际需求不符。\n\n**审核标准**\n- 申请依据应明确引用法律条文（如《XX法第X条》）。\n- 或引用省市下发的重要通知（如《XX省关于XX的通知》文号）。\n- 申请依据应与申请的数据资源、应用场景匹配。",
       "devNotesMarkdown": null,
       "audienceMode": "product-review",
       "annotationType": "C",
@@ -14718,159 +14846,9 @@ window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR
         "status": "approved",
         "reason": "manual-audit-standard"
       },
-      "updatedAt": "2026-08-13T09:31:36Z",
+      "updatedAt": "2026-08-14T00:00:00Z",
       "order": 1,
-      "surfaceId": "surface-P19-accept-drawer"
-    },
-    {
-      "id": "ANN-P19-AUDIT-02",
-      "pageKey": "P19",
-      "target": {
-        "selector": "#info-service",
-        "fallbackText": "需求服务：行政复议被申请人信息",
-        "strategy": "id",
-        "boundsHint": {
-          "text": "需求服务：行政复议被申请人信息",
-          "tag": "div"
-        }
-      },
-      "title": "系统名称审核要点",
-      "contentMarkdown": "### 审核要点\n\n系统名称应规范，不能使用明显非系统名称的内容。\n\n### 错误样例\n\n- 测试\n- 1\n- 其他明显非系统名称的内容\n\n### 审核标准\n\n- 系统名称应为正式的系统名称或服务名称。\n- 不能使用测试数据、数字等无意义内容。\n- 名称应能反映系统或服务的实际功能。",
-      "devNotesMarkdown": null,
-      "audienceMode": "product-review",
-      "annotationType": "C",
-      "kind": "note",
-      "topics": [
-        "audit",
-        "business",
-        "standard"
-      ],
-      "dimension": "Audit standard",
-      "priority": "high",
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "智能审核标准"
-      },
-      "evidence": [],
-      "nextActions": [],
-      "dependencies": [],
-      "risks": [],
-      "openQuestions": [],
-      "candidateId": null,
-      "selectorQuality": {
-        "level": "stable",
-        "issues": []
-      },
-      "createdBy": "manual",
-      "review": {
-        "required": false,
-        "status": "approved",
-        "reason": "manual-audit-standard"
-      },
-      "updatedAt": "2026-08-13T09:31:36Z",
-      "order": 2,
-      "surfaceId": "surface-P19-accept-drawer"
-    },
-    {
-      "id": "ANN-P19-AUDIT-03",
-      "pageKey": "P19",
-      "target": {
-        "selector": "#smart-audit-tip",
-        "fallbackText": "智能审核提示条",
-        "strategy": "id",
-        "boundsHint": {
-          "text": "智能审核提示条",
-          "tag": "div"
-        }
-      },
-      "title": "附件审核要点",
-      "contentMarkdown": "### 审核要点\n\n附件应为标准模板，且内容不能为空，需要签字盖章。\n\n### 驳回情形\n\n1. 附件非标准模板，格式不符合要求。\n2. 附件内容为空，未填写必要信息。\n3. 附件未签字盖章。\n\n### 审核标准\n\n- 附件必须使用平台下发的标准模板。\n- 附件内容应完整填写，不得为空。\n- 附件必须有申请人签字和单位盖章。\n- 附件内容应与申请信息一致。",
-      "devNotesMarkdown": null,
-      "audienceMode": "product-review",
-      "annotationType": "C",
-      "kind": "note",
-      "topics": [
-        "audit",
-        "business",
-        "standard"
-      ],
-      "dimension": "Audit standard",
-      "priority": "high",
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "智能审核标准"
-      },
-      "evidence": [],
-      "nextActions": [],
-      "dependencies": [],
-      "risks": [],
-      "openQuestions": [],
-      "candidateId": null,
-      "selectorQuality": {
-        "level": "stable",
-        "issues": []
-      },
-      "createdBy": "manual",
-      "review": {
-        "required": false,
-        "status": "approved",
-        "reason": "manual-audit-standard"
-      },
-      "updatedAt": "2026-08-13T09:31:36Z",
-      "order": 3,
-      "surfaceId": "surface-P19-accept-drawer"
-    },
-    {
-      "id": "ANN-P19-AUDIT-04",
-      "pageKey": "P19",
-      "target": {
-        "selector": "#info-catalog",
-        "fallbackText": "需求目录：行政复议被申请人信息",
-        "strategy": "id",
-        "boundsHint": {
-          "text": "需求目录：行政复议被申请人信息",
-          "tag": "div"
-        }
-      },
-      "title": "申请依据审核要点",
-      "contentMarkdown": "### 审核要点\n\n申请依据需明确法律条文或者省市下发的重要通知。\n\n### 驳回情形\n\n1. 申请依据未填写。\n2. 申请依据为模糊描述，未引用具体法律条文。\n3. 申请依据与实际需求不符。\n\n### 审核标准\n\n- 申请依据应明确引用法律条文（如《XX法第X条》）。\n- 或引用省市下发的重要通知（如《XX省关于XX的通知》文号）。\n- 申请依据应与申请的数据资源、应用场景匹配。",
-      "devNotesMarkdown": null,
-      "audienceMode": "product-review",
-      "annotationType": "C",
-      "kind": "note",
-      "topics": [
-        "audit",
-        "business",
-        "standard"
-      ],
-      "dimension": "Audit standard",
-      "priority": "high",
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "智能审核标准"
-      },
-      "evidence": [],
-      "nextActions": [],
-      "dependencies": [],
-      "risks": [],
-      "openQuestions": [],
-      "candidateId": null,
-      "selectorQuality": {
-        "level": "stable",
-        "issues": []
-      },
-      "createdBy": "manual",
-      "review": {
-        "required": false,
-        "status": "approved",
-        "reason": "manual-audit-standard"
-      },
-      "updatedAt": "2026-08-13T09:31:36Z",
-      "order": 4,
-      "surfaceId": "surface-P19-accept-drawer"
+      "surfaceId": "surface-P19-smart-audit-drawer"
     }
   ],
   "project": {

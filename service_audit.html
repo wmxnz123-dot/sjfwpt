@@ -3,26 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数据服务平台 - 运营看板</title>
+    <title>数据服务平台 - 服务审核</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-        .stat-card { transition: all 0.3s ease; }
-        .stat-card:hover { box-shadow: 0 8px 16px rgba(28, 127, 253, 0.1); }
-        .ai-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .pulse-animation { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-        .agent-active { border-color: #667eea; background-color: #f3f0ff; }
-        .drawer-enter { transform: translateX(100%); }
-        .drawer-enter-active { transform: translateX(0); transition: transform 0.3s ease; }
-        .drawer-exit { transform: translateX(0); }
-        .drawer-exit-active { transform: translateX(100%); transition: transform 0.3s ease; }
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
@@ -52,1398 +47,964 @@
 
         <main class="flex-1 flex flex-col overflow-hidden bg-[#f0f2f5]">
             <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
-            
-            <div id="stat-scroll-container" class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
-                <div class="flex items-center justify-between mb-2">
-                    <div>
-                        <h1 class="text-xl font-bold text-[#303133]">统计看板</h1>
-                    </div>
+
+            <div class="h-[52px] flex items-center px-6 text-[#606266] shrink-0 bg-white border-b border-gray-100 text-[14px]">
+                <span>资源管理</span>
+                <span class="mx-2">/</span>
+                <span>服务管理</span>
+                <span class="mx-2">/</span>
+                <span class="font-medium text-[#303133]">服务审核</span>
+            </div>
+
+            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+                <div class="flex border-b border-gray-200 bg-white px-6 pt-2 rounded-t-lg">
+                    <div id="tab-pending" class="pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]" onclick="switchTab('pending')">待处理</div>
+                    <div id="tab-approved" class="pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]" onclick="switchTab('approved')">已处理</div>
                 </div>
 
-                <div id="section-catalog" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-[16px] font-bold text-[#303133]">数据目录统计</h2>
-                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
-                            <span class="text-[#909399] text-sm">统计维度：</span>
-                            <select class="text-sm text-[#303133] outline-none">
-                                <option>全部</option>
-                                <option>市直部门</option>
-                                <option>区县</option>
-                            </select>
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 shrink-0">
+                    <div class="flex items-center gap-6 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">服务名称：</label>
+                            <input type="text" id="search-name" placeholder="请输入" class="w-[280px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-4 gap-5 mb-8">
-                        <div class="stat-card bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-[#909399] text-sm">数据目录总数</span>
-                                <i class="fa-solid fa-database text-[#1c7ffd] opacity-50"></i>
-                            </div>
-                            <div class="text-[32px] font-bold text-[#303133] mb-1">12,580</div>
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.5%</span>
-                                <span class="text-[#909399]">较上月</span>
-                            </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">数据资源目录名称：</label>
+                            <input type="text" id="search-catalog" placeholder="请输入" class="w-[280px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
                         </div>
-
-                        <div class="stat-card bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-[#909399] text-sm">已挂接资源目录数</span>
-                                <i class="fa-solid fa-link text-[#36c2aa] opacity-50"></i>
-                            </div>
-                            <div class="text-[32px] font-bold text-[#303133] mb-1">8,960</div>
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 15.2%</span>
-                                <span class="text-[#909399]">较上月</span>
-                            </div>
-                        </div>
-
-                        <div class="stat-card bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-[#909399] text-sm">服务挂载率</span>
-                                <i class="fa-solid fa-percent text-[#e6a23c] opacity-50"></i>
-                            </div>
-                            <div class="text-[32px] font-bold text-[#303133] mb-1">71.2%</div>
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 3.8%</span>
-                                <span class="text-[#909399]">较上月</span>
-                            </div>
-                        </div>
-
-                        <div class="stat-card bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-[#909399] text-sm">本月新增目录数</span>
-                                <i class="fa-solid fa-plus-circle text-[#7a6df4] opacity-50"></i>
-                            </div>
-                            <div class="text-[32px] font-bold text-[#303133] mb-1">1,350</div>
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.3%</span>
-                                <span class="text-[#909399]">较上月</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-6">
-                        <div class="col-span-2">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4">目录数月度趋势</h3>
-                            <div class="h-[300px]">
-                                <canvas id="catalogTrendChart"></canvas>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4">目录共享类型分布</h3>
-                            <div class="h-[300px] flex items-center justify-center">
-                                <canvas id="catalogShareChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-6">
-                        <h3 class="text-[14px] font-medium text-[#606266] mb-4">目录开放类型分布</h3>
-                        <div class="grid grid-cols-3 gap-4">
-                            <div class="flex items-center gap-4 p-4 bg-green-50 rounded-lg">
-                                <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-                                    <i class="fa-solid fa-check text-white text-lg"></i>
-                                </div>
-                                <div>
-                                    <div class="text-lg font-bold text-[#303133]">5,230</div>
-                                    <div class="text-sm text-[#909399]">可对社会开放</div>
-                                    <div class="text-xs text-[#606266] mt-1">占比 41.6%</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4 p-4 bg-yellow-50 rounded-lg">
-                                <div class="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
-                                    <i class="fa-solid fa-minus text-white text-lg"></i>
-                                </div>
-                                <div>
-                                    <div class="text-lg font-bold text-[#303133]">3,890</div>
-                                    <div class="text-sm text-[#909399]">部分对社会开放</div>
-                                    <div class="text-xs text-[#606266] mt-1">占比 30.9%</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4 p-4 bg-red-50 rounded-lg">
-                                <div class="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center">
-                                    <i class="fa-solid fa-xmark text-white text-lg"></i>
-                                </div>
-                                <div>
-                                    <div class="text-lg font-bold text-[#303133]">3,460</div>
-                                    <div class="text-sm text-[#909399]">不可对社会开放</div>
-                                    <div class="text-xs text-[#606266] mt-1">占比 27.5%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-[14px] font-medium text-[#606266]">各部门数据目录情况</h3>
-                            <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-[13px] border-collapse">
-                                <thead class="bg-gray-50 text-[#606266]">
-                                    <tr>
-                                        <th class="py-3 px-4 text-left font-medium">部门名称</th>
-                                        <th class="py-3 px-4 text-center font-medium">目录总数</th>
-                                        <th class="py-3 px-4 text-center font-medium">已挂接目录数</th>
-                                        <th class="py-3 px-4 text-center font-medium">挂接率</th>
-                                        <th class="py-3 px-4 text-center font-medium">无条件共享</th>
-                                        <th class="py-3 px-4 text-center font-medium">有条件共享</th>
-                                        <th class="py-3 px-4 text-center font-medium">不予共享</th>
-                                        <th class="py-3 px-4 text-center font-medium">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 text-[#303133]">市民政局</td>
-                                        <td class="py-3 px-4 text-center">1,250</td>
-                                        <td class="py-3 px-4 text-center">980</td>
-                                        <td class="py-3 px-4 text-center"><span class="text-[#00d9a6] font-medium">78.4%</span></td>
-                                        <td class="py-3 px-4 text-center">450</td>
-                                        <td class="py-3 px-4 text-center">680</td>
-                                        <td class="py-3 px-4 text-center">120</td>
-                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 text-[#303133]">市公安局</td>
-                                        <td class="py-3 px-4 text-center">2,380</td>
-                                        <td class="py-3 px-4 text-center">1,820</td>
-                                        <td class="py-3 px-4 text-center"><span class="text-[#00d9a6] font-medium">76.5%</span></td>
-                                        <td class="py-3 px-4 text-center">850</td>
-                                        <td class="py-3 px-4 text-center">1,350</td>
-                                        <td class="py-3 px-4 text-center">180</td>
-                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 text-[#303133]">市市场监管局</td>
-                                        <td class="py-3 px-4 text-center">1,890</td>
-                                        <td class="py-3 px-4 text-center">1,450</td>
-                                        <td class="py-3 px-4 text-center"><span class="text-[#00d9a6] font-medium">76.7%</span></td>
-                                        <td class="py-3 px-4 text-center">680</td>
-                                        <td class="py-3 px-4 text-center">1,050</td>
-                                        <td class="py-3 px-4 text-center">160</td>
-                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 text-[#303133]">市卫健委</td>
-                                        <td class="py-3 px-4 text-center">1,560</td>
-                                        <td class="py-3 px-4 text-center">1,120</td>
-                                        <td class="py-3 px-4 text-center"><span class="text-[#e6a23c] font-medium">71.8%</span></td>
-                                        <td class="py-3 px-4 text-center">520</td>
-                                        <td class="py-3 px-4 text-center">890</td>
-                                        <td class="py-3 px-4 text-center">150</td>
-                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 text-[#303133]">市教育局</td>
-                                        <td class="py-3 px-4 text-center">980</td>
-                                        <td class="py-3 px-4 text-center">720</td>
-                                        <td class="py-3 px-4 text-center"><span class="text-[#00d9a6] font-medium">73.5%</span></td>
-                                        <td class="py-3 px-4 text-center">380</td>
-                                        <td class="py-3 px-4 text-center">520</td>
-                                        <td class="py-3 px-4 text-center">80</td>
-                                        <td class="py-3 px-4 text-center"><a href="#" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="flex items-center gap-3 ml-auto">
+                            <button onclick="resetSearch()" class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-right text-xs"></i>
+                                重置
+                            </button>
+                            <button onclick="doSearch()" class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-search text-xs"></i>
+                                查询
+                            </button>
+                            <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-1">
+                                展开
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div id="section-resource" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-[16px] font-bold text-[#303133]">数据资源统计</h2>
-                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
-                            <span class="text-[#909399] text-sm">统计范围：</span>
-                            <select class="text-sm text-[#303133] outline-none bg-transparent">
-                                <option>全部</option>
-                                <option>市直部门</option>
-                                <option>区县</option>
-                            </select>
+                <div id="pending-list" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between shrink-0">
+                        <h2 class="text-[16px] font-bold text-[#303133]">服务审核待审核列表</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="刷新">
+                                <i class="fa-solid fa-rotate-right text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="导出">
+                                <i class="fa-solid fa-download text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="设置">
+                                <i class="fa-solid fa-gear text-sm"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-5 gap-4 mb-8">
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">服务总数</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">12,580</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1,350</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.5%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">接口服务总数</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">1,580</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">180</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 15.6%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">库表服务总数</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">8,240</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">850</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 11.2%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">文件服务总数</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">2,150</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">210</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.5%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">汇聚数据总量</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">8.6亿条</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">昨日数据增量：<span class="text-[#303133] font-medium">1,180万</span></span>
-                                <span class="text-[#909399]">日环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.3%</span></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6 mb-8">
-                        <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">服务数月度趋势</h3>
-                            <div class="h-[220px]">
-                                <canvas id="serviceTrendChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">服务类型分布</h3>
-                            <div class="h-[220px]">
-                                <canvas id="resourceTypeChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-[15px] font-bold text-[#303133]">各地市服务注册情况</h3>
-                        <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-[13px] border-collapse text-center">
-                            <thead class="bg-gray-50 text-[#606266]">
-                                <tr>
-                                    <th class="py-3 px-4 font-medium text-left">地市名称</th>
-                                    <th class="py-3 px-4 font-medium">服务总数</th>
-                                    <th class="py-3 px-4 font-medium">库表服务数</th>
-                                    <th class="py-3 px-4 font-medium">文件服务数</th>
-                                    <th class="py-3 px-4 font-medium">接口服务数</th>
-                                    <th class="py-3 px-4 font-medium">文件夹服务数</th>
-                                    <th class="py-3 px-4 font-medium">链接服务数</th>
-                                    <th class="py-3 px-4 font-medium">操作</th>
+                    <div class="flex-1 overflow-auto">
+                        <table class="w-full text-sm table-fixed">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="w-[60px] px-5 py-3 text-left font-medium text-[#606266]">序号</th>
+                                    <th class="w-[220px] px-5 py-3 text-left font-medium text-[#606266]">服务名称</th>
+                                    <th class="w-[120px] px-5 py-3 text-center font-medium text-[#606266] relative">
+                                        <span class="cursor-pointer flex items-center justify-center gap-1 hover:text-[#1c7ffd]" onclick="toggleFilter('filter-interface-source')">
+                                            接口来源
+                                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                                        </span>
+                                    </th>
+                                    <th class="w-[220px] px-5 py-3 text-left font-medium text-[#606266]">数据资源目录名称</th>
+                                    <th class="w-[140px] px-5 py-3 text-center font-medium text-[#606266]">数据资源提供方</th>
+                                    <th class="w-[160px] px-5 py-3 text-right font-medium text-[#606266]">创建时间</th>
+                                    <th class="w-[160px] px-5 py-3 text-center font-medium text-[#606266]">操作</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">市民政局</td>
-                                    <td class="py-3 px-4">1,250</td>
-                                    <td class="py-3 px-4">820</td>
-                                    <td class="py-3 px-4">210</td>
-                                    <td class="py-3 px-4">150</td>
-                                    <td class="py-3 px-4">50</td>
-                                    <td class="py-3 px-4">20</td>
-                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openResourceDetailModal('市民政局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">1</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="10-19-002-v1.6-接口市级服务">10-19-002-v1.6-接口市级服务</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">已有API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="10-18-001-1.6新增目录">10-18-001-1.6新增目录</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="xx市民政局">xx市民政局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-10-19 17:02:19</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">审核</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">2</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="chang-服务注册参数测试-2023年10月10日">chang-服务注册参数测试-2023年10月10日</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">定制API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="chang-目录变更2023年7月11日-01">chang-目录变更2023年7月11日-01</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="xx市大数据局">xx市大数据局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-10-10 15:48:31</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">审核</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">3</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="测试定制化api交付时接口地址">测试定制化api交付时接口地址</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">定制API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="717-001-目录名称。">717-001-目录名称。</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="xx市公安局">xx市公安局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-17 15:13:26</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">审核</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">4</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="服务测试接口">服务测试接口</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">已有API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="lxm-新增目录6.29-1">lxm-新增目录6.29-1</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="xx市大数据局">xx市大数据局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-07-01 13:45:12</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">审核</a>
+                                    </td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">市公安局</td>
-                                    <td class="py-3 px-4">2,380</td>
-                                    <td class="py-3 px-4">1,650</td>
-                                    <td class="py-3 px-4">420</td>
-                                    <td class="py-3 px-4">250</td>
-                                    <td class="py-3 px-4">45</td>
-                                    <td class="py-3 px-4">15</td>
-                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openResourceDetailModal('市公安局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">市卫健委</td>
-                                    <td class="py-3 px-4">1,560</td>
-                                    <td class="py-3 px-4">980</td>
-                                    <td class="py-3 px-4">350</td>
-                                    <td class="py-3 px-4">180</td>
-                                    <td class="py-3 px-4">30</td>
-                                    <td class="py-3 px-4">20</td>
-                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openResourceDetailModal('市卫健委')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                    <td class="px-5 py-4 text-[#303133]">5</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="退役军人基本信息查询">退役军人基本信息查询</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">已有API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="退役军人基本信息-seiya">退役军人基本信息-seiya</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="xx市大数据局">xx市大数据局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2023-03-28 16:41:04</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">审核</a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between shrink-0">
+                        <div class="text-sm text-[#606266]">
+                            共 <span class="font-medium">15</span> 条
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-left text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-[#1c7ffd] bg-[#1c7ffd] text-white rounded">2</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-right text-sm"></i>
+                            </button>
+                            <span class="text-sm text-[#606266] ml-2">10条/页</span>
+                            <span class="text-sm text-[#606266]">跳至</span>
+                            <input type="text" class="w-12 h-8 border border-gray-200 rounded text-center text-sm">
+                            <span class="text-sm text-[#606266]">页</span>
+                        </div>
                     </div>
                 </div>
 
-                <div id="section-usage" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-[16px] font-bold text-[#303133]">数据使用统计</h2>
-                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
-                            <span class="text-[#909399] text-sm">统计范围：</span>
-                            <select class="text-sm text-[#303133] outline-none bg-transparent">
-                                <option>全部</option>
-                                <option>市直部门</option>
-                                <option>区县</option>
-                            </select>
-                        </div>
+                <!-- 接口来源筛选弹窗 -->
+                <div id="filter-interface-source" class="filter-popup fixed bg-white shadow-lg border border-gray-200 rounded-lg z-[100] hidden p-3 min-w-[180px]">
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2 text-sm">
+                            <input type="checkbox" class="filter-checkbox" value="已有API" checked>
+                            <span>已有API</span>
+                        </label>
+                        <label class="flex items-center gap-2 text-sm">
+                            <input type="checkbox" class="filter-checkbox" value="定制API" checked>
+                            <span>定制API</span>
+                        </label>
                     </div>
-
-                    <div class="grid grid-cols-5 gap-4 mb-8">
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">服务使用总数</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">3,450</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">420</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 15.2%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">接口使用数量</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">8.9亿</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">0.8亿</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.3%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">库表使用数量</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">12.5亿</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1.2亿</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 10.5%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">文件使用数量</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">56.8万</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">5.2万</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.9%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">库表服务数据总量</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">8,240万</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">昨日数据增量：<span class="text-[#303133] font-medium">820万</span></span>
-                                <span class="text-[#909399]">日环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 6.5%</span></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-6 mb-8">
-                        <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">服务类型分布</h3>
-                            <div class="h-[220px]">
-                                <canvas id="usageResourceTypeChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 rounded-lg p-4 col-span-2">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-[14px] font-medium text-[#606266]">接口调用/库表交换/文件使用趋势</h3>
-                                <div class="flex gap-2 text-xs">
-                                    <button class="px-2 py-1 bg-blue-50 text-[#1c7ffd] rounded">近7天</button>
-                                    <button class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">近30天</button>
-                                    <button class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">近12个月</button>
-                                </div>
-                            </div>
-                            <div class="h-[220px]">
-                                <canvas id="usageTrendChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-4 flex items-center border-b border-gray-200">
-                        <button onclick="switchUsageTab('used')" id="usageTabUsedBtn" class="px-4 py-2 text-[14px] font-bold text-[#1c7ffd] border-b-2 border-[#1c7ffd]">各省直部门数据被使用情况</button>
-                        <button onclick="switchUsageTab('use')" id="usageTabUseBtn" class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">各省直部门数据使用情况</button>
-                        <button onclick="switchUsageTab('demand')" id="usageTabDemandBtn" class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">需求数据量</button>
-                    </div>
-                    <div id="usageTabUsed" class="overflow-x-auto">
-                        <table class="w-full text-[13px] border-collapse text-center whitespace-nowrap">
-                            <thead class="bg-gray-50 text-[#606266]">
-                                <tr>
-                                    <th class="py-3 px-4 font-medium text-left">部门/地市名称</th>
-                                    <th class="py-3 px-4 font-medium">资源被申请次数</th>
-                                    <th class="py-3 px-4 font-medium">被申请资源数</th>
-                                    <th class="py-3 px-4 font-medium">资源被申请率</th>
-                                    <th class="py-3 px-4 font-medium">使用部门数</th>
-                                    <th class="py-3 px-4 font-medium">待受理/待审核</th>
-                                    <th class="py-3 px-4 font-medium">审核通过</th>
-                                    <th class="py-3 px-4 font-medium">已驳回/撤销</th>
-                                    <th class="py-3 px-4 font-medium">库表被交换量</th>
-                                    <th class="py-3 px-4 font-medium">接口被调用次数</th>
-                                    <th class="py-3 px-4 font-medium">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">市公安局</td>
-                                    <td class="py-3 px-4">850</td>
-                                    <td class="py-3 px-4">320</td>
-                                    <td class="py-3 px-4 text-[#00d9a6]">45.2%</td>
-                                    <td class="py-3 px-4">28</td>
-                                    <td class="py-3 px-4">12 / 8</td>
-                                    <td class="py-3 px-4 text-[#00d9a6]">805</td>
-                                    <td class="py-3 px-4 text-[#f56c6c]">15 / 10</td>
-                                    <td class="py-3 px-4">3.5亿</td>
-                                    <td class="py-3 px-4">2.8亿</td>
-                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openUsageDetailModal('市公安局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">市民政局</td>
-                                    <td class="py-3 px-4">560</td>
-                                    <td class="py-3 px-4">180</td>
-                                    <td class="py-3 px-4 text-[#00d9a6]">38.5%</td>
-                                    <td class="py-3 px-4">22</td>
-                                    <td class="py-3 px-4">5 / 3</td>
-                                    <td class="py-3 px-4 text-[#00d9a6]">530</td>
-                                    <td class="py-3 px-4 text-[#f56c6c]">12 / 10</td>
-                                    <td class="py-3 px-4">1.2亿</td>
-                                    <td class="py-3 px-4">1.5亿</td>
-                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openUsageDetailModal('市民政局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="usageTabDemand" class="overflow-x-auto hidden">
-                        <table class="w-full text-[13px] border-collapse text-center whitespace-nowrap">
-                            <thead class="bg-gray-50 text-[#606266]">
-                                <tr>
-                                    <th class="py-3 px-4 font-medium text-left">需求场景</th>
-                                    <th class="py-3 px-4 font-medium">需求目录</th>
-                                    <th class="py-3 px-4 font-medium">需求服务</th>
-                                    <th class="py-3 px-4 font-medium">申请单位</th>
-                                    <th class="py-3 px-4 font-medium">数据提供单位</th>
-                                    <th class="py-3 px-4 font-medium">资源级别</th>
-                                    <th class="py-3 px-4 font-medium">数据量</th>
-                                    <th class="py-3 px-4 font-medium">同步时间</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">人口核查</td>
-                                    <td class="py-3 px-4">人口基础信息库</td>
-                                    <td class="py-3 px-4">人口数据查询接口</td>
-                                    <td class="py-3 px-4">市公安局</td>
-                                    <td class="py-3 px-4">市公安局</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">核心</span></td>
-                                    <td class="py-3 px-4">8,240万条</td>
-                                    <td class="py-3 px-4 text-[#909399]">2026-08-14 09:15</td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">社保核验</td>
-                                    <td class="py-3 px-4">社保参保信息库</td>
-                                    <td class="py-3 px-4">社保数据交换服务</td>
-                                    <td class="py-3 px-4">市人社局</td>
-                                    <td class="py-3 px-4">市人社局</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-orange-50 text-[#e6a23c] rounded text-xs">重要</span></td>
-                                    <td class="py-3 px-4">3,580万条</td>
-                                    <td class="py-3 px-4 text-[#909399]">2026-08-14 08:42</td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">婚姻登记</td>
-                                    <td class="py-3 px-4">婚姻登记信息库</td>
-                                    <td class="py-3 px-4">婚姻状态查询接口</td>
-                                    <td class="py-3 px-4">市民政局</td>
-                                    <td class="py-3 px-4">市民政局</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">普通</span></td>
-                                    <td class="py-3 px-4">1,250万条</td>
-                                    <td class="py-3 px-4 text-[#909399]">2026-08-13 18:30</td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">企业监管</td>
-                                    <td class="py-3 px-4">法人基础信息库</td>
-                                    <td class="py-3 px-4">企业工商登记接口</td>
-                                    <td class="py-3 px-4">市市场监管局</td>
-                                    <td class="py-3 px-4">市市场监管局</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-orange-50 text-[#e6a23c] rounded text-xs">重要</span></td>
-                                    <td class="py-3 px-4">2,860万条</td>
-                                    <td class="py-3 px-4 text-[#909399]">2026-08-13 16:05</td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">医疗协同</td>
-                                    <td class="py-3 px-4">健康医疗数据库</td>
-                                    <td class="py-3 px-4">健康医疗数据接口</td>
-                                    <td class="py-3 px-4">市卫健委</td>
-                                    <td class="py-3 px-4">市卫健委</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">核心</span></td>
-                                    <td class="py-3 px-4">5,620万条</td>
-                                    <td class="py-3 px-4 text-[#909399]">2026-08-13 14:20</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-gray-100">
+                        <button onclick="confirmFilter('filter-interface-source')" class="text-sm text-[#1c7ffd] hover:text-[#1a73e8] font-medium">确定</button>
+                        <button onclick="resetFilter('filter-interface-source')" class="text-sm text-[#606266] hover:text-[#1c7ffd]">重置</button>
                     </div>
                 </div>
 
-                <div id="section-objection" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-[16px] font-bold text-[#303133]">数据异议统计</h2>
-                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
-                            <span class="text-[#909399] text-sm">统计范围：</span>
-                            <select class="text-sm text-[#303133] outline-none bg-transparent">
-                                <option>全部</option>
-                                <option>市直部门</option>
-                                <option>区县</option>
-                            </select>
+                <div id="approved-list" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col hidden">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between shrink-0">
+                        <h2 class="text-[16px] font-bold text-[#303133]">服务审核已审核列表</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="刷新">
+                                <i class="fa-solid fa-rotate-right text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="导出">
+                                <i class="fa-solid fa-download text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="设置">
+                                <i class="fa-solid fa-gear text-sm"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-4 gap-4 mb-8">
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">数据异议总数</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">1,250</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">85</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#f56c6c]"><i class="fa-solid fa-arrow-down"></i> 5.2%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">异议完成率</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">92.5%</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">已完成：<span class="text-[#303133] font-medium">1,156</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 1.5%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">异议受理通过率</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">88.4%</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">已受理：<span class="text-[#303133] font-medium">1,105</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 2.4%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">异议审查通过率</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">85.6%</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">已审查：<span class="text-[#303133] font-medium">1,070</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 1.8%</span></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6 mb-8">
-                        <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">异议类型分布</h3>
-                            <div class="h-[220px]">
-                                <canvas id="objectionTypeChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">异议状态分布</h3>
-                            <div class="h-[220px]">
-                                <canvas id="objectionStatusChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-4 flex items-center border-b border-gray-200">
-                        <button class="px-4 py-2 text-[14px] font-bold text-[#1c7ffd] border-b-2 border-[#1c7ffd]">各省直部门被异议情况</button>
-                        <button class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">各省直部门提出异议情况</button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-[13px] border-collapse text-center whitespace-nowrap">
-                            <thead class="bg-gray-50 text-[#606266]">
-                                <tr>
-                                    <th class="py-3 px-4 font-medium text-left">部门/地市名称</th>
-                                    <th class="py-3 px-4 font-medium">被异议总数</th>
-                                    <th class="py-3 px-4 font-medium">待核查异议数</th>
-                                    <th class="py-3 px-4 font-medium">待审查异议数</th>
-                                    <th class="py-3 px-4 font-medium">异议审查通过数</th>
-                                    <th class="py-3 px-4 font-medium">异议审查通过率</th>
-                                    <th class="py-3 px-4 font-medium">操作</th>
+                    <div class="flex-1 overflow-auto">
+                        <table class="w-full text-sm table-fixed">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="w-[60px] px-5 py-3 text-left font-medium text-[#606266]">序号</th>
+                                    <th class="w-[200px] px-5 py-3 text-left font-medium text-[#606266]">服务名称</th>
+                                    <th class="w-[100px] px-5 py-3 text-center font-medium text-[#606266]">接口来源</th>
+                                    <th class="w-[200px] px-5 py-3 text-left font-medium text-[#606266]">数据资源目录名称</th>
+                                    <th class="w-[120px] px-5 py-3 text-center font-medium text-[#606266]">数据资源提供方</th>
+                                    <th class="w-[100px] px-5 py-3 text-center font-medium text-[#606266]">审批结果</th>
+                                    <th class="w-[160px] px-5 py-3 text-right font-medium text-[#606266]">审核时间</th>
+                                    <th class="w-[80px] px-5 py-3 text-center font-medium text-[#606266]">操作</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">市卫健委</td>
-                                    <td class="py-3 px-4">320</td>
-                                    <td class="py-3 px-4">12</td>
-                                    <td class="py-3 px-4">8</td>
-                                    <td class="py-3 px-4 text-[#00d9a6]">280</td>
-                                    <td class="py-3 px-4 text-[#00d9a6]">87.5%</td>
-                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openObjectionDetailModal('市卫健委')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">1</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="测试123服务">测试123服务</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">定制API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="测试123">测试123</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="潍坊市大数据局">潍坊市大数据局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center">
+                                        <span class="flex items-center justify-center gap-1">
+                                            <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                            <span class="text-red-600 text-sm">已退回</span>
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2025-07-21 15:28:17</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">2</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="测试1111111万2万定制接口">测试1111111万2万定制接口</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">定制API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="测试1111111万2万">测试1111111万2万</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="潍坊市大数据局">潍坊市大数据局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center">
+                                        <span class="flex items-center justify-center gap-1">
+                                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                            <span class="text-green-600 text-sm">已通过</span>
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2024-01-15 15:10:41</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">3</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="测试1111111万2万">测试1111111万2万</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">已有API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="测试1111111万2万">测试1111111万2万</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="潍坊市大数据局">潍坊市大数据局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center">
+                                        <span class="flex items-center justify-center gap-1">
+                                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                            <span class="text-green-600 text-sm">已通过</span>
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2024-01-15 14:41:38</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">4</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="bbb">bbb</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">已有API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="lxm-测试撤回1.0-1">lxm-测试撤回1.0-1</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="潍坊市大数据局">潍坊市大数据局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center">
+                                        <span class="flex items-center justify-center gap-1">
+                                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                            <span class="text-green-600 text-sm">已通过</span>
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2024-01-11 14:19:40</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">查看</a>
+                                    </td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="py-3 px-4 text-[#303133] text-left">市公安局</td>
-                                    <td class="py-3 px-4">250</td>
-                                    <td class="py-3 px-4">5</td>
-                                    <td class="py-3 px-4">3</td>
-                                    <td class="py-3 px-4 text-[#00d9a6]">230</td>
-                                    <td class="py-3 px-4 text-[#00d9a6]">92.0%</td>
-                                    <td class="py-3 px-4"><a href="javascript:void(0)" onclick="openObjectionDetailModal('市公安局')" class="text-[#1c7ffd] hover:underline text-xs">查看详情</a></td>
+                                    <td class="px-5 py-4 text-[#303133]">5</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="aaaa">aaaa</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">定制API</td>
+                                    <td class="px-5 py-4 text-[#303133]">
+                                        <div class="line-clamp-1" title="lxm-测试撤回1.0-1">lxm-测试撤回1.0-1</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">
+                                        <div class="line-clamp-1" title="潍坊市大数据局">潍坊市大数据局</div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center">
+                                        <span class="flex items-center justify-center gap-1">
+                                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                            <span class="text-green-600 text-sm">已通过</span>
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2024-01-11 14:18:30</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">查看</a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between shrink-0">
+                        <div class="text-sm text-[#606266]">
+                            共 <span class="font-medium">6</span> 条
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-left text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-[#1c7ffd] bg-[#1c7ffd] text-white rounded">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-right text-sm"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <nav class="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3 bg-white/80 backdrop-blur rounded-xl shadow-md px-2 py-3 border border-gray-200">
-                <a href="#section-catalog" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-catalog">
-                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
-                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据目录统计</span>
-                </a>
-                <a href="#section-resource" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-resource">
-                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
-                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据资源统计</span>
-                </a>
-                <a href="#section-usage" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-usage">
-                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
-                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据使用统计</span>
-                </a>
-                <a href="#section-objection" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-objection">
-                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
-                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据异议统计</span>
-                </a>
-            </nav>
         </main>
     </div>
 
-    <button onclick="toggleAIDrawer()" class="fixed bottom-8 right-8 flex items-center gap-3 px-5 py-3 ai-card text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 z-50">
-        <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center pulse-animation">
-            <i class="fa-solid fa-brain"></i>
-        </span>
-        <span class="font-medium">智能助手</span>
-        <i class="fa-solid fa-chevron-left text-sm" id="drawer-arrow"></i>
-    </button>
-
-    <div id="ai-drawer-overlay" class="fixed inset-0 bg-black/30 z-[60] hidden transition-opacity duration-300" onclick="toggleAIDrawer()"></div>
-    <div id="ai-drawer" class="fixed top-0 right-0 w-[900px] h-full bg-white z-[70] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="p-5 border-b border-gray-100 flex items-center justify-between">
+    <!-- 服务审核详情抽屉 -->
+    <div id="service-detail-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeAuditDrawer()"></div>
+    <div id="service-detail-drawer" class="fixed top-0 right-0 bottom-0 w-[900px] bg-white z-[90] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- 抽屉头部 -->
+        <div class="h-14 flex items-center justify-between px-5 border-b border-gray-100 shrink-0">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg ai-card flex items-center justify-center">
-                    <i class="fa-solid fa-brain text-white"></i>
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <i class="fa-solid fa-server text-[#1c7ffd] text-xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-[#303133]">智能助手</h3>
-                    <p class="text-xs text-[#909399]">选择智能体开始对话</p>
+                    <h3 class="font-semibold text-base text-[#303133]">服务审核详情</h3>
                 </div>
             </div>
-            <button onclick="toggleAIDrawer()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
-                <i class="fa-solid fa-xmark"></i>
+            <button onclick="closeAuditDrawer()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
 
-        <div class="p-4 border-b border-gray-100">
-            <div class="flex items-center gap-2 mb-3">
-                <i class="fa-solid fa-robot text-[#667eea]"></i>
-                <span class="text-sm font-medium text-[#303133]">选择智能体</span>
+        <!-- 抽屉内容 -->
+        <div class="flex-1 overflow-y-auto">
+            <!-- 基本信息头部 -->
+            <div class="px-5 py-4 border-b border-gray-100 bg-gray-50">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                            <i class="fa-solid fa-cube text-[#1c7ffd] text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg text-[#303133]" id="service-detail-name">10-19-002-v1.6-接口市级服务</h4>
+                            <div class="flex items-center gap-4 text-sm text-[#606266] mt-1">
+                                <span>数据资源目录名称：<span id="service-detail-catalog">10-18-001-1.6新增目录</span></span>
+                            </div>
+                            <div class="flex items-center gap-4 text-sm text-[#606266] mt-1">
+                                <span>数据资源提供方：<span id="service-detail-provider">xx市民政局</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm text-[#606266]">
+                        <span class="flex items-center gap-1">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                            <span>待审核</span>
+                        </span>
+                        <span>创建时间：2023-10-19 17:02:19</span>
+                    </div>
+                </div>
             </div>
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="selectAgent('qa')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left agent-active" id="agent-qa">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-message-question text-[#36c2aa]"></i>
-                        <span class="font-medium text-sm">智能问数智能体</span>
+
+            <!-- 智能审核提示条 -->
+            <div id="smart-audit-tip" class="mx-5 mt-4 p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div id="smart-audit-icon" class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <i class="fa-solid fa-spinner fa-spin text-green-500 text-sm"></i>
                     </div>
-                    <p class="text-xs text-[#909399]">自然语言查询统计数据，问答式交互</p>
-                </button>
-                <button onclick="selectAgent('report')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left" id="agent-report">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-file-pen text-[#e6a23c]"></i>
-                        <span class="font-medium text-sm">报告生成智能体</span>
+                    <div>
+                        <span id="smart-audit-status" class="text-sm font-medium text-green-700">正在智能审核中...</span>
+                        <p id="smart-audit-desc" class="text-xs text-green-600 mt-0.5">AI正在分析服务信息，请稍候</p>
                     </div>
-                    <p class="text-xs text-[#909399]">上传报告模板，智能生成数据分析报告，支持下载</p>
+                </div>
+                <button id="smart-audit-view-btn" onclick="openSmartAudit()" class="text-sm text-green-600 hover:text-green-700 font-medium">
+                    查看 <i class="fa-solid fa-chevron-right text-xs"></i>
                 </button>
+            </div>
+
+            <!-- Tab标签 -->
+            <div class="flex border-b border-gray-100 mt-4">
+                <button onclick="switchAuditTab('basic')" id="service-detail-tab-basic" class="px-6 py-3 font-medium text-sm text-[#1c7ffd] border-b-2 border-[#1c7ffd] cursor-pointer">
+                    服务基本信息
+                </button>
+                <button onclick="switchAuditTab('interface')" id="service-detail-tab-interface" class="px-6 py-3 font-medium text-sm text-[#606266] border-b-2 border-transparent hover:text-[#1c7ffd] cursor-pointer">
+                    接口信息
+                </button>
+                <button onclick="switchAuditTab('doc')" id="service-detail-tab-doc" class="px-6 py-3 font-medium text-sm text-[#606266] border-b-2 border-transparent hover:text-[#1c7ffd] cursor-pointer">
+                    接口文档
+                </button>
+            </div>
+
+            <!-- 服务基本信息 -->
+            <div id="service-detail-content-basic" class="p-5">
+                <div class="font-medium text-[#303133] mb-4">基本信息</div>
+                <div id="service-basic-info" class="space-y-3">
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">服务名称：</span>
+                        <span id="service-name-value" class="ml-4 flex-1 text-[#303133]">10-19-002-v1.6-接口市级服务</span>
+                        <span class="w-[180px] text-right text-[#606266]">服务类型：</span>
+                        <span class="ml-4 text-[#303133]">API</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">接口来源：</span>
+                        <span class="ml-4 flex-1 text-[#303133]">已有API</span>
+                        <span class="w-[180px] text-right text-[#606266]">数据资源目录代码：</span>
+                        <span class="ml-4 text-[#303133]">3707003500880000307</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">服务描述：</span>
+                        <span class="ml-4 flex-1 text-[#303133]">提供市级接口服务，支持数据查询与调用</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 接口信息 -->
+            <div id="service-detail-content-interface" class="p-5 hidden">
+                <div class="font-medium text-[#303133] mb-4">接口服务地址</div>
+                <div id="service-interface-info" class="space-y-3">
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">接口path：</span>
+                        <span class="ml-4 flex-1 text-[#303133]">/api/v1/city-service</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">代理前地址：</span>
+                        <span class="ml-4 flex-1 text-[#303133]">http://10.18.19.2:8080/original/api/v1/city-service</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">代理后地址：</span>
+                        <span class="ml-4 flex-1 text-[#303133]">https://data.example.com/proxy/api/v1/city-service</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">接口类型：</span>
+                        <span class="ml-4 flex-1 text-[#303133]">rest</span>
+                        <span class="w-[180px] text-right text-[#606266]">返回类型：</span>
+                        <span class="ml-4 text-[#303133]">json</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">请求方式：</span>
+                        <span class="ml-4 flex-1 text-[#303133]">POST</span>
+                    </div>
+                </div>
+
+                <div class="font-medium text-[#303133] mt-6 mb-4">请求参数</div>
+                <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-4 py-3 text-left font-medium text-[#606266]">参数名</th>
+                                <th class="px-4 py-3 text-left font-medium text-[#606266]">类型</th>
+                                <th class="px-4 py-3 text-left font-medium text-[#606266]">是否必填</th>
+                                <th class="px-4 py-3 text-left font-medium text-[#606266]">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100">
+                                <td class="px-4 py-3 text-[#303133]">id_card</td>
+                                <td class="px-4 py-3 text-[#606266]">string</td>
+                                <td class="px-4 py-3 text-[#606266]">是</td>
+                                <td class="px-4 py-3 text-[#606266]">身份证号</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 text-[#303133]">name</td>
+                                <td class="px-4 py-3 text-[#606266]">string</td>
+                                <td class="px-4 py-3 text-[#606266]">否</td>
+                                <td class="px-4 py-3 text-[#606266]">姓名</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="font-medium text-[#303133] mt-6 mb-4">返回参数</div>
+                <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-4 py-3 text-left font-medium text-[#606266]">参数名</th>
+                                <th class="px-4 py-3 text-left font-medium text-[#606266]">类型</th>
+                                <th class="px-4 py-3 text-left font-medium text-[#606266]">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100">
+                                <td class="px-4 py-3 text-[#303133]">code</td>
+                                <td class="px-4 py-3 text-[#606266]">int</td>
+                                <td class="px-4 py-3 text-[#606266]">状态码</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 text-[#303133]">data</td>
+                                <td class="px-4 py-3 text-[#606266]">object</td>
+                                <td class="px-4 py-3 text-[#606266]">业务数据</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 接口文档 -->
+            <div id="service-detail-content-doc" class="p-5 hidden">
+                <div class="font-medium text-[#303133] mb-4">接口文档</div>
+                <div id="service-doc-info" class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-file-lines text-[#1c7ffd]"></i>
+                            <span class="text-[#303133] font-medium">接口服务文档.docx</span>
+                        </div>
+                        <a href="#" class="text-sm text-[#1c7ffd] hover:text-[#1a73e8]">下载</a>
+                    </div>
+                    <div class="text-sm text-[#606266] leading-relaxed">
+                        <p>本文档描述了市级接口服务的调用方式、请求参数、返回参数及错误代码。</p>
+                        <p class="mt-2">包含完整的入参、返参说明，适用于数据共享与业务协同场景。</p>
+                    </div>
+                </div>
+
+                <div class="font-medium text-[#303133] mt-6 mb-4">错误代码</div>
+                <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-4 py-3 text-left font-medium text-[#606266]">错误码</th>
+                                <th class="px-4 py-3 text-left font-medium text-[#606266]">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100">
+                                <td class="px-4 py-3 text-[#303133]">200</td>
+                                <td class="px-4 py-3 text-[#606266]">成功</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="px-4 py-3 text-[#303133]">400</td>
+                                <td class="px-4 py-3 text-[#606266]">参数错误</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 text-[#303133]">500</td>
+                                <td class="px-4 py-3 text-[#606266]">服务器内部错误</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <!-- ===== 智能问数 - 聊天视图 ===== -->
-        <div id="qa-content" class="flex-1 flex flex-col overflow-hidden">
-            <div class="flex-1 overflow-y-auto p-4" id="chat-container">
-                <div class="flex flex-col gap-4" id="chat-messages">
-                    <div class="flex gap-3">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
-                            <i class="fa-solid fa-message-question text-white text-xs"></i>
-                        </div>
-                        <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
-                            <p class="text-sm text-[#606266]">您好！我是<strong>智能问数智能体</strong>。您可以向我咨询各类统计数据，例如"本月挂接率是多少？"或"资源申请最多的部门是哪个？"。请问有什么需要了解的？</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="p-4 border-t border-gray-100">
-                <div class="flex gap-3">
-                    <input type="text" id="chat-input" placeholder="输入您的问题..." class="flex-1 px-4 py-2.5 border border-gray-200 rounded-full text-sm focus:outline-none focus:border-[#667eea] focus:ring-2 focus:ring-[#667eea]/20 transition-all">
-                    <button onclick="sendMessage()" class="w-10 h-10 rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity" style="background: #36c2aa">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
-                </div>
-                <div class="flex items-center gap-2 mt-3 flex-wrap">
-                    <button onclick="quickQuestion('挂接率最低的部门是哪个？')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">挂接率最低的部门</button>
-                    <button onclick="quickQuestion('本月新增目录多少个？')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">本月新增目录</button>
-                    <button onclick="quickQuestion('接口调用最多的部门是？')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">接口调用最多的部门</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== 报告生成 - 聊天视图（与问数同风格） ===== -->
-        <div id="report-content" class="flex-1 flex flex-col overflow-hidden hidden">
-            <div class="flex-1 overflow-y-auto p-4" id="report-chat-container">
-                <div class="flex flex-col gap-4" id="report-chat-messages">
-                    <div class="flex gap-3">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #e6a23c">
-                            <i class="fa-solid fa-file-pen text-white text-xs"></i>
-                        </div>
-                        <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
-                            <p class="text-sm text-[#606266]">您好！我是<strong>报告生成智能体</strong>。点击下方按钮上传报告模板文件（支持 .docx / .xlsx / .pptx / .pdf），我将智能为您生成数据分析报告，生成后可下载。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="p-4 border-t border-gray-100">
-                <input type="file" id="report-file-input" accept=".docx,.xlsx,.pptx,.doc,.xls,.ppt,.pdf" class="hidden" onchange="handleReportFileUpload(event)">
-                <div class="flex gap-3">
-                    <button onclick="document.getElementById('report-file-input').click()" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-[#e6a23c] text-[#e6a23c] rounded-xl text-sm hover:bg-[#fffbf0] transition-all">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <span id="report-input-label">上传报告模板文件</span>
-                    </button>
-                    <button id="report-generate-btn" onclick="generateReport()" class="px-5 py-2.5 flex items-center gap-1 text-white rounded-xl text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all" style="background: #e6a23c" disabled>
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> 生成
-                    </button>
-                </div>
-                <div class="flex items-center gap-2 mt-3 flex-wrap">
-                    <button onclick="quickReport('word')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors"><i class="fa-regular fa-file-word mr-1"></i>Word模板</button>
-                    <button onclick="quickReport('excel')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors"><i class="fa-regular fa-file-excel mr-1"></i>Excel模板</button>
-                    <button onclick="quickReport('pptx')" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors"><i class="fa-regular fa-file-powerpoint mr-1"></i>PPT模板</button>
-                </div>
+        <!-- 抽屉底部 -->
+        <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-end shrink-0 bg-white">
+            <div class="flex items-center gap-3">
+                <button onclick="closeAuditDrawer()" class="px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    退回
+                </button>
+                <button class="px-5 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors">
+                    通过
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- 资源情况详情弹窗 -->
-    <div id="resourceDetailModal" class="fixed inset-0 bg-black/30 z-[80] hidden flex items-center justify-center transition-opacity">
-        <div class="bg-white rounded-lg shadow-2xl w-[900px] max-h-[90vh] flex flex-col">
-            <div class="p-5 border-b border-gray-100 flex items-center justify-between shrink-0">
-                <h3 class="font-bold text-[#303133] text-[16px]" id="modalDeptTitle">资源情况详情</h3>
-                <button onclick="closeResourceDetailModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+    <!-- 智能审核抽屉 -->
+    <div id="smart-audit-overlay" class="fixed inset-0 bg-black/30 z-[100] opacity-0 invisible transition-all duration-300" onclick="closeSmartAudit()"></div>
+    <div id="smart-audit-drawer" class="fixed top-0 right-0 bottom-0 w-[500px] bg-white z-[110] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="h-14 flex items-center justify-between px-5 border-b border-gray-100 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <i class="fa-solid fa-robot text-[#1c7ffd] text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-base text-[#303133]">智能审核</h3>
+                    <p class="text-[#909399] text-xs">AI辅助审核分析</p>
+                </div>
             </div>
-            <div class="p-5 overflow-y-auto flex-1">
-                <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div class="border border-gray-100 rounded-lg p-3">
-                        <h4 class="text-xs font-medium text-[#606266] mb-2 text-center">资源类型分布</h4>
-                        <div class="h-[150px]"><canvas id="modalTypeChart"></canvas></div>
+            <button onclick="closeSmartAudit()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- 进度条区域 -->
+        <div id="smart-audit-progress" class="flex-1 p-5 flex flex-col">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-spinner fa-spin text-3xl text-[#1c7ffd]"></i>
+                </div>
+                <h4 class="font-semibold text-lg text-[#303133]">正在进行智能审核...</h4>
+                <p class="text-[#606266] text-sm mt-1">AI正在分析服务信息，请稍候</p>
+            </div>
+
+            <div class="flex-1 space-y-4">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">服务名称规范性检查</span>
+                        <span id="step-1-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
-                    <div class="border border-gray-100 rounded-lg p-3">
-                        <h4 class="text-xs font-medium text-[#606266] mb-2 text-center">共享类型分布</h4>
-                        <div class="h-[150px]"><canvas id="modalShareChart"></canvas></div>
-                    </div>
-                    <div class="border border-gray-100 rounded-lg p-3">
-                        <h4 class="text-xs font-medium text-[#606266] mb-2 text-center">开放类型分布</h4>
-                        <div class="h-[150px]"><canvas id="modalOpenChart"></canvas></div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-1-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
-                
-                <h4 class="text-[14px] font-bold text-[#303133] mb-3">资源详情</h4>
-                <table class="w-full text-[13px] border-collapse text-left">
-                    <thead class="bg-gray-50 text-[#606266]">
-                        <tr>
-                            <th class="py-2 px-3 font-medium">资源名称</th>
-                            <th class="py-2 px-3 font-medium">所属目录</th>
-                            <th class="py-2 px-3 font-medium">资源类型</th>
-                            <th class="py-2 px-3 font-medium">共享类型</th>
-                            <th class="py-2 px-3 font-medium">开放类型</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-2 px-3 text-[#1c7ffd] cursor-pointer">人口基础信息库</td>
-                            <td class="py-2 px-3">基础数据库/人口库</td>
-                            <td class="py-2 px-3"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">库表</span></td>
-                            <td class="py-2 px-3">有条件共享</td>
-                            <td class="py-2 px-3">不可对社会开放</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-2 px-3 text-[#1c7ffd] cursor-pointer">法人基础信息接口</td>
-                            <td class="py-2 px-3">基础数据库/法人库</td>
-                            <td class="py-2 px-3"><span class="px-2 py-0.5 bg-green-50 text-[#36c2aa] rounded text-xs">接口</span></td>
-                            <td class="py-2 px-3">无条件共享</td>
-                            <td class="py-2 px-3">可对社会开放</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-2 px-3 text-[#1c7ffd] cursor-pointer">电子证照目录文件</td>
-                            <td class="py-2 px-3">主题数据库/证照库</td>
-                            <td class="py-2 px-3"><span class="px-2 py-0.5 bg-orange-50 text-[#e6a23c] rounded text-xs">文件</span></td>
-                            <td class="py-2 px-3">不予共享</td>
-                            <td class="py-2 px-3">部分对社会开放</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">接口地址格式检查</span>
+                        <span id="step-2-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-2-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">请求参数完整性检查</span>
+                        <span id="step-3-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-3-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">服务描述完整性检查</span>
+                        <span id="step-4-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-4-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button onclick="closeSmartAudit()" class="w-full px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+            </div>
+        </div>
+
+        <!-- 审核结果分析区域 -->
+        <div id="smart-audit-result" class="flex-1 overflow-y-auto p-5 hidden">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-check text-3xl text-green-500"></i>
+                </div>
+                <h4 class="font-semibold text-lg text-[#303133]">智能审核完成</h4>
+            </div>
+
+            <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 mb-5">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        <span class="text-[#606266] font-medium">检查 4 项，全部通过</span>
+                    </div>
+                    <span class="text-sm text-green-600 font-medium">建议通过</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-3 mb-5">
+                <div class="bg-gray-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-[#303133]">4</div>
+                    <div class="text-xs text-[#909399]">检查项总数</div>
+                </div>
+                <div class="bg-green-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-green-600">4</div>
+                    <div class="text-xs text-green-600/70">通过项</div>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-yellow-600">0</div>
+                    <div class="text-xs text-yellow-600/70">注意项</div>
+                </div>
+                <div class="bg-red-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-red-500">0</div>
+                    <div class="text-xs text-red-500/70">风险项</div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">服务名称规范性检查</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266] mb-2">服务名称'10-19-002-v1.6-接口市级服务'为正式服务名称，格式规范，未使用测试数据或无意义内容。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>服务名称应为正式的系统名称或服务名称，不能使用测试数据、数字等无意义内容，名称应能反映系统或服务的实际功能。
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">接口地址格式检查</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266] mb-2">接口path为/api/v1/city-service，代理前地址和代理后地址格式正确，符合URL规范。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>接口地址应为完整的URL格式，代理前地址需为http/https开头，代理后地址需为有效的访问路径。
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">请求参数完整性检查</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266] mb-2">请求参数包含id_card（必填）和name（选填），参数类型均为string，说明完整。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>请求参数应明确参数名、类型、是否必填和说明，必填参数不能为空，参数说明应清晰准确。
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">服务描述完整性检查</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266] mb-2">服务描述'提供市级接口服务，支持数据查询与调用'已填写，能够反映服务功能。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>服务描述应详细说明服务功能和用途，不能为空或过于简单，应能帮助用户理解服务内容。
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 bg-blue-50 rounded-lg p-4">
+                <div class="flex items-start gap-2">
+                    <i class="fa-solid fa-lightbulb text-[#1c7ffd] mt-1"></i>
+                    <div>
+                        <p class="text-sm font-medium text-[#303133] mb-1">智能建议</p>
+                        <p class="text-sm text-[#606266]">服务名称规范，接口地址格式正确，请求参数完整，服务描述清晰。建议审核通过。</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let currentAgent = 'qa';
-        const agents = {
-            qa: { name: '智能问数智能体', icon: 'fa-message-question', color: '#36c2aa', desc: '自然语言查询统计数据，问答式交互' },
-            report: { name: '报告生成智能体', icon: 'fa-file-pen', color: '#e6a23c', desc: '上传报告模板，智能生成分析报告，支持下载' }
-        };
+        function switchTab(tab) {
+            document.getElementById('tab-pending').className = tab === 'pending' ? 'pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]' : 'pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]';
+            document.getElementById('tab-approved').className = tab === 'approved' ? 'pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]' : 'pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]';
+            document.getElementById('pending-list').className = tab === 'pending' ? 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col' : 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col hidden';
+            document.getElementById('approved-list').className = tab === 'approved' ? 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col' : 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col hidden';
+        }
 
-        function toggleAIDrawer() {
-            const drawer = document.getElementById('ai-drawer');
-            const overlay = document.getElementById('ai-drawer-overlay');
-            const arrow = document.getElementById('drawer-arrow');
-            
-            if (drawer.classList.contains('translate-x-full')) {
-                drawer.classList.remove('translate-x-full');
-                overlay.classList.remove('hidden');
-                overlay.classList.remove('opacity-0');
-                arrow.classList.remove('fa-chevron-left');
-                arrow.classList.add('fa-chevron-right');
+        function resetSearch() {
+            document.getElementById('search-name').value = '';
+            document.getElementById('search-catalog').value = '';
+        }
+
+        function doSearch() {
+            alert('搜索功能');
+        }
+
+        function toggleFilter(filterId) {
+            const filter = document.getElementById(filterId);
+            if (filter.classList.contains('hidden')) {
+                const th = event.currentTarget.closest('th');
+                const rect = th.getBoundingClientRect();
+                filter.style.left = rect.left + 'px';
+                filter.style.top = rect.bottom + 'px';
+                filter.classList.remove('hidden');
+                
+                document.querySelectorAll('.filter-popup').forEach(el => {
+                    if (el.id !== filterId) el.classList.add('hidden');
+                });
             } else {
-                drawer.classList.add('translate-x-full');
-                overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
-                arrow.classList.remove('fa-chevron-right');
-                arrow.classList.add('fa-chevron-left');
+                filter.classList.add('hidden');
             }
         }
 
-        function selectAgent(agentId) {
-            document.querySelectorAll('.agent-card').forEach(card => {
-                card.classList.remove('agent-active');
-            });
-            document.getElementById('agent-' + agentId).classList.add('agent-active');
-            
-            currentAgent = agentId;
-
-            // 切换视图
-            document.getElementById('qa-content').classList.toggle('hidden', agentId !== 'qa');
-            document.getElementById('report-content').classList.toggle('hidden', agentId !== 'report');
+        function confirmFilter(filterId) {
+            document.getElementById(filterId).classList.add('hidden');
+            alert('筛选功能');
         }
 
-        // 数据使用统计 - Tab切换
-        function switchUsageTab(tab) {
-            const btnMap = { used: 'usageTabUsedBtn', use: 'usageTabUseBtn', demand: 'usageTabDemandBtn' };
-            const panelMap = { used: 'usageTabUsed', demand: 'usageTabDemand' };
-            // "各省直部门数据使用情况"目前无独立面板，复用被使用情况面板
-            const visiblePanel = (tab === 'use') ? 'usageTabUsed' : panelMap[tab];
-            Object.entries(btnMap).forEach(([key, btnId]) => {
-                const btnEl = document.getElementById(btnId);
-                if (!btnEl) return;
-                const isActive = (key === tab) || (tab === 'use' && key === 'used');
-                if (isActive) {
-                    btnEl.classList.add('font-bold', 'text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]');
-                    btnEl.classList.remove('font-medium', 'text-[#606266]');
+        function resetFilter(filterId) {
+            const filter = document.getElementById(filterId);
+            filter.querySelectorAll('.filter-checkbox').forEach(cb => {
+                cb.checked = true;
+            });
+            filter.classList.add('hidden');
+        }
+
+        function openAuditDrawer(name, catalog, provider) {
+            if (name) document.getElementById('service-detail-name').textContent = name;
+            if (name) document.getElementById('service-name-value').textContent = name;
+            if (catalog) document.getElementById('service-detail-catalog').textContent = catalog;
+            if (provider) document.getElementById('service-detail-provider').textContent = provider;
+            document.getElementById('service-detail-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('service-detail-drawer').classList.remove('translate-x-full');
+            startSmartAudit();
+        }
+
+        function closeAuditDrawer() {
+            document.getElementById('service-detail-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('service-detail-drawer').classList.add('translate-x-full');
+        }
+
+        function switchAuditTab(tab) {
+            const tabs = ['basic', 'interface', 'doc'];
+            tabs.forEach(t => {
+                const tabEl = document.getElementById('service-detail-tab-' + t);
+                const contentEl = document.getElementById('service-detail-content-' + t);
+                if (t === tab) {
+                    tabEl.className = 'px-6 py-3 font-medium text-sm text-[#1c7ffd] border-b-2 border-[#1c7ffd] cursor-pointer';
+                    contentEl.classList.remove('hidden');
                 } else {
-                    btnEl.classList.remove('font-bold', 'text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]');
-                    btnEl.classList.add('font-medium', 'text-[#606266]');
+                    tabEl.className = 'px-6 py-3 font-medium text-sm text-[#606266] border-b-2 border-transparent hover:text-[#1c7ffd] cursor-pointer';
+                    contentEl.classList.add('hidden');
                 }
             });
-            Object.values(panelMap).forEach(panelId => {
-                const panelEl = document.getElementById(panelId);
-                if (panelEl) panelEl.classList.toggle('hidden', panelId !== visiblePanel);
-            });
         }
 
-        function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const message = input.value.trim();
-            if (!message) return;
-            
-            input.value = '';
-            
-            const container = document.getElementById('chat-messages');
-            
-            container.innerHTML += `
-                <div class="flex gap-3 justify-end">
-                    <div class="bg-[#36c2aa] text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%]">
-                        <p class="text-sm">${message}</p>
-                    </div>
-                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-user text-gray-500 text-xs"></i>
-                    </div>
-                </div>
-            `;
-            
-            const loadingHtml = `
-                <div class="flex gap-3" id="msg-loading">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
-                        <i class="fa-solid fa-message-question text-white text-xs"></i>
-                    </div>
-                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3">
-                        <p class="text-sm text-[#606266] animate-pulse">智能问数智能体正在分析...</p>
-                    </div>
-                </div>
-            `;
-            container.innerHTML += loadingHtml;
-            container.scrollTop = container.scrollHeight;
-            
-            setTimeout(() => {
-                const loading = document.getElementById('msg-loading');
-                if (loading) loading.remove();
-                container.innerHTML += `
-                    <div class="flex gap-3">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
-                            <i class="fa-solid fa-message-question text-white text-xs"></i>
-                        </div>
-                        <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
-                            <p class="text-sm text-[#606266]">${generateAnswer(message)}</p>
-                        </div>
-                    </div>
-                `;
-                container.scrollTop = container.scrollHeight;
-            }, 1200);
+        function openSmartAudit() {
+            document.getElementById('smart-audit-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('smart-audit-drawer').classList.remove('translate-x-full');
         }
 
-        function generateAnswer(question) {
-            if (question.includes('挂接率') || question.includes('最低')) {
-                return '根据统计数据，挂接率最低的部门是<b>市卫健委</b>（71.8%），其次是<b>市教育局</b>（73.5%）。建议优先关注这些部门的挂接补全工作。';
-            } else if (question.includes('新增目录') || question.includes('本月新增')) {
-                return '本月新增目录共<b>1,350</b>个，同比增长12.5%。其中市大数据局贡献最大，新增380个。';
-            } else if (question.includes('接口') && (question.includes('最多') || question.includes('最大'))) {
-                return '接口调用最多的部门是<b>市公安局</b>（2.8亿次/月），其次是<b>市民政局</b>（1.5亿次/月）。';
-            } else if (question.includes('资源申请') || question.includes('申请最多')) {
-                return '资源被申请最多的部门是<b>市公安局</b>（被申请850次），覆盖28个使用部门，被申请率达45.2%。';
-            } else if (question.includes('共享') || question.includes('开放')) {
-                return '当前无条件共享目录4,580个（36.4%），有条件共享6,250个（49.7%），不予共享1,750个（13.9%）。建议对不予共享目录进行复核，挖掘共享潜力。';
-            } else {
-                return '当前数据目录总数<b>12,580</b>个，已挂接8,960个，挂接率71.2%。服务使用总数3,450件。如需更详细的分析，请提供具体的数据维度。';
-            }
+        function closeSmartAudit() {
+            document.getElementById('smart-audit-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('smart-audit-drawer').classList.add('translate-x-full');
         }
 
-        function quickQuestion(question) {
-            document.getElementById('chat-input').value = question;
-            sendMessage();
-        }
-
-        // ===== 报告生成智能体（聊天风格） =====
-        let uploadedReportFile = null;
-
-        function handleReportFileUpload(e) {
-            const files = e.target.files;
-            if (!files || !files.length) return;
-            const file = files[0];
-            uploadedReportFile = file;
-            document.getElementById('report-generate-btn').disabled = false;
-            document.getElementById('report-input-label').innerHTML = '<i class="fa-regular fa-file-lines"></i> ' + file.name;
-        }
-
-        function quickReport(type) {
-            const icons = { word: 'fa-regular fa-file-word', excel: 'fa-regular fa-file-excel', pptx: 'fa-regular fa-file-powerpoint' };
-            const labels = { word: 'Word模板', excel: 'Excel模板', pptx: 'PPT模板' };
-            document.getElementById('report-input-label').innerHTML = '<i class="' + icons[type] + '"></i> ' + labels[type] + '（请选择文件）';
-            document.getElementById('report-file-input').click();
-        }
-
-        function generateReport() {
-            if (!uploadedReportFile) return;
-            const file = uploadedReportFile;
-            const ext = file.name.match(/\.[^.]+$/)?.[0] || '.docx';
-            const baseName = file.name.replace(/\.[^.]+$/, '');
-            const container = document.getElementById('report-chat-messages');
-
-            // 发送"用户消息"显示已上传文件
-            container.innerHTML += `
-                <div class="flex gap-3 justify-end">
-                    <div class="bg-[#e6a23c] text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%]">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-regular fa-file-lines"></i>
-                            <span class="text-sm">已上传模板：${file.name}</span>
-                        </div>
-                    </div>
-                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-user text-gray-500 text-xs"></i>
-                    </div>
-                </div>
-            `;
-
-            // AI回复（含进度条）
-            const msgId = 'rmsg-' + Date.now();
-            container.innerHTML += `
-                <div class="flex gap-3" id="${msgId}">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #e6a23c">
-                        <i class="fa-solid fa-file-pen text-white text-xs"></i>
-                    </div>
-                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%] min-w-[280px]">
-                        <div class="mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="flex-1 h-2 bg-white rounded-full overflow-hidden">
-                                    <div id="r-progress-bar" class="h-full bg-gradient-to-r from-[#e6a23c] to-[#f5a623] rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                                <span id="r-progress-text" class="text-sm text-[#606266] w-12 text-right shrink-0">0%</span>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex items-center gap-2 text-xs">
-                                <span id="r-step1-icon" class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[9px] shrink-0">1</span>
-                                <span id="r-step1-text" class="text-[#909399]">正在解析模板结构...</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-xs">
-                                <span id="r-step2-icon" class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[9px] shrink-0">2</span>
-                                <span id="r-step2-text" class="text-[#909399]">正在查询统计数据...</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-xs">
-                                <span id="r-step3-icon" class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[9px] shrink-0">3</span>
-                                <span id="r-step3-text" class="text-[#909399]">正在生成报告文件...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            container.scrollTop = container.scrollHeight;
-
+        function startSmartAudit() {
             const steps = [
-                { pct: 30, step: 1, td: '正在解析模板结构...', dd: '模板结构解析完成' },
-                { pct: 60, step: 2, td: '正在查询统计数据...', dd: '统计数据查询完成' },
-                { pct: 100, step: 3, td: '正在生成报告文件...', dd: '报告文件生成完成' }
+                { id: 1, name: '服务名称规范性检查' },
+                { id: 2, name: '接口地址格式检查' },
+                { id: 3, name: '请求参数完整性检查' },
+                { id: 4, name: '服务描述完整性检查' }
             ];
-            let cur = 0, progress = 0;
-            setRStepChat(1, 'doing');
+            let currentStep = 0;
+            steps.forEach(s => {
+                document.getElementById('step-' + s.id + '-bar').style.width = '0%';
+                document.getElementById('step-' + s.id + '-percent').textContent = '0%';
+            });
+            document.getElementById('smart-audit-progress').classList.remove('hidden');
+            document.getElementById('smart-audit-progress').classList.add('flex', 'flex-col');
+            const resultEl = document.getElementById('smart-audit-result');
+            resultEl.classList.add('hidden');
+            resultEl.classList.remove('flex-1', 'overflow-y-auto');
 
-            const timer = setInterval(() => {
-                progress += 2;
-                if (progress >= steps[cur].pct) {
-                    setRStepChat(steps[cur].step, 'done', steps[cur].dd);
-                    cur++;
-                    if (cur < steps.length) setRStepChat(steps[cur].step, 'doing', steps[cur].td);
-                }
-                document.getElementById('r-progress-bar').style.width = progress + '%';
-                document.getElementById('r-progress-text').textContent = progress + '%';
+            document.getElementById('smart-audit-tip').className = 'mx-5 mt-4 p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between';
+            document.getElementById('smart-audit-icon').className = 'w-8 h-8 rounded-full bg-green-100 flex items-center justify-center';
+            document.getElementById('smart-audit-icon').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-green-500 text-sm"></i>';
+            document.getElementById('smart-audit-status').textContent = '正在智能审核中...';
+            document.getElementById('smart-audit-desc').textContent = 'AI正在分析服务信息，请稍候';
 
-                if (progress >= 100) {
-                    clearInterval(timer);
+            const stepInterval = setInterval(() => {
+                if (currentStep >= steps.length) {
+                    clearInterval(stepInterval);
                     setTimeout(() => {
-                        const msg = document.getElementById(msgId);
-                        if (msg) {
-                            msg.innerHTML = `
-                                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #e6a23c">
-                                    <i class="fa-solid fa-file-pen text-white text-xs"></i>
-                                </div>
-                                <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
-                                    <div class="flex items-center gap-2 text-green-600 font-medium mb-2">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                        <span class="text-sm">报告已生成</span>
-                                    </div>
-                                    <p class="text-xs text-[#909399] mb-3">已根据模板 "<strong>${file.name}</strong>" 生成数据分析报告</p>
-                                    <div class="flex gap-2">
-                                        <a href="#" onclick="downloadReport(event, '${baseName}_分析报告${ext}')" class="px-4 py-1.5 bg-[#e6a23c] text-white rounded-lg text-xs hover:bg-[#d4942a] transition-colors flex items-center gap-1">
-                                            <i class="fa-solid fa-download"></i> 下载报告
-                                        </a>
-                                        <button onclick="resetReport()" class="px-4 py-1.5 border border-gray-200 text-[#606266] rounded-lg text-xs hover:bg-gray-50 transition-colors">重新生成</button>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                        container.scrollTop = container.scrollHeight;
-                    }, 600);
+                        document.getElementById('smart-audit-progress').classList.add('hidden');
+                        document.getElementById('smart-audit-progress').classList.remove('flex', 'flex-col');
+                        resultEl.classList.remove('hidden');
+                        resultEl.classList.add('flex-1', 'overflow-y-auto');
+                        document.getElementById('smart-audit-tip').className = 'mx-5 mt-4 p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between';
+                        document.getElementById('smart-audit-icon').className = 'w-8 h-8 rounded-full bg-green-100 flex items-center justify-center';
+                        document.getElementById('smart-audit-icon').innerHTML = '<i class="fa-solid fa-check text-green-500 text-sm"></i>';
+                        document.getElementById('smart-audit-status').textContent = '智能审核完成';
+                        document.getElementById('smart-audit-desc').textContent = '检查 4 项，全部通过';
+                    }, 500);
+                    return;
                 }
-            }, 40);
-        }
-
-        function setRStepChat(step, state, text) {
-            const icon = document.getElementById('r-step' + step + '-icon');
-            const tEl = document.getElementById('r-step' + step + '-text');
-            if (!icon || !tEl) return;
-            if (state === 'doing') {
-                icon.className = 'w-4 h-4 rounded-full border-2 border-[#e6a23c] text-[#e6a23c] flex items-center justify-center text-[9px] shrink-0';
-                icon.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="font-size:8px"></i>';
-                tEl.className = 'text-[#303133] font-medium text-xs';
-            } else {
-                icon.className = 'w-4 h-4 rounded-full bg-[#e6a23c] text-white flex items-center justify-center text-[9px] shrink-0';
-                icon.innerHTML = '<i class="fa-solid fa-check" style="font-size:8px"></i>';
-                tEl.className = 'text-[#e6a23c] text-xs';
-            }
-            if (text) tEl.textContent = text;
-        }
-
-        function downloadReport(e, filename) {
-            e.preventDefault();
-            filename = filename || '分析报告.txt';
-            const content = '数据服务平台 - 分析报告\n\n一、总体概况\n数据目录总数：12,580个\n已挂接资源目录数：8,960个\n资源挂接率：71.2%\n本月新增目录：1,350个\n\n二、数据使用情况\n资源申请总数：3,450件\n资源申请率：27.4%\n库表交换总量：12.5亿\n接口调用总数：8.9亿\n\n三、各部门情况\n- 市卫健委挂接率最低：71.8%\n- 接口调用最多：市公安局 2.8亿次/月\n- 资源被申请最多：市公安局 850次\n\n生成时间：' + new Date().toLocaleString();
-            const blob = new Blob(['\ufeff' + content], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename.replace(/\.\w+$/, '.txt');
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        function resetReport() {
-            uploadedReportFile = null;
-            document.getElementById('report-file-input').value = '';
-            document.getElementById('report-generate-btn').disabled = true;
-            document.getElementById('report-input-label').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 上传报告模板文件';
-        }
-
-        function showDetail(type) {
-            let title = '', content = '';
-            if (type === 'ai-discovery-1') {
-                title = 'AI发现：挂接推进薄弱';
-                content = 'AI识别到市卫健委（71.8%）、市教育局（73.5%）挂接率连续落后于平均水平。建议优先梳理未挂接目录清单，按部门建立补挂接任务台账。';
-            } else if (type === 'ai-discovery-2') {
-                title = 'AI发现：共享策略待优化';
-                content = '当前不予共享目录1,750个，占比13.9%，主要集中在少数部门。建议先对高频使用目录开展复核，识别可转为有条件共享或无条件共享的资源。';
-            } else if (type === 'ai-advice') {
-                title = '优化建议：优先两步推进';
-                content = '第一步，优先补齐低挂接部门的目录映射和资源挂接；第二步，针对不予共享目录建立复核清单，分类推进共享策略优化，预计可同步提升挂接率与共享率。';
-            }
-            alert(`${title}\n\n${content}`);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const ctx1 = document.getElementById('catalogTrendChart').getContext('2d');
-            new Chart(ctx1, {
-                type: 'line',
-                data: {
-                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月预测', '2月预测', '3月预测'],
-                    datasets: [
-                        {
-                            label: '数据目录总数',
-                            data: [8500, 8900, 9200, 9600, 10100, 10500, 10900, 11300, 11700, 12100, 12350, 12580, null, null, null],
-                            borderColor: '#1c7ffd',
-                            backgroundColor: 'rgba(28, 127, 253, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 4,
-                            pointHoverRadius: 6
-                        },
-                        {
-                            label: '已挂接资源目录数',
-                            data: [5800, 6100, 6400, 6800, 7200, 7500, 7800, 8100, 8400, 8700, 8850, 8960, null, null, null],
-                            borderColor: '#36c2aa',
-                            backgroundColor: 'rgba(54, 194, 170, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 4,
-                            pointHoverRadius: 6
-                        },
-                        {
-                            label: 'AI预测趋势',
-                            data: [null, null, null, null, null, null, null, null, null, null, null, 12580, 12900, 13200, 13500],
-                            borderColor: '#f56c6c',
-                            backgroundColor: 'rgba(245, 108, 108, 0.05)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 4,
-                            pointHoverRadius: 6,
-                            borderDash: [5, 5]
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top', labels: { usePointStyle: true, padding: 20 } }
-                    },
-                    scales: { y: { beginAtZero: true, grid: { color: '#f0f0f0' } }, x: { grid: { display: false } } }
-                }
-            });
-
-            const ctx2 = document.getElementById('catalogShareChart').getContext('2d');
-            new Chart(ctx2, {
-                type: 'doughnut',
-                data: {
-                    labels: ['无条件共享', '有条件共享', '不予共享'],
-                    datasets: [{ data: [4580, 6250, 1750], backgroundColor: ['#36c2aa', '#1c7ffd', '#e6a23c'], borderWidth: 0, hoverOffset: 10 }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
-                    cutout: '60%'
-                }
-            });
-
-            // 数据资源统计相关图表
-            new Chart(document.getElementById('serviceTrendChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-                    datasets: [{
-                        label: '服务总数',
-                        data: [8500, 8900, 9200, 9800, 10500, 11200, 11800, 12580, null, null, null, null],
-                        borderColor: '#1c7ffd',
-                        backgroundColor: 'rgba(28, 127, 253, 0.1)',
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 15 } } },
-                    scales: {
-                        y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
-                        x: { grid: { display: false } }
+                const step = steps[currentStep];
+                let percent = 0;
+                const barEl = document.getElementById('step-' + step.id + '-bar');
+                const percentEl = document.getElementById('step-' + step.id + '-percent');
+                const percentInterval = setInterval(() => {
+                    percent += 10;
+                    if (percent >= 100) {
+                        percent = 100;
+                        clearInterval(percentInterval);
+                        currentStep++;
                     }
-                }
-            });
-            new Chart(document.getElementById('resourceTypeChart').getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['库表', '文件', '接口'],
-                    datasets: [{ data: [8240, 2150, 1580], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
-            });
+                    barEl.style.width = percent + '%';
+                    percentEl.textContent = percent + '%';
+                }, 80);
+            }, 1000);
+        }
 
-            new Chart(document.getElementById('usageResourceTypeChart').getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['库表', '接口', '文件'],
-                    datasets: [{ data: [1620, 980, 620], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
-            });
-
-            new Chart(document.getElementById('usageTrendChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-                    datasets: [
-                        {
-                            label: '接口调用次数（万次）',
-                            data: [820, 910, 880, 1020, 1150, 980, 1080],
-                            borderColor: '#1c7ffd',
-                            backgroundColor: 'rgba(28, 127, 253, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 4,
-                            pointHoverRadius: 6
-                        },
-                        {
-                            label: '库表使用量（万条）',
-                            data: [1050, 980, 1120, 1200, 1280, 1160, 1350],
-                            borderColor: '#36c2aa',
-                            backgroundColor: 'rgba(54, 194, 170, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 4,
-                            pointHoverRadius: 6
-                        },
-                        {
-                            label: '文件使用量（万份）',
-                            data: [320, 380, 350, 420, 460, 390, 450],
-                            borderColor: '#e6a23c',
-                            backgroundColor: 'rgba(230, 162, 60, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 4,
-                            pointHoverRadius: 6
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 20 } } },
-                    scales: { y: { beginAtZero: true, grid: { color: '#f0f0f0' } }, x: { grid: { display: false } } }
-                }
-            });
-
-            new Chart(document.getElementById('objectionTypeChart').getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['数据不一致', '数据缺失', '更新不及时', '字段含义', '其他'],
-                    datasets: [{ data: [420, 310, 260, 180, 80], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c', '#f56c6c', '#7a6df4'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
-            });
-
-            new Chart(document.getElementById('objectionStatusChart').getContext('2d'), {
-                type: 'pie',
-                data: {
-                    labels: ['待核查', '待审查', '审查通过', '已关闭'],
-                    datasets: [{ data: [48, 32, 1070, 100], backgroundColor: ['#e6a23c', '#f56c6c', '#36c2aa', '#909399'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 10 } } } }
-            });
-        });
-
-        let modalChartsInit = false;
-        function openResourceDetailModal(deptName) {
-            document.getElementById('modalDeptTitle').innerText = deptName + ' 资源情况详情';
-            document.getElementById('resourceDetailModal').classList.remove('hidden');
-            if (!modalChartsInit) {
-                new Chart(document.getElementById('modalTypeChart').getContext('2d'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['库表', '文件', '接口', '其他'],
-                        datasets: [{ data: [820, 210, 150, 70], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c', '#f56c6c'], borderWidth: 0 }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 } } } }, cutout: '50%' }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.filter-popup') && !e.target.closest('th')) {
+                document.querySelectorAll('.filter-popup').forEach(el => {
+                    el.classList.add('hidden');
                 });
-                new Chart(document.getElementById('modalShareChart').getContext('2d'), {
-                    type: 'pie',
-                    data: {
-                        labels: ['无条件', '有条件', '不予'],
-                        datasets: [{ data: [450, 680, 120], backgroundColor: ['#36c2aa', '#1c7ffd', '#e6a23c'], borderWidth: 0 }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 } } } } }
-                });
-                new Chart(document.getElementById('modalOpenChart').getContext('2d'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['可开放', '部分开放', '不开放'],
-                        datasets: [{ data: [520, 380, 350], backgroundColor: ['#1c7ffd', '#e6a23c', '#f56c6c'], borderWidth: 0 }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 } } } }, cutout: '50%' }
-                });
-                modalChartsInit = true;
             }
-        }
-        function closeResourceDetailModal() {
-            document.getElementById('resourceDetailModal').classList.add('hidden');
-        }
-
-        // 右侧路径导航 - 滚动监听高亮
-        const navItems = document.querySelectorAll('.nav-item');
-        const navDots = document.querySelectorAll('.nav-dot');
-        const navLabels = document.querySelectorAll('.nav-label');
-        const scrollContainer = document.getElementById('stat-scroll-container');
-        const sections = ['section-catalog', 'section-resource', 'section-usage', 'section-objection'].map(id => document.getElementById(id));
-
-        function updateActiveNav() {
-            const scrollTop = scrollContainer ? scrollContainer.scrollTop : (window.scrollY || document.documentElement.scrollTop);
-            let activeIndex = 0;
-            sections.forEach((sec, i) => {
-                if (sec && sec.offsetTop - 120 <= scrollTop) activeIndex = i;
-            });
-            navItems.forEach((item, i) => {
-                const dot = item.querySelector('.nav-dot');
-                const label = item.querySelector('.nav-label');
-                if (i === activeIndex) {
-                    dot.classList.remove('bg-gray-300');
-                    dot.classList.add('bg-[#1c7ffd]', 'w-3', 'h-3');
-                    label.classList.remove('text-gray-500');
-                    label.classList.add('text-[#1c7ffd]', 'font-medium');
-                } else {
-                    dot.classList.add('bg-gray-300');
-                    dot.classList.remove('bg-[#1c7ffd]', 'w-3', 'h-3');
-                    label.classList.add('text-gray-500');
-                    label.classList.remove('text-[#1c7ffd]', 'font-medium');
-                }
-            });
-        }
-
-        // 点击导航项平滑滚动
-        navItems.forEach(item => {
-            item.addEventListener('click', function(e) {
+            const auditLink = e.target.closest('#pending-list a');
+            if (auditLink && auditLink.textContent.trim() === '审核') {
                 e.preventDefault();
-                const targetId = this.getAttribute('data-target');
-                const target = document.getElementById(targetId);
-                if (target && scrollContainer) {
-                    scrollContainer.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
-                }
-            });
+                const row = auditLink.closest('tr');
+                const cells = row ? row.querySelectorAll('td') : [];
+                const name = cells[1] ? cells[1].textContent.trim() : '';
+                const catalog = cells[3] ? cells[3].textContent.trim() : '';
+                const provider = cells[4] ? cells[4].textContent.trim() : '';
+                openAuditDrawer(name, catalog, provider);
+            }
+            const viewLink = e.target.closest('#approved-list a');
+            if (viewLink && viewLink.textContent.trim() === '查看') {
+                e.preventDefault();
+                const row = viewLink.closest('tr');
+                const cells = row ? row.querySelectorAll('td') : [];
+                const name = cells[1] ? cells[1].textContent.trim() : '';
+                const catalog = cells[3] ? cells[3].textContent.trim() : '';
+                const provider = cells[4] ? cells[4].textContent.trim() : '';
+                openAuditDrawer(name, catalog, provider);
+            }
         });
-
-        if (scrollContainer) {
-            scrollContainer.addEventListener('scroll', updateActiveNav);
-        }
-        updateActiveNav();
     </script>
     <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
 
@@ -16213,4 +15774,3 @@ window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR
 <script src="./prototype-annotator/runtime/prototype-annotator.js?v=20260814g"></script>
 <!-- /Prototype Annotator runtime -->
 </body>
-</html>

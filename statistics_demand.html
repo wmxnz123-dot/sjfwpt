@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 需求数据量</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .stat-card { transition: all 0.3s ease; }
+        .stat-card:hover { box-shadow: 0 8px 16px rgba(28, 127, 253, 0.1); }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden relative bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <div class="h-[52px] flex items-center px-6 text-[#606266] shrink-0 bg-white border-b border-gray-100 text-[14px]">
+                <span>统计中心</span>
+                <span class="mx-2">/</span>
+                <span>申请使用统计</span>
+                <span class="mx-2">/</span>
+                <span class="font-medium text-[#303133]">需求数据量</span>
+            </div>
+
+            <div class="flex-1 p-6 overflow-y-auto">
+                <!-- 列表区 -->
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6">
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-[16px] font-bold text-[#303133]">需求数据明细</h2>
+                    </div>
+
+                    <!-- 搜索区 -->
+                    <div class="grid grid-cols-4 gap-x-6 gap-y-3 mb-5 p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] whitespace-nowrap text-sm">需求场景：</label>
+                            <input type="text" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] whitespace-nowrap text-sm">申请单位：</label>
+                            <input type="text" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] whitespace-nowrap text-sm">资源级别：</label>
+                            <select class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd] appearance-none bg-white">
+                                <option value="">全部</option>
+                                <option value="city">市县级</option>
+                                <option value="province">省级</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-end gap-2">
+                            <button class="px-4 py-1.5 bg-[#1c7ffd] text-white rounded text-[13px] hover:bg-blue-600 transition-colors">查询</button>
+                            <button class="px-4 py-1.5 border border-gray-300 text-[#606266] rounded text-[13px] hover:bg-gray-50 transition-colors">重置</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-[13px] border-collapse text-center whitespace-nowrap">
+                            <thead class="bg-gray-50 text-[#606266]">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium text-left">需求场景</th>
+                                    <th class="py-3 px-4 font-medium">需求目录</th>
+                                    <th class="py-3 px-4 font-medium">需求服务</th>
+                                    <th class="py-3 px-4 font-medium">申请单位</th>
+                                    <th class="py-3 px-4 font-medium">数据提供单位</th>
+                                    <th class="py-3 px-4 font-medium">资源级别</th>
+                                    <th class="py-3 px-4 font-medium">数据量</th>
+                                    <th class="py-3 px-4 font-medium">同步时间</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">人口核查</td>
+                                    <td class="py-3 px-4">人口基础信息库</td>
+                                    <td class="py-3 px-4">人口数据查询接口</td>
+                                    <td class="py-3 px-4">市公安局</td>
+                                    <td class="py-3 px-4">省公安厅</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">省级</span></td>
+                                    <td class="py-3 px-4">8,240万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-14 09:15</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">社保核验</td>
+                                    <td class="py-3 px-4">社保参保信息库</td>
+                                    <td class="py-3 px-4">社保数据交换服务</td>
+                                    <td class="py-3 px-4">市人社局</td>
+                                    <td class="py-3 px-4">省人社厅</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
+                                    <td class="py-3 px-4">3,580万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-14 08:42</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">婚姻登记</td>
+                                    <td class="py-3 px-4">婚姻登记信息库</td>
+                                    <td class="py-3 px-4">婚姻状态查询接口</td>
+                                    <td class="py-3 px-4">市民政局</td>
+                                    <td class="py-3 px-4">省民政厅</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
+                                    <td class="py-3 px-4">1,250万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-13 18:30</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">企业监管</td>
+                                    <td class="py-3 px-4">法人基础信息库</td>
+                                    <td class="py-3 px-4">企业工商登记接口</td>
+                                    <td class="py-3 px-4">市市场监管局</td>
+                                    <td class="py-3 px-4">省市场监管局</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
+                                    <td class="py-3 px-4">2,860万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-13 16:05</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">医疗协同</td>
+                                    <td class="py-3 px-4">健康医疗数据库</td>
+                                    <td class="py-3 px-4">健康医疗数据接口</td>
+                                    <td class="py-3 px-4">市卫健委</td>
+                                    <td class="py-3 px-4">省卫健委</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">省级</span></td>
+                                    <td class="py-3 px-4">5,620万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-13 14:20</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">教育查询</td>
+                                    <td class="py-3 px-4">学籍信息库</td>
+                                    <td class="py-3 px-4">学籍查询接口</td>
+                                    <td class="py-3 px-4">市教育局</td>
+                                    <td class="py-3 px-4">省教育厅</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
+                                    <td class="py-3 px-4">2,150万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-13 11:08</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">税务核查</td>
+                                    <td class="py-3 px-4">税务登记信息库</td>
+                                    <td class="py-3 px-4">税务数据交换接口</td>
+                                    <td class="py-3 px-4">市税务局</td>
+                                    <td class="py-3 px-4">省税务局</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">省级</span></td>
+                                    <td class="py-3 px-4">4,820万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-13 09:55</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">住房查询</td>
+                                    <td class="py-3 px-4">不动产登记信息库</td>
+                                    <td class="py-3 px-4">不动产查询接口</td>
+                                    <td class="py-3 px-4">市自然资源局</td>
+                                    <td class="py-3 px-4">省自然资源厅</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
+                                    <td class="py-3 px-4">980万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-12 17:42</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">交通管理</td>
+                                    <td class="py-3 px-4">车辆登记信息库</td>
+                                    <td class="py-3 px-4">车辆信息查询接口</td>
+                                    <td class="py-3 px-4">市公安局交警支队</td>
+                                    <td class="py-3 px-4">省公安厅交警总队</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
+                                    <td class="py-3 px-4">1,850万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-12 15:30</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-[#303133] text-left">信用查询</td>
+                                    <td class="py-3 px-4">公共信用信息库</td>
+                                    <td class="py-3 px-4">信用查询服务</td>
+                                    <td class="py-3 px-4">市发改委</td>
+                                    <td class="py-3 px-4">省发改委</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">省级</span></td>
+                                    <td class="py-3 px-4">3,420万条</td>
+                                    <td class="py-3 px-4 text-[#909399]">2026-08-12 10:18</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="flex items-center justify-between mt-5 text-[13px] text-[#606266]">
+                        <div>共 <span class="text-[#303133] font-medium">128</span> 条</div>
+                        <div class="flex items-center gap-2">
+                            <button class="px-3 py-1 border border-gray-200 rounded text-[#909399] cursor-not-allowed" disabled>上一页</button>
+                            <button class="px-3 py-1 bg-[#1c7ffd] text-white rounded">1</button>
+                            <button class="px-3 py-1 border border-gray-200 rounded hover:bg-gray-50">2</button>
+                            <button class="px-3 py-1 border border-gray-200 rounded hover:bg-gray-50">3</button>
+                            <button class="px-3 py-1 border border-gray-200 rounded hover:bg-gray-50">下一页</button>
+                            <span class="ml-2">每页</span>
+                            <select class="h-7 px-2 border border-gray-200 rounded text-[13px] bg-white">
+                                <option>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                            </select>
+                            <span>条</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -555,7 +555,7 @@
             <div class="flex-1 space-y-4">
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">数据完整性检查</span>
+                        <span class="text-sm text-[#606266]">信息资源名称规范性检查</span>
                         <span id="step-1-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -564,7 +564,7 @@
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">合规性检测</span>
+                        <span class="text-sm text-[#606266]">目录颗粒度合理性检查</span>
                         <span id="step-2-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -573,7 +573,7 @@
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">共享属性分析</span>
+                        <span class="text-sm text-[#606266]">共享类型匹配性检查</span>
                         <span id="step-3-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -582,11 +582,20 @@
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">开放属性评估</span>
+                        <span class="text-sm text-[#606266]">信息资源摘要完整性检查</span>
                         <span id="step-4-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div id="step-4-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">信息项名称规范性检查</span>
+                        <span id="step-5-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-5-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
@@ -625,11 +634,11 @@
                     <div class="text-xs text-[#909399]">检查项总数</div>
                 </div>
                 <div class="bg-green-50 rounded-lg p-3 text-center">
-                    <div class="text-lg font-bold text-green-600">3</div>
+                    <div class="text-lg font-bold text-green-600">4</div>
                     <div class="text-xs text-green-600/70">通过项</div>
                 </div>
                 <div class="bg-yellow-50 rounded-lg p-3 text-center">
-                    <div class="text-lg font-bold text-yellow-600">1</div>
+                    <div class="text-lg font-bold text-yellow-600">0</div>
                     <div class="text-xs text-yellow-600/70">注意项</div>
                 </div>
                 <div class="bg-red-50 rounded-lg p-3 text-center">
@@ -643,46 +652,61 @@
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">数据完整性检查</span>
+                        <span class="font-medium text-[#303133]">信息资源名称规范性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">目录数据项完整，所有必填字段均已填写，无缺失信息。</p>
+                    <p class="text-sm text-[#606266] mb-2">信息资源名称"企业注册登记信息"为结果信息类名称，未使用系统名、工作名、事项名等，能够反映资源实际内容。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>信息资源名称应填写政务信息资源内容的标题，强调结果信息类，不是动作类。
+                    </div>
                 </div>
 
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">合规性检测</span>
+                        <span class="font-medium text-[#303133]">目录颗粒度合理性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">数据分类符合规范，编码格式正确，符合政务数据目录编制标准。</p>
+                    <p class="text-sm text-[#606266] mb-2">目录聚焦单一业务对象的结果信息，未出现拆分不到位或拆分过细的情况，颗粒度合理。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>每个信息资源目录应聚焦单一业务对象，包含多个业务对象的应拆分，同一业务的多个文件可合并。
+                    </div>
                 </div>
 
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">共享属性分析</span>
+                        <span class="font-medium text-[#303133]">共享类型匹配性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">共享属性设置合理，"无条件共享"符合数据特性，建议保持当前设置。</p>
-                </div>
-
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <div class="flex items-center gap-2 mb-3">
-                        <i class="fa-solid fa-exclamation-circle text-yellow-500"></i>
-                        <span class="font-medium text-[#303133]">开放属性评估</span>
-                        <span class="ml-auto px-2 py-0.5 bg-yellow-50 text-yellow-600 text-xs rounded">注意</span>
+                    <p class="text-sm text-[#606266] mb-2">共享类型为"无条件共享"，使用要求已标明（作为行政依据、工作参考），与数据特性匹配。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>共享类型与数据特性匹配，使用要求、共享条件、共享范围完整，不予共享类需有法律法规依据。
                     </div>
-                    <p class="text-sm text-[#606266]">当前设置为"不予开放"，建议根据数据敏感程度评估是否可调整为"有条件开放"。</p>
                 </div>
 
                 <div class="border border-red-200 rounded-lg p-4 bg-red-50/50">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-x-circle text-red-500"></i>
-                        <span class="font-medium text-[#303133]">数据完整性检查</span>
+                        <span class="font-medium text-[#303133]">信息资源摘要完整性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-red-50 text-red-600 text-xs rounded">风险</span>
                     </div>
-                    <p class="text-sm text-[#606266]">发现缺失字段：数据资源摘要为空，信息项数量为0，建议补充完整后重新提交审核。</p>
+                    <p class="text-sm text-[#606266] mb-2">发现数据资源摘要为空，未填写数据范围、主要数据项、数据起始时间等关键信息，建议补充完整后重新提交。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>摘要应包含数据范围、主要数据项、数据起始时间等关键信息，不能与资源名称重复或为空。
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">信息项名称规范性检查</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266] mb-2">信息项名称（姓名、身份证号、联系电话、注册地址等）均为具体业务字段名称，未使用系统名、目录名等概括性名称。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>信息项名称应为具体的业务字段名称，不能使用系统名、目录名等概括性名称。
+                    </div>
                 </div>
             </div>
 
@@ -695,15 +719,11 @@
                 <ul class="text-sm text-[#606266] space-y-2">
                     <li class="flex items-start gap-2">
                         <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 shrink-0"></span>
-                        <span>建议补充数据资源摘要，提高目录可读性</span>
+                        <span>建议补充数据资源摘要，包含数据范围、主要数据项、数据起始时间等关键信息</span>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 shrink-0"></span>
-                        <span>建议添加信息项描述，便于用户理解数据结构</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 shrink-0"></span>
-                        <span>建议定期更新数据，确保数据时效性</span>
+                        <span>建议参考标准模板填写摘要，避免与资源名称重复</span>
                     </li>
                 </ul>
             </div>
@@ -782,14 +802,10 @@
             document.getElementById('smart-audit-result').classList.add('hidden');
             
             // 重置进度条
-            document.getElementById('step-1-bar').style.width = '0%';
-            document.getElementById('step-1-percent').textContent = '0%';
-            document.getElementById('step-2-bar').style.width = '0%';
-            document.getElementById('step-2-percent').textContent = '0%';
-            document.getElementById('step-3-bar').style.width = '0%';
-            document.getElementById('step-3-percent').textContent = '0%';
-            document.getElementById('step-4-bar').style.width = '0%';
-            document.getElementById('step-4-percent').textContent = '0%';
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('step-' + i + '-bar').style.width = '0%';
+                document.getElementById('step-' + i + '-percent').textContent = '0%';
+            }
 
             // 开始进度动画
             startSmartAudit();
@@ -805,7 +821,7 @@
         // 自动执行智能审核
         function performSmartAudit() {
             let step = 1;
-            const totalSteps = 4;
+            const totalSteps = 5;
             
             function animateStep() {
                 if (step > totalSteps) {
@@ -838,14 +854,10 @@
             }
             
             // 重置进度条
-            document.getElementById('step-1-bar').style.width = '0%';
-            document.getElementById('step-1-percent').textContent = '0%';
-            document.getElementById('step-2-bar').style.width = '0%';
-            document.getElementById('step-2-percent').textContent = '0%';
-            document.getElementById('step-3-bar').style.width = '0%';
-            document.getElementById('step-3-percent').textContent = '0%';
-            document.getElementById('step-4-bar').style.width = '0%';
-            document.getElementById('step-4-percent').textContent = '0%';
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('step-' + i + '-bar').style.width = '0%';
+                document.getElementById('step-' + i + '-percent').textContent = '0%';
+            }
             
             animateStep();
         }
@@ -853,7 +865,7 @@
         // 智能审核进度动画
         function startSmartAudit() {
             let step = 1;
-            const totalSteps = 4;
+            const totalSteps = 5;
             
             function animateStep() {
                 if (step > totalSteps) {

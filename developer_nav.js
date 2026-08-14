@@ -30,7 +30,7 @@ const developerSideNavMap = {
             icon: 'fa-server',
             children: [
                 { type: 'link', label: '服务注册', href: 'service_register.html?nav=resource-service', navKey: 'resource-service' },
-                { type: 'link', label: '服务审核', href: 'service_audit.html?nav=resource-service-audit', navKey: 'resource-service-audit', disabled: true },
+                { type: 'link', label: '服务审核', href: 'service_audit.html?nav=resource-service-audit', navKey: 'resource-service-audit' },
                 { type: 'link', label: '服务交付', href: 'service_delivery.html?nav=resource-service-delivery', navKey: 'resource-service-delivery' }
             ]
         }
@@ -136,7 +136,8 @@ const developerSideNavMap = {
                 { type: 'link', label: '服务被调用情况', href: '', navKey: 'statistics-service-called', disabled: true },
                 { type: 'link', label: '部门调用情况', href: '', navKey: 'statistics-dept-call', disabled: true },
                 { type: 'link', label: '区划调用情况', href: '', navKey: 'statistics-region-call', disabled: true },
-                { type: 'link', label: '部门接口调用情况', href: '', navKey: 'statistics-dept-api-call', disabled: true }
+                { type: 'link', label: '部门接口调用情况', href: '', navKey: 'statistics-dept-api-call', disabled: true },
+                { type: 'link', label: '需求数据量', href: 'statistics_demand.html?nav=statistics-demand', navKey: 'statistics-demand' }
             ]
         },
         { type: 'link', label: '基础库统计', href: '', navKey: 'statistics-database', disabled: true, icon: 'fa-database' },
@@ -194,6 +195,7 @@ const developerPathDefaults = {
     'objection_accept.html': { group: 'objection', navKey: 'objection-accept' },
     
     'statistics_dashboard.html': { group: 'statistics', navKey: 'statistics-dashboard' },
+    'statistics_demand.html': { group: 'statistics', navKey: 'statistics-demand' },
     'config_center.html': { group: 'config', navKey: 'config-scene' },
     'scene_add.html': { group: 'config', navKey: 'config-scene' },
     'monitor_service_monitor.html': { group: 'monitor', navKey: 'monitor-service-monitor' },

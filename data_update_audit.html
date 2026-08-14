@@ -394,7 +394,7 @@
             <div class="flex-1 space-y-4">
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">标准模板校验</span>
+                        <span class="text-sm text-[#606266]">标准模板规范性检查</span>
                         <span id="step-1-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -403,7 +403,7 @@
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">空值检测</span>
+                        <span class="text-sm text-[#606266]">函数公式检测</span>
                         <span id="step-2-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -412,29 +412,11 @@
                 </div>
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">重复数据检测</span>
+                        <span class="text-sm text-[#606266]">时间格式正确性检查</span>
                         <span id="step-3-percent" class="text-sm text-[#606266]">0%</span>
                     </div>
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div id="step-3-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">Excel函数公式检测</span>
-                        <span id="step-4-percent" class="text-sm text-[#606266]">0%</span>
-                    </div>
-                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div id="step-4-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-[#606266]">日期格式校验</span>
-                        <span id="step-5-percent" class="text-sm text-[#606266]">0%</span>
-                    </div>
-                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div id="step-5-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
@@ -459,7 +441,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <i class="fa-solid fa-circle-check text-green-500"></i>
-                        <span class="text-[#606266] font-medium">检查 5 项，全部通过</span>
+                        <span class="text-[#606266] font-medium">检查 3 项，全部通过</span>
                     </div>
                     <span class="text-sm text-green-600 font-medium">建议通过</span>
                 </div>
@@ -467,11 +449,11 @@
 
             <div class="grid grid-cols-4 gap-3 mb-5">
                 <div class="bg-gray-50 rounded-lg p-3 text-center">
-                    <div class="text-lg font-bold text-[#303133]">5</div>
+                    <div class="text-lg font-bold text-[#303133]">3</div>
                     <div class="text-xs text-[#909399]">检查项总数</div>
                 </div>
                 <div class="bg-green-50 rounded-lg p-3 text-center">
-                    <div class="text-lg font-bold text-green-600">5</div>
+                    <div class="text-lg font-bold text-green-600">3</div>
                     <div class="text-xs text-green-600/70">通过项</div>
                 </div>
                 <div class="bg-yellow-50 rounded-lg p-3 text-center">
@@ -488,46 +470,37 @@
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">标准模板校验</span>
+                        <span class="font-medium text-[#303133]">标准模板规范性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">Excel文件使用标准模板，字段结构与目录定义一致。</p>
+                    <p class="text-sm text-[#606266] mb-2">Excel文件使用平台下发的标准模板，字段名称、顺序、类型与目录定义一致，未自行增删字段列。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>文件必须使用平台下发的标准模板，字段名称、顺序、类型应与目录定义一致，不得自行增删字段列。
+                    </div>
                 </div>
 
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">空值检测</span>
+                        <span class="font-medium text-[#303133]">函数公式检测</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">空值率2.3%，低于阈值5%，未发现大量信息项数据为空现象。</p>
+                    <p class="text-sm text-[#606266] mb-2">未检测到Excel函数公式（如SUM、VLOOKUP、IF等），所有单元格均为纯文本或数值。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>所有单元格应为纯文本或数值，不得包含函数公式，如有计算字段应转换为实际值。
+                    </div>
                 </div>
 
                 <div class="border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">重复数据检测</span>
+                        <span class="font-medium text-[#303133]">时间格式正确性检查</span>
                         <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
                     </div>
-                    <p class="text-sm text-[#606266]">未发现重复数据记录。</p>
-                </div>
-
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <div class="flex items-center gap-2 mb-3">
-                        <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">Excel函数公式检测</span>
-                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    <p class="text-sm text-[#606266] mb-2">Date类型字段格式为2026-08-04（YYYY-MM-DD），Datetime类型字段格式为2026-08-04 09:00:00（YYYY-MM-DD HH:MM:SS），均符合规范。</p>
+                    <div class="text-xs text-[#909399] bg-gray-50 rounded p-2">
+                        <span class="text-[#606266]">审核标准：</span>Datetime类型字段必须为YYYY-MM-DD HH:MM:SS格式，Date类型字段必须为YYYY-MM-DD格式，不得使用其他日期格式。
                     </div>
-                    <p class="text-sm text-[#606266]">未检测到Excel函数公式，数据均为纯文本或数值。</p>
-                </div>
-
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <div class="flex items-center gap-2 mb-3">
-                        <i class="fa-solid fa-check-circle text-green-500"></i>
-                        <span class="font-medium text-[#303133]">日期格式校验</span>
-                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
-                    </div>
-                    <p class="text-sm text-[#606266]">Date类型字段格式为2026-08-04，Datetime类型字段格式为2026-08-04 09:00:00，符合规范。</p>
                 </div>
             </div>
 
@@ -536,7 +509,7 @@
                     <i class="fa-solid fa-lightbulb text-[#1c7ffd] mt-1"></i>
                     <div>
                         <p class="text-sm font-medium text-[#303133] mb-1">智能建议</p>
-                        <p class="text-sm text-[#606266]">数据文件符合标准模板，空值率和重复率均在合理范围内，未检测到Excel函数公式，日期格式正确。建议审核通过。</p>
+                        <p class="text-sm text-[#606266]">数据文件符合标准模板，未检测到Excel函数公式，时间格式正确。建议审核通过。</p>
                     </div>
                 </div>
             </div>
@@ -602,11 +575,9 @@
 
         function startSmartAudit() {
             const steps = [
-                { id: 1, name: '标准模板校验' },
-                { id: 2, name: '空值检测' },
-                { id: 3, name: '重复数据检测' },
-                { id: 4, name: 'Excel函数公式检测' },
-                { id: 5, name: '日期格式校验' }
+                { id: 1, name: '标准模板规范性检查' },
+                { id: 2, name: '函数公式检测' },
+                { id: 3, name: '时间格式正确性检查' }
             ];
             let currentStep = 0;
             steps.forEach(s => {
