@@ -300,6 +300,12 @@
       "title": "数据服务平台 - 开发工作台",
       "path": "workbench.html",
       "route": "/workbench.html"
+    },
+    {
+      "pageKey": "P51",
+      "title": "数据服务平台 - 数据更新审核",
+      "path": "data_update_audit.html",
+      "route": "/data_update_audit.html"
     }
   ],
   "surfaces": [
@@ -1146,6 +1152,39 @@
       "scanSource": "static-inferred",
       "scanQuality": "static-inferred",
       "titleText": "基本信息"
+    },
+    {
+      "id": "surface-P42-service-detail-drawer",
+      "type": "drawer",
+      "name": "服务交付详情",
+      "pageKey": "P42",
+      "openSelector": "#service-detail-drawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "服务交付详情"
+    },
+    {
+      "id": "surface-P51-audit-drawer",
+      "type": "drawer",
+      "name": "数据更新详情",
+      "pageKey": "P51",
+      "openSelector": "#audit-drawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "数据更新详情"
+    },
+    {
+      "id": "surface-P51-smart-audit-drawer",
+      "type": "drawer",
+      "name": "智能审核",
+      "pageKey": "P51",
+      "openSelector": "#smart-audit-drawer",
+      "visibility": "on-trigger",
+      "scanSource": "static-inferred",
+      "scanQuality": "static-inferred",
+      "titleText": "智能审核"
     }
   ],
   "annotations": [
@@ -1413,7 +1452,7 @@
       "target": {
         "selector": "h1",
         "fallbackText": "欢迎登录，yiyun！",
-        "strategy": "tag",
+        "strategy": "manual",
         "sourceElementId": "P04-E006",
         "boundsHint": {
           "text": "欢迎登录，yiyun！",
@@ -1421,7 +1460,7 @@
         }
       },
       "title": "欢迎登录，yiyun！ · 页面介绍",
-      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「欢迎登录，yiyun！」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「欢迎登录，yiyun！」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作台」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「欢迎登录，yiyun！」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 5 目录发布审核\n- 2 需求审核\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「欢迎登录，yiyun！」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「欢迎登录，yiyun！」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 中完成与「数据服务平台 - 工作台」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「欢迎登录，yiyun！」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 5 目录发布审核\n- 2 需求审核\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？",
       "devNotesMarkdown": null,
       "audienceMode": "product-review",
       "annotationType": "P",
@@ -1465,7 +1504,7 @@
         "status": "pending",
         "reason": "product-copy-draft"
       },
-      "updatedAt": "2026-08-13T07:42:57Z",
+      "updatedAt": "2026-08-13T09:02:04.304Z",
       "order": 1
     },
     {
@@ -2932,7 +2971,7 @@
       "target": {
         "selector": "main > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1) > h2",
         "fallbackText": "目录待提交列表",
-        "strategy": "path",
+        "strategy": "manual",
         "sourceElementId": "P11-E010",
         "boundsHint": {
           "text": "目录待提交列表",
@@ -2940,7 +2979,7 @@
         }
       },
       "title": "目录待提交列表 · 页面介绍",
-      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「目录待提交列表」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「目录待提交列表」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「目录待提交列表」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 请输入\n- 请选择 无条件共享 有条件共享 不予共享\n- 10条/页 20条/页 50条/页 100条/页\n- 序号 数据资源目录代码 数据资源目录名称 共享…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「目录待提交列表」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「目录待提交列表」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 中完成与「数据服务平台 - 目录编制」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「目录待提交列表」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 请输入\n- 请选择 无条件共享 有条件共享 不予共享\n- 10条/页 20条/页 50条/页 100条/页\n- 序号 数据资源目录代码 数据资源目录名称 共享…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？",
       "devNotesMarkdown": null,
       "audienceMode": "product-review",
       "annotationType": "P",
@@ -2985,7 +3024,7 @@
         "status": "pending",
         "reason": "product-copy-draft"
       },
-      "updatedAt": "2026-08-13T07:42:57Z",
+      "updatedAt": "2026-08-13T09:04:43.004Z",
       "order": 1
     },
     {
@@ -5167,7 +5206,7 @@
       "target": {
         "selector": "h1",
         "fallbackText": "数据驱动价值 服务赋能创新",
-        "strategy": "tag",
+        "strategy": "manual",
         "sourceElementId": "P21-E003",
         "boundsHint": {
           "text": "数据驱动价值 服务赋能创新",
@@ -5175,7 +5214,7 @@
         }
       },
       "title": "数据驱动价值 服务赋能创新 · 页面介绍",
-      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「数据驱动价值 服务赋能创新」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「数据驱动价值 服务赋能创新」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「数据驱动价值 服务赋能创新」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 01 2026-08 数据服务平台 3.0 版…\n- 28 2026-07 智能问答助手升级：支持自…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「数据驱动价值 服务赋能创新」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「数据驱动价值 服务赋能创新」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「数据驱动价值 服务赋能创新」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 01 2026-08 数据服务平台 3.0 版…\n- 28 2026-07 智能问答助手升级：支持自…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？",
       "devNotesMarkdown": null,
       "audienceMode": "product-review",
       "annotationType": "P",
@@ -5219,7 +5258,7 @@
         "status": "pending",
         "reason": "product-copy-draft"
       },
-      "updatedAt": "2026-08-13T07:42:57Z",
+      "updatedAt": "2026-08-13T08:56:04.686Z",
       "order": 1
     },
     {
@@ -13059,34 +13098,6 @@
       "order": 1
     },
     {
-      "id": "ANN-P21-004",
-      "pageKey": "P21",
-      "target": {
-        "selector": "section:nth-of-type(3) > div > div:nth-of-type(1) > div > h2",
-        "fallbackText": "数据资源中心",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "h2"
-        }
-      },
-      "title": "数据资源中心",
-      "contentMarkdown": "### 业务含义\n\n按照发布时间倒序",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 4,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-13T07:45:04.324Z"
-    },
-    {
       "id": "ANN-P21-005",
       "pageKey": "P21",
       "target": {
@@ -13141,34 +13152,6 @@
       },
       "createdBy": "manual",
       "updatedAt": "2026-08-13T07:50:15.619Z"
-    },
-    {
-      "id": "ANN-P21-006",
-      "pageKey": "P21",
-      "target": {
-        "selector": "section:nth-of-type(3) > div > div:nth-of-type(1) > div > p",
-        "fallbackText": "丰富的数据资源，助力业务创新发展",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "p"
-        }
-      },
-      "title": "丰富的数据资源，助力业务创新发展",
-      "contentMarkdown": "### 业务含义\n\n按发布时间倒序",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 6,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-13T08:05:33.818Z"
     },
     {
       "id": "ANN-P29-012",
@@ -13255,34 +13238,6 @@
       "updatedAt": "2026-08-13T08:07:28.522Z"
     },
     {
-      "id": "ANN-P04-004",
-      "pageKey": "P04",
-      "target": {
-        "selector": "div:nth-of-type(1) > main > div:nth-of-type(2) > div:nth-of-type(2)",
-        "fallbackText": "业务概览 128 已发布目录数 86 已发布服务数 53 申请服务数 42 供给服务数",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "div"
-        }
-      },
-      "title": "业务概览 128 已发布目录数 86 已发布服务",
-      "contentMarkdown": "### 业务含义\n\n1212",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 4,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-13T08:07:41.271Z"
-    },
-    {
       "id": "ANN-P29-015",
       "pageKey": "P29",
       "target": {
@@ -13337,6 +13292,856 @@
       },
       "createdBy": "manual",
       "updatedAt": "2026-08-13T08:08:12.544Z"
+    },
+    {
+      "id": "ANN-P10-AUDIT-01",
+      "pageKey": "P10",
+      "target": {
+        "selector": "#audit-catalog-name",
+        "fallbackText": "目录名称：测试0317",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "目录名称：测试0317",
+          "tag": "div"
+        }
+      },
+      "title": "信息资源名称审核要点",
+      "contentMarkdown": "### 审核要点\n\n信息资源名称应填写政务信息资源内容的标题，强调部门在履行职能过程中产生、管理和使用的各类信息（结果信息类），不是动作类。\n\n### 填写要求\n\n对资源内容的描述，尽量使用相关文件或有明确规定的名称，如果没有也要尽量贴近资源内容。如：企业注册登记信息。\n\n### 错误样例\n\n1. 不能使用信息系统名、工作名、事项名、职责、文件名等内容作为信息资源名称。\n2. 管理、审批、考核、对某某的处罚等不符合规定。\n   - 信息系统名：全国救助管理信息系统\n   - 工作名：规划编制规范性文件制定工作\n\n### 正确样例\n\n- 群众走访登记信息\n- 事业单位法人登记信息\n- 学校安全管理信息\n- 律师执业信息\n- 民办职业培训机构设立审批信息\n\n### 注意事项\n\n信息资源名称强调的是结果信息类，不是动作类。如\"对水路运输的处罚\"应改为\"水路运输的处罚结果信息\"。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 1,
+      "surfaceId": "surface-P10-audit-drawer"
+    },
+    {
+      "id": "ANN-P10-AUDIT-02",
+      "pageKey": "P10",
+      "target": {
+        "selector": "#audit-tab-info",
+        "fallbackText": "数据资源目录信息",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "数据资源目录信息",
+          "tag": "div"
+        }
+      },
+      "title": "拆分颗粒度审核要点",
+      "contentMarkdown": "### 审核要点\n\n梳理时重点把握每个政务信息资源目录的颗粒度，避免拆分不合适。\n\n### 常见问题\n\n1. **拆分不到位**：明显包含多个资源，应拆分为多个独立的信息资源目录。\n2. **拆分过细**：一个文件即作为一个信息资源，颗粒度过细不便于管理。\n\n### 审核标准\n\n- 每个信息资源目录应聚焦单一业务对象的结果信息。\n- 包含多个业务对象或多个数据集的应拆分。\n- 同一业务的多个文件可合并为一个信息资源目录。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 2,
+      "surfaceId": "surface-P10-audit-drawer"
+    },
+    {
+      "id": "ANN-P10-AUDIT-03",
+      "pageKey": "P10",
+      "target": {
+        "selector": "#smart-audit-tip",
+        "fallbackText": "智能审核提示条",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "智能审核提示条",
+          "tag": "div"
+        }
+      },
+      "title": "共享类型审核要点",
+      "contentMarkdown": "### 审核要点\n\n共享类型分为无条件共享、有条件共享、不予共享三类，应按数据特性正确选择并填写使用要求。\n\n### 填写要求\n\n- **无条件共享类**和**有条件共享类**：应标明使用要求，包括作为行政依据、工作参考，用于数据校核、业务协同等。\n- **有条件共享类**：还应注明共享条件和共享范围。\n- **不予共享类**：应注明相关的法律、行政法规或党中央、国务院政策依据。\n\n### 错误事例\n\n不予共享的信息资源，其共享条件未填写相关法律法规依据。\n\n### 审核标准\n\n- 共享类型与数据特性是否匹配。\n- 使用要求、共享条件、共享范围是否完整。\n- 不予共享类是否有明确的法律法规依据。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 3,
+      "surfaceId": "surface-P10-audit-drawer"
+    },
+    {
+      "id": "ANN-P10-AUDIT-04",
+      "pageKey": "P10",
+      "target": {
+        "selector": "#audit-tab-items",
+        "fallbackText": "信息项信息",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "信息项信息",
+          "tag": "div"
+        }
+      },
+      "title": "信息资源摘要审核要点",
+      "contentMarkdown": "### 审核要点\n\n信息资源摘要应详细描述数据范围和主要内容，不能过于简单。\n\n### 错误样例\n\n- 摘要与资源名称一样\n- 摘要未填写\n\n### 正确填写样例\n\n数据范围：潍坊市。主要包含数据：物资ID、物资名称、物资全称、型号、品牌、简介、单位、常规库存、年生产力、存放地址、所属企业ID、仓储容量、产品详情、操作人员电话、操作员。数据开始时间：2022年10月。\n\n### 审核标准\n\n- 摘要应包含数据范围、主要数据项、数据起始时间等关键信息。\n- 摘要不能与资源名称重复或为空。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 4,
+      "surfaceId": "surface-P10-audit-drawer"
+    },
+    {
+      "id": "ANN-P10-AUDIT-05",
+      "pageKey": "P10",
+      "target": {
+        "selector": "#audit-tab-records",
+        "fallbackText": "审批记录",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "审批记录",
+          "tag": "div"
+        }
+      },
+      "title": "信息项名称审核要点",
+      "contentMarkdown": "### 审核要点\n\n信息项名称应使用具体的字段名称，不能使用系统名称或目录名称。\n\n### 错误样例\n\n- 使用系统名称作为信息项名称\n- 使用目录名称作为信息项名称\n\n### 正确样例\n\n- 姓名\n- 身份证号\n- 年龄\n- 性别\n- 联系电话\n- 注册地址\n\n### 审核标准\n\n- 信息项名称应为具体的业务字段名称。\n- 不能使用系统名、目录名等概括性名称。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 5,
+      "surfaceId": "surface-P10-audit-drawer"
+    },
+    {
+      "id": "ANN-P42-AUDIT-01",
+      "pageKey": "P42",
+      "target": {
+        "selector": "#service-name-value",
+        "fallbackText": "服务名称",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "服务名称",
+          "tag": "div"
+        }
+      },
+      "title": "服务名称审核要点",
+      "contentMarkdown": "### 审核要点\n\n服务名称应规范，不能存在碎片化、引用系统名称、法律依据文件名称等问题。\n\n### 驳回情形\n\n1. 服务名称碎片化，无法清晰表达服务内容。\n2. 服务名称引用了系统名称。\n3. 服务名称引用了法律依据文件名称。\n\n### 审核标准\n\n- 服务名称应清晰、完整地描述服务内容。\n- 应避免使用系统内部名称或文件名称。\n- 名称应体现业务含义，便于理解和使用。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 1,
+      "surfaceId": "surface-P42-service-detail-drawer"
+    },
+    {
+      "id": "ANN-P42-AUDIT-02",
+      "pageKey": "P42",
+      "target": {
+        "selector": "#service-interface-info",
+        "fallbackText": "接口服务地址",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "接口服务地址",
+          "tag": "div"
+        }
+      },
+      "title": "接口服务地址审核要点",
+      "contentMarkdown": "### 审核要点\n\n接口服务地址应为完整的http或https接口，确保可访问性。\n\n### 驳回情形\n\n1. 接口地址不完整，缺少http或https协议前缀。\n2. 接口地址无法访问。\n3. 代理前地址、代理后地址、接口path等关键信息缺失。\n\n### 审核标准\n\n- 接口path、代理前地址、代理后地址应完整填写。\n- 地址应使用完整的http或https协议。\n- 接口类型（rest/webservice）和返回类型（json/xml/string）应明确。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 2,
+      "surfaceId": "surface-P42-service-detail-drawer"
+    },
+    {
+      "id": "ANN-P42-AUDIT-03",
+      "pageKey": "P42",
+      "target": {
+        "selector": "#service-doc-info",
+        "fallbackText": "接口文档",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "接口文档",
+          "tag": "div"
+        }
+      },
+      "title": "接口文档审核要点",
+      "contentMarkdown": "### 审核要点\n\n必须上传接口文档，且文档内容不能为空，应包含完整的入参、返参说明。\n\n### 驳回情形\n\n1. 未上传接口文档。\n2. 接口文档内容为空。\n3. 接口文档缺少入参说明。\n4. 接口文档缺少返参说明。\n\n### 审核标准\n\n- 必须上传接口文档（支持docx、pdf、json等格式）。\n- 文档应包含完整的请求参数（入参）说明：参数名、类型、是否必填、说明。\n- 文档应包含完整的返回参数（返参）说明：参数名、类型、说明。\n- 文档应包含错误代码说明。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 3,
+      "surfaceId": "surface-P42-service-detail-drawer"
+    },
+    {
+      "id": "ANN-P51-AUDIT-01",
+      "pageKey": "P51",
+      "target": {
+        "selector": "#audit-catalog-name",
+        "fallbackText": "目录名称：企业基础信息库",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "目录名称：企业基础信息库",
+          "tag": "div"
+        }
+      },
+      "title": "标准模板审核要点",
+      "contentMarkdown": "### 审核要点\n\n提交的Excel数据文件必须为标准模板，字段结构与目录定义一致。\n\n### 驳回情形\n\n1. Excel文件未使用标准模板。\n2. 字段结构与目录定义不一致。\n3. 缺少必要的字段列。\n\n### 审核标准\n\n- 文件必须使用平台下发的标准模板。\n- 字段名称、顺序、类型应与目录定义一致。\n- 不得自行增删字段列。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 1,
+      "surfaceId": "surface-P51-audit-drawer"
+    },
+    {
+      "id": "ANN-P51-AUDIT-02",
+      "pageKey": "P51",
+      "target": {
+        "selector": "#audit-tab-file",
+        "fallbackText": "数据文件",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "数据文件",
+          "tag": "div"
+        }
+      },
+      "title": "信息项数据为空审核要点",
+      "contentMarkdown": "### 审核要点\n\n不能存在大量信息项数据为空的现象。\n\n### 驳回情形\n\n1. 大量信息项数据为空。\n2. 必填字段存在空值。\n3. 空值率超过合理阈值（建议5%）。\n\n### 审核标准\n\n- 必填字段不得为空。\n- 空值率应低于5%。\n- 非必填字段为空时应符合业务逻辑。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 2,
+      "surfaceId": "surface-P51-audit-drawer"
+    },
+    {
+      "id": "ANN-P51-AUDIT-03",
+      "pageKey": "P51",
+      "target": {
+        "selector": "#audit-tab-preview",
+        "fallbackText": "数据预览",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "数据预览",
+          "tag": "div"
+        }
+      },
+      "title": "数据重复审核要点",
+      "contentMarkdown": "### 审核要点\n\n不能存在大量数据重复问题。\n\n### 驳回情形\n\n1. 存在大量完全重复的记录。\n2. 主键字段重复。\n3. 业务唯一性字段重复。\n\n### 审核标准\n\n- 主键字段不得重复。\n- 业务唯一性字段（如身份证号、统一社会信用代码等）不得重复。\n- 重复记录应在提交前清洗。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 3,
+      "surfaceId": "surface-P51-audit-drawer"
+    },
+    {
+      "id": "ANN-P51-AUDIT-04",
+      "pageKey": "P51",
+      "target": {
+        "selector": "#audit-tab-records",
+        "fallbackText": "审批记录",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "审批记录",
+          "tag": "div"
+        }
+      },
+      "title": "Excel函数公式审核要点",
+      "contentMarkdown": "### 审核要点\n\nExcel文件中不能存在函数公式。\n\n### 驳回情形\n\n1. Excel文件中存在函数公式（如SUM、VLOOKUP、IF等）。\n2. 单元格内容为公式计算结果而非实际数据。\n\n### 审核标准\n\n- 所有单元格应为纯文本或数值，不得包含函数公式。\n- 如有计算字段，应转换为计算后的实际值。\n- 提交前应将公式结果粘贴为值。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 4,
+      "surfaceId": "surface-P51-audit-drawer"
+    },
+    {
+      "id": "ANN-P51-AUDIT-05",
+      "pageKey": "P51",
+      "target": {
+        "selector": "#smart-audit-tip",
+        "fallbackText": "智能审核提示条",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "智能审核提示条",
+          "tag": "div"
+        }
+      },
+      "title": "日期格式审核要点",
+      "contentMarkdown": "### 审核要点\n\nDatetime、Date时间类型字段对应的数据值格式必须正确。\n\n### 格式要求\n\n- **Datetime类型**：对应日期格式为 `2026-08-04 09:00:00`（YYYY-MM-DD HH:MM:SS）。\n- **Date类型**：对应日期格式为 `2026-08-04`（YYYY-MM-DD）。\n\n### 驳回情形\n\n1. 日期格式不正确，如使用 `2026/08/04`、`08-04-2026`、`2026年8月4日` 等格式。\n2. Datetime类型字段缺少时间部分。\n3. Date类型字段包含了时间部分。\n\n### 审核标准\n\n- Datetime类型字段必须为 `YYYY-MM-DD HH:MM:SS` 格式。\n- Date类型字段必须为 `YYYY-MM-DD` 格式。\n- 不得使用其他日期格式。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 5,
+      "surfaceId": "surface-P51-audit-drawer"
+    },
+    {
+      "id": "ANN-P19-AUDIT-01",
+      "pageKey": "P19",
+      "target": {
+        "selector": "#info-scene",
+        "fallbackText": "需求场景：协同",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "需求场景：协同",
+          "tag": "div"
+        }
+      },
+      "title": "场景明确性审核要点",
+      "contentMarkdown": "### 审核要点\n\n需求场景必须明确具体，不能使用模糊的描述。\n\n### 错误样例\n\n- 数据比对\n- 数据分析\n\n这些描述过于笼统，无法明确应用场景。\n\n### 正确样例\n\n- 退役军人事务局退役军人优抚补贴核验\n- 应用于县级节点校验残疾学生教育资助补贴\n\n### 审核标准\n\n- 场景描述应包含具体的应用部门、应用对象和应用目的。\n- 不能使用\"数据比对\"、\"数据分析\"等模糊词汇。\n- 场景应与实际业务需求匹配。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 1,
+      "surfaceId": "surface-P19-accept-drawer"
+    },
+    {
+      "id": "ANN-P19-AUDIT-02",
+      "pageKey": "P19",
+      "target": {
+        "selector": "#info-service",
+        "fallbackText": "需求服务：行政复议被申请人信息",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "需求服务：行政复议被申请人信息",
+          "tag": "div"
+        }
+      },
+      "title": "系统名称审核要点",
+      "contentMarkdown": "### 审核要点\n\n系统名称应规范，不能使用明显非系统名称的内容。\n\n### 错误样例\n\n- 测试\n- 1\n- 其他明显非系统名称的内容\n\n### 审核标准\n\n- 系统名称应为正式的系统名称或服务名称。\n- 不能使用测试数据、数字等无意义内容。\n- 名称应能反映系统或服务的实际功能。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 2,
+      "surfaceId": "surface-P19-accept-drawer"
+    },
+    {
+      "id": "ANN-P19-AUDIT-03",
+      "pageKey": "P19",
+      "target": {
+        "selector": "#smart-audit-tip",
+        "fallbackText": "智能审核提示条",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "智能审核提示条",
+          "tag": "div"
+        }
+      },
+      "title": "附件审核要点",
+      "contentMarkdown": "### 审核要点\n\n附件应为标准模板，且内容不能为空，需要签字盖章。\n\n### 驳回情形\n\n1. 附件非标准模板，格式不符合要求。\n2. 附件内容为空，未填写必要信息。\n3. 附件未签字盖章。\n\n### 审核标准\n\n- 附件必须使用平台下发的标准模板。\n- 附件内容应完整填写，不得为空。\n- 附件必须有申请人签字和单位盖章。\n- 附件内容应与申请信息一致。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 3,
+      "surfaceId": "surface-P19-accept-drawer"
+    },
+    {
+      "id": "ANN-P19-AUDIT-04",
+      "pageKey": "P19",
+      "target": {
+        "selector": "#info-catalog",
+        "fallbackText": "需求目录：行政复议被申请人信息",
+        "strategy": "id",
+        "boundsHint": {
+          "text": "需求目录：行政复议被申请人信息",
+          "tag": "div"
+        }
+      },
+      "title": "申请依据审核要点",
+      "contentMarkdown": "### 审核要点\n\n申请依据需明确法律条文或者省市下发的重要通知。\n\n### 驳回情形\n\n1. 申请依据未填写。\n2. 申请依据为模糊描述，未引用具体法律条文。\n3. 申请依据与实际需求不符。\n\n### 审核标准\n\n- 申请依据应明确引用法律条文（如《XX法第X条》）。\n- 或引用省市下发的重要通知（如《XX省关于XX的通知》文号）。\n- 申请依据应与申请的数据资源、应用场景匹配。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-13T09:31:36Z",
+      "order": 4,
+      "surfaceId": "surface-P19-accept-drawer"
     }
   ],
   "project": {

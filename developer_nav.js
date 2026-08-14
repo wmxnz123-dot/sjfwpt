@@ -20,6 +20,7 @@ const developerSideNavMap = {
             children: [
                 { type: 'link', label: '目录编制', href: 'catalog_manage.html?nav=resource-catalog', navKey: 'resource-catalog' },
                 { type: 'link', label: '目录审核', href: 'catalog_audit.html?nav=resource-catalog-audit', navKey: 'resource-catalog-audit' },
+                { type: 'link', label: '数据更新审核', href: 'data_update_audit.html?nav=resource-catalog-update-audit', navKey: 'resource-catalog-update-audit' },
                 { type: 'link', label: '数据表', href: 'catalog_tables.html?nav=resource-catalog-tables', navKey: 'resource-catalog-tables' }
             ]
         },
@@ -202,6 +203,7 @@ const developerPathDefaults = {
     'catalog_manage.html': { group: 'resource_mgmt', navKey: 'resource-catalog' },
     'catalog_add.html': { group: 'resource_mgmt', navKey: 'resource-catalog' },
     'catalog_audit.html': { group: 'resource_mgmt', navKey: 'resource-catalog-audit' },
+    'data_update_audit.html': { group: 'resource_mgmt', navKey: 'resource-catalog-update-audit' },
     'catalog_tables.html': { group: 'resource_mgmt', navKey: 'resource-catalog-tables' },
     'service_register.html': { group: 'resource_mgmt', navKey: 'resource-service' },
     'service_register_add.html': { group: 'resource_mgmt', navKey: 'resource-service' },

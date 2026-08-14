@@ -3,35 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数据服务平台 - 在线开发</title>
+    <title>数据服务平台 - 数据更新审核</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #d1d5db;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #9ca3af;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
-        .code-editor {
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .tab-active { color: #1c7ffd; border-bottom: 2px solid #1c7ffd; }
+        .tab-inactive { color: #606266; border-bottom: 2px solid transparent; }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <!-- 顶部导航栏 -->
     <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
             <i class="fa-solid fa-cubes-stacked text-2xl"></i>
             <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
         </div>
@@ -47,123 +35,621 @@
         </div>
     </header>
 
+    <!-- 主体内容 -->
     <div class="flex-1 flex overflow-hidden">
+        <!-- 左侧导航 -->
         <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
             <div id="developer-side-nav" class="py-4"></div>
         </aside>
 
         <script src="./developer_nav.js"></script>
 
-        <main class="flex-1 flex flex-col overflow-hidden">
+        <!-- 右侧内容区 -->
+        <main class="flex-1 flex flex-col overflow-hidden relative bg-[#f0f2f5]">
             <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
 
-            <div class="px-6 py-3 bg-white border-b border-gray-100 flex items-center shrink-0">
-                <a href="scene_center.html?nav=sandbox-task" class="text-[#1c7ffd] hover:opacity-80 transition-colors flex items-center gap-1 font-medium text-[15px]">
-                    <i class="fa-solid fa-arrow-rotate-left"></i> 返回列表
-                </a>
+            <div class="h-[52px] flex items-center px-6 text-[#606266] shrink-0 bg-white border-b border-gray-100 text-[14px]">
+                <span>资源管理</span>
+                <span class="mx-2">/</span>
+                <span>目录管理</span>
+                <span class="mx-2">/</span>
+                <span class="font-medium text-[#303133]">数据更新审核</span>
             </div>
 
-            <div class="flex-1 p-6 flex gap-6 overflow-hidden">
-                <div class="w-[200px] bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] shrink-0 flex flex-col py-2">
-                    <a href="task_detail.html" class="flex items-center px-4 py-3 text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] rounded-md transition-colors">
-                        <i class="fa-solid fa-border-all w-6 text-center mr-2 text-lg"></i>
-                        任务详情
-                    </a>
-                    <a href="data_resources.html" class="flex items-center px-4 py-3 text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] rounded-md transition-colors">
-                        <i class="fa-solid fa-chart-line w-6 text-center mr-2 text-lg"></i>
-                        加工资源
-                    </a>
-                    <a href="dev_team.html" class="flex items-center px-4 py-3 text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] rounded-md transition-colors">
-                        <i class="fa-solid fa-users w-6 text-center mr-2 text-lg"></i>
-                        开发团队
-                    </a>
-                    <a href="online_dev.html" class="flex items-center px-4 py-3 bg-blue-50 text-[#1c7ffd] font-medium rounded-md">
-                        <i class="fa-solid fa-code w-6 text-center mr-2 text-lg"></i>
-                        在线开发
-                    </a>
+            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+                <!-- 标签页 -->
+                <div class="flex border-b border-gray-200 bg-white px-6 pt-2 rounded-t-lg">
+                    <div id="tab-pending" class="pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]" onclick="switchTab('pending')">待审核</div>
+                    <div id="tab-approved" class="pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]" onclick="switchTab('approved')">已审核</div>
                 </div>
 
-                <div class="flex-1 flex flex-col overflow-hidden">
-                    <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col">
-                        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
-                            <div class="flex items-center gap-2">
-                                <span class="text-[#606266] text-sm">文件：</span>
-                                <span class="font-medium text-[#303133]">main.py</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button class="px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50 transition-colors flex items-center gap-1">
-                                    <i class="fa-solid fa-save text-[12px]"></i> 保存
-                                </button>
-                                <button class="px-3 py-1.5 text-sm bg-[#1c7ffd] text-white rounded hover:bg-blue-600 transition-colors flex items-center gap-1">
-                                    <i class="fa-solid fa-play text-[12px]"></i> 运行
-                                </button>
-                                <button class="px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50 transition-colors flex items-center gap-1">
-                                    <i class="fa-solid fa-rotate-right text-[12px]"></i> 重置
-                                </button>
-                            </div>
+                <!-- 搜索区 -->
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 shrink-0">
+                    <div class="flex items-center gap-6 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">数据资源名称：</label>
+                            <input type="text" id="search-name" placeholder="请输入" class="w-[280px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
                         </div>
-                        <div class="flex-1 flex overflow-hidden">
-                            <div class="flex-1 p-4 overflow-auto">
-                                <pre class="code-editor text-[13px] text-[#303133] leading-relaxed whitespace-pre-wrap"><code># 数据处理脚本
-import pandas as pd
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">数据资源提供方：</label>
+                            <select id="search-provider" class="w-[200px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                <option>请选择</option>
+                                <option>人民出版社有限公司</option>
+                                <option>xx市民政局</option>
+                                <option>xx市大数据局</option>
+                                <option>潍坊市大数据局</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors" onclick="resetSearch()">重置</button>
+                            <button class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors flex items-center gap-1" onclick="doSearch()">
+                                <i class="fa-solid fa-magnifying-glass text-xs"></i>查询
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-# 读取数据
-def load_data():
-    """加载加工资源数据"""
-    df = pd.read_csv('data.csv')
-    print(f"数据加载完成，共 {len(df)} 条记录")
-    return df
+                <!-- 待审核列表 -->
+                <div id="pending-list" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between shrink-0">
+                        <h2 class="text-[16px] font-bold text-[#303133]">数据更新待审核列表</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="刷新">
+                                <i class="fa-solid fa-rotate-right text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="导出">
+                                <i class="fa-solid fa-download text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
 
-# 数据清洗
-def clean_data(df):
-    """数据清洗处理"""
-    # 去除空值
-    df = df.dropna()
-    # 去重
-    df = df.drop_duplicates()
-    print(f"数据清洗完成，剩余 {len(df)} 条记录")
-    return df
+                    <div class="flex-1 overflow-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 sticky top-0">
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">序号</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">数据资源目录代码</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">数据资源名称</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">数据资源提供方</th>
+                                    <th class="px-5 py-3 text-right font-medium text-[#606266]">提交时间</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">1</td>
+                                    <td class="px-5 py-4 text-[#303133]">3707003500420000114</td>
+                                    <td class="px-5 py-4 text-[#303133]">企业基础信息库</td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">xx市大数据局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2026-08-10 14:25:30</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" onclick="openAuditDrawer('企业基础信息库', '3707003500420000114', 'xx市大数据局'); return false;" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">审核</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">2</td>
+                                    <td class="px-5 py-4 text-[#303133]">3707003500880000307</td>
+                                    <td class="px-5 py-4 text-[#303133]">民政救助对象信息</td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">xx市民政局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2026-08-09 10:15:00</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" onclick="openAuditDrawer('民政救助对象信息', '3707003500880000307', 'xx市民政局'); return false;" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">审核</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">3</td>
+                                    <td class="px-5 py-4 text-[#303133]">3707003500880000315</td>
+                                    <td class="px-5 py-4 text-[#303133]">社会组织登记信息</td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">xx市民政局</td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2026-08-08 16:42:18</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" onclick="openAuditDrawer('社会组织登记信息', '3707003500880000315', 'xx市民政局'); return false;" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">审核</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-# 数据转换
-def transform_data(df):
-    """数据转换处理"""
-    # 添加处理时间
-    df['process_time'] = pd.Timestamp.now()
-    # 字段重命名
-    df = df.rename(columns={'old_name': 'new_name'})
-    print("数据转换完成")
-    return df
+                    <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between shrink-0">
+                        <div class="text-sm text-[#606266]">
+                            共 <span class="font-medium">3</span> 条
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-left text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-[#1c7ffd] bg-[#1c7ffd] text-white rounded">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-right text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-# 主函数
-if __name__ == '__main__':
-    try:
-        data = load_data()
-        data = clean_data(data)
-        data = transform_data(data)
-        # 保存结果
-        data.to_csv('output.csv', index=False)
-        print("处理完成，结果已保存")
-    except Exception as e:
-        print(f"处理失败：{e}")</code></pre>
-                            </div>
-                            <div class="w-[300px] border-l border-gray-200 flex flex-col">
-                                <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
-                                    <span class="font-medium text-[#303133] text-sm">运行日志</span>
-                                </div>
-                                <div class="flex-1 p-4 overflow-auto font-mono text-[12px] text-[#606266] space-y-1">
-                                    <div><span class="text-green-600">2026-07-10 10:30:00</span> [INFO] 开始执行脚本...</div>
-                                    <div><span class="text-green-600">2026-07-10 10:30:01</span> [INFO] 数据加载完成，共 10000 条记录</div>
-                                    <div><span class="text-green-600">2026-07-10 10:30:02</span> [INFO] 数据清洗完成，剩余 9856 条记录</div>
-                                    <div><span class="text-green-600">2026-07-10 10:30:03</span> [INFO] 数据转换完成</div>
-                                    <div><span class="text-green-600">2026-07-10 10:30:04</span> [INFO] 处理完成，结果已保存</div>
-                                </div>
-                            </div>
+                <!-- 已审核列表 -->
+                <div id="approved-list" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] hidden flex-1 flex flex-col">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between shrink-0">
+                        <h2 class="text-[16px] font-bold text-[#303133]">数据更新已审核列表</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="刷新">
+                                <i class="fa-solid fa-rotate-right text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="导出">
+                                <i class="fa-solid fa-download text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 overflow-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 sticky top-0">
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">序号</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">数据资源目录代码</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">数据资源名称</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">数据资源提供方</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">审批结果</th>
+                                    <th class="px-5 py-3 text-right font-medium text-[#606266]">审核时间</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">1</td>
+                                    <td class="px-5 py-4 text-[#303133]">3707003500880000340</td>
+                                    <td class="px-5 py-4 text-[#303133]">建筑起重机械使用登记信息</td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">潍坊市大数据局</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <span class="flex items-center justify-center gap-1">
+                                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                            <span class="text-green-600 text-sm">已通过</span>
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2026-08-05 13:32:00</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">查看</a>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 text-[#303133]">2</td>
+                                    <td class="px-5 py-4 text-[#303133]">3707003500880000339</td>
+                                    <td class="px-5 py-4 text-[#303133]">社会组织年度检查信息</td>
+                                    <td class="px-5 py-4 text-center text-[#606266]">xx市民政局</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <span class="flex items-center justify-center gap-1">
+                                            <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                            <span class="text-red-600 text-sm">已退回</span>
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4 text-right text-[#606266]">2026-08-03 09:20:00</td>
+                                    <td class="px-5 py-4 text-center">
+                                        <a href="#" class="text-[#1c7ffd] hover:text-[#1a73e8] text-sm">查看</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between shrink-0">
+                        <div class="text-sm text-[#606266]">
+                            共 <span class="font-medium">2</span> 条
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-left text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-[#1c7ffd] bg-[#1c7ffd] text-white rounded">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-right text-sm"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- 审核抽屉 -->
+    <div id="audit-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeAuditDrawer()"></div>
+    <div id="audit-drawer" class="fixed top-0 right-0 bottom-0 w-[900px] bg-white z-[90] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- 抽屉头部 -->
+        <div class="h-14 flex items-center justify-between px-5 border-b border-gray-100 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <i class="fa-solid fa-file-excel text-[#1c7ffd] text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-base text-[#303133]">数据更新详情</h3>
+                </div>
+            </div>
+            <button onclick="closeAuditDrawer()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- 抽屉内容 -->
+        <div class="flex-1 overflow-y-auto">
+            <!-- 基本信息头部 -->
+            <div class="px-5 py-4 border-b border-gray-100 bg-gray-50">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                            <i class="fa-solid fa-database text-[#1c7ffd] text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg text-[#303133]" id="audit-catalog-name">企业基础信息库</h4>
+                            <div class="flex items-center gap-4 text-sm text-[#606266]">
+                                <span>数据资源目录代码：<span id="audit-catalog-code">3707003500420000114</span></span>
+                            </div>
+                            <div class="flex items-center gap-4 text-sm text-[#606266] mt-1">
+                                <span>数据资源提供方：<span id="audit-provider">xx市大数据局</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm text-[#606266]">
+                        <span class="flex items-center gap-1">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                            <span>待审核</span>
+                        </span>
+                        <span>提交时间：2026-08-10 14:25:30</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 智能审核提示条 -->
+            <div id="smart-audit-tip" class="mx-5 mt-4 p-3 bg-green-50 border border-green-100 rounded-lg flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div id="smart-audit-icon" class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <i class="fa-solid fa-spinner fa-spin text-green-500 text-sm"></i>
+                    </div>
+                    <div>
+                        <span id="smart-audit-status" class="text-sm font-medium text-green-700">正在智能审核中...</span>
+                        <p id="smart-audit-desc" class="text-xs text-green-600 mt-0.5">AI正在分析Excel数据，请稍候</p>
+                    </div>
+                </div>
+                <button id="smart-audit-view-btn" onclick="openSmartAudit()" class="text-sm text-green-600 hover:text-green-700 font-medium">
+                    查看 <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+
+            <!-- Tab标签 -->
+            <div class="flex border-b border-gray-100">
+                <button onclick="switchAuditTab('basic')" id="audit-tab-basic" class="px-6 py-3 font-medium text-sm text-[#1c7ffd] border-b-2 border-[#1c7ffd] cursor-pointer">
+                    基本信息
+                </button>
+                <button onclick="switchAuditTab('records')" id="audit-tab-records" class="px-6 py-3 font-medium text-sm text-[#606266] border-b-2 border-transparent hover:text-[#1c7ffd] cursor-pointer">
+                    审批记录
+                </button>
+            </div>
+
+            <!-- 基本信息内容 -->
+            <div id="audit-content-basic" class="p-5">
+                <div class="font-medium text-[#303133] mb-4">基本信息</div>
+                <div id="audit-basic-info" class="space-y-3">
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">数据更新类型：</span>
+                        <span class="ml-4 flex-1 text-[#303133]">追加</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">文件名称：</span>
+                        <span class="ml-4 flex-1 text-[#1c7ffd]">企业基础信息库_20260810.xlsx</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="w-[180px] text-right text-[#606266]">数据更新说明：</span>
+                        <span class="ml-4 flex-1 text-[#303133]">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 审批记录内容 -->
+            <div id="audit-content-records" class="p-5 hidden">
+                <div class="text-center py-10 text-[#909399]">
+                    <i class="fa-solid fa-file-alt text-4xl mb-3 opacity-50"></i>
+                    <p>暂无审批记录</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 抽屉底部 -->
+        <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-end shrink-0 bg-white">
+            <div class="flex items-center gap-3">
+                <button onclick="closeAuditDrawer()" class="px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    退回
+                </button>
+                <button class="px-5 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors">
+                    通过
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 智能审核抽屉 -->
+    <div id="smart-audit-overlay" class="fixed inset-0 bg-black/30 z-[100] opacity-0 invisible transition-all duration-300" onclick="closeSmartAudit()"></div>
+    <div id="smart-audit-drawer" class="fixed top-0 right-0 bottom-0 w-[500px] bg-white z-[110] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="h-14 flex items-center justify-between px-5 border-b border-gray-100 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <i class="fa-solid fa-robot text-[#1c7ffd] text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-base text-[#303133]">智能审核</h3>
+                    <p class="text-[#909399] text-xs">AI辅助审核分析</p>
+                </div>
+            </div>
+            <button onclick="closeSmartAudit()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- 进度条区域 -->
+        <div id="smart-audit-progress" class="flex-1 p-5 flex flex-col">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-spinner fa-spin text-3xl text-[#1c7ffd]"></i>
+                </div>
+                <h4 class="font-semibold text-lg text-[#303133]">正在进行智能审核...</h4>
+                <p class="text-[#606266] text-sm mt-1">AI正在分析Excel数据，请稍候</p>
+            </div>
+
+            <div class="flex-1 space-y-4">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">标准模板校验</span>
+                        <span id="step-1-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-1-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">空值检测</span>
+                        <span id="step-2-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-2-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">重复数据检测</span>
+                        <span id="step-3-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-3-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">Excel函数公式检测</span>
+                        <span id="step-4-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-4-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-[#606266]">日期格式校验</span>
+                        <span id="step-5-percent" class="text-sm text-[#606266]">0%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="step-5-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button onclick="closeSmartAudit()" class="w-full px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+            </div>
+        </div>
+
+        <!-- 审核结果分析区域 -->
+        <div id="smart-audit-result" class="flex-1 overflow-y-auto p-5 hidden">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-check text-3xl text-green-500"></i>
+                </div>
+                <h4 class="font-semibold text-lg text-[#303133]">智能审核完成</h4>
+            </div>
+
+            <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 mb-5">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        <span class="text-[#606266] font-medium">检查 5 项，全部通过</span>
+                    </div>
+                    <span class="text-sm text-green-600 font-medium">建议通过</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-3 mb-5">
+                <div class="bg-gray-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-[#303133]">5</div>
+                    <div class="text-xs text-[#909399]">检查项总数</div>
+                </div>
+                <div class="bg-green-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-green-600">5</div>
+                    <div class="text-xs text-green-600/70">通过项</div>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-yellow-600">0</div>
+                    <div class="text-xs text-yellow-600/70">注意项</div>
+                </div>
+                <div class="bg-red-50 rounded-lg p-3 text-center">
+                    <div class="text-lg font-bold text-red-500">0</div>
+                    <div class="text-xs text-red-500/70">风险项</div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">标准模板校验</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266]">Excel文件使用标准模板，字段结构与目录定义一致。</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">空值检测</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266]">空值率2.3%，低于阈值5%，未发现大量信息项数据为空现象。</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">重复数据检测</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266]">未发现重复数据记录。</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">Excel函数公式检测</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266]">未检测到Excel函数公式，数据均为纯文本或数值。</p>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <span class="font-medium text-[#303133]">日期格式校验</span>
+                        <span class="ml-auto px-2 py-0.5 bg-green-50 text-green-600 text-xs rounded">通过</span>
+                    </div>
+                    <p class="text-sm text-[#606266]">Date类型字段格式为2026-08-04，Datetime类型字段格式为2026-08-04 09:00:00，符合规范。</p>
+                </div>
+            </div>
+
+            <div class="mt-5 bg-blue-50 rounded-lg p-4">
+                <div class="flex items-start gap-2">
+                    <i class="fa-solid fa-lightbulb text-[#1c7ffd] mt-1"></i>
+                    <div>
+                        <p class="text-sm font-medium text-[#303133] mb-1">智能建议</p>
+                        <p class="text-sm text-[#606266]">数据文件符合标准模板，空值率和重复率均在合理范围内，未检测到Excel函数公式，日期格式正确。建议审核通过。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.getElementById('tab-pending').className = tab === 'pending' ? 'pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]' : 'pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]';
+            document.getElementById('tab-approved').className = tab === 'approved' ? 'pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]' : 'pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]';
+            document.getElementById('pending-list').className = tab === 'pending' ? 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col' : 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] hidden flex-1 flex flex-col';
+            document.getElementById('approved-list').className = tab === 'approved' ? 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col' : 'bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] hidden flex-1 flex flex-col';
+        }
+
+        function resetSearch() {
+            document.getElementById('search-name').value = '';
+            document.getElementById('search-provider').value = '请选择';
+        }
+
+        function doSearch() {
+            alert('搜索功能');
+        }
+
+        function openAuditDrawer(name, code, provider) {
+            if (name) document.getElementById('audit-catalog-name').textContent = name;
+            if (code) document.getElementById('audit-catalog-code').textContent = code;
+            if (provider) document.getElementById('audit-provider').textContent = provider;
+            document.getElementById('audit-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('audit-drawer').classList.remove('translate-x-full');
+            startSmartAudit();
+        }
+
+        function closeAuditDrawer() {
+            document.getElementById('audit-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('audit-drawer').classList.add('translate-x-full');
+        }
+
+        function switchAuditTab(tab) {
+            const tabs = ['basic', 'records'];
+            tabs.forEach(t => {
+                const tabEl = document.getElementById('audit-tab-' + t);
+                const contentEl = document.getElementById('audit-content-' + t);
+                if (!tabEl || !contentEl) return;
+                if (t === tab) {
+                    tabEl.className = 'px-6 py-3 font-medium text-sm text-[#1c7ffd] border-b-2 border-[#1c7ffd] cursor-pointer';
+                    contentEl.classList.remove('hidden');
+                } else {
+                    tabEl.className = 'px-6 py-3 font-medium text-sm text-[#606266] border-b-2 border-transparent hover:text-[#1c7ffd] cursor-pointer';
+                    contentEl.classList.add('hidden');
+                }
+            });
+        }
+
+        function openSmartAudit() {
+            document.getElementById('smart-audit-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('smart-audit-drawer').classList.remove('translate-x-full');
+        }
+
+        function closeSmartAudit() {
+            document.getElementById('smart-audit-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('smart-audit-drawer').classList.add('translate-x-full');
+        }
+
+        function startSmartAudit() {
+            const steps = [
+                { id: 1, name: '标准模板校验' },
+                { id: 2, name: '空值检测' },
+                { id: 3, name: '重复数据检测' },
+                { id: 4, name: 'Excel函数公式检测' },
+                { id: 5, name: '日期格式校验' }
+            ];
+            let currentStep = 0;
+            steps.forEach(s => {
+                document.getElementById('step-' + s.id + '-bar').style.width = '0%';
+                document.getElementById('step-' + s.id + '-percent').textContent = '0%';
+            });
+            document.getElementById('smart-audit-progress').classList.remove('hidden');
+            document.getElementById('smart-audit-progress').classList.add('flex', 'flex-col');
+            const resultEl = document.getElementById('smart-audit-result');
+            resultEl.classList.add('hidden');
+            resultEl.classList.remove('flex-1', 'overflow-y-auto');
+
+            const stepInterval = setInterval(() => {
+                if (currentStep >= steps.length) {
+                    clearInterval(stepInterval);
+                    setTimeout(() => {
+                        document.getElementById('smart-audit-progress').classList.add('hidden');
+                        document.getElementById('smart-audit-progress').classList.remove('flex', 'flex-col');
+                        resultEl.classList.remove('hidden');
+                        resultEl.classList.add('flex-1', 'overflow-y-auto');
+                        document.getElementById('smart-audit-status').textContent = '智能审核完成';
+                        document.getElementById('smart-audit-icon').innerHTML = '<i class="fa-solid fa-check text-green-500 text-sm"></i>';
+                        document.getElementById('smart-audit-icon').className = 'w-8 h-8 rounded-full bg-green-100 flex items-center justify-center';
+                    }, 500);
+                    return;
+                }
+                const step = steps[currentStep];
+                let percent = 0;
+                const barEl = document.getElementById('step-' + step.id + '-bar');
+                const percentEl = document.getElementById('step-' + step.id + '-percent');
+                const percentInterval = setInterval(() => {
+                    percent += 10;
+                    if (percent >= 100) {
+                        percent = 100;
+                        clearInterval(percentInterval);
+                        currentStep++;
+                    }
+                    barEl.style.width = percent + '%';
+                    percentEl.textContent = percent + '%';
+                }, 80);
+            }, 1000);
+        }
+    </script>
     <!-- 通用页面标注工具栏（自动注入，每页可复用） -->
 
 <!-- Prototype Annotator runtime -->
@@ -13921,11 +14407,11 @@ window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR
       "id": "ANN-P51-AUDIT-02",
       "pageKey": "P51",
       "target": {
-        "selector": "#audit-tab-file",
-        "fallbackText": "数据文件",
+        "selector": "#audit-tab-basic",
+        "fallbackText": "基本信息",
         "strategy": "id",
         "boundsHint": {
-          "text": "数据文件",
+          "text": "基本信息",
           "tag": "div"
         }
       },
@@ -13971,11 +14457,11 @@ window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR
       "id": "ANN-P51-AUDIT-03",
       "pageKey": "P51",
       "target": {
-        "selector": "#audit-tab-preview",
-        "fallbackText": "数据预览",
+        "selector": "#audit-tab-basic",
+        "fallbackText": "基本信息",
         "strategy": "id",
         "boundsHint": {
-          "text": "数据预览",
+          "text": "基本信息",
           "tag": "div"
         }
       },

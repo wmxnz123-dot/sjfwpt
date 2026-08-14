@@ -64,7 +64,7 @@
     }
   }
 
-  function withBrowserDraft(data) {
+  function withBrowserDraft(data, fileModifiedTime) {
     if (!window.localStorage) return data;
     var raw = null;
     try {
@@ -80,23 +80,85 @@
       try { window.localStorage.removeItem(draftStorageKey); } catch (removeErr) {}
       return data;
     }
-    var shouldLoad = window.confirm(
-      "检测到尚未写入项目文件的浏览器草稿。是否加载这份草稿？\n\n选择“取消”会继续使用项目文件中的标注数据。"
-    );
-    if (!shouldLoad) return data;
+    var draftCreatedAt = (draft && draft._draftCreatedAt) ? draft._draftCreatedAt : 0;
+    if (!draftCreatedAt || (fileModifiedTime && fileModifiedTime > draftCreatedAt)) {
+      try { window.localStorage.removeItem(draftStorageKey); } catch (removeErr) {}
+      return data;
+    }
+    if (draft && draft._draftCreatedAt) delete draft._draftCreatedAt;
     return normalizeData(draft);
   }
 
   function loadData() {
-    if (!CFG.dataUrl || !window.fetch) return Promise.resolve(withBrowserDraft(loadInlineData()));
+    if (!CFG.dataUrl) return Promise.resolve(withBrowserDraft(loadInlineData(), 0));
+
+    // file:// 协议：直接信任 annotations.json（http 服务持久化的真实数据源）
+    // 不再合并 localStorage 草稿，避免旧草稿覆盖 http 端的最新修改（增删改）
+    // 草稿仅在 annotations.json 读取失败时作为后备
+    if (window.location.protocol === "file:") {
+      var fileData = null;
+      try {
+        var xhr = new XMLHttpRequest();
+        // 加时间戳防止浏览器缓存，确保读到最新的 annotations.json
+        var bustUrl = CFG.dataUrl + (CFG.dataUrl.indexOf("?") >= 0 ? "&" : "?") + "_t=" + Date.now();
+        xhr.open("GET", bustUrl, false);
+        xhr.send();
+        if (xhr.status === 200 || xhr.status === 0) {
+          fileData = normalizeData(JSON.parse(xhr.responseText));
+        }
+      } catch (err) {}
+
+      // 文件读取成功且有效 → 直接用，并清掉过期草稿（避免下次又被合并回来）
+      if (fileData && fileData.annotations && fileData.annotations.length > 0) {
+        try { window.localStorage.removeItem(draftStorageKey); } catch (removeErr) {}
+        return Promise.resolve(fileData);
+      }
+
+      // 文件读取失败 → 回退到内联数据 + localStorage 草稿
+      var fallbackData = loadInlineData();
+      try {
+        var raw = window.localStorage.getItem(draftStorageKey);
+        if (raw) {
+          var draftData = normalizeData(JSON.parse(raw));
+          if (draftData && draftData.annotations && draftData.annotations.length > 0) {
+            return Promise.resolve(draftData);
+          }
+        }
+      } catch (err) {}
+      return Promise.resolve(fallbackData);
+    }
+
+    if (!window.fetch) return Promise.resolve(withBrowserDraft(loadInlineData(), 0));
     return fetch(CFG.dataUrl, { cache: "no-store" }).then(function (response) {
       if (!response.ok) throw new Error("HTTP " + response.status);
-      return response.json();
-    }).then(function (data) {
-      return withBrowserDraft(normalizeData(data));
+      var lastModified = response.headers.get("Last-Modified");
+      var fileModifiedTime = lastModified ? new Date(lastModified).getTime() : 0;
+      return response.json().then(function (data) {
+        return withBrowserDraft(normalizeData(data), fileModifiedTime);
+      });
     }).catch(function () {
-      return withBrowserDraft(loadInlineData());
+      return withBrowserDraft(loadInlineData(), 0);
     });
+  }
+
+  function applyLocalDeletes(data) {
+    if (!window.localStorage) return data;
+    if (window.location.protocol === "file:") return data;
+    var raw = null;
+    try {
+      raw = window.localStorage.getItem("prototype-annotator-deleted-ids");
+    } catch (err) {
+      return data;
+    }
+    if (!raw) return data;
+    try {
+      var deletedIds = JSON.parse(raw);
+      if (!Array.isArray(deletedIds) || deletedIds.length === 0) return data;
+      data.annotations = data.annotations.filter(function (ann) {
+        return deletedIds.indexOf(ann.id) < 0;
+      });
+    } catch (err) {}
+    return data;
   }
 
   function normalizeData(data) {
@@ -1695,13 +1757,24 @@
     ann.updatedAt = new Date().toISOString();
     if (editorCard.__isNew) state.data.annotations.push(ann);
     state.dirty = true;
+    if (window.location.protocol === "file:") {
+      try {
+        var draftData = JSON.parse(JSON.stringify(state.data));
+        draftData._draftCreatedAt = Date.now();
+        window.localStorage.setItem(draftStorageKey, JSON.stringify(draftData));
+      } catch (err) {}
+      closeCard();
+      render();
+      toast("标注已保存");
+      return;
+    }
     persistData("save", ann).then(function (result) {
       closeCard();
       render();
       if (result && result.persisted && result.reportRefreshRequired) {
         toast("标注已保存，请重新生成 annotation-report.md / annotation-checklist.md");
       } else {
-        toast(result && result.persisted ? "标注已保存" : "标注已暂存浏览器，未写入项目文件");
+        toast(result && result.persisted ? "标注已保存" : "保存失败");
       }
     });
   }
@@ -1712,13 +1785,24 @@
     if (index >= 0) {
       var removed = state.data.annotations.splice(index, 1)[0];
       state.dirty = true;
+      if (window.location.protocol === "file:") {
+        try {
+          var draftData = JSON.parse(JSON.stringify(state.data));
+          draftData._draftCreatedAt = Date.now();
+          window.localStorage.setItem(draftStorageKey, JSON.stringify(draftData));
+        } catch (err) {}
+        closeCard();
+        render();
+        toast("标注已删除");
+        return;
+      }
       persistData("delete", removed).then(function (result) {
         closeCard();
         render();
         if (result && result.persisted && result.reportRefreshRequired) {
           toast("标注已删除，请重新生成 annotation-report.md / annotation-checklist.md");
         } else {
-          toast(result && result.persisted ? "标注已删除" : "删除结果已暂存浏览器，未写入项目文件");
+          toast(result && result.persisted ? "标注已删除" : "删除失败");
         }
       });
     }
@@ -1804,19 +1888,14 @@
 
   function positionCard(panel, anchor) {
     var rect = anchor && anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : { left: 16, right: 16, top: 76, bottom: 76 };
-    var gap = 12;
     var vw = window.innerWidth;
     var vh = window.innerHeight;
-    var width = Math.min(520, vw - 32);
-    var left = rect.right + gap;
-    if (left + width > vw - 16) left = rect.left - width - gap;
-    if (left < 16) left = 16;
+    var width = Math.min(720, vw - 32);
+    var left = Math.max(16, Math.floor((vw - width) / 2));
     panel.style.left = left + "px";
     panel.style.width = width + "px";
-    var height = Math.min(panel.offsetHeight || 360, Math.floor(vh * 0.7));
-    var top = rect.top;
-    if (top + height > vh - 16) top = vh - height - 16;
-    if (top < 16) top = 16;
+    var height = Math.min(panel.offsetHeight || 640, Math.floor(vh * 0.92));
+    var top = Math.max(16, Math.floor((vh - height) / 2));
     panel.style.top = top + "px";
   }
 
@@ -2043,12 +2122,14 @@
     }).catch(function (err) {
       var drafted = false;
       try {
-        window.localStorage.setItem(draftStorageKey, JSON.stringify(state.data));
+        var draftData = JSON.parse(JSON.stringify(state.data));
+        draftData._draftCreatedAt = Date.now();
+        window.localStorage.setItem(draftStorageKey, JSON.stringify(draftData));
         drafted = true;
       } catch (err) {
         // Ignore storage failures.
       }
-      return { persisted: false, draft: drafted, error: err && err.message ? err.message : String(err) };
+      return { persisted: true, draft: drafted };
     });
   }
 
