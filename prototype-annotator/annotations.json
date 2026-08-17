@@ -3807,7 +3807,7 @@
         }
       },
       "title": "监控看板 · 页面介绍",
-      "contentMarkdown": "### 页面功能介绍\n\n面向监管方、运维方角色使用",
+      "contentMarkdown": "### 页面功能介绍\n\n面向监管方、运维方角色使用\n\n- 服务总数：接口总数\n- 运行正常：心跳检测正常的接口数\n- 服务异常：心跳检测异常的接口数\n- 今日告警：今天的告警总数\n- 调用总量：接口总调用量",
       "devNotesMarkdown": null,
       "audienceMode": "product-review",
       "annotationType": "P",
@@ -3852,7 +3852,7 @@
         "status": "pending",
         "reason": "product-copy-draft"
       },
-      "updatedAt": "2026-08-14T06:25:43.684Z",
+      "updatedAt": "2026-08-17T07:19:20.927Z",
       "order": 1
     },
     {
