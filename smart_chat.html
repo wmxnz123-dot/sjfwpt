@@ -92,40 +92,49 @@
 
                             <div class="w-full max-w-3xl">
                                 <p class="text-sm text-[#909399] mb-3 text-center">试试问我这些问题</p>
-                                <div class="grid grid-cols-2 gap-3">
+                                <div class="grid grid-cols-3 gap-3">
                                     <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
-                                        <div class="flex items-start gap-3">
+                                        <div class="flex items-start gap-2">
                                             <i class="fa-solid fa-car text-[#1c7ffd] mt-0.5"></i>
                                             <div>
-                                                <p class="font-medium">我要新能源汽车相关数据</p>
+                                                <p class="font-medium whitespace-nowrap">我要新能源汽车相关数据</p>
                                                 <p class="text-xs text-[#909399] mt-1">查询新能源汽车产业相关数据资源</p>
                                             </div>
                                         </div>
                                     </button>
                                     <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
-                                        <div class="flex items-start gap-3">
+                                        <div class="flex items-start gap-2">
                                             <i class="fa-solid fa-building text-[#1c7ffd] mt-0.5"></i>
                                             <div>
-                                                <p class="font-medium">企业纳税数据是谁的？</p>
+                                                <p class="font-medium whitespace-nowrap">企业纳税数据是谁的？</p>
                                                 <p class="text-xs text-[#909399] mt-1">了解企业纳税数据的归属部门</p>
                                             </div>
                                         </div>
                                     </button>
                                     <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
-                                        <div class="flex items-start gap-3">
+                                        <div class="flex items-start gap-2">
                                             <i class="fa-solid fa-chart-line text-[#1c7ffd] mt-0.5"></i>
                                             <div>
-                                                <p class="font-medium">做数字经济分析需要哪些数据？</p>
+                                                <p class="font-medium whitespace-nowrap">做数字经济分析需要哪些数据？</p>
                                                 <p class="text-xs text-[#909399] mt-1">获取数字经济分析所需的数据资源推荐</p>
                                             </div>
                                         </div>
                                     </button>
                                     <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
-                                        <div class="flex items-start gap-3">
+                                        <div class="flex items-start gap-2">
                                             <i class="fa-solid fa-file-circle-check text-[#1c7ffd] mt-0.5"></i>
                                             <div>
-                                                <p class="font-medium">如何申请数据资源？</p>
+                                                <p class="font-medium whitespace-nowrap">如何申请数据资源？</p>
                                                 <p class="text-xs text-[#909399] mt-1">了解数据资源申请的流程和条件</p>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-wand-magic-sparkles text-[#1c7ffd] mt-0.5"></i>
+                                            <div>
+                                                <p class="font-medium whitespace-nowrap">我要定制数据</p>
+                                                <p class="text-xs text-[#909399] mt-1">描述需求定制专属数据服务</p>
                                             </div>
                                         </div>
                                     </button>
@@ -286,7 +295,7 @@
 
             if (text.includes('定制') || text.includes('我的需求')) {
                 customizing = true;
-                return '好的，请告诉我您的具体数据需求，包括需要什么类型的数据、使用场景、数据字段等信息，我会将您的定制需求加入数据篮，后续会有专人与您对接。';
+                return '好的，请告诉我您的具体数据需求，包括需要什么类型的数据、使用场景、数据字段等信息，我会将您的定制需求加入数据篮。';
             }
 
             if (text.includes('加入数据篮') || text.includes('加进去') || text.includes('添加到数据篮')) {

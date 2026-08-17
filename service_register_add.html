@@ -19,6 +19,14 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+        .agent-card.agent-active {
+            border-color: #667eea;
+            background: #f3f0ff;
+            box-shadow: 0 0 0 1px #667eea inset;
+        }
+        .agent-card.agent-active .font-medium {
+            color: #4f46e5;
+        }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
@@ -486,19 +494,19 @@
                 <span class="text-sm font-medium text-[#303133]">选择智能体</span>
             </div>
             <div class="grid grid-cols-2 gap-3">
+                <button onclick="selectAgent('qa')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left agent-active" id="agent-qa">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-message-question text-[#36c2aa]"></i>
+                        <span class="font-medium text-sm">智能问答智能体</span>
+                    </div>
+                    <p class="text-xs text-[#909399]">自然语言描述需求，AI智能生成服务注册信息</p>
+                </button>
                 <button onclick="selectAgent('doc')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left" id="agent-doc">
                     <div class="flex items-center gap-2 mb-2">
                         <i class="fa-solid fa-file-lines text-[#1c7ffd]"></i>
                         <span class="font-medium text-sm">文档解析智能体</span>
                     </div>
                     <p class="text-xs text-[#909399]">上传接口文档/数据字典，AI自动解析并填充注册表单</p>
-                </button>
-                <button onclick="selectAgent('qa')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left agent-active" id="agent-qa">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-message-question text-[#36c2aa]"></i>
-                        <span class="font-medium text-sm">问答生成智能体</span>
-                    </div>
-                    <p class="text-xs text-[#909399]">自然语言描述需求，AI智能生成服务注册信息</p>
                 </button>
             </div>
         </div>
@@ -533,7 +541,7 @@
             </div>
         </div>
 
-        <!-- ===== 问答生成智能体 - 聊天视图 ===== -->
+        <!-- ===== 智能问答智能体 - 聊天视图 ===== -->
         <div id="qa-view" class="flex-1 flex flex-col overflow-hidden">
             <div class="flex-1 overflow-y-auto px-6 py-5 space-y-5" id="qa-messages">
                 <div class="flex items-start gap-3">
@@ -541,7 +549,7 @@
                         <i class="fa-solid fa-message-question text-white text-xs"></i>
                     </div>
                     <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
-                        <p class="text-sm text-[#606266]">您好！我是<strong>问答生成智能体</strong>。用自然语言描述您要注册的服务，例如："我要注册一个企业工商信息查询接口，GET方式，请求参数是企业信用代码，返回企业名称、法人、注册资本…"</p>
+                        <p class="text-sm text-[#606266]">您好！我是<strong>智能问答智能体</strong>。用自然语言描述您要注册的服务，例如："我要注册一个企业工商信息查询接口，GET方式，请求参数是企业信用代码，返回企业名称、法人、注册资本…"</p>
                     </div>
                 </div>
             </div>
@@ -1284,7 +1292,7 @@
                         <i class="fa-solid fa-message-question text-white text-xs"></i>
                     </div>
                     <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3">
-                        <p class="text-sm text-[#606266] animate-pulse">智能问答生成智能体正在分析...</p>
+                        <p class="text-sm text-[#606266] animate-pulse">智能问答智能体正在分析...</p>
                     </div>
                 </div>
             `;

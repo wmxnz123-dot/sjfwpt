@@ -412,18 +412,33 @@
         }
         // 下载附件上传模板（Excel 格式）
         function downloadTemplate() {
-            const tableHtml = `
-<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
-<head><meta charset="UTF-8"></head>
-<body>
-<table border="1">
-<tr style="background-color:#1c7ffd;color:#fff;font-weight:bold;text-align:center;">
-    <th>序号</th><th>附件名称</th><th>附件类型</th><th>上传人</th><th>所属数据</th><th>说明</th>
-</tr>
-<tr><td>1</td><td>示例：数据使用申请表.docx</td><td>Word文档</td><td>张三</td><td>示例数据资源</td><td>请按此格式填写</td></tr>
-<tr><td>2</td><td>示例：数据授权书.pdf</td><td>PDF文档</td><td>张三</td><td>示例数据资源</td><td>请按此格式填写</td></tr>
-<tr><td>3</td><td>示例：数据清单.xlsx</td><td>Excel表格</td><td>张三</td><td>示例数据资源</td><td>请按此格式填写</td></tr>
-</table>
+            const tableHtml = [
+                '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">',
+                '<head><meta charset="UTF-8"></head>',
+                '<body>',
+                '<table border="1">',
+                '<tr style="background-color:#1c7ffd;color:#fff;font-weight:bold;text-align:center;">',
+                '    <th>序号</th><th>附件名称</th><th>附件类型</th><th>上传人</th><th>所属数据</th><th>说明</th>',
+                '</tr>',
+                '<tr><td>1</td><td>示例：数据使用申请表.docx</td><td>Word文档</td><td>张三</td><td>示例数据资源</td><td>请按此格式填写</td></tr>',
+                '<tr><td>2</td><td>示例：数据授权书.pdf</td><td>PDF文档</td><td>张三</td><td>示例数据资源</td><td>请按此格式填写</td></tr>',
+                '<tr><td>3</td><td>示例：数据清单.xlsx</td><td>Excel表格</td><td>张三</td><td>示例数据资源</td><td>请按此格式填写</td></tr>',
+                '</table>',
+                '</body>',
+                '</html>'
+            ].join('');
+            const blob = new Blob([tableHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '附件上传模板.xls';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('模板下载成功');
+        }
+    </script>
 
 <!-- Prototype Annotator runtime -->
 <script>
@@ -15190,19 +15205,7 @@ window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR
 <script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
 <script src="./prototype-annotator/runtime/prototype-annotator.js?v=20260815a"></script>
 <!-- /Prototype Annotator runtime -->
-</body>
-</html>`;
-            const blob = new Blob([tableHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = '附件上传模板.xls';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showToast('模板下载成功');
-        }
+<script>
         function handleFileSelect(e) {
             const files = Array.from(e.target.files || []);
             files.forEach(f => {
