@@ -38,13 +38,13 @@
         </div>
 
         <div class="max-w-[1440px] mx-auto px-6 py-6">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="text-[#909399] text-sm">筛选：</span>
-                <button class="filter-tag active px-4 py-1.5 bg-[#1c7ffd] text-white rounded-full text-sm transition-all" onclick="filterScenes('all')">全部</button>
-                <button class="filter-tag px-4 py-1.5 bg-gray-100 text-[#606266] rounded-full text-sm transition-all" onclick="filterScenes('政务服务')">政务服务</button>
-                <button class="filter-tag px-4 py-1.5 bg-gray-100 text-[#606266] rounded-full text-sm transition-all" onclick="filterScenes('经济建设')">经济建设</button>
-                <button class="filter-tag px-4 py-1.5 bg-gray-100 text-[#606266] rounded-full text-sm transition-all" onclick="filterScenes('公共安全')">公共安全</button>
-                <button class="filter-tag px-4 py-1.5 bg-gray-100 text-[#606266] rounded-full text-sm transition-all" onclick="filterScenes('社会保障')">社会保障</button>
+            <div class="flex items-center justify-between mb-6">
+                <span class="text-sm text-[#606266]">共 <span class="text-[#1c7ffd] font-bold">6</span> 个场景</span>
+                <button onclick="toggleSceneSort()" class="flex items-center gap-2 text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors cursor-pointer">
+                    <i class="fa-solid fa-sort text-[#1c7ffd]"></i>
+                    <span>更新时间</span>
+                    <i id="scene-sort-direction" class="fa-solid fa-arrow-down-short-wide text-[#1c7ffd]"></i>
+                </button>
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="scene-list">
@@ -53,7 +53,6 @@
                         <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center">
                             <i class="fa-solid fa-heart text-[#1c7ffd] text-xl"></i>
                         </div>
-                        <span class="px-3 py-1 bg-blue-50 text-[#1c7ffd] text-xs rounded-full">政务服务</span>
                     </div>
                     <h3 class="text-lg font-semibold text-[#303133] mb-2">婚姻登记查询</h3>
                     <p class="text-[#909399] text-xs mb-4 line-clamp-2">提供婚姻登记信息查询服务，支持婚姻状态查询、婚姻登记记录查询等功能，助力政务服务数字化转型。</p>
@@ -78,7 +77,6 @@
                         <div class="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center">
                             <i class="fa-solid fa-building text-[#36c2aa] text-xl"></i>
                         </div>
-                        <span class="px-3 py-1 bg-green-50 text-[#36c2aa] text-xs rounded-full">经济建设</span>
                     </div>
                     <h3 class="text-lg font-semibold text-[#303133] mb-2">企业信用查询</h3>
                     <p class="text-[#909399] text-xs mb-4 line-clamp-2">整合企业工商登记、信用评价、行政处罚等数据，提供全面的企业信用信息查询服务。</p>
@@ -103,7 +101,6 @@
                         <div class="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center">
                             <i class="fa-solid fa-users text-[#7a6df4] text-xl"></i>
                         </div>
-                        <span class="px-3 py-1 bg-purple-50 text-[#7a6df4] text-xs rounded-full">社会保障</span>
                     </div>
                     <h3 class="text-lg font-semibold text-[#303133] mb-2">人口信息查询</h3>
                     <p class="text-[#909399] text-xs mb-4 line-clamp-2">提供常住人口、户籍信息、流动人口等人口数据查询服务，支持人口统计分析应用。</p>
@@ -128,7 +125,6 @@
                         <div class="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center">
                             <i class="fa-solid fa-shield-halved text-[#e6a23c] text-xl"></i>
                         </div>
-                        <span class="px-3 py-1 bg-orange-50 text-[#e6a23c] text-xs rounded-full">公共安全</span>
                     </div>
                     <h3 class="text-lg font-semibold text-[#303133] mb-2">社会治安防控</h3>
                     <p class="text-[#909399] text-xs mb-4 line-clamp-2">整合公安、交通、消防等安全领域数据，提供社会治安状况分析和预警服务。</p>
@@ -153,7 +149,6 @@
                         <div class="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center">
                             <i class="fa-solid fa-heart-pulse text-[#f56c6c] text-xl"></i>
                         </div>
-                        <span class="px-3 py-1 bg-red-50 text-[#f56c6c] text-xs rounded-full">社会保障</span>
                     </div>
                     <h3 class="text-lg font-semibold text-[#303133] mb-2">健康医疗服务</h3>
                     <p class="text-[#909399] text-xs mb-4 line-clamp-2">提供电子病历、医保信息、健康档案等医疗数据服务，支撑智慧医疗应用建设。</p>
@@ -178,7 +173,6 @@
                         <div class="w-12 h-12 rounded-lg bg-teal-50 flex items-center justify-center">
                             <i class="fa-solid fa-graduation-cap text-[#20c997] text-xl"></i>
                         </div>
-                        <span class="px-3 py-1 bg-teal-50 text-[#20c997] text-xs rounded-full">政务服务</span>
                     </div>
                     <h3 class="text-lg font-semibold text-[#303133] mb-2">教育资源查询</h3>
                     <p class="text-[#909399] text-xs mb-4 line-clamp-2">整合学籍信息、学校信息、教育统计等数据，提供教育领域数据服务。</p>
@@ -216,6 +210,13 @@
     <script>PortalCommon.renderFooter();</script>
 
     <script>
+        let sceneSortAsc = false;
+        function toggleSceneSort() {
+            sceneSortAsc = !sceneSortAsc;
+            const dir = document.getElementById('scene-sort-direction');
+            dir.className = sceneSortAsc ? 'fa-solid fa-arrow-up-short-wide text-[#1c7ffd]' : 'fa-solid fa-arrow-down-short-wide text-[#1c7ffd]';
+        }
+
         const scenes = [
             { id: 'marriage', name: '婚姻登记查询', domain: '政务服务', resources: 12, views: 2856, desc: '提供婚姻登记信息查询服务，支持婚姻状态查询、婚姻登记记录查询等功能，助力政务服务数字化转型。', update: '2024-01-15', color: 'blue' },
             { id: 'enterprise', name: '企业信用查询', domain: '经济建设', resources: 25, views: 15234, desc: '整合企业工商登记、信用评价、行政处罚等数据，提供全面的企业信用信息查询服务。', update: '2024-01-14', color: 'green' },

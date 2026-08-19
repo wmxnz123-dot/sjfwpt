@@ -1,8 +1,58 @@
+(function() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .nav-badge {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 10px;
+            line-height: 1;
+            font-weight: 700;
+            margin-left: 6px;
+            overflow: visible;
+            isolation: isolate;
+        }
+        .nav-badge-new { background: linear-gradient(135deg, #d9363e, #f56c6c); }
+        .nav-badge-up { background: linear-gradient(135deg, #1c7ffd, #5ba8ff); }
+        .nav-badge::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: nav-badge-pulse 1.5s ease-out infinite;
+            z-index: -1;
+        }
+        .nav-badge-new::before { background: linear-gradient(135deg, #d9363e, #f56c6c); }
+        .nav-badge-up::before { background: linear-gradient(135deg, #1c7ffd, #5ba8ff); }
+        @keyframes nav-badge-pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+})();
+
 const developerTopNavItems = [
     { id: 'workbench', label: '工作台', href: 'admin_workbench.html' },
     { id: 'resource_mgmt', label: '资源中心', href: 'catalog_manage.html?nav=resource-catalog' },
     { id: 'supply_demand', label: '供需中心', href: 'scene_center.html?nav=demand-scene' },
-    { id: 'objection', label: '异议中心', href: 'objection_accept.html?nav=objection-accept' },
+    { id: 'objection', label: '异议中心', href: 'objection_accept.html?nav=objection-accept', disabled: true },
     { id: 'monitor', label: '监控中心', href: 'monitor_dashboard.html?nav=monitor-dashboard' },
     { id: 'statistics', label: '统计中心', href: 'statistics_dashboard.html?nav=statistics-dashboard' },
     { id: 'config', label: '配置中心', href: 'config_center.html?nav=config-scene' }
@@ -17,21 +67,23 @@ const developerSideNavMap = {
             type: 'group',
             label: '目录管理',
             icon: 'fa-list',
+            badge: '升',
             children: [
-                { type: 'link', label: '目录编制', href: 'catalog_manage.html?nav=resource-catalog', navKey: 'resource-catalog' },
-                { type: 'link', label: '目录审核', href: 'catalog_audit.html?nav=resource-catalog-audit', navKey: 'resource-catalog-audit' },
-                { type: 'link', label: '数据更新审核', href: 'data_update_audit.html?nav=resource-catalog-update-audit', navKey: 'resource-catalog-update-audit' },
-                { type: 'link', label: '数据表', href: 'catalog_tables.html?nav=resource-catalog-tables', navKey: 'resource-catalog-tables' }
+                { type: 'link', label: '目录编制', href: 'catalog_manage.html?nav=resource-catalog', navKey: 'resource-catalog', badge: '升' },
+                { type: 'link', label: '目录审核', href: 'catalog_audit.html?nav=resource-catalog-audit', navKey: 'resource-catalog-audit', badge: '升' },
+                { type: 'link', label: '已发布目录', href: 'data_update.html?nav=resource-catalog-update', navKey: 'resource-catalog-update', badge: '升' },
+                { type: 'link', label: '数据更新审核', href: 'data_update_audit.html?nav=resource-catalog-update-audit', navKey: 'resource-catalog-update-audit', badge: '升' }
             ]
         },
         {
             type: 'group',
             label: '服务管理',
             icon: 'fa-server',
+            badge: '升',
             children: [
-                { type: 'link', label: '服务注册', href: 'service_register.html?nav=resource-service', navKey: 'resource-service' },
-                { type: 'link', label: '服务审核', href: 'service_audit.html?nav=resource-service-audit', navKey: 'resource-service-audit' },
-                { type: 'link', label: '服务交付', href: 'service_delivery.html?nav=resource-service-delivery', navKey: 'resource-service-delivery' }
+                { type: 'link', label: '服务注册', href: 'service_register.html?nav=resource-service', navKey: 'resource-service', badge: '升' },
+                { type: 'link', label: '服务审核', href: 'service_audit.html?nav=resource-service-audit', navKey: 'resource-service-audit', badge: '升' },
+                { type: 'link', label: '服务交付', href: 'service_delivery.html?nav=resource-service-delivery', navKey: 'resource-service-delivery', badge: '升' }
             ]
         }
     ],
@@ -40,8 +92,9 @@ const developerSideNavMap = {
             type: 'group',
             label: '需求管理',
             icon: 'fa-file-signature',
+            badge: '升',
             children: [
-                { type: 'link', label: '场景管理', href: 'scene_center.html?nav=demand-scene', navKey: 'demand-scene' },
+                { type: 'link', label: '场景管理', href: 'scene_center.html?nav=demand-scene', navKey: 'demand-scene', badge: '升' },
                 { type: 'link', label: '我的需求', disabled: true }
             ]
         },
@@ -59,8 +112,9 @@ const developerSideNavMap = {
             type: 'group',
             label: '供需管理',
             icon: 'fa-scale-balanced',
+            badge: '升',
             children: [
-                { type: 'link', label: '需求受理', href: 'demand_accept.html?nav=demand-accept', navKey: 'demand-accept' },
+                { type: 'link', label: '需求受理', href: 'demand_accept.html?nav=demand-accept', navKey: 'demand-accept', badge: '升' },
                 { type: 'link', label: '扩容审核', disabled: true }
             ]
         }
@@ -70,6 +124,7 @@ const developerSideNavMap = {
             type: 'group',
             label: '异议管理',
             icon: 'fa-circle-exclamation',
+            collapsed: true,
             children: [
                 { type: 'link', label: '异议提出', disabled: true },
                 { type: 'link', label: '异议受理', href: 'objection_accept.html?nav=objection-accept', navKey: 'objection-accept' },
@@ -111,7 +166,7 @@ const developerSideNavMap = {
         }
     ],
     statistics: [
-        { type: 'link', label: '统计看板', href: 'statistics_dashboard.html?nav=statistics-dashboard', navKey: 'statistics-dashboard', icon: 'fa-chart-pie' },
+        { type: 'link', label: '统计看板', href: 'statistics_dashboard.html?nav=statistics-dashboard', navKey: 'statistics-dashboard', icon: 'fa-chart-pie', badge: '新' },
         {
             type: 'group',
             label: '目录服务统计',
@@ -128,6 +183,7 @@ const developerSideNavMap = {
             type: 'group',
             label: '申请使用统计',
             icon: 'fa-file-circle-check',
+            badge: '新',
             children: [
                 { type: 'link', label: '部门申请服务情况', href: '', navKey: 'statistics-dept-apply', disabled: true },
                 { type: 'link', label: '区划申请服务情况', href: '', navKey: 'statistics-region-apply', disabled: true },
@@ -137,7 +193,7 @@ const developerSideNavMap = {
                 { type: 'link', label: '部门调用情况', href: '', navKey: 'statistics-dept-call', disabled: true },
                 { type: 'link', label: '区划调用情况', href: '', navKey: 'statistics-region-call', disabled: true },
                 { type: 'link', label: '部门接口调用情况', href: '', navKey: 'statistics-dept-api-call', disabled: true },
-                { type: 'link', label: '需求数据量', href: 'statistics_demand.html?nav=statistics-demand', navKey: 'statistics-demand' }
+                { type: 'link', label: '需求数据量', href: 'statistics_demand.html?nav=statistics-demand', navKey: 'statistics-demand', badge: '新' }
             ]
         },
         { type: 'link', label: '基础库统计', href: '', navKey: 'statistics-database', disabled: true, icon: 'fa-database' },
@@ -149,13 +205,14 @@ const developerSideNavMap = {
             type: 'group',
             label: '配置管理',
             icon: 'fa-sliders',
+            badge: '新',
             children: [
-                { type: 'link', label: '场景配置', href: 'config_center.html?nav=config-scene', navKey: 'config-scene' }
+                { type: 'link', label: '场景配置', href: 'config_center.html?nav=config-scene', navKey: 'config-scene', badge: '新' }
             ]
         }
     ],
     monitor: [
-        { type: 'link', label: '监控看板', href: 'monitor_dashboard.html?nav=monitor-dashboard', navKey: 'monitor-dashboard', icon: 'fa-chart-pie' },
+        { type: 'link', label: '监控看板', href: 'monitor_dashboard.html?nav=monitor-dashboard', navKey: 'monitor-dashboard', icon: 'fa-chart-pie', badge: '新' },
         {
             type: 'group',
             label: '服务使用监控',
@@ -274,6 +331,15 @@ function renderDeveloperTopNav(state) {
             const isActive = item.id === state.activeGroup;
             // 临时隐藏审批中心、帮助中心（保留代码，后续可恢复）
             const hiddenStyle = (item.id === 'approval' || item.id === 'help') ? ' style="display:none"' : '';
+            if (item.disabled) {
+                return `
+                    <span${hiddenStyle}
+                        class="px-4 h-[34px] inline-flex items-center rounded-md border transition-colors whitespace-nowrap text-[14px] opacity-50 cursor-not-allowed border-transparent text-white/80"
+                    >
+                        ${item.label}
+                    </span>
+                `;
+            }
             if (!item.href) {
                 return `
                     <span${hiddenStyle}
@@ -322,6 +388,8 @@ function renderDeveloperNavItem(item, state, isChild = false) {
     const textClass = isChild ? 'text-[13px]' : 'text-[14px] font-medium';
     
     const iconHtml = !isChild && item.icon ? `<i class="fa-solid ${item.icon} w-5 text-center mr-2 text-lg"></i>` : '';
+    const badgeClass = item.badge === '新' ? 'nav-badge nav-badge-new' : item.badge === '升' ? 'nav-badge nav-badge-up' : '';
+    const badgeHtml = item.badge ? `<span class="${badgeClass}">${item.badge}</span>` : '';
 
     if (item.disabled) {
         return `
@@ -331,6 +399,7 @@ function renderDeveloperNavItem(item, state, isChild = false) {
             >
                 ${iconHtml}
                 <span>${item.label}</span>
+                ${badgeHtml}
             </div>
         `;
     }
@@ -346,6 +415,7 @@ function renderDeveloperNavItem(item, state, isChild = false) {
         >
             ${iconHtml}
             <span>${item.label}</span>
+            ${badgeHtml}
         </a>
     `;
 }
@@ -363,7 +433,10 @@ function renderDeveloperSideNav(state) {
             ${sections.map((item, index) => {
                 if (item.type === 'group') {
                     const groupActive = item.children.some((child) => child.navKey === state.activeNav);
+                    const groupExpanded = groupActive && !item.collapsed;
                     const groupId = `group-${index}`;
+                    const groupBadgeClass = item.badge === '新' ? 'nav-badge nav-badge-new' : item.badge === '升' ? 'nav-badge nav-badge-up' : '';
+                    const groupBadgeHtml = item.badge ? `<span class="${groupBadgeClass}">${item.badge}</span>` : '';
                     
                     return `
                         <div class="flex flex-col mb-1">
@@ -374,10 +447,11 @@ function renderDeveloperSideNav(state) {
                                 <div class="flex items-center">
                                     <i class="fa-solid ${item.icon || 'fa-folder'} w-5 text-center mr-2 text-lg"></i>
                                     <span>${item.label}</span>
+                                    ${groupBadgeHtml}
                                 </div>
-                                <i id="nav-group-arrow-${groupId}" class="fa-solid ${groupActive ? 'fa-angle-down' : 'fa-angle-right'} text-gray-400 text-xs transition-transform duration-200"></i>
+                                <i id="nav-group-arrow-${groupId}" class="fa-solid ${groupExpanded ? 'fa-angle-down' : 'fa-angle-right'} text-gray-400 text-xs transition-transform duration-200"></i>
                             </div>
-                            <div id="nav-group-content-${groupId}" class="flex flex-col mt-0.5 ${groupActive ? '' : 'hidden'}">
+                            <div id="nav-group-content-${groupId}" class="flex flex-col mt-0.5 ${groupExpanded ? '' : 'hidden'}">
                                 ${item.children.map((child) => renderDeveloperNavItem(child, state, true)).join('')}
                             </div>
                         </div>

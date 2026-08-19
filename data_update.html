@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 已发布目录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <!-- 顶部导航栏 -->
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="flex-1 flex overflow-hidden">
+        <!-- 左侧导航 -->
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js"></script>
+
+        <!-- 右侧内容区 -->
+        <main class="flex-1 flex flex-col overflow-hidden relative bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <div class="h-[52px] flex items-center px-6 text-[#606266] shrink-0 bg-white border-b border-gray-100 text-[14px]">
+                <span>资源管理</span>
+                <span class="mx-2">/</span>
+                <span>目录管理</span>
+                <span class="mx-2">/</span>
+                <span class="font-medium text-[#303133]">已发布目录</span>
+            </div>
+
+            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+                <!-- 搜索区 -->
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 shrink-0">
+                    <div class="flex items-center gap-6 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">数据资源目录名称：</label>
+                            <input type="text" id="search-name" placeholder="请输入" class="w-[280px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">共享属性：</label>
+                            <select id="share-attr" class="w-[200px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                                <option>请选择</option>
+                                <option>无条件共享</option>
+                                <option>有条件共享</option>
+                                <option>不予共享</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2 ml-auto">
+                            <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors" onclick="resetSearch()">
+                                <i class="fa-solid fa-rotate-right mr-1"></i>重置
+                            </button>
+                            <button class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors flex items-center gap-1" onclick="doSearch()">
+                                <i class="fa-solid fa-magnifying-glass text-xs"></i>查询
+                            </button>
+                            <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-1" onclick="toggleExpand(this)">
+                                <span>展开</span>
+                                <i class="fa-solid fa-chevron-down text-xs transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 已发布目录列表 -->
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex-1 flex flex-col">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between shrink-0">
+                        <h2 class="text-[16px] font-bold text-[#303133]">已发布目录列表</h2>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="刷新">
+                                <i class="fa-solid fa-rotate-right text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="字段设置">
+                                <i class="fa-solid fa-columns text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="设置">
+                                <i class="fa-solid fa-gear text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 overflow-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 sticky top-0">
+                                    <th class="px-5 py-3 w-10"></th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266] w-16">序号</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">数据资源目录代码</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">数据资源目录名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">共享属性</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">接入状态</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266] cursor-pointer hover:text-[#1c7ffd] transition-colors" onclick="toggleSort()">
+                                        <span class="inline-flex items-center gap-1">发布时间 <i class="fa-solid fa-arrow-down-short-wide text-xs"></i></span>
+                                    </th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266] w-[340px]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- rows rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between shrink-0">
+                        <div class="text-sm text-[#606266]">
+                            共 <span class="font-medium" id="total-count">5</span> 条
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-left text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-[#1c7ffd] bg-[#1c7ffd] text-white rounded">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-right text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const tableData = [
+            { id: 1, code: '3707003500880000353', name: '行政强制执行信息', share: '无条件共享', status: '已接入', update: '2026-04-19 11:03:55' },
+            { id: 2, code: '3707003500880000350', name: '行政处罚当事人信息', share: '无条件共享', status: '已接入', update: '2026-04-19 11:03:55' },
+            { id: 3, code: '3707003500880000348', name: '行政处罚执行信息', share: '无条件共享', status: '已接入', update: '2026-04-19 11:03:55' },
+            { id: 4, code: '3707003500880000352', name: '行政强制措施信息', share: '无条件共享', status: '已接入', update: '2026-04-19 11:03:55' },
+            { id: 5, code: '3707003500880000339', name: '测试123', share: '不予共享', status: '已接入', update: '2025-07-21 15:21:23' }
+        ];
+
+        function renderTable(data) {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = data.map(row => `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td class="px-5 py-4"><input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-[#1c7ffd] focus:ring-[#1c7ffd]"></td>
+                    <td class="px-5 py-4 text-[#303133]">${row.id}</td>
+                    <td class="px-5 py-4 text-[#303133] font-mono text-[13px]">${row.code}</td>
+                    <td class="px-5 py-4 text-[#303133]">${row.name}</td>
+                    <td class="px-5 py-4 text-[#606266]">${row.share}</td>
+                    <td class="px-5 py-4">
+                        <span class="inline-flex items-center gap-1 text-[#303133]">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>${row.status}
+                        </span>
+                    </td>
+                    <td class="px-5 py-4 text-[#606266]">${row.update}</td>
+                    <td class="px-5 py-4 text-center">
+                        <div class="flex items-center justify-center gap-3 text-sm">
+                            <a href="#" onclick="return false;" class="text-[#1c7ffd] hover:text-[#1a73e8] transition-colors">查看</a>
+                            <a href="#" onclick="return false;" class="text-[#1c7ffd] hover:text-[#1a73e8] transition-colors">变更</a>
+                            <a href="#" onclick="return false;" class="text-[#1c7ffd] hover:text-[#1a73e8] transition-colors">下线</a>
+                            <a href="#" onclick="return false;" class="text-[#1c7ffd] hover:text-[#1a73e8] transition-colors">预览</a>
+                            <a href="javascript:void(0);" onclick="openUpdateModal(${row.id})" class="text-[#1c7ffd] hover:text-[#1a73e8] transition-colors">数据更新</a>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            document.getElementById('total-count').textContent = data.length;
+        }
+
+        function resetSearch() {
+            document.getElementById('search-name').value = '';
+            document.getElementById('share-attr').value = '请选择';
+            renderTable(tableData);
+        }
+
+        function doSearch() {
+            const name = document.getElementById('search-name').value.toLowerCase();
+            const share = document.getElementById('share-attr').value;
+            const filtered = tableData.filter(row => {
+                if (name && !row.name.toLowerCase().includes(name)) return false;
+                if (share !== '请选择' && row.share !== share) return false;
+                return true;
+            });
+            renderTable(filtered);
+        }
+
+        function toggleSort() {
+            const tbody = document.getElementById('table-body');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            rows.reverse().forEach(tr => tbody.appendChild(tr));
+        }
+
+        function toggleExpand(btn) {
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        }
+
+        function openUpdateModal(id) {
+            document.getElementById('update-modal').classList.remove('hidden');
+            document.getElementById('update-modal').classList.add('flex');
+            document.getElementById('update-modal').dataset.rowId = id;
+        }
+
+        function closeUpdateModal() {
+            document.getElementById('update-modal').classList.add('hidden');
+            document.getElementById('update-modal').classList.remove('flex');
+            document.getElementById('update-file-name').textContent = '';
+            document.getElementById('update-desc').value = '';
+        }
+
+        function triggerUpload() {
+            document.getElementById('update-file-input').click();
+        }
+
+        function onFileSelected(input) {
+            const file = input.files[0];
+            if (file) {
+                const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+                if (ext !== '.xlsx' && ext !== '.xls') {
+                    alert('请上传 .xlsx 或 .xls 格式的文件');
+                    input.value = '';
+                    return;
+                }
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('文件大小不能超过 10MB');
+                    input.value = '';
+                    return;
+                }
+                document.getElementById('update-file-name').textContent = file.name;
+            }
+        }
+
+        function confirmUpdate() {
+            const type = document.querySelector('input[name="update-type"]:checked').value;
+            const fileInput = document.getElementById('update-file-input');
+            if (!fileInput.files[0]) {
+                alert('请上传附件');
+                return;
+            }
+            closeUpdateModal();
+        }
+
+        function downloadTemplate() {
+            alert('模板下载中...');
+        }
+
+        renderTable(tableData);
+    </script>
+
+    <!-- 数据更新弹窗 -->
+    <div id="update-modal" class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center">
+        <div class="bg-white rounded-lg w-[520px] shadow-xl">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h3 class="text-[16px] font-bold text-[#303133]">数据更新</h3>
+                <button class="text-[#909399] hover:text-[#606266] transition-colors" onclick="closeUpdateModal()">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="px-6 py-5 flex flex-col gap-5">
+                <div class="flex items-center gap-4">
+                    <label class="w-[110px] text-right text-sm text-[#606266]"><span class="text-red-500">*</span> 数据更新类型：</label>
+                    <div class="flex items-center gap-6">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="update-type" value="追加" checked class="w-4 h-4 text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                            <span class="text-sm text-[#303133]">追加</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="update-type" value="覆盖" class="w-4 h-4 text-[#1c7ffd] focus:ring-[#1c7ffd]">
+                            <span class="text-sm text-[#303133]">覆盖</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <label class="w-[110px] text-right text-sm text-[#606266] pt-1"><span class="text-red-500">*</span> 上传附件：</label>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3">
+                            <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 hover:border-[#1c7ffd] hover:text-[#1c7ffd] transition-colors flex items-center gap-1" onclick="triggerUpload()">
+                                <i class="fa-solid fa-upload text-xs"></i>上传文件
+                            </button>
+                            <input type="file" id="update-file-input" accept=".xlsx,.xls" class="hidden" onchange="onFileSelected(this)">
+                            <a href="javascript:void(0);" onclick="downloadTemplate()" class="text-[#1c7ffd] text-sm hover:text-[#1a73e8] flex items-center gap-1 transition-colors">
+                                <i class="fa-solid fa-download text-xs"></i>下载模板
+                            </a>
+                        </div>
+                        <div id="update-file-name" class="mt-2 text-sm text-[#606266]"></div>
+                        <div class="mt-1 text-xs text-[#909399]">支持扩展名：.xlsx,.xls，可上传一个，每个文件最大10MB</div>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <label class="w-[110px] text-right text-sm text-[#606266] pt-1">数据更新说明：</label>
+                    <textarea id="update-desc" placeholder="请输入" class="flex-1 h-[80px] px-3 py-2 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all resize-none"></textarea>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-3">
+                <button class="px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors" onclick="closeUpdateModal()">取消</button>
+                <button class="px-5 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors" onclick="confirmUpdate()">确定</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

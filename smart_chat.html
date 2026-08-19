@@ -138,6 +138,15 @@
                                             </div>
                                         </div>
                                     </button>
+                                    <button class="text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-xl text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors border border-transparent hover:border-blue-200" onclick="sendQuickQuestion(this)">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fa-solid fa-scale-balanced text-[#1c7ffd] mt-0.5"></i>
+                                            <div>
+                                                <p class="font-medium whitespace-nowrap">我要问政策</p>
+                                                <p class="text-xs text-[#909399] mt-1">了解数据相关政策法规解读</p>
+                                            </div>
+                                        </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -296,6 +305,27 @@
             if (text.includes('定制') || text.includes('我的需求')) {
                 customizing = true;
                 return '好的，请告诉我您的具体数据需求，包括需要什么类型的数据、使用场景、数据字段等信息，我会将您的定制需求加入数据篮。';
+            }
+
+            if (text.includes('政策') || text.includes('法规') || text.includes('我要问')) {
+                return `关于数据服务平台相关政策，主要包括以下几个方面：<br><br>
+                    <strong>一、数据共享政策</strong><br>
+                    • 《数据安全法》《个人信息保护法》相关规定<br>
+                    • 公共数据共享开放管理办法<br>
+                    • 数据分类分级保护制度<br><br>
+                    <strong>二、数据使用政策</strong><br>
+                    • 数据申请需遵循"最小够用"原则<br>
+                    • 敏感数据需签署保密协议<br>
+                    • 数据使用用途不得超出申请范围<br><br>
+                    <strong>三、数据安全政策</strong><br>
+                    • 数据传输与存储加密要求<br>
+                    • 数据访问审计与追踪<br>
+                    • 数据泄露应急处置流程<br><br>
+                    <strong>四、合规要求</strong><br>
+                    • 个人信息保护要求<br>
+                    • 数据跨境传输规定<br>
+                    • 数据主体权利保障<br><br>
+                    您想了解哪方面的具体政策内容？我可以为您提供更详细的解读。`;
             }
 
             if (text.includes('加入数据篮') || text.includes('加进去') || text.includes('添加到数据篮')) {

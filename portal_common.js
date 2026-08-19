@@ -2,12 +2,12 @@
 (function() {
     // 导航菜单配置
     const navItems = [
-        { key: 'home', label: '首页', href: 'index.html' },
-        { key: 'data_center', label: '数据中心', href: 'portal_data_center.html' },
-        { key: 'scene_center', label: '场景中心', href: 'portal_scene_center.html' },
-        { key: 'app_center', label: '应用中心', href: 'portal_app_center.html' },
-        { key: 'material_center', label: '材料中心', href: 'portal_material_center.html' },
-        { key: 'work_dynamics', label: '工作动态', href: 'portal_work_dynamics.html' }
+        { key: 'home', label: '首页', href: 'index.html', badge: '升' },
+        { key: 'data_center', label: '数据中心', href: 'portal_data_center.html', badge: '升' },
+        { key: 'scene_center', label: '场景中心', href: 'portal_scene_center.html', badge: '新' },
+        { key: 'app_center', label: '应用中心', href: 'portal_app_center.html', badge: '升' },
+        { key: 'material_center', label: '材料中心', href: 'portal_material_center.html', badge: '升' },
+        { key: 'work_dynamics', label: '工作动态', href: 'portal_work_dynamics.html', badge: '升' }
     ];
 
     // 目录类型
@@ -21,6 +21,56 @@
 
     // 渲染头部
     function renderHeader(activeKey) {
+        if (!document.getElementById('portal-badge-style')) {
+            const styleEl = document.createElement('style');
+            styleEl.id = 'portal-badge-style';
+            styleEl.textContent = `
+                .portal-badge {
+                    position: absolute;
+                    top: 8px;
+                    right: 2px;
+                    min-width: 16px;
+                    height: 16px;
+                    padding: 0 4px;
+                    border-radius: 8px;
+                    color: #fff;
+                    font-size: 10px;
+                    font-weight: 700;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    line-height: 1;
+                    isolation: isolate;
+                }
+                .portal-badge::before {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    border-radius: 8px;
+                    opacity: 0.55;
+                    z-index: -1;
+                    animation: portal-badge-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+                }
+                .portal-badge-new {
+                    background: linear-gradient(135deg, #d9363e, #f56c6c);
+                }
+                .portal-badge-new::before {
+                    background: linear-gradient(135deg, #d9363e, #f56c6c);
+                }
+                .portal-badge-up {
+                    background: linear-gradient(135deg, #1c7ffd, #5ba8ff);
+                }
+                .portal-badge-up::before {
+                    background: linear-gradient(135deg, #1c7ffd, #5ba8ff);
+                }
+                @keyframes portal-badge-pulse {
+                    0% { transform: scale(1); opacity: 0.55; }
+                    100% { transform: scale(1.5); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(styleEl);
+        }
+
         const header = `
     <header class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 shadow-sm z-50">
         <div class="max-w-[1440px] mx-auto h-full flex items-center justify-between px-6">
@@ -45,11 +95,17 @@
                 </div>
             </div>
             <nav class="flex items-center gap-1">
-                ${navItems.map(item => `
-                <a href="${item.href}" class="px-5 h-16 flex items-center ${activeKey === item.key ? 'text-[#1c7ffd] font-medium border-b-2 border-[#1c7ffd]' : 'text-[#606266] hover:text-[#1c7ffd]'} text-[15px] transition-colors">
+                ${navItems.map(item => {
+                    const isActive = activeKey === item.key;
+                    const badgeClass = item.badge === '新' ? 'portal-badge portal-badge-new' : item.badge === '升' ? 'portal-badge portal-badge-up' : '';
+                    const badgeHtml = item.badge ? `<span class="${badgeClass}">${item.badge}</span>` : '';
+                    return `
+                <a href="${item.href}" class="px-5 h-16 flex items-center ${isActive ? 'text-[#1c7ffd] font-medium border-b-2 border-[#1c7ffd]' : 'text-[#606266] hover:text-[#1c7ffd]'} text-[15px] transition-colors relative">
                     ${item.label}
+                    ${badgeHtml}
                 </a>
-                `).join('')}
+                `;
+                }).join('')}
             </nav>
             <div class="flex items-center gap-4">
                 <div class="relative user-dropdown">

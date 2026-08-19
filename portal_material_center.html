@@ -53,12 +53,11 @@
                             <span class="text-sm text-[#606266]">共 <span class="text-[#1c7ffd] font-bold">28</span> 份材料</span>
                         </div>
                         <div class="flex items-center gap-4 text-sm">
-                            <span class="text-[#606266]">排序：</span>
-                            <select class="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-[#1c7ffd] bg-white appearance-none cursor-pointer">
-                                <option>最新发布</option>
-                                <option>下载量</option>
-                                <option>名称</option>
-                            </select>
+                            <button onclick="toggleSort()" class="flex items-center gap-2 text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors cursor-pointer">
+                                <i class="fa-solid fa-sort text-[#1c7ffd]"></i>
+                                <span>最新发布</span>
+                                <i id="sort-direction" class="fa-solid fa-arrow-down-short-wide text-[#1c7ffd]"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -231,6 +230,13 @@
     </main>
 
     <script>
+        let materialSortAsc = false;
+        function toggleSort() {
+            materialSortAsc = !materialSortAsc;
+            const dir = document.getElementById('sort-direction');
+            dir.className = materialSortAsc ? 'fa-solid fa-arrow-up-short-wide text-[#1c7ffd]' : 'fa-solid fa-arrow-down-short-wide text-[#1c7ffd]';
+        }
+
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.tab-btn').forEach(b => {

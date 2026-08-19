@@ -13,6 +13,31 @@
         ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .nav-container {
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .nav-container:hover {
+            opacity: 1;
+        }
+        .nav-inner {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .nav-item.active .nav-dot {
+            background: #1c7ffd !important;
+            border-color: #1c7ffd !important;
+            box-shadow: 0 0 0 4px rgba(28, 127, 253, 0.15);
+        }
+        .nav-item.active .nav-label {
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+            color: #1c7ffd !important;
+            font-weight: 600;
+        }
         .stat-card { transition: all 0.3s ease; }
         .stat-card:hover { box-shadow: 0 8px 16px rgba(28, 127, 253, 0.1); }
         .ai-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
@@ -73,7 +98,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-4 gap-5 mb-8">
+                    <div class="grid grid-cols-5 gap-5 mb-8">
                         <div class="stat-card bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5">
                             <div class="flex items-center justify-between mb-3">
                                 <span class="text-[#909399] text-sm">数据目录总数</span>
@@ -116,6 +141,18 @@
                                 <i class="fa-solid fa-plus-circle text-[#7a6df4] opacity-50"></i>
                             </div>
                             <div class="text-[32px] font-bold text-[#303133] mb-1">1,350</div>
+                            <div class="flex items-center gap-1 text-xs">
+                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.3%</span>
+                                <span class="text-[#909399]">较上月</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-lg p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[#909399] text-sm">数据总量统计</span>
+                                <i class="fa-solid fa-chart-column text-[#06b6d4] opacity-50"></i>
+                            </div>
+                            <div class="text-[32px] font-bold text-[#303133] mb-1">8.6亿</div>
                             <div class="flex items-center gap-1 text-xs">
                                 <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.3%</span>
                                 <span class="text-[#909399]">较上月</span>
@@ -253,7 +290,7 @@
 
                 <div id="section-resource" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-[16px] font-bold text-[#303133]">数据资源统计</h2>
+                        <h2 class="text-[16px] font-bold text-[#303133]">服务统计</h2>
                         <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
                             <span class="text-[#909399] text-sm">统计范围：</span>
                             <select class="text-sm text-[#303133] outline-none bg-transparent">
@@ -264,7 +301,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-5 gap-4 mb-8">
+                    <div class="grid grid-cols-4 gap-4 mb-8">
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">服务总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">12,580</div>
@@ -295,14 +332,6 @@
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">210</span></span>
                                 <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.5%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">汇聚数据总量</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">8.6亿条</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">昨日数据增量：<span class="text-[#303133] font-medium">1,180万</span></span>
-                                <span class="text-[#909399]">日环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.3%</span></span>
                             </div>
                         </div>
                     </div>
@@ -389,7 +418,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-5 gap-4 mb-8">
+                    <div class="grid grid-cols-4 gap-4 mb-8">
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">服务使用总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">3,450</div>
@@ -420,14 +449,6 @@
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">5.2万</span></span>
                                 <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.9%</span></span>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
-                            <div class="text-[#606266] text-sm mb-2">库表服务数据总量</div>
-                            <div class="text-2xl font-bold text-[#303133] mb-2">8,240万</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">昨日数据增量：<span class="text-[#303133] font-medium">820万</span></span>
-                                <span class="text-[#909399]">日环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 6.5%</span></span>
                             </div>
                         </div>
                     </div>
@@ -681,23 +702,31 @@
                 </div>
             </div>
 
-            <nav class="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3 bg-white/80 backdrop-blur rounded-xl shadow-md px-2 py-3 border border-gray-200">
-                <a href="#section-catalog" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-catalog">
-                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
-                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据目录统计</span>
-                </a>
-                <a href="#section-resource" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-resource">
-                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
-                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据资源统计</span>
-                </a>
-                <a href="#section-usage" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-usage">
-                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
-                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据使用统计</span>
-                </a>
-                <a href="#section-objection" class="nav-item group flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-blue-50 transition-colors" data-target="section-objection">
-                    <span class="nav-dot w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-[#1c7ffd] transition-colors"></span>
-                    <span class="nav-label text-[10px] text-gray-500 group-hover:text-[#1c7ffd] whitespace-nowrap">数据异议统计</span>
-                </a>
+            <nav class="fixed right-5 top-1/2 -translate-y-1/2 z-40 nav-container">
+                <div class="nav-inner flex flex-col items-center py-3 px-2.5">
+                    <span class="text-[10px] text-gray-400 font-medium mb-2 tracking-wide">快速定位</span>
+                    <div class="nav-list relative flex flex-col items-center" id="navList">
+                        <a href="#section-catalog" class="nav-item group relative flex items-center justify-center py-2.5 transition-all duration-300" data-target="section-catalog">
+                            <span class="nav-dot w-3 h-3 rounded-full border-2 border-gray-300 bg-white group-hover:border-[#1c7ffd] transition-all duration-300 relative z-10"></span>
+                            <span class="nav-label absolute right-full mr-3 whitespace-nowrap text-[11px] text-gray-500 bg-white/90 backdrop-blur px-2.5 py-1 rounded-md shadow-sm opacity-0 group-hover:opacity-100 group-hover:text-[#1c7ffd] transform translate-x-2 group-hover:translate-x-0 transition-all duration-300 pointer-events-none font-medium">数据目录统计</span>
+                        </a>
+                        <span class="nav-connector w-px h-3 bg-gray-200"></span>
+                        <a href="#section-resource" class="nav-item group relative flex items-center justify-center py-2.5 transition-all duration-300" data-target="section-resource">
+                            <span class="nav-dot w-3 h-3 rounded-full border-2 border-gray-300 bg-white group-hover:border-[#1c7ffd] transition-all duration-300 relative z-10"></span>
+                            <span class="nav-label absolute right-full mr-3 whitespace-nowrap text-[11px] text-gray-500 bg-white/90 backdrop-blur px-2.5 py-1 rounded-md shadow-sm opacity-0 group-hover:opacity-100 group-hover:text-[#1c7ffd] transform translate-x-2 group-hover:translate-x-0 transition-all duration-300 pointer-events-none font-medium">服务统计</span>
+                        </a>
+                        <span class="nav-connector w-px h-3 bg-gray-200"></span>
+                        <a href="#section-usage" class="nav-item group relative flex items-center justify-center py-2.5 transition-all duration-300" data-target="section-usage">
+                            <span class="nav-dot w-3 h-3 rounded-full border-2 border-gray-300 bg-white group-hover:border-[#1c7ffd] transition-all duration-300 relative z-10"></span>
+                            <span class="nav-label absolute right-full mr-3 whitespace-nowrap text-[11px] text-gray-500 bg-white/90 backdrop-blur px-2.5 py-1 rounded-md shadow-sm opacity-0 group-hover:opacity-100 group-hover:text-[#1c7ffd] transform translate-x-2 group-hover:translate-x-0 transition-all duration-300 pointer-events-none font-medium">数据使用统计</span>
+                        </a>
+                        <span class="nav-connector w-px h-3 bg-gray-200"></span>
+                        <a href="#section-objection" class="nav-item group relative flex items-center justify-center py-2.5 transition-all duration-300" data-target="section-objection">
+                            <span class="nav-dot w-3 h-3 rounded-full border-2 border-gray-300 bg-white group-hover:border-[#1c7ffd] transition-all duration-300 relative z-10"></span>
+                            <span class="nav-label absolute right-full mr-3 whitespace-nowrap text-[11px] text-gray-500 bg-white/90 backdrop-blur px-2.5 py-1 rounded-md shadow-sm opacity-0 group-hover:opacity-100 group-hover:text-[#1c7ffd] transform translate-x-2 group-hover:translate-x-0 transition-all duration-300 pointer-events-none font-medium">数据异议统计</span>
+                        </a>
+                    </div>
+                </div>
             </nav>
         </main>
     </div>
@@ -1400,8 +1429,6 @@
 
         // 右侧路径导航 - 滚动监听高亮
         const navItems = document.querySelectorAll('.nav-item');
-        const navDots = document.querySelectorAll('.nav-dot');
-        const navLabels = document.querySelectorAll('.nav-label');
         const scrollContainer = document.getElementById('stat-scroll-container');
         const sections = ['section-catalog', 'section-resource', 'section-usage', 'section-objection'].map(id => document.getElementById(id));
 
@@ -1412,18 +1439,10 @@
                 if (sec && sec.offsetTop - 120 <= scrollTop) activeIndex = i;
             });
             navItems.forEach((item, i) => {
-                const dot = item.querySelector('.nav-dot');
-                const label = item.querySelector('.nav-label');
                 if (i === activeIndex) {
-                    dot.classList.remove('bg-gray-300');
-                    dot.classList.add('bg-[#1c7ffd]', 'w-3', 'h-3');
-                    label.classList.remove('text-gray-500');
-                    label.classList.add('text-[#1c7ffd]', 'font-medium');
+                    item.classList.add('active');
                 } else {
-                    dot.classList.add('bg-gray-300');
-                    dot.classList.remove('bg-[#1c7ffd]', 'w-3', 'h-3');
-                    label.classList.add('text-gray-500');
-                    label.classList.remove('text-[#1c7ffd]', 'font-medium');
+                    item.classList.remove('active');
                 }
             });
         }

@@ -14,27 +14,109 @@
         ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif; }
         .gradient-bg { background: linear-gradient(135deg, #0f52ba 0%, #1c7ffd 50%, #5a8bfb 100%); }
-        .app-card { transition: all 0.25s ease; cursor: pointer; }
-        .hot-app-card { background: #fff; border: 1px solid #ebeef5; border-radius: 6px; overflow: hidden; transition: all 0.25s; }
-        .hot-app-card:hover { border-color: #c6e2ff; box-shadow: 0 4px 12px rgba(28, 127, 253, 0.08); }
-        .tab-active { background: linear-gradient(135deg, #1c7ffd, #5a8bfb); color: white; }
+        .app-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .hot-app-card {
+            background: #fff;
+            border: 1px solid #ebeef5;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .hot-app-card:hover {
+            border-color: #b3d4ff;
+            box-shadow: 0 8px 24px rgba(28, 127, 253, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
+        .hot-app-card:hover .app-icon-box {
+            transform: scale(1.05);
+        }
+        .hot-app-card:hover .app-action-btn {
+            background: linear-gradient(135deg, #1c7ffd, #5a8bfb);
+            box-shadow: 0 4px 12px rgba(28, 127, 253, 0.3);
+        }
+        .tab-active {
+            background: linear-gradient(135deg, #1c7ffd, #5a8bfb);
+            color: white;
+            box-shadow: 0 2px 8px rgba(28, 127, 253, 0.25);
+        }
         .tab-inactive { background: white; color: #606266; border: 1px solid #e4e7ed; }
-        .tab-inactive:hover { border-color: #1c7ffd; color: #1c7ffd; }
-        .filter-tag { transition: all 0.2s; }
-        .filter-tag:hover { background-color: #ecf5ff; color: #1c7ffd; }
-        .filter-tag.active { background-color: #1c7ffd; color: white; }
-        .case-card { background: #fff; border: 1px solid #ebeef5; border-radius: 6px; overflow: hidden; transition: all 0.25s; }
-        .case-card:hover { border-color: #c6e2ff; box-shadow: 0 6px 16px rgba(28, 127, 253, 0.1); }
-        .case-banner { position: relative; height: 120px; overflow: hidden; }
+        .tab-inactive:hover { border-color: #1c7ffd; color: #1c7ffd; background: #f5f8ff; }
+        .filter-tag { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        .filter-tag:hover { background-color: #ecf5ff; color: #1c7ffd; border-color: #b3d4ff; }
+        .filter-tag.active {
+            background: linear-gradient(135deg, #1c7ffd, #5a8bfb);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 2px 8px rgba(28, 127, 253, 0.25);
+        }
+        .case-card {
+            background: #fff;
+            border: 1px solid #ebeef5;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .case-card:hover {
+            border-color: #b3d4ff;
+            box-shadow: 0 10px 28px rgba(28, 127, 253, 0.14), 0 2px 6px rgba(0, 0, 0, 0.04);
+            transform: translateY(-3px);
+        }
+        .case-card:hover .case-banner {
+            transform: scale(1.03);
+        }
+        .case-card:hover .case-banner::after {
+            opacity: 1;
+        }
+        .case-banner {
+            position: relative;
+            height: 140px;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .case-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 100%);
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
         .app-icon-box {
-            position: relative; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
             flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .app-icon-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.25), transparent);
+            pointer-events: none;
         }
         .info-label { color: #909399; font-size: 13px; width: 96px; flex-shrink: 0; }
-        .info-value { color: #303133; font-size: 13px; line-height: 1.5; }
-        .top-tag { background: #f56c6c; color: #fff; font-size: 11px; padding: 1px 6px; border-radius: 3px; }
+        .info-value { color: #303133; font-size: 13px; line-height: 1.6; }
+        .top-tag {
+            background: linear-gradient(135deg, #f56c6c, #ff7875);
+            color: #fff;
+            font-size: 11px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(245, 108, 108, 0.3);
+        }
+        .app-action-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
     </style>
 </head>
 <body class="bg-[#f5f7fa] text-[14px] text-gray-700">
@@ -46,48 +128,43 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <h1 class="text-xl font-bold text-[#303133] mr-4">应用中心</h1>
-                        <div class="flex items-center bg-gray-100 rounded-lg p-1">
-                            <button class="tab-btn tab-active px-5 py-2 rounded-md text-sm font-medium transition-all" onclick="switchTab('hot')">
+                        <div class="flex items-center bg-gray-100/80 backdrop-blur rounded-xl p-1 shadow-sm">
+                            <button class="tab-btn tab-active px-5 py-2 rounded-lg text-sm font-medium transition-all" onclick="switchTab('hot')">
                                 <i class="fa-solid fa-fire mr-2"></i>热门应用
                             </button>
-                            <button class="tab-btn tab-inactive px-5 py-2 rounded-md text-sm font-medium transition-all" onclick="switchTab('case')">
+                            <button class="tab-btn tab-inactive px-5 py-2 rounded-lg text-sm font-medium transition-all" onclick="switchTab('case')">
                                 <i class="fa-solid fa-lightbulb mr-2"></i>创新案例
                             </button>
                         </div>
                     </div>
                     <div class="relative w-[320px]">
                         <input type="text" id="search-input" placeholder="搜索应用名称..." 
-                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#1c7ffd]">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#1c7ffd] focus:ring-2 focus:ring-[#1c7ffd]/20 transition-all">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="max-w-[1440px] mx-auto px-6 py-5">
+        <div class="max-w-[1440px] mx-auto px-6 py-6">
+            <div class="flex items-center justify-between mb-6">
+                <span class="text-sm text-[#606266]">共 <span id="app-count" class="text-[#1c7ffd] font-bold">5</span> <span id="app-count-label">个应用</span></span>
+                <button onclick="toggleAppSort()" class="flex items-center gap-2 text-sm text-[#606266] hover:text-[#1c7ffd] transition-colors cursor-pointer">
+                    <i class="fa-solid fa-sort text-[#1c7ffd]"></i>
+                    <span id="app-sort-label">发布时间</span>
+                    <i id="app-sort-direction" class="fa-solid fa-arrow-down-short-wide text-[#1c7ffd]"></i>
+                </button>
+            </div>
 
-            <div class="bg-white rounded border border-gray-100">
-                <div class="px-5 py-4 border-b border-gray-100">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <span class="text-[#909399] text-sm shrink-0">分类：</span>
-                        <button class="filter-tag active px-3.5 py-1 bg-[#1c7ffd] text-white rounded-full text-sm" onclick="filterApps('all')">全部</button>
-                        <button class="filter-tag px-3.5 py-1 bg-gray-100 text-[#606266] rounded-full text-sm" onclick="filterApps('政务服务')">政务服务</button>
-                        <button class="filter-tag px-3.5 py-1 bg-gray-100 text-[#606266] rounded-full text-sm" onclick="filterApps('经济建设')">经济建设</button>
-                        <button class="filter-tag px-3.5 py-1 bg-gray-100 text-[#606266] rounded-full text-sm" onclick="filterApps('公共安全')">公共安全</button>
-                        <button class="filter-tag px-3.5 py-1 bg-gray-100 text-[#606266] rounded-full text-sm" onclick="filterApps('社会保障')">社会保障</button>
-                        <button class="filter-tag px-3.5 py-1 bg-gray-100 text-[#606266] rounded-full text-sm" onclick="filterApps('医疗卫生')">医疗卫生</button>
-                    </div>
-                </div>
-
-                <div class="p-5 space-y-4" id="hot-apps">
+            <div class="space-y-4" id="hot-apps">
                     <!-- 热门应用 1 -->
                     <div class="hot-app-card app-card" onclick="event.target.tagName !== 'BUTTON' && event.target.tagName !== 'A' && openAppDetail('smart-approval')">
-                        <div class="flex p-4 gap-4 items-center">
-                            <div class="app-icon-box w-[88px] h-[88px] bg-gradient-to-br from-[#5b8def] to-[#1c7ffd]">
-                                <i class="fa-solid fa-file-signature text-white text-[34px]"></i>
+                        <div class="flex p-5 gap-5 items-center">
+                            <div class="app-icon-box w-[80px] h-[80px] bg-gradient-to-br from-[#5b8def] to-[#1c7ffd]">
+                                <i class="fa-solid fa-file-signature text-white text-[32px]"></i>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-2.5">
+                                <div class="flex items-center gap-2 mb-3">
                                     <h3 class="text-[17px] font-semibold text-[#303133]">应用01</h3>
                                     <span class="top-tag">置顶</span>
                                 </div>
@@ -111,19 +188,19 @@
                                 </div>
                             </div>
                             <div class="shrink-0 ml-3">
-                                <button onclick="openAppDetail('smart-approval')" class="px-5 py-2 bg-[#1c7ffd] text-white rounded text-[13px] hover:bg-[#1a73e8] transition-colors">查看详情</button>
+                                <button onclick="openAppDetail('smart-approval')" class="app-action-btn px-5 py-2.5 bg-[#1c7ffd] text-white rounded-lg text-[13px] hover:bg-[#1a73e8]">查看详情</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- 热门应用 2 -->
                     <div class="hot-app-card app-card" onclick="event.target.tagName !== 'BUTTON' && event.target.tagName !== 'A' && openAppDetail('medical-query')">
-                        <div class="flex p-4 gap-4 items-center">
-                            <div class="app-icon-box w-[88px] h-[88px] bg-gradient-to-br from-[#4cc9a0] to-[#13b887]">
-                                <i class="fa-solid fa-stethoscope text-white text-[34px]"></i>
+                        <div class="flex p-5 gap-5 items-center">
+                            <div class="app-icon-box w-[80px] h-[80px] bg-gradient-to-br from-[#4cc9a0] to-[#13b887]">
+                                <i class="fa-solid fa-stethoscope text-white text-[32px]"></i>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-2.5">
+                                <div class="flex items-center gap-2 mb-3">
                                     <h3 class="text-[17px] font-semibold text-[#303133]">应用02</h3>
                                     <span class="top-tag">置顶</span>
                                 </div>
@@ -147,19 +224,19 @@
                                 </div>
                             </div>
                             <div class="shrink-0 ml-3">
-                                <button onclick="openAppDetail('medical-query')" class="px-5 py-2 bg-[#1c7ffd] text-white rounded text-[13px] hover:bg-[#1a73e8] transition-colors">查看详情</button>
+                                <button onclick="openAppDetail('medical-query')" class="app-action-btn px-5 py-2.5 bg-[#1c7ffd] text-white rounded-lg text-[13px] hover:bg-[#1a73e8]">查看详情</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- 热门应用 3 -->
                     <div class="hot-app-card app-card" onclick="event.target.tagName !== 'BUTTON' && event.target.tagName !== 'A' && openAppDetail('enterprise-credit')">
-                        <div class="flex p-4 gap-4 items-center">
-                            <div class="app-icon-box w-[88px] h-[88px] bg-gradient-to-br from-[#f7a557] to-[#ff7d00]">
-                                <i class="fa-solid fa-building-shield text-white text-[34px]"></i>
+                        <div class="flex p-5 gap-5 items-center">
+                            <div class="app-icon-box w-[80px] h-[80px] bg-gradient-to-br from-[#f7a557] to-[#ff7d00]">
+                                <i class="fa-solid fa-building-shield text-white text-[32px]"></i>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-2.5">
+                                <div class="flex items-center gap-2 mb-3">
                                     <h3 class="text-[17px] font-semibold text-[#303133]">应用03</h3>
                                     <span class="top-tag">置顶</span>
                                 </div>
@@ -183,19 +260,19 @@
                                 </div>
                             </div>
                             <div class="shrink-0 ml-3">
-                                <button onclick="openAppDetail('enterprise-credit')" class="px-5 py-2 bg-[#1c7ffd] text-white rounded text-[13px] hover:bg-[#1a73e8] transition-colors">查看详情</button>
+                                <button onclick="openAppDetail('enterprise-credit')" class="app-action-btn px-5 py-2.5 bg-[#1c7ffd] text-white rounded-lg text-[13px] hover:bg-[#1a73e8]">查看详情</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- 热门应用 4 -->
                     <div class="hot-app-card app-card" onclick="event.target.tagName !== 'BUTTON' && event.target.tagName !== 'A' && openAppDetail('traffic-analysis')">
-                        <div class="flex p-4 gap-4 items-center">
-                            <div class="app-icon-box w-[88px] h-[88px] bg-gradient-to-br from-[#7b8cf0] to-[#5468e8]">
-                                <i class="fa-solid fa-route text-white text-[34px]"></i>
+                        <div class="flex p-5 gap-5 items-center">
+                            <div class="app-icon-box w-[80px] h-[80px] bg-gradient-to-br from-[#7b8cf0] to-[#5468e8]">
+                                <i class="fa-solid fa-route text-white text-[32px]"></i>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-2.5">
+                                <div class="flex items-center gap-2 mb-3">
                                     <h3 class="text-[17px] font-semibold text-[#303133]">应用04</h3>
                                     <span class="top-tag">置顶</span>
                                 </div>
@@ -219,19 +296,19 @@
                                 </div>
                             </div>
                             <div class="shrink-0 ml-3">
-                                <button onclick="openAppDetail('traffic-analysis')" class="px-5 py-2 bg-[#1c7ffd] text-white rounded text-[13px] hover:bg-[#1a73e8] transition-colors">查看详情</button>
+                                <button onclick="openAppDetail('traffic-analysis')" class="app-action-btn px-5 py-2.5 bg-[#1c7ffd] text-white rounded-lg text-[13px] hover:bg-[#1a73e8]">查看详情</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- 热门应用 5 -->
                     <div class="hot-app-card app-card" onclick="event.target.tagName !== 'BUTTON' && event.target.tagName !== 'A' && openAppDetail('social-security')">
-                        <div class="flex p-4 gap-4 items-center">
-                            <div class="app-icon-box w-[88px] h-[88px] bg-gradient-to-br from-[#f06292] to-[#e91e63]">
-                                <i class="fa-solid fa-hand-holding-heart text-white text-[34px]"></i>
+                        <div class="flex p-5 gap-5 items-center">
+                            <div class="app-icon-box w-[80px] h-[80px] bg-gradient-to-br from-[#f06292] to-[#e91e63]">
+                                <i class="fa-solid fa-hand-holding-heart text-white text-[32px]"></i>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-2.5">
+                                <div class="flex items-center gap-2 mb-3">
                                     <h3 class="text-[17px] font-semibold text-[#303133]">应用05</h3>
                                     <span class="top-tag">置顶</span>
                                 </div>
@@ -255,15 +332,14 @@
                                 </div>
                             </div>
                             <div class="shrink-0 ml-3">
-                                <button onclick="openAppDetail('social-security')" class="px-5 py-2 bg-[#1c7ffd] text-white rounded text-[13px] hover:bg-[#1a73e8] transition-colors">查看详情</button>
+                                <button onclick="openAppDetail('social-security')" class="app-action-btn px-5 py-2.5 bg-[#1c7ffd] text-white rounded-lg text-[13px] hover:bg-[#1a73e8]">查看详情</button>
                             </div>
                         </div>
                     </div>
-                </div>
+                    </div>
 
-                <!-- 创新案例：顶部简洁渐变横幅 + 三列卡片 -->
-                <div class="p-5 pt-0 hidden" id="case-apps">
-                    <div class="grid grid-cols-3 gap-5">
+            <!-- 创新案例 -->
+            <div class="grid grid-cols-3 gap-5 hidden" id="case-apps">
                         <!-- 案例 1 -->
                         <div class="case-card app-card" onclick="openAppDetail('case-1')">
                             <div class="case-banner bg-gradient-to-br from-[#4a90e2] to-[#1c7ffd]">
@@ -272,8 +348,8 @@
                                 </div>
                             </div>
                             <div class="p-4">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <h3 class="text-[16px] font-semibold text-[#303133] truncate">案例1</h3>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h3 class="text-[15px] font-semibold text-[#303133] truncate">案例1</h3>
                                     <span class="top-tag shrink-0">置顶</span>
                                 </div>
                                 <div class="flex items-center justify-between text-[12px]">
@@ -291,8 +367,8 @@
                                 </div>
                             </div>
                             <div class="p-4">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <h3 class="text-[16px] font-semibold text-[#303133] truncate">20230324</h3>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h3 class="text-[15px] font-semibold text-[#303133] truncate">20230324</h3>
                                     <span class="top-tag shrink-0">置顶</span>
                                 </div>
                                 <div class="flex items-center justify-between text-[12px]">
@@ -310,8 +386,8 @@
                                 </div>
                             </div>
                             <div class="p-4">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <h3 class="text-[16px] font-semibold text-[#303133] truncate">案例2</h3>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h3 class="text-[15px] font-semibold text-[#303133] truncate">案例2</h3>
                                     <span class="top-tag shrink-0">置顶</span>
                                 </div>
                                 <div class="flex items-center justify-between text-[12px]">
@@ -329,8 +405,8 @@
                                 </div>
                             </div>
                             <div class="p-4">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <h3 class="text-[16px] font-semibold text-[#303133] truncate">案例4</h3>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h3 class="text-[15px] font-semibold text-[#303133] truncate">案例4</h3>
                                     <span class="top-tag shrink-0">置顶</span>
                                 </div>
                                 <div class="flex items-center justify-between text-[12px]">
@@ -348,8 +424,8 @@
                                 </div>
                             </div>
                             <div class="p-4">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <h3 class="text-[16px] font-semibold text-[#303133] truncate">案例5</h3>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h3 class="text-[15px] font-semibold text-[#303133] truncate">案例5</h3>
                                     <span class="top-tag shrink-0">置顶</span>
                                 </div>
                                 <div class="flex items-center justify-between text-[12px]">
@@ -377,8 +453,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
@@ -388,6 +462,13 @@
     <script>PortalCommon.renderFloatButtons();</script>
 
     <script>
+        let appSortAsc = false;
+        function toggleAppSort() {
+            appSortAsc = !appSortAsc;
+            const dir = document.getElementById('app-sort-direction');
+            dir.className = appSortAsc ? 'fa-solid fa-arrow-up-short-wide text-[#1c7ffd]' : 'fa-solid fa-arrow-down-short-wide text-[#1c7ffd]';
+        }
+
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('tab-active');
@@ -397,29 +478,19 @@
             current.classList.remove('tab-inactive');
             current.classList.add('tab-active');
             
-            document.querySelectorAll('.filter-tag').forEach(tag => {
-                tag.classList.remove('active');
-                tag.classList.add('bg-gray-100', 'text-[#606266]');
-            });
-            document.querySelectorAll('.filter-tag')[0].classList.add('active');
-            document.querySelectorAll('.filter-tag')[0].classList.remove('bg-gray-100', 'text-[#606266]');
-            
             if (tab === 'hot') {
                 document.getElementById('hot-apps').classList.remove('hidden');
                 document.getElementById('case-apps').classList.add('hidden');
+                document.getElementById('app-count').textContent = '5';
+                document.getElementById('app-count-label').textContent = '个应用';
+                document.getElementById('app-sort-label').textContent = '发布时间';
             } else {
                 document.getElementById('hot-apps').classList.add('hidden');
                 document.getElementById('case-apps').classList.remove('hidden');
+                document.getElementById('app-count').textContent = '5';
+                document.getElementById('app-count-label').textContent = '个案例';
+                document.getElementById('app-sort-label').textContent = '更新时间';
             }
-        }
-
-        function filterApps(category) {
-            document.querySelectorAll('.filter-tag').forEach(tag => {
-                tag.classList.remove('active');
-                tag.classList.add('bg-gray-100', 'text-[#606266]');
-            });
-            event.currentTarget.classList.add('active');
-            event.currentTarget.classList.remove('bg-gray-100', 'text-[#606266]');
         }
 
         function openAppDetail(appId) {

@@ -53,24 +53,12 @@
             </div>
 
             <div class="flex-1 p-6 flex gap-5 overflow-hidden">
-                <!-- 左侧：领域分类树 -->
-                <div class="w-[260px] bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex flex-col shrink-0 overflow-hidden">
-                    <div class="h-14 px-5 border-b border-gray-100 flex items-center justify-between shrink-0">
-                        <h3 class="font-bold text-[#303133]">领域分类</h3>
-                        <span class="text-xs text-[#909399]">共 <span id="domain-count">8</span> 类</span>
-                    </div>
-                    <div class="flex-1 overflow-y-auto py-2" id="domain-tree">
-                        <!-- JS动态渲染 -->
-                    </div>
-                </div>
-
                 <!-- 右侧：场景列表 -->
                 <div class="flex-1 bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] flex flex-col overflow-hidden">
                     <!-- 顶部标题栏 + 新增按钮 -->
                     <div class="h-14 px-5 border-b border-gray-100 flex items-center justify-between shrink-0">
                         <div class="flex items-center gap-3">
                             <h3 class="font-bold text-[#303133]">场景列表</h3>
-                            <span class="text-xs text-[#909399]" id="scene-filter-label">全部领域</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-2">
@@ -260,6 +248,7 @@
         // 渲染领域树
         function renderDomains() {
             const container = document.getElementById('domain-tree');
+            if (!container) return;
             container.innerHTML = domains.map(d => `
                 <div class="tree-item flex items-center gap-2.5 px-4 py-2.5 mx-2 rounded-lg ${d.id === currentDomain ? 'active' : ''}" data-domain="${d.id}" onclick="selectDomain('${d.id}')">
                     <i class="fa-solid ${d.icon} w-5 text-center"></i>
@@ -288,7 +277,8 @@
             }
 
             const filterName = domains.find(d => d.id === currentDomain);
-            document.getElementById('scene-filter-label').textContent = (filterName ? filterName.name : '全部领域') + (keyword ? ' · "' + keyword + '"' : '');
+            const filterLabel = document.getElementById('scene-filter-label');
+            if (filterLabel) filterLabel.textContent = (filterName ? filterName.name : '全部领域') + (keyword ? ' · "' + keyword + '"' : '');
 
             const tbody = document.getElementById('scene-table-body');
             if (list.length === 0) {

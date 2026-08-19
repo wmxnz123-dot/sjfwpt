@@ -27,6 +27,13 @@
         .agent-card.agent-active .font-medium {
             color: #4f46e5;
         }
+        .ai-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5); }
+            70% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+        .pulse-animation { animation: pulse-ring 2s infinite; }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
@@ -461,11 +468,12 @@
     </div>
 
     <!-- 智能助手悬浮按钮（仅第二步显示） -->
-    <button id="global-smart-fill-btn" onclick="openGlobalSmartFill()" class="fixed right-6 bottom-8 z-[30] w-14 h-14 rounded-full gradient-bg shadow-lg shadow-blue-500/30 flex items-center justify-center text-white hover:scale-110 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 group hidden">
-        <i class="fa-solid fa-robot text-xl"></i>
-        <div class="absolute right-[72px] whitespace-nowrap px-3 py-1.5 bg-[#303133] text-white text-xs rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-            智能助手 · 注册服务
-        </div>
+    <button id="global-smart-fill-btn" onclick="openGlobalSmartFill()" class="fixed bottom-8 right-8 flex items-center gap-3 px-5 py-3 ai-card text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 z-[30] hidden" title="智能助手">
+        <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center pulse-animation">
+            <i class="fa-solid fa-robot"></i>
+        </span>
+        <span class="font-medium">智能助手</span>
+        <i class="fa-solid fa-chevron-left text-sm" id="global-smart-arrow"></i>
     </button>
 
     <!-- 智能助手抽屉 -->
@@ -474,7 +482,7 @@
         <!-- 抽屉头部 -->
         <div class="p-5 border-b border-gray-100 flex items-center justify-between shrink-0">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center">
+                <div class="w-10 h-10 rounded-lg ai-card flex items-center justify-center">
                     <i class="fa-solid fa-robot text-white"></i>
                 </div>
                 <div>
