@@ -233,7 +233,7 @@ const developerSideNavMap = {
                 { type: 'link', label: '供给服务告警', href: '', navKey: 'monitor-service-alarm', disabled: true },
                 { type: 'link', label: '申请服务告警', href: '', navKey: 'monitor-apply-alarm', disabled: true },
                 { type: 'link', label: '服务异常告警', href: '', navKey: 'monitor-exception-alarm', disabled: true },
-                { type: 'link', label: '授权提醒', href: 'monitor_authorization_alert.html?nav=monitor-authorization-alert', navKey: 'monitor-authorization-alert', badge: '新' }
+                { type: 'link', label: '授权提醒处置', href: 'monitor_authorization_alert.html?nav=monitor-authorization-alert', navKey: 'monitor-authorization-alert', badge: '新' }
             ]
         },
         { type: 'link', label: '心跳检测', href: '', navKey: 'monitor-heartbeat', disabled: true, icon: 'fa-heartbeat' }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数据服务平台 - 授权提醒处置</title>
+    <title>数据服务平台 - 授权提醒服务</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -47,16 +47,10 @@
                 <span class="mx-2">/</span>
                 <span>服务使用告警</span>
                 <span class="mx-2">/</span>
-                <span class="font-medium text-[#303133]">授权提醒处置</span>
+                <span class="font-medium text-[#303133]">授权提醒服务</span>
             </div>
 
             <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
-                <!-- 标签页 -->
-                <div class="flex border-b border-gray-200 bg-white px-6 pt-2 rounded-t-lg">
-                    <div id="tab-unread" class="pb-3 px-4 text-[#1c7ffd] border-b-2 border-[#1c7ffd] font-medium cursor-pointer text-[14px]" onclick="switchTab('unread')">未处置</div>
-                    <div id="tab-read" class="pb-3 px-4 text-[#606266] hover:text-[#1c7ffd] cursor-pointer transition-colors text-[14px]" onclick="switchTab('read')">已处置</div>
-                </div>
-
                 <!-- 搜索区 -->
                 <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 shrink-0">
                     <div class="flex items-center gap-6 flex-wrap">
@@ -85,7 +79,7 @@
                                 <i class="fa-solid fa-rotate-right text-xs"></i>
                                 重置
                             </button>
-                            <button onclick="searchData()" class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors flex items-center gap-1">
+                            <button onclick="doSearch()" class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors flex items-center gap-1">
                                 <i class="fa-solid fa-search text-xs"></i>
                                 查询
                             </button>
@@ -94,9 +88,9 @@
                 </div>
 
                 <!-- 列表 -->
-                <div id="alert-list" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)]">
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)]">
                     <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-                        <h2 class="text-[16px] font-bold text-[#303133]" id="list-title">授权提醒列表</h2>
+                        <h2 class="text-[16px] font-bold text-[#303133]">授权提醒服务列表</h2>
                         <div class="flex items-center gap-2">
                             <button class="w-8 h-8 flex items-center justify-center text-[#909399] hover:text-[#1c7ffd] hover:bg-blue-50 rounded-md transition-colors" title="刷新" onclick="refreshList()">
                                 <i class="fa-solid fa-rotate-right text-sm"></i>
@@ -109,7 +103,18 @@
 
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm">
-                            <thead id="table-head"></thead>
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">场景名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">目录名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">服务名称</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">服务类型</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">使用单位</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">所属单位</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">提醒内容</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">更新时间</th>
+                                </tr>
+                            </thead>
                             <tbody id="table-body"></tbody>
                         </table>
                     </div>
@@ -134,21 +139,17 @@
     </div>
 
     <script>
-        const pendingData = [
-            { scene: '政务协同场景', catalog: '人口基础信息库', service: '人口基本信息查询接口', type: '接口', dept: '市民政局', owner: '市公安局', days: 15, time: '2026-08-20 09:30' },
-            { scene: '营商环境场景', catalog: '企业法人信息库', service: '企业法人基本信息库表', type: '库表', dept: '市市场监管局', owner: '市市场监管局', days: 30, time: '2026-08-20 08:15' },
-            { scene: '医疗健康场景', catalog: '医疗服务信息库', service: '医疗机构名录数据接口', type: '接口', dept: '市卫健委', owner: '市卫健委', days: 45, time: '2026-08-19 17:42' },
-            { scene: '教育服务场景', catalog: '教育基础信息库', service: '学校基本信息库表', type: '库表', dept: '市教育局', owner: '市教育局', days: 20, time: '2026-08-19 14:20' },
-            { scene: '社会保障场景', catalog: '社保信息库', service: '社保参保信息查询接口', type: '接口', dept: '市人社局', owner: '市人社局', days: 60, time: '2026-08-18 10:05' }
+        const dataList = [
+            { scene: '政务协同场景', catalog: '人口基础信息库', service: '人口基本信息查询接口', type: '接口', dept: '市民政局', owner: '市公安局', days: 400, time: '2026-08-20 09:30' },
+            { scene: '营商环境场景', catalog: '企业法人信息库', service: '企业法人基本信息库表', type: '库表', dept: '市市场监管局', owner: '市市场监管局', days: 369, time: '2026-08-20 08:15' },
+            { scene: '医疗健康场景', catalog: '医疗服务信息库', service: '医疗机构名录数据接口', type: '接口', dept: '市卫健委', owner: '市卫健委', days: 400, time: '2026-08-19 17:42' },
+            { scene: '教育服务场景', catalog: '教育基础信息库', service: '学校基本信息库表', type: '库表', dept: '市教育局', owner: '市教育局', days: 369, time: '2026-08-19 14:20' },
+            { scene: '社会保障场景', catalog: '社保信息库', service: '社保参保信息查询接口', type: '接口', dept: '市人社局', owner: '市人社局', days: 400, time: '2026-08-18 10:05' },
+            { scene: '交通出行场景', catalog: '道路信息库', service: '道路基础信息库表', type: '库表', dept: '市交通局', owner: '市交通局', days: 369, time: '2026-08-17 16:30' },
+            { scene: '环境监测场景', catalog: '环境质量监测库', service: '空气质量监测接口', type: '接口', dept: '市生态环境局', owner: '市生态环境局', days: 400, time: '2026-08-16 11:45' },
+            { scene: '文化旅游场景', catalog: '文化资源信息库', service: '文物保护单位库表', type: '库表', dept: '市文旅局', owner: '市文旅局', days: 369, time: '2026-08-15 09:00' }
         ];
 
-        const handledData = [
-            { scene: '交通出行场景', catalog: '道路信息库', service: '道路基础信息库表', type: '库表', dept: '市交通局', owner: '市交通局', days: 25, time: '2026-08-15 11:30' },
-            { scene: '环境监测场景', catalog: '环境质量监测库', service: '空气质量监测接口', type: '接口', dept: '市生态环境局', owner: '市生态环境局', days: 35, time: '2026-08-12 16:45' },
-            { scene: '文化旅游场景', catalog: '文化资源信息库', service: '文物保护单位库表', type: '库表', dept: '市文旅局', owner: '市文旅局', days: 18, time: '2026-08-10 09:00' }
-        ];
-
-        let currentTab = 'unread';
         let filteredData = null;
 
         function getAlertContent(item) {
@@ -166,127 +167,43 @@
             return '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs bg-green-50 text-green-600 border border-green-100">接口</span>';
         }
 
-        function getSourceData() {
-            return currentTab === 'unread' ? pendingData : handledData;
-        }
-
-        function getDisplayData() {
-            if (filteredData) return filteredData;
-            return getSourceData();
-        }
-
-        function renderHead() {
-            const head = document.getElementById('table-head');
-            if (currentTab === 'unread') {
-                head.innerHTML = `
-                    <tr class="bg-gray-50">
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">场景名称</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">目录名称</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">服务名称</th>
-                        <th class="px-5 py-3 text-center font-medium text-[#606266] w-20">服务类型</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">使用单位</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">所属单位</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">提醒内容</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">更新时间</th>
-                        <th class="px-5 py-3 text-center font-medium text-[#606266] w-16">操作</th>
-                    </tr>
-                `;
-            } else {
-                head.innerHTML = `
-                    <tr class="bg-gray-50">
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">场景名称</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">目录名称</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">服务名称</th>
-                        <th class="px-5 py-3 text-center font-medium text-[#606266] w-20">服务类型</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">使用单位</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">所属单位</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">提醒内容</th>
-                        <th class="px-5 py-3 text-left font-medium text-[#606266]">处置时间</th>
-                    </tr>
-                `;
-            }
-        }
-
         function renderTable() {
             const tbody = document.getElementById('table-body');
-            const data = getDisplayData();
-            const title = currentTab === 'unread' ? '未处置列表' : '已处置列表';
+            const data = filteredData || dataList;
 
-            document.getElementById('list-title').textContent = title;
             document.getElementById('total-count').textContent = data.length;
 
-            const colSpan = currentTab === 'unread' ? 9 : 8;
-
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${colSpan}" class="py-16 text-center text-gray-400">暂无数据</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="py-16 text-center text-gray-400">暂无数据</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = data.map((item) => {
-                const sourceArr = getSourceData();
-                const realIndex = sourceArr.indexOf(item);
                 const typeTag = getTypeTag(item.type);
                 const alertContent = getAlertContent(item);
 
-                if (currentTab === 'unread') {
-                    return `
-                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <td class="px-5 py-4 text-[#303133] whitespace-nowrap">${item.scene}</td>
-                            <td class="px-5 py-4 text-[#303133] whitespace-nowrap">${item.catalog}</td>
-                            <td class="px-5 py-4 text-[#303133] whitespace-nowrap">${item.service}</td>
-                            <td class="px-5 py-4 text-center whitespace-nowrap">${typeTag}</td>
-                            <td class="px-5 py-4 text-[#606266] whitespace-nowrap">${item.dept}</td>
-                            <td class="px-5 py-4 text-[#606266] whitespace-nowrap">${item.owner}</td>
-                            <td class="px-5 py-4 text-[#606266] whitespace-nowrap">${alertContent}</td>
-                            <td class="px-5 py-4 text-[#606266] whitespace-nowrap">${item.time}</td>
-                            <td class="px-5 py-4 text-center whitespace-nowrap"><a href="javascript:void(0)" class="text-[#f56c6c] hover:text-[#d84f4f] text-sm" onclick="handleItem(${realIndex})">取消授权</a></td>
-                        </tr>
-                    `;
-                } else {
-                    return `
-                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <td class="px-5 py-4 text-[#303133] whitespace-nowrap">${item.scene}</td>
-                            <td class="px-5 py-4 text-[#303133] whitespace-nowrap">${item.catalog}</td>
-                            <td class="px-5 py-4 text-[#303133] whitespace-nowrap">${item.service}</td>
-                            <td class="px-5 py-4 text-center whitespace-nowrap">${typeTag}</td>
-                            <td class="px-5 py-4 text-[#606266] whitespace-nowrap">${item.dept}</td>
-                            <td class="px-5 py-4 text-[#606266] whitespace-nowrap">${item.owner}</td>
-                            <td class="px-5 py-4 text-[#606266] whitespace-nowrap">${alertContent}</td>
-                            <td class="px-5 py-4 text-[#606266] whitespace-nowrap">${item.time}</td>
-                        </tr>
-                    `;
-                }
+                return `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="px-5 py-4 text-[#303133]">${item.scene}</td>
+                        <td class="px-5 py-4 text-[#303133]">${item.catalog}</td>
+                        <td class="px-5 py-4 text-[#303133]">${item.service}</td>
+                        <td class="px-5 py-4 text-center">${typeTag}</td>
+                        <td class="px-5 py-4 text-[#606266]">${item.dept}</td>
+                        <td class="px-5 py-4 text-[#606266]">${item.owner}</td>
+                        <td class="px-5 py-4 text-[#606266]">${alertContent}</td>
+                        <td class="px-5 py-4 text-[#606266] whitespace-nowrap">${item.time}</td>
+                    </tr>
+                `;
             }).join('');
         }
 
-        function switchTab(tab) {
-            currentTab = tab;
-            filteredData = null;
-            const tabUnread = document.getElementById('tab-unread');
-            const tabRead = document.getElementById('tab-read');
-
-            if (tab === 'unread') {
-                tabUnread.classList.add('text-[#1c7ffd]', 'font-medium', 'border-b-2', 'border-[#1c7ffd]');
-                tabUnread.classList.remove('text-[#606266]');
-                tabRead.classList.remove('text-[#1c7ffd]', 'font-medium', 'border-b-2', 'border-[#1c7ffd]');
-                tabRead.classList.add('text-[#606266]');
-            } else {
-                tabRead.classList.add('text-[#1c7ffd]', 'font-medium', 'border-b-2', 'border-[#1c7ffd]');
-                tabRead.classList.remove('text-[#606266]');
-                tabUnread.classList.remove('text-[#1c7ffd]', 'font-medium', 'border-b-2', 'border-[#1c7ffd]');
-                tabUnread.classList.add('text-[#606266]');
-            }
-            renderHead();
-            renderTable();
-        }
-
-        function searchData() {
+        function doSearch() {
             const scene = document.getElementById('search-scene').value.trim().toLowerCase();
             const catalog = document.getElementById('search-catalog').value.trim().toLowerCase();
             const type = document.getElementById('search-type').value;
             const dept = document.getElementById('search-dept').value.trim().toLowerCase();
 
-            filteredData = getSourceData().filter(item => {
+            filteredData = dataList.filter(item => {
                 if (scene && !item.scene.toLowerCase().includes(scene)) return false;
                 if (catalog && !item.catalog.toLowerCase().includes(catalog)) return false;
                 if (type && item.type !== type) return false;
@@ -306,20 +223,11 @@
             renderTable();
         }
 
-        function handleItem(index) {
-            const item = pendingData.splice(index, 1)[0];
-            handledData.unshift(item);
-            filteredData = null;
-            renderHead();
-            renderTable();
-        }
-
         function refreshList() {
             filteredData = null;
             renderTable();
         }
 
-        renderHead();
         renderTable();
     </script>
 </body>
