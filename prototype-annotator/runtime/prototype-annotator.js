@@ -85,59 +85,101 @@
       try { window.localStorage.removeItem(draftStorageKey); } catch (removeErr) {}
       return data;
     }
+    // 空草稿保护：草稿不包含任何标注时不允许覆盖真实数据源（annotations.json / 内嵌快照），
+    // 否则一次异常保存产生的空草稿会让所有页面标注全部消失
+    var draftAnnotations = (draft && Array.isArray(draft.annotations)) ? draft.annotations : [];
+    var dataAnnotations = (data && Array.isArray(data.annotations)) ? data.annotations : [];
+    if (draftAnnotations.length === 0 && dataAnnotations.length > 0) {
+      try { window.localStorage.removeItem(draftStorageKey); } catch (removeErr) {}
+      return data;
+    }
     if (draft && draft._draftCreatedAt) delete draft._draftCreatedAt;
     return normalizeData(draft);
   }
 
+  // 校验数据的页面注册表是否包含当前页面（防止跨页面草稿把标注错误挂载到别的页面）
+  function draftPagesMatchCurrentLocation(data) {
+    if (!data || !Array.isArray(data.pages) || !data.pages.length) return false;
+    var path = location.pathname.split("/").pop() || "index.html";
+    var pathWithHtml = path.indexOf(".") < 0 ? path + ".html" : path;
+    var pathnameWithHtml = /\.html$/.test(location.pathname) ? location.pathname : location.pathname + ".html";
+    return data.pages.some(function (page) {
+      return page.path === path || page.path === location.pathname
+        || page.path === pathWithHtml || page.path === pathnameWithHtml
+        || page.route === location.pathname || page.route === location.hash;
+    });
+  }
+
+  // 回退加载：内联数据 + 草稿合并，但草稿的页面注册表必须包含当前页面，否则忽略并清理
+  function loadFallbackData() {
+    var fallbackData = loadInlineData();
+    var snapshotGeneratedAt = (fallbackData && fallbackData._snapshotGeneratedAt) || 0;
+    var merged = withBrowserDraft(fallbackData, snapshotGeneratedAt);
+    if (merged !== fallbackData && !draftPagesMatchCurrentLocation(merged)) {
+      // 草稿来自其他数据源（页面注册表里没有当前页面），会把当前页面的标注
+      // 错误挂载到草稿的第一个页面（如"资料中心"），必须丢弃
+      try { window.localStorage.removeItem(draftStorageKey); } catch (removeErr) {}
+      return fallbackData;
+    }
+    return merged;
+  }
+
+  // 双击打开（file:// 协议）专用加载：
+  // 数据基线 = 共享同步文件（prototype-annotator/annotations-data.js，经 <script> 标签
+  // 加载到 window.__PROTOTYPE_ANNOTATIONS_DATA__，所有浏览器在 file:// 下均可读取）
+  // 或页面内嵌数据；本浏览器草稿（localStorage，保存接口不可达时的持久层）若更新则优先。
+  // 两者都会补齐缺失的页面注册，保证 detectPageKey 能匹配当前页面，杜绝跨页面串页。
+  function loadLocalFileData() {
+    var sharedData = null;
+    try { sharedData = window.__PROTOTYPE_ANNOTATIONS_DATA__ || null; } catch (err) {}
+    var inlineData = loadInlineData();
+    var base = (sharedData && Array.isArray(sharedData.pages) && sharedData.pages.length)
+      ? sharedData : inlineData;
+    var baseTime = 0;
+    if (sharedData && sharedData._snapshotGeneratedAt) baseTime = sharedData._snapshotGeneratedAt;
+    else if (!sharedData && inlineData && inlineData._snapshotGeneratedAt) baseTime = inlineData._snapshotGeneratedAt;
+    var merged = withBrowserDraft(base, baseTime);
+    // 补齐缺失的页面注册（共享文件与内嵌数据里的注册都并入），
+    // 当前页面的注册必须存在，否则 detectPageKey 会动态注册新 pageKey 导致串页
+    var knownKeys = {};
+    (merged.pages || []).forEach(function (page) { knownKeys[page.pageKey] = true; });
+    [sharedData, inlineData].forEach(function (src) {
+      ((src && src.pages) || []).forEach(function (page) {
+        if (page && page.pageKey && !knownKeys[page.pageKey]) {
+          merged.pages.push(page);
+          knownKeys[page.pageKey] = true;
+        }
+      });
+    });
+    return merged;
+  }
+
   function loadData() {
-    if (!CFG.dataUrl) return Promise.resolve(withBrowserDraft(loadInlineData(), 0));
+    if (!CFG.dataUrl) return Promise.resolve(loadFallbackData());
 
-    // file:// 协议：直接信任 annotations.json（http 服务持久化的真实数据源）
-    // 不再合并 localStorage 草稿，避免旧草稿覆盖 http 端的最新修改（增删改）
-    // 草稿仅在 annotations.json 读取失败时作为后备
+    // file:// 协议（双击打开）：本地浏览器存储做持久层，完全离线可用
     if (window.location.protocol === "file:") {
-      var fileData = null;
-      try {
-        var xhr = new XMLHttpRequest();
-        // 加时间戳防止浏览器缓存，确保读到最新的 annotations.json
-        var bustUrl = CFG.dataUrl + (CFG.dataUrl.indexOf("?") >= 0 ? "&" : "?") + "_t=" + Date.now();
-        xhr.open("GET", bustUrl, false);
-        xhr.send();
-        if (xhr.status === 200 || xhr.status === 0) {
-          fileData = normalizeData(JSON.parse(xhr.responseText));
-        }
-      } catch (err) {}
-
-      // 文件读取成功且有效 → 直接用，并清掉过期草稿（避免下次又被合并回来）
-      if (fileData && fileData.annotations && fileData.annotations.length > 0) {
-        try { window.localStorage.removeItem(draftStorageKey); } catch (removeErr) {}
-        return Promise.resolve(fileData);
-      }
-
-      // 文件读取失败 → 回退到内联数据 + localStorage 草稿
-      var fallbackData = loadInlineData();
-      try {
-        var raw = window.localStorage.getItem(draftStorageKey);
-        if (raw) {
-          var draftData = normalizeData(JSON.parse(raw));
-          if (draftData && draftData.annotations && draftData.annotations.length > 0) {
-            return Promise.resolve(draftData);
-          }
-        }
-      } catch (err) {}
-      return Promise.resolve(fallbackData);
+      return Promise.resolve(loadLocalFileData());
     }
 
-    if (!window.fetch) return Promise.resolve(withBrowserDraft(loadInlineData(), 0));
+    if (!window.fetch) return Promise.resolve(loadFallbackData());
     return fetch(CFG.dataUrl, { cache: "no-store" }).then(function (response) {
       if (!response.ok) throw new Error("HTTP " + response.status);
       var lastModified = response.headers.get("Last-Modified");
       var fileModifiedTime = lastModified ? new Date(lastModified).getTime() : 0;
       return response.json().then(function (data) {
-        return withBrowserDraft(normalizeData(data), fileModifiedTime);
+        var normalized = normalizeData(data);
+        var merged = withBrowserDraft(normalized, fileModifiedTime);
+        if (merged !== normalized && !draftPagesMatchCurrentLocation(merged)) {
+          // 草稿的页面注册表不含当前页面（跨页面脏草稿），会导致当前页面
+          // 的标注被错误挂载到草稿的第一个页面，必须丢弃草稿改用服务端数据
+          try { window.localStorage.removeItem(draftStorageKey); } catch (removeErr) {}
+          return normalized;
+        }
+        return merged;
       });
     }).catch(function () {
-      return withBrowserDraft(loadInlineData(), 0);
+      return loadFallbackData();
     });
   }
 
@@ -218,7 +260,26 @@
     });
     if (exactRoute) return exactRoute.pageKey;
 
-    return state.data.pages[0] ? state.data.pages[0].pageKey : "P01";
+    // 匹配失败时：仅当 pages[0] 恰好是当前页面（单页内嵌快照）才使用它，
+    // 否则动态注册当前页面，避免把当前页面的标注错误挂到其他页面（跨页面串页）
+    var first = state.data.pages[0];
+    if (first && (first.path === path || first.path === pathWithHtml
+      || first.path === location.pathname || first.path === pathnameWithHtml)) {
+      return first.pageKey;
+    }
+    // 动态注册：使用未被占用的最小序号，避免与已有 pageKey 冲突
+    var usedKeys = {};
+    state.data.pages.forEach(function (page) { usedKeys[page.pageKey] = true; });
+    var seq = 1;
+    while (usedKeys["P" + String(seq).padStart(2, "0")]) seq++;
+    var dynamicKey = "P" + String(seq).padStart(2, "0");
+    state.data.pages.push({
+      pageKey: dynamicKey,
+      title: document.title || "Page",
+      path: pathWithHtml,
+      route: location.pathname
+    });
+    return dynamicKey;
   }
 
   function pageAnnotations() {
@@ -2116,6 +2177,20 @@
 
   function persistData(action, ann) {
     if (!CFG.autoSave) return Promise.resolve({ persisted: false, draft: false, reason: "auto-save-disabled" });
+    // 双击打开（file://）：保存接口不可达，直接持久化到浏览器本地存储，
+    // 加载时（loadLocalFileData）会优先读取这份本地数据
+    if (window.location.protocol === "file:") {
+      var localOk = false;
+      try {
+        var localDraftData = JSON.parse(JSON.stringify(state.data));
+        localDraftData._draftCreatedAt = Date.now();
+        window.localStorage.setItem(draftStorageKey, JSON.stringify(localDraftData));
+        localOk = true;
+      } catch (err) {
+        // Ignore storage failures.
+      }
+      return Promise.resolve({ persisted: true, draft: localOk, local: true });
+    }
     return fetch(CFG.apiEndpoint, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -2145,6 +2220,23 @@
   }
 
   function exportData() {
+    // 双击打开（file://）：导出共享同步文件（JS 格式），替换 prototype-annotator/annotations-data.js
+    // 后，其他浏览器双击打开页面即可看到这些标注（plain JSON 在 file:// 下其他浏览器读不到）
+    if (window.location.protocol === "file:") {
+      var exportPayload = JSON.parse(JSON.stringify(state.data));
+      exportPayload._snapshotGeneratedAt = Date.now();
+      var jsContent = "window.__PROTOTYPE_ANNOTATIONS_DATA__ = "
+        + JSON.stringify(exportPayload, null, 2) + ";\n";
+      var jsBlob = new Blob([jsContent], { type: "text/javascript" });
+      var jsUrl = URL.createObjectURL(jsBlob);
+      var jsLink = document.createElement("a");
+      jsLink.href = jsUrl;
+      jsLink.download = "annotations-data.js";
+      jsLink.click();
+      setTimeout(function () { URL.revokeObjectURL(jsUrl); }, 1000);
+      toast("同步文件已下载，替换到 prototype-annotator/ 目录后其他浏览器可见");
+      return;
+    }
     var blob = new Blob([JSON.stringify(state.data, null, 2)], { type: "application/json" });
     var url = URL.createObjectURL(blob);
     var link = document.createElement("a");

@@ -17,13 +17,15 @@ f.onload=function(){
 };
 </script>
 
+
+
 <!-- Prototype Annotator runtime -->
 <script>
 window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR_CONFIG || {}, { dataUrl: "./prototype-annotator/annotations.json" });
 </script>
 <link rel="stylesheet" href="./prototype-annotator/runtime/prototype-annotator.css">
 <script id="prototype-annotations-data" type="application/json">
-{
+{"_snapshotGeneratedAt": 1787908662188,
   "version": 1,
   "pages": [
     {
@@ -171,6 +173,34 @@ window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR
       },
       "updatedAt": "2026-08-13T07:42:57Z",
       "order": 4
+    },
+    {
+      "id": "ANN-P01-005",
+      "pageKey": "P01",
+      "target": {
+        "selector": "#smart-audit-view-btn",
+        "fallbackText": "查看",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "button"
+        }
+      },
+      "title": "查看",
+      "contentMarkdown": "### 服务审核逻辑与标准\n服务审核基于以下3个维度对服务注册信息进行自动分析：\n1. 服务名称规范性 —— 服务名称应规范，不能存在碎片化、引用系统名称、法律依据文件名称等问题。\n2. 接口地址完整性 —— 接口服务地址应为完整的http或https接口，确保可访问性。\n3. 接口文档完整性 —— 必须上传接口文档，且文档内容不能为空，应包含完整的入参、返参说明。\n\n### 一、服务名称规范性审核要点\n\n驳回情形\n1. 服务名称碎片化，无法清晰表达服务内容。\n2. 服务名称引用了系统名称。\n3. 服务名称引用了法律依据文件名称。\n\n审核标准\n* 服务名称应清晰、完整地描述服务内容。\n* 应避免使用系统内部名称或文件名称。\n* 名称应体现业务含义，便于理解和使用。\n\n### 二、接口地址完整性审核要点\n\n驳回情形\n1. 接口地址不完整，缺少http或https协议前缀。\n2. 接口地址无法访问。\n3. 代理前地址、代理后地址、接口path等关键信息缺失。\n\n审核标准\n* 接口path、代理前地址、代理后地址应完整填写。\n* 地址应使用完整的http或https协议。\n* 接口类型（rest/webservice）和返回类型（json/xml/string）应明确。\n\n### 三、接口文档完整性审核要点\n\n驳回情形\n1. 未上传接口文档。\n2. 接口文档内容为空。\n3. 接口文档缺少入参说明。\n4. 接口文档缺少返参说明。\n\n审核标准\n* 必须上传接口文档（支持docx、pdf、json等格式）。\n* 文档应包含完整的请求参数（入参）说明：参数名、类型、是否必填、说明。\n* 文档应包含完整的返回参数（返参）说明：参数名、类型、说明。\n* 文档应包含错误代码说明。",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 5,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-17T07:00:48.477Z"
     }
   ],
   "project": {
@@ -779,11 +809,13 @@ window.PROTOTYPE_ANNOTATOR_CONFIG = Object.assign({}, window.PROTOTYPE_ANNOTATOR
     ],
     "generatedAt": "2026-08-13T07:42:38Z",
     "sources": []
-  }
+  },
+  "_draftCreatedAt": 1786956443383
 }
 </script>
 <script src="./prototype-annotator/runtime/markdown-renderer.js"></script>
 <script src="./prototype-annotator/runtime/mermaid-loader.js"></script>
-<script src="./prototype-annotator/runtime/prototype-annotator.js"></script>
+<script src="./prototype-annotator/annotations-data.js"></script>
+<script src="./prototype-annotator/runtime/prototype-annotator.js?v=20260901c"></script>
 <!-- /Prototype Annotator runtime -->
 </body></html>

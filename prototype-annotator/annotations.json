@@ -306,6 +306,36 @@
       "title": "数据服务平台 - 数据更新审核",
       "path": "data_update_audit.html",
       "route": "/data_update_audit.html"
+    },
+    {
+      "pageKey": "P52",
+      "title": "服务审核",
+      "path": "service_audit.html",
+      "route": "/service_audit.html"
+    },
+    {
+      "pageKey": "P53",
+      "title": "已发布目录",
+      "path": "data_update.html",
+      "route": "/data_update.html"
+    },
+    {
+      "pageKey": "P54",
+      "title": "授权提醒处置",
+      "path": "monitor_authorization_alert.html",
+      "route": "/monitor_authorization_alert.html"
+    },
+    {
+      "pageKey": "P55",
+      "title": "授权提醒服务",
+      "path": "monitor_authorization_alert_service.html",
+      "route": "/monitor_authorization_alert_service.html"
+    },
+    {
+      "pageKey": "P56",
+      "title": "需求数据量",
+      "path": "statistics_demand.html",
+      "route": "/statistics_demand.html"
     }
   ],
   "surfaces": [
@@ -1326,6 +1356,34 @@
       "order": 4
     },
     {
+      "id": "ANN-P01-005",
+      "pageKey": "P01",
+      "target": {
+        "selector": "#smart-audit-view-btn",
+        "fallbackText": "查看",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "button"
+        }
+      },
+      "title": "查看",
+      "contentMarkdown": "### 服务审核逻辑与标准\n服务审核基于以下3个维度对服务注册信息进行自动分析：\n1. 服务名称规范性 —— 服务名称应规范，不能存在碎片化、引用系统名称、法律依据文件名称等问题。\n2. 接口地址完整性 —— 接口服务地址应为完整的http或https接口，确保可访问性。\n3. 接口文档完整性 —— 必须上传接口文档，且文档内容不能为空，应包含完整的入参、返参说明。\n\n### 一、服务名称规范性审核要点\n\n驳回情形\n1. 服务名称碎片化，无法清晰表达服务内容。\n2. 服务名称引用了系统名称。\n3. 服务名称引用了法律依据文件名称。\n\n审核标准\n* 服务名称应清晰、完整地描述服务内容。\n* 应避免使用系统内部名称或文件名称。\n* 名称应体现业务含义，便于理解和使用。\n\n### 二、接口地址完整性审核要点\n\n驳回情形\n1. 接口地址不完整，缺少http或https协议前缀。\n2. 接口地址无法访问。\n3. 代理前地址、代理后地址、接口path等关键信息缺失。\n\n审核标准\n* 接口path、代理前地址、代理后地址应完整填写。\n* 地址应使用完整的http或https协议。\n* 接口类型（rest/webservice）和返回类型（json/xml/string）应明确。\n\n### 三、接口文档完整性审核要点\n\n驳回情形\n1. 未上传接口文档。\n2. 接口文档内容为空。\n3. 接口文档缺少入参说明。\n4. 接口文档缺少返参说明。\n\n审核标准\n* 必须上传接口文档（支持docx、pdf、json等格式）。\n* 文档应包含完整的请求参数（入参）说明：参数名、类型、是否必填、说明。\n* 文档应包含完整的返回参数（返参）说明：参数名、类型、说明。\n* 文档应包含错误代码说明。",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 5,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-17T07:00:48.477Z"
+    },
+    {
       "id": "ANN-P02-001",
       "pageKey": "P02",
       "target": {
@@ -1981,6 +2039,67 @@
       "order": 2
     },
     {
+      "id": "ANN-P09-001",
+      "pageKey": "P09",
+      "target": {
+        "selector": "main",
+        "fallbackText": "返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应",
+        "strategy": "tag",
+        "sourceElementId": "P09-E005",
+        "boundsHint": {
+          "text": "返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应",
+          "tag": "main"
+        }
+      },
+      "title": "返回列表 1 数据资源目录维护 2… · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 目录编制」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 以概况政务数据资源目录内容的标题和“信息”字样…\n- 请选择 经济建设 教育科技 社会保障 医疗卫生…\n- 请选择 人口基础信息 法人基础信息 空间地理基…\n- has-license\n- 请选择 政务服务 市场监管 公共安全 城市治理…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E005"
+      },
+      "evidence": [
+        "页面：返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫生 城市建设 公共安全 主题资源分类 请选择 人口基础信息 法人基础信息 空间地理基础信息 社会信用基础信息 电子证照基础信息 是否包含电子证照 * 是 否 应",
+        "路由：/catalog_add.html",
+        "页面文本：返回列表 1 数据资源目录维护 2 信息项维护 基本信息 数据资源目录名称 * 数据资源目录摘要 * 所属领域 * 请选择 经济建设 教育科技 社会保障 医疗卫",
+        "selector：main"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-004",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
       "id": "ANN-P09-003",
       "pageKey": "P09",
       "target": {
@@ -2096,6 +2215,65 @@
       "surfaceId": "surface-P09-smart-catalog-drawer",
       "displayWhenClosed": "sidebar-only",
       "order": 5
+    },
+    {
+      "id": "ANN-P09-006",
+      "pageKey": "P09",
+      "target": {
+        "selector": "#smart-catalog-input",
+        "fallbackText": "请输入目录描述，或点击上方按钮上传文件让AI分析...",
+        "strategy": "id",
+        "sourceElementId": "P09-E058",
+        "boundsHint": {
+          "text": "请输入目录描述，或点击上方按钮上传文件让AI分析...",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「请输入目录描述，或点击上方按钮上传文件让AI分析...」是当前二级界面中的业务字段，用于记录、筛选或确认与当前操作直接相关的信息。\n\n### 填写规则\n\n- 优先以字段标签、分组标题和页面说明确定字段含义，placeholder 只能作为输入示例。\n- 必填字段为空时，应在提交前提示用户补充；非必填字段应允许留空。\n- 字段内容变更后，应只影响当前二级界面中的待保存内容，提交成功前不直接改动主页面数据。\n\n### 状态与异常\n\n- 校验失败时，应在字段附近展示错误提示。\n- 保存失败时，应保留用户已填写内容。\n- 关闭界面前，如果存在未保存内容，应根据业务需要提示用户确认。\n\n### 待确认\n\n- 字段是否必填？\n- 默认值从哪里来？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "surface",
+        "form",
+        "field",
+        "field-rule"
+      ],
+      "dimension": "Surface field",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P09-E058"
+      },
+      "evidence": [
+        "页面文本：请输入目录描述，或点击上方按钮上传文件让AI分析...",
+        "selector：#smart-catalog-input",
+        "二级界面：智能编目"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P09-057",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "surfaceId": "surface-P09-smart-catalog-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "order": 6
     },
     {
       "id": "ANN-P09-007",
@@ -2324,6 +2502,56 @@
       },
       "updatedAt": "2026-08-13T07:42:57Z",
       "order": 10
+    },
+    {
+      "id": "ANN-P10-AUDIT-03",
+      "pageKey": "P10",
+      "target": {
+        "selector": "#smart-audit-tip",
+        "fallbackText": "智能审核提示条",
+        "strategy": "manual",
+        "boundsHint": {
+          "text": "智能审核提示条",
+          "tag": "div"
+        }
+      },
+      "title": "共享类型审核要点",
+      "contentMarkdown": "### 目录审核逻辑与标准\n目录审核基于以下5个维度对信息资源进行自动分析：\n\n- 信息资源名称规范性 —— 信息资源名称应填写政务信息资源内容的标题，强调结果信息类，不是动作类。\n- 目录颗粒度合理性 —— 梳理时重点把握每个政务信息资源目录的颗粒度，避免拆分不合适。\n- 共享类型匹配性 —— 共享类型应按数据特性正确选择并填写使用要求。\n- 信息资源摘要完整性 —— 信息资源摘要应详细描述数据范围和主要内容，不能过于简单。\n- 信息项名称规范性 —— 信息项名称应使用具体的字段名称，不能使用系统名称或目录名称。\n\n### 一、信息资源名称规范性审核要点\n\n不能使用信息系统名、工作名、事项名、职责、文件名等内容作为信息资源名称。\n\n错误样例：\n- 管理、审批、考核、对某某的处罚等不符合规定。\n- 信息系统名：全国救助管理信息系统\n- 工作名：规划编制规范性文件制定工作\n\n正确样例\n- 群众走访登记信息\n- 事业单位法人登记信息\n- 学校安全管理信息\n- 律师执业信息\n- 民办职业培训机构设立审批信息\n\n审核标准\n- 信息资源名称应填写政务信息资源内容的标题，强调部门在履行职能过程中产生、管理和使用的各类信息（结果信息类），不是动作类。\n- 对资源内容的描述，尽量使用相关文件或有明确规定的名称，如果没有也要尽量贴近资源内容。\n- 信息资源名称强调的是结果信息类，不是动作类。如\"对水路运输的处罚\"应改为\"水路运输的处罚结果信息\"。\n\n### 二、目录颗粒度合理性审核要点\n- 常见问题\n- 拆分不到位：明显包含多个资源，应拆分为多个独立的信息资源目录。\n- 拆分过细：一个文件即作为一个信息资源，颗粒度过细不便于管理。\n- 审核标准\n- 每个信息资源目录应聚焦单一业务对象的结果信息。\n- 包含多个业务对象或多个数据集的应拆分。\n- 同一业务的多个文件可合并为一个信息资源目录。\n\n### 三、共享类型匹配性审核要点\n- 填写要求\n- 无条件共享类和有条件共享类：应标明使用要求，包括作为行政依据、工作参考，用于数据校核、业务协同等。\n- 有条件共享类：还应注明共享条件和共享范围。\n- 不予共享类：应注明相关的法律、行政法规或党中央、国务院政策依据。\n- 错误事例\n- 不予共享的信息资源，其共享条件未填写相关法律法规依据。\n\n- 审核标准\n- 共享类型与数据特性是否匹配。\n- 使用要求、共享条件、共享范围是否完整。\n- 不予共享类是否有明确的法律法规依据。\n\n### 四、信息资源摘要完整性审核要点\n- 错误样例\n- 摘要与资源名称一样\n- 摘要未填写\n- 正确填写样例\n- 数据范围：潍坊市。主要包含数据：物资ID、物资名称、物资全称、型号、品牌、简介、单位、常规库存、年生产力、存放地址、所属企业ID、仓储容量、产品详情、操作人员电话、操作员。数据开始时间：2022年10月。\n\n- 审核标准\n- 摘要应包含数据范围、主要数据项、数据起始时间等关键信息。\n- 摘要不能与资源名称重复或为空。\n\n### 五、信息项名称规范性审核要点\n- 错误样例\n- 使用系统名称作为信息项名称\n- 使用目录名称作为信息项名称\n- 正确样例\n- 姓名\n- 身份证号\n- 年龄\n- 性别\n- 联系电话\n- 注册地址\n\n- 审核标准\n- 信息项名称应为具体的业务字段名称。\n- 不能使用系统名、目录名等概括性名称。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-17T06:58:26.540Z",
+      "order": 3,
+      "surfaceId": "surface-P10-audit-drawer"
     },
     {
       "id": "ANN-P10-004",
@@ -2680,6 +2908,209 @@
       "updatedAt": "2026-08-14T08:40:47.023Z",
       "order": 9,
       "devNotesMarkdown": null
+    },
+    {
+      "id": "ANN-P13-004",
+      "pageKey": "P13",
+      "target": {
+        "selector": "div:nth-of-type(1) > main > div:nth-of-type(2) > span:nth-of-type(3)",
+        "fallbackText": "场景配置",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "span"
+        }
+      },
+      "title": "场景配置",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【平台运维方】配置门户中的场景中心内容。",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 4,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-14T05:50:48.337Z"
+    },
+    {
+      "id": "ANN-P13-005",
+      "pageKey": "P13",
+      "target": {
+        "selector": "main > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1)",
+        "fallbackText": "全部领域 8",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "div"
+        }
+      },
+      "title": "全部领域 8",
+      "contentMarkdown": "### 业务含义\n\n配置场景所属领域，逻辑通目录分类管理逻辑一样",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 5,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-14T05:54:18.268Z"
+    },
+    {
+      "id": "ANN-P13-006",
+      "pageKey": "P13",
+      "target": {
+        "selector": "table > tbody > tr:nth-of-type(1) > td:nth-of-type(4) > button",
+        "fallbackText": "",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "button"
+        }
+      },
+      "title": "新增标注",
+      "contentMarkdown": "### 业务含义\n\n启用后在门户展示，停用后不会在门户展示",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 6,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-14T05:54:55.542Z"
+    },
+    {
+      "id": "ANN-P14-001",
+      "pageKey": "P14",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "数据篮",
+        "strategy": "tag",
+        "sourceElementId": "P14-E002",
+        "boundsHint": {
+          "text": "数据篮",
+          "tag": "h1"
+        }
+      },
+      "title": "数据篮 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「数据篮」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「数据篮」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据篮」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「数据篮」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 需求级别 需求目录 需求服务 服务类型 数据提…\n- 序号 附件名称 附件类型 上传人 所属数据 说…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P14-E002"
+      },
+      "evidence": [
+        "页面：数据篮",
+        "路由：/data_basket.html",
+        "页面文本：数据篮",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P14-002",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P14-002",
+      "pageKey": "P14",
+      "target": {
+        "selector": "body > main > div:nth-of-type(2) > div:nth-of-type(2) > table",
+        "fallbackText": "需求级别 需求目录 需求服务 服务类型 数据提供部门 调用频次（平均） 调用频次（峰值） 附件上传状态 操作",
+        "strategy": "path",
+        "sourceElementId": "P14-E005",
+        "boundsHint": {
+          "text": "需求级别 需求目录 需求服务 服务类型 数据提供部门 调用频次（平均） 调用频次（峰值） 附件上传状态 操作",
+          "tag": "table"
+        }
+      },
+      "title": "数据列表",
+      "contentMarkdown": "### 业务含义\n\n「需求级别 需求目录 需求服务 服务类型 数据提供部门 调用频次…」承载本页列表或表格数据的浏览、筛选与操作任务。\n\n### 使用场景\n\n用户需要查看多条业务记录、对比关键字段，或从列表中选择目标对象继续操作。\n\n### 展示规则\n\n- 关注列含义、排序/筛选条件、空状态和分页规则。\n- 同名行操作应在一条说明中描述整体规则，避免逐行重复。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 无数据：展示空状态并提示下一步操作。\n- 接口失败：保留筛选条件并提示重试。\n\n### 待确认\n\n- 是否需要支持批量操作？\n- 行级操作的权限边界是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "table",
+      "topics": [
+        "business",
+        "data",
+        "state"
+      ],
+      "dimension": "Table and list",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P14-E005"
+      },
+      "evidence": [
+        "页面文本：需求级别 需求目录 需求服务 服务类型 数据提供部门 调用频次（平均） 调用频次（峰值） 附件上传状态 操作",
+        "selector：body > main > div:nth-of-type(2) > div:nth-of-type(2) > table"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P14-005",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
     },
     {
       "id": "ANN-P14-003",
@@ -3620,6 +4051,56 @@
       "order": 3
     },
     {
+      "id": "ANN-P19-AUDIT-03",
+      "pageKey": "P19",
+      "target": {
+        "selector": "#smart-audit-tip",
+        "fallbackText": "智能审核提示条",
+        "strategy": "manual",
+        "boundsHint": {
+          "text": "智能审核提示条",
+          "tag": "div"
+        }
+      },
+      "title": "附件审核要点",
+      "contentMarkdown": "### 智能审核逻辑与标准\n智能审核基于以下4个维度对需求进行自动分析：\n\n- 场景明确性 —— 需求场景必须明确具体，不能使用模糊的描述。\n- 系统名称规范性 —— 系统名称应规范，不能使用明显非系统名称的内容。\n- 附件完整性 —— 附件应为标准模板，且内容不能为空，需要签字盖章。\n- 申请依据有效性 —— 申请依据需明确法律条文或者省市下发的重要通知。\n\n### 一、场景明确性审核要点\n\n错误样例\n- 数据比对\n- 数据分析\n- 这些描述过于笼统，无法明确应用场景。\n\n正确样例\n- 退役军人事务局退役军人优抚补贴核验\n- 应用于县级节点校验残疾学生教育资助补贴\n\n审核标准\n- 场景描述应包含具体的应用部门、应用对象和应用目的。\n- 不能使用\"数据比对\"、\"数据分析\"等模糊词汇。\n- 场景应与实际业务需求匹配。\n\n### 二、系统名称规范性审核要点\n\n错误样例\n- 测试\n- 1\n- 其他明显非系统名称的内容\n\n审核标准\n- 系统名称应为正式的系统名称或服务名称。\n- 不能使用测试数据、数字等无意义内容。\n- 名称应能反映系统或服务的实际功能。\n\n### 三、附件完整性审核要点\n\n驳回情形\n- 附件非标准模板，格式不符合要求。\n- 附件内容为空，未填写必要信息。\n- 附件未签字盖章。\n\n审核标准\n- 附件必须使用平台下发的标准模板。\n- 附件内容应完整填写，不得为空。\n- 附件必须有申请人签字和单位盖章。\n- 附件内容应与申请信息一致。\n\n### 四、申请依据有效性审核要点\n\n驳回情形\n- 申请依据未填写。\n- 申请依据为模糊描述，未引用具体法律条文。\n- 申请依据与实际需求不符。\n\n审核标准\n- 申请依据应明确引用法律条文（如《XX法第X条》）。\n- 或引用省市下发的重要通知（如《XX省关于XX的通知》文号）。\n- 申请依据应与申请的数据资源、应用场景匹配。",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "note",
+      "topics": [
+        "audit",
+        "business",
+        "standard"
+      ],
+      "dimension": "Audit standard",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "智能审核标准"
+      },
+      "evidence": [],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [],
+      "candidateId": null,
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "manual",
+      "review": {
+        "required": false,
+        "status": "approved",
+        "reason": "manual-audit-standard"
+      },
+      "updatedAt": "2026-08-17T07:10:20.107Z",
+      "order": 3,
+      "surfaceId": "surface-P19-accept-drawer"
+    },
+    {
       "id": "ANN-P19-004",
       "pageKey": "P19",
       "target": {
@@ -3792,6 +4273,215 @@
       },
       "updatedAt": "2026-08-13T07:42:57Z",
       "order": 2
+    },
+    {
+      "id": "ANN-P21-001",
+      "pageKey": "P21",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "数据驱动价值 服务赋能创新",
+        "strategy": "manual",
+        "sourceElementId": "P21-E003",
+        "boundsHint": {
+          "text": "数据驱动价值 服务赋能创新",
+          "tag": "h1"
+        }
+      },
+      "title": "数据驱动价值 服务赋能创新 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「数据驱动价值 服务赋能创新」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「数据驱动价值 服务赋能创新」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 门户首页」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「数据驱动价值 服务赋能创新」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 01 2026-08 数据服务平台 3.0 版…\n- 28 2026-07 智能问答助手升级：支持自…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P21-E003"
+      },
+      "evidence": [
+        "页面：数据驱动价值 服务赋能创新",
+        "路由：/index.html",
+        "页面文本：数据驱动价值 服务赋能创新",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P21-003",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T08:56:04.686Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P21-002",
+      "pageKey": "P21",
+      "target": {
+        "selector": "main > section:nth-of-type(5) > div > div:nth-of-type(2) > a:nth-of-type(1)",
+        "fallbackText": "01 2026-08 数据服务平台 3.0 版本正式上线，全新智能编目能力发布 置顶 本次版本升级重点优化了智能编目能力，支持基于 AI 的自动目录编制与元数据自动补全...",
+        "strategy": "path",
+        "sourceElementId": "P21-E040",
+        "boundsHint": {
+          "text": "01 2026-08 数据服务平台 3.0 版本正式上线，全新智能编目能力发布 置顶 本次版本升级重点优化了智能编目能力，支持基于 AI 的自动目录编制与元数据自动补全...",
+          "tag": "a"
+        }
+      },
+      "title": "01 2026-08 …",
+      "contentMarkdown": "### 业务含义\n\n「01 2026-08 数据服务平台 3.0 版本正式上线，全新…」关键操作入口。\n\n### 交互规则\n\n- 用户点击「01 2026-08 数据服务平台 3.0 版本正式上线，全新…」后，系统应执行与该入口对应的业务动作。\n- 操作前应校验当前用户、当前对象状态和必要输入是否满足条件。\n- 若该入口用于跳转，应进入 `portal_work_dynamics.html` 对应页面并保留必要上下文。\n\n### 状态与异常\n\n- 处理中：按钮应进入 loading 或禁用状态，避免重复触发。\n- 失败：保留当前页面状态，并提示用户可执行的修正或重试方式。\n\n### 证据\n\n- 页面文本：01 2026-08 数据服务平台 3.0 版本正式上线，全新智能编目能力发布 置顶 本次版本升级重点优化了智能编目能力，支持基于 AI 的自动目录编制与元数据\n- selector：main > section:nth-of-type(5) > div > div:nth-of-type(2) > a:nth-of-type(1)\n\n### 待确认\n\n- 点击后的目标页面、弹窗或状态变化是否已确认？\n- 是否存在角色权限、状态限制或二次确认要求？\n- 候选证据是否与 PRD 或上游页面级需求说明文档一致？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "business",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Primary action",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P21-E040"
+      },
+      "evidence": [
+        "页面文本：01 2026-08 数据服务平台 3.0 版本正式上线，全新智能编目能力发布 置顶 本次版本升级重点优化了智能编目能力，支持基于 AI 的自动目录编制与元数据",
+        "selector：main > section:nth-of-type(5) > div > div:nth-of-type(2) > a:nth-of-type(1)"
+      ],
+      "nextActions": [
+        "点击 `01 2026-08 数据服务平台 3.0 版本正式上线，全新…` 后需要确认页面/弹窗/状态变化、成功反馈和失败处理。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P21-040",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P21-003",
+      "pageKey": "P21",
+      "target": {
+        "selector": "main > section:nth-of-type(5) > div > div:nth-of-type(2) > a:nth-of-type(2)",
+        "fallbackText": "28 2026-07 智能问答助手升级：支持自然语言查询数据资源 智能问答助手现已支持通过自然语言直接查询数据资源，快速定位所需的数据目录与服务接口...",
+        "strategy": "path",
+        "sourceElementId": "P21-E042",
+        "boundsHint": {
+          "text": "28 2026-07 智能问答助手升级：支持自然语言查询数据资源 智能问答助手现已支持通过自然语言直接查询数据资源，快速定位所需的数据目录与服务接口...",
+          "tag": "a"
+        }
+      },
+      "title": "28 2026-07 …",
+      "contentMarkdown": "### 业务含义\n\n「28 2026-07 智能问答助手升级：支持自然语言查询数据资…」关键操作入口。\n\n### 交互规则\n\n- 用户点击「28 2026-07 智能问答助手升级：支持自然语言查询数据资…」后，系统应执行与该入口对应的业务动作。\n- 操作前应校验当前用户、当前对象状态和必要输入是否满足条件。\n- 若该入口用于跳转，应进入 `portal_work_dynamics.html` 对应页面并保留必要上下文。\n\n### 状态与异常\n\n- 处理中：按钮应进入 loading 或禁用状态，避免重复触发。\n- 失败：保留当前页面状态，并提示用户可执行的修正或重试方式。\n\n### 证据\n\n- 页面文本：28 2026-07 智能问答助手升级：支持自然语言查询数据资源 智能问答助手现已支持通过自然语言直接查询数据资源，快速定位所需的数据目录与服务接口...\n- selector：main > section:nth-of-type(5) > div > div:nth-of-type(2) > a:nth-of-type(2)\n\n### 待确认\n\n- 点击后的目标页面、弹窗或状态变化是否已确认？\n- 是否存在角色权限、状态限制或二次确认要求？\n- 候选证据是否与 PRD 或上游页面级需求说明文档一致？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "A",
+      "kind": "interaction",
+      "topics": [
+        "business",
+        "interaction",
+        "flow"
+      ],
+      "dimension": "Primary action",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P21-E042"
+      },
+      "evidence": [
+        "页面文本：28 2026-07 智能问答助手升级：支持自然语言查询数据资源 智能问答助手现已支持通过自然语言直接查询数据资源，快速定位所需的数据目录与服务接口...",
+        "selector：main > section:nth-of-type(5) > div > div:nth-of-type(2) > a:nth-of-type(2)"
+      ],
+      "nextActions": [
+        "点击 `28 2026-07 智能问答助手升级：支持自然语言查询数据资…` 后需要确认页面/弹窗/状态变化、成功反馈和失败处理。"
+      ],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P21-042",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P21-005",
+      "pageKey": "P21",
+      "target": {
+        "selector": "section:nth-of-type(3) > div > div:nth-of-type(1) > div > p",
+        "fallbackText": "丰富的数据资源，助力业务创新发展",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "p"
+        }
+      },
+      "title": "丰富的数据资源，助力业务创新发展",
+      "contentMarkdown": "### 业务含义\n\n按照发布时间倒序",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 5,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T07:47:30.904Z"
     },
     {
       "id": "ANN-P22-001",
@@ -4211,6 +4901,124 @@
       "order": 1
     },
     {
+      "id": "ANN-P27-001",
+      "pageKey": "P27",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "应用中心",
+        "strategy": "tag",
+        "sourceElementId": "P27-E002",
+        "boundsHint": {
+          "text": "应用中心",
+          "tag": "h1"
+        }
+      },
+      "title": "应用中心 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「应用中心」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「应用中心」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「应用中心」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 搜索应用名称...\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P27-E002"
+      },
+      "evidence": [
+        "页面：应用中心",
+        "路由：/portal_app_center.html",
+        "页面文本：应用中心",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P27-002",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P27-002",
+      "pageKey": "P27",
+      "target": {
+        "selector": "#search-input",
+        "fallbackText": "搜索应用名称...",
+        "strategy": "id",
+        "sourceElementId": "P27-E005",
+        "boundsHint": {
+          "text": "搜索应用名称...",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「搜索应用名称...」用于帮助用户在当前页面快速查找与业务目标相关的内容。帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 应用中心」相关的业务操作。\n\n### 使用场景\n\n当用户已经知道关键词、名称、类型或部分条件时，可以通过搜索或筛选快速缩小结果范围。\n\n### 交互规则\n\n- 用户输入关键词或筛选条件后，点击「搜索应用名称...」或确认操作触发查询。\n- 系统根据条件刷新结果列表。\n- 清空条件后，应恢复默认列表或推荐内容。\n\n### 状态与异常\n\n- 搜索中：展示加载状态。\n- 无结果：展示空状态，并提示用户调整关键词。\n- 搜索失败：保留用户输入，并提示稍后重试。\n\n### 待确认\n\n- 是否支持模糊搜索？\n- 是否需要保留用户上一次搜索条件？\n- 是否需要按资源类型进一步筛选？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "business",
+        "field-rule",
+        "exception"
+      ],
+      "dimension": "Form and validation",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P27-E005"
+      },
+      "evidence": [
+        "页面文本：搜索应用名称...",
+        "selector：#search-input"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认字段必填性、默认值、校验时机、选项来源和提交阻断条件。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P27-005",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
       "id": "ANN-P28-001",
       "pageKey": "P28",
       "target": {
@@ -4259,6 +5067,67 @@
       "selectorQuality": {
         "level": "stable",
         "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P29-001",
+      "pageKey": "P29",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "数据中心",
+        "strategy": "tag",
+        "sourceElementId": "P29-E002",
+        "boundsHint": {
+          "text": "数据中心",
+          "tag": "h1"
+        }
+      },
+      "title": "数据中心 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「数据中心」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「数据中心」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据中心」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「数据中心」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 请输入关键词搜索数据目录...\n- 税务登记信息 有条件共享 有条件开放 提供机构…\n- 电子证照信息 无条件共享 无条件开放 提供机构…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E002"
+      },
+      "evidence": [
+        "页面：数据中心",
+        "路由：/portal_data_center.html",
+        "页面文本：数据中心",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P29-002",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
       },
       "createdBy": "ai",
       "review": {
@@ -4325,6 +5194,120 @@
       },
       "updatedAt": "2026-08-14T09:48:49.355Z",
       "order": 2
+    },
+    {
+      "id": "ANN-P29-003",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div:nth-of-type(2)",
+        "fallbackText": "税务登记信息 有条件共享 有条件开放 提供机构： 市税务局 信息项： 纳税人识别号、纳税人类型、税务登记状态、主管税务机关 目录更新时间： 2026-01-10 10:20:33 发布时间： 2025-12-05 09:12:10 库表 接口 文件",
+        "strategy": "path",
+        "sourceElementId": "P29-E071",
+        "boundsHint": {
+          "text": "税务登记信息 有条件共享 有条件开放 提供机构： 市税务局 信息项： 纳税人识别号、纳税人类型、税务登记状态、主管税务机关 目录更新时间： 2026-01-10 10:20:33 发布时间： 2025-12-05 09:12:10 库表 接口 文件",
+          "tag": "div"
+        }
+      },
+      "title": "税务登记信息 有条件共…",
+      "contentMarkdown": "### 业务含义\n\n「税务登记信息 有条件共享 有条件开放 提供机构： 市税务局 信…」用于告诉用户当前事项所处阶段，并影响页面可执行操作。\n\n### 状态规则\n\n- 不同状态下，页面展示内容和可操作按钮可能不同。\n- 状态变化后，应及时刷新页面或给出明确提示。\n- 用户需要能够理解当前状态下还能做什么。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 空状态：提示暂无数据，并提供下一步操作建议。\n- 失败状态：提示失败原因，并支持重试或返回。\n\n### 状态流转\n\n```mermaid\nstateDiagram-v2\n  state \"默认\" as Default\n  state \"加载中\" as Loading\n  state \"成功\" as Success\n  state \"失败\" as Failed\n  state \"空状态\" as Empty\n  state \"禁用\" as Disabled\n  [*] --> Default\n  Default --> Loading: 发起操作\n  Loading --> Success: 处理完成\n  Loading --> Failed: 处理失败\n  Success --> Default: 刷新或返回\n  Failed --> Loading: 重试\n  Default --> Empty: 无数据\n  Default --> Disabled: 权限或条件不满足\n```\n\n### 待确认\n\n- 当前状态枚举是否完整？\n- 每个状态下的可操作按钮是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "S",
+      "kind": "state",
+      "topics": [
+        "state",
+        "exception"
+      ],
+      "dimension": "State and exception",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E071"
+      },
+      "evidence": [
+        "页面文本：税务登记信息 有条件共享 有条件开放 提供机构： 市税务局 信息项： 纳税人识别号、纳税人类型、税务登记状态、主管税务机关 目录更新时间： 2026-01-10",
+        "selector：div:nth-of-type(2) > div > div > div:nth-of-type(2) > div:nth-of-type(2)"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P29-071",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
+      "id": "ANN-P29-004",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div:nth-of-type(2) > div > div > div:nth-of-type(2) > div:nth-of-type(6)",
+        "fallbackText": "电子证照信息 无条件共享 无条件开放 提供机构： 市行政审批服务局 信息项： 证照编号、证照类型、持证人、有效期、发证机关、证照状态 目录更新时间： 2026-01-22 11:20:15 发布时间： 2025-10-08 09:30:00 库表 接口 文件",
+        "strategy": "path",
+        "sourceElementId": "P29-E095",
+        "boundsHint": {
+          "text": "电子证照信息 无条件共享 无条件开放 提供机构： 市行政审批服务局 信息项： 证照编号、证照类型、持证人、有效期、发证机关、证照状态 目录更新时间： 2026-01-22 11:20:15 发布时间： 2025-10-08 09:30:00 库表 接口 文件",
+          "tag": "div"
+        }
+      },
+      "title": "电子证照信息 无条件共…",
+      "contentMarkdown": "### 业务含义\n\n「电子证照信息 无条件共享 无条件开放 提供机构： 市行政审批服…」用于告诉用户当前事项所处阶段，并影响页面可执行操作。\n\n### 状态规则\n\n- 不同状态下，页面展示内容和可操作按钮可能不同。\n- 状态变化后，应及时刷新页面或给出明确提示。\n- 用户需要能够理解当前状态下还能做什么。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 空状态：提示暂无数据，并提供下一步操作建议。\n- 失败状态：提示失败原因，并支持重试或返回。\n\n### 状态流转\n\n```mermaid\nstateDiagram-v2\n  state \"默认\" as Default\n  state \"加载中\" as Loading\n  state \"成功\" as Success\n  state \"失败\" as Failed\n  state \"空状态\" as Empty\n  state \"禁用\" as Disabled\n  [*] --> Default\n  Default --> Loading: 发起操作\n  Loading --> Success: 处理完成\n  Loading --> Failed: 处理失败\n  Success --> Default: 刷新或返回\n  Failed --> Loading: 重试\n  Default --> Empty: 无数据\n  Default --> Disabled: 权限或条件不满足\n```\n\n### 待确认\n\n- 当前状态枚举是否完整？\n- 每个状态下的可操作按钮是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "S",
+      "kind": "state",
+      "topics": [
+        "state",
+        "exception"
+      ],
+      "dimension": "State and exception",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P29-E095"
+      },
+      "evidence": [
+        "页面文本：电子证照信息 无条件共享 无条件开放 提供机构： 市行政审批服务局 信息项： 证照编号、证照类型、持证人、有效期、发证机关、证照状态 目录更新时间： 2026-",
+        "selector：div:nth-of-type(2) > div > div > div:nth-of-type(2) > div:nth-of-type(6)"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P29-095",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 4
     },
     {
       "id": "ANN-P29-005",
@@ -4674,6 +5657,149 @@
       "surfaceId": "surface-P29-demand-modal",
       "displayWhenClosed": "sidebar-only",
       "order": 10
+    },
+    {
+      "id": "ANN-P29-011",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div:nth-of-type(2) > div > div > div:nth-of-type(1) > div:nth-of-type(1)",
+        "fallbackText": "资源类型： 全部 接口 库表 文件 未挂接 共享属性： 全部 无条件共享 有条件共享 不予共享 开放属性： 全部 无条件开放 有条件开放 不予开放",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "div"
+        }
+      },
+      "title": "资源类型： 全部 接口 库表 文件 未挂接 共享",
+      "contentMarkdown": "### 业务含义\n\n122112",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 11,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T07:50:15.619Z"
+    },
+    {
+      "id": "ANN-P29-012",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div",
+        "fallbackText": "全部 接口 库表 文件 未挂接",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "div"
+        }
+      },
+      "title": "全部 接口 库表 文件 未挂接",
+      "contentMarkdown": "### 业务含义\n\n1212",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 12,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T08:05:50.236Z"
+    },
+    {
+      "id": "ANN-P29-014",
+      "pageKey": "P29",
+      "target": {
+        "selector": "div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > div > button:nth-of-type(4)",
+        "fallbackText": "不予共享",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "button"
+        }
+      },
+      "title": "不予共享",
+      "contentMarkdown": "### 业务含义\n\n2121231",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 14,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-13T08:07:28.522Z"
+    },
+    {
+      "id": "ANN-P30-001",
+      "pageKey": "P30",
+      "target": {
+        "selector": "#detail-title",
+        "fallbackText": "企业工商登记信息",
+        "strategy": "id",
+        "sourceElementId": "P30-E019",
+        "boundsHint": {
+          "text": "企业工商登记信息",
+          "tag": "h1"
+        }
+      },
+      "title": "企业工商登记信息 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「企业工商登记信息」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「企业工商登记信息」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 数据详情」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「企业工商登记信息」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 字段名称 字段描述 类型 是否必填 enter…\n- 字段名称 字段描述 字段类型 字段长度 是否主…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P30-E019"
+      },
+      "evidence": [
+        "页面：企业工商登记信息",
+        "路由：/portal_data_detail.html",
+        "页面文本：企业工商登记信息",
+        "selector：#detail-title"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P30-019",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
     },
     {
       "id": "ANN-P30-002",
@@ -5196,6 +6322,299 @@
       "order": 10
     },
     {
+      "id": "ANN-P31-001",
+      "pageKey": "P31",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "材料中心",
+        "strategy": "tag",
+        "sourceElementId": "P31-E002",
+        "boundsHint": {
+          "text": "材料中心",
+          "tag": "h1"
+        }
+      },
+      "title": "材料中心 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「材料中心」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「材料中心」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「材料中心」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 搜索材料名称...\n- 最新发布 下载量 名称\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P31-E002"
+      },
+      "evidence": [
+        "页面：材料中心",
+        "路由：/portal_material_center.html",
+        "页面文本：材料中心",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P31-002",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P31-002",
+      "pageKey": "P31",
+      "target": {
+        "selector": "input[placeholder*=\"搜索材料名称...\"]",
+        "fallbackText": "搜索材料名称...",
+        "strategy": "placeholder",
+        "sourceElementId": "P31-E003",
+        "boundsHint": {
+          "text": "搜索材料名称...",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「搜索材料名称...」用于帮助用户在当前页面快速查找与业务目标相关的内容。帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 材料中心」相关的业务操作。\n\n### 使用场景\n\n当用户已经知道关键词、名称、类型或部分条件时，可以通过搜索或筛选快速缩小结果范围。\n\n### 交互规则\n\n- 用户输入关键词或筛选条件后，点击「搜索材料名称...」或确认操作触发查询。\n- 系统根据条件刷新结果列表。\n- 清空条件后，应恢复默认列表或推荐内容。\n\n### 状态与异常\n\n- 搜索中：展示加载状态。\n- 无结果：展示空状态，并提示用户调整关键词。\n- 搜索失败：保留用户输入，并提示稍后重试。\n\n### 待确认\n\n- 是否支持模糊搜索？\n- 是否需要保留用户上一次搜索条件？\n- 是否需要按资源类型进一步筛选？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "business",
+        "field-rule",
+        "exception"
+      ],
+      "dimension": "Form and validation",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P31-E003"
+      },
+      "evidence": [
+        "页面文本：搜索材料名称...",
+        "selector：input[placeholder*=\"搜索材料名称...\"]"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认字段必填性、默认值、校验时机、选项来源和提交阻断条件。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P31-003",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P32-001",
+      "pageKey": "P32",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "场景中心",
+        "strategy": "tag",
+        "sourceElementId": "P32-E002",
+        "boundsHint": {
+          "text": "场景中心",
+          "tag": "h1"
+        }
+      },
+      "title": "场景中心 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「场景中心」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「场景中心」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「场景中心」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 搜索场景名称...\n- 政务服务 婚姻登记查询 提供婚姻登记信息查询服…\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P32-E002"
+      },
+      "evidence": [
+        "页面：场景中心",
+        "路由：/portal_scene_center.html",
+        "页面文本：场景中心",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P32-002",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P32-002",
+      "pageKey": "P32",
+      "target": {
+        "selector": "#search-input",
+        "fallbackText": "搜索场景名称...",
+        "strategy": "id",
+        "sourceElementId": "P32-E003",
+        "boundsHint": {
+          "text": "搜索场景名称...",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「搜索场景名称...」用于帮助用户在当前页面快速查找与业务目标相关的内容。帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 场景中心」相关的业务操作。\n\n### 使用场景\n\n当用户已经知道关键词、名称、类型或部分条件时，可以通过搜索或筛选快速缩小结果范围。\n\n### 交互规则\n\n- 用户输入关键词或筛选条件后，点击「搜索场景名称...」或确认操作触发查询。\n- 系统根据条件刷新结果列表。\n- 清空条件后，应恢复默认列表或推荐内容。\n\n### 状态与异常\n\n- 搜索中：展示加载状态。\n- 无结果：展示空状态，并提示用户调整关键词。\n- 搜索失败：保留用户输入，并提示稍后重试。\n\n### 待确认\n\n- 是否支持模糊搜索？\n- 是否需要保留用户上一次搜索条件？\n- 是否需要按资源类型进一步筛选？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "business",
+        "field-rule",
+        "exception"
+      ],
+      "dimension": "Form and validation",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P32-E003"
+      },
+      "evidence": [
+        "页面文本：搜索场景名称...",
+        "selector：#search-input"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认字段必填性、默认值、校验时机、选项来源和提交阻断条件。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P32-003",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P32-003",
+      "pageKey": "P32",
+      "target": {
+        "selector": "body > main > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1)",
+        "fallbackText": "政务服务 婚姻登记查询 提供婚姻登记信息查询服务，支持婚姻状态查询、婚姻登记记录查询等功能，助力政务服务数字化转型。 12个数据资源 2,856次使用 更新时间：2024-01-15 查看详情",
+        "strategy": "path",
+        "sourceElementId": "P32-E009",
+        "boundsHint": {
+          "text": "政务服务 婚姻登记查询 提供婚姻登记信息查询服务，支持婚姻状态查询、婚姻登记记录查询等功能，助力政务服务数字化转型。 12个数据资源 2,856次使用 更新时间：2024-01-15 查看详情",
+          "tag": "div"
+        }
+      },
+      "title": "政务服务 婚姻登记查询…",
+      "contentMarkdown": "### 业务含义\n\n「政务服务 婚姻登记查询 提供婚姻登记信息查询服务，支持婚姻状态…」用于告诉用户当前事项所处阶段，并影响页面可执行操作。\n\n### 状态规则\n\n- 不同状态下，页面展示内容和可操作按钮可能不同。\n- 状态变化后，应及时刷新页面或给出明确提示。\n- 用户需要能够理解当前状态下还能做什么。\n\n### 状态与异常\n\n- 加载中：展示加载状态。\n- 空状态：提示暂无数据，并提供下一步操作建议。\n- 失败状态：提示失败原因，并支持重试或返回。\n\n### 状态流转\n\n```mermaid\nstateDiagram-v2\n  state \"默认\" as Default\n  state \"加载中\" as Loading\n  state \"成功\" as Success\n  state \"失败\" as Failed\n  state \"空状态\" as Empty\n  state \"禁用\" as Disabled\n  [*] --> Default\n  Default --> Loading: 发起操作\n  Loading --> Success: 处理完成\n  Loading --> Failed: 处理失败\n  Success --> Default: 刷新或返回\n  Failed --> Loading: 重试\n  Default --> Empty: 无数据\n  Default --> Disabled: 权限或条件不满足\n```\n\n### 待确认\n\n- 当前状态枚举是否完整？\n- 每个状态下的可操作按钮是否已明确？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "S",
+      "kind": "state",
+      "topics": [
+        "state",
+        "exception"
+      ],
+      "dimension": "State and exception",
+      "priority": "medium",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P32-E009"
+      },
+      "evidence": [
+        "页面文本：政务服务 婚姻登记查询 提供婚姻登记信息查询服务，支持婚姻状态查询、婚姻登记记录查询等功能，助力政务服务数字化转型。 12个数据资源 2,856次使用 更新时间",
+        "selector：body > main > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1)"
+      ],
+      "nextActions": [],
+      "dependencies": [],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。",
+        "当前 selector 较脆弱，建议补充 data-ann 或 data-testid。"
+      ],
+      "candidateId": "CAND-P32-009",
+      "selectorQuality": {
+        "level": "fragile",
+        "issues": [
+          "结构路径选择器容易随布局变化失效，建议补充 data-ann 或 data-testid"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 3
+    },
+    {
       "id": "ANN-P33-001",
       "pageKey": "P33",
       "target": {
@@ -5298,6 +6717,124 @@
         "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
       ],
       "candidateId": "CAND-P33-005",
+      "selectorQuality": {
+        "level": "stable",
+        "issues": []
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 2
+    },
+    {
+      "id": "ANN-P34-001",
+      "pageKey": "P34",
+      "target": {
+        "selector": "h1",
+        "fallbackText": "工作动态",
+        "strategy": "tag",
+        "sourceElementId": "P34-E002",
+        "boundsHint": {
+          "text": "工作动态",
+          "tag": "h1"
+        }
+      },
+      "title": "工作动态 · 页面介绍",
+      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【业务用户】完成与「工作动态」相关的核心任务。\n\n### 核心内容\n\n- 页面对象：围绕「工作动态」呈现核心业务信息、状态和可执行操作。\n- 页面目标：帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。\n\n### 业务流程\n\n- 进入页面：用户进入「工作动态」后先识别当前对象、状态和可处理事项。\n- 完成任务：用户通过页面中的关键操作推进业务处理，系统同步反馈成功、失败或待确认状态。\n- 离开页面：用户完成处理后返回上级页面或进入下一步业务流程。\n\n```mermaid\nflowchart LR\n  A[进入页面] --> B[识别对象与状态]\n  B --> C[执行关键操作]\n  C --> D[查看系统反馈]\n  D --> E[进入下一步]\n```\n\n### 主要操作\n\n- 搜索动态标题...\n\n### 待确认\n\n- 页面是否还需要区分不同角色的展示内容？\n- 是否需要补充空状态、异常状态或权限不足状态？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "P",
+      "kind": "note",
+      "topics": [
+        "source",
+        "business",
+        "flow"
+      ],
+      "dimension": "Page overview",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P34-E002"
+      },
+      "evidence": [
+        "页面：工作动态",
+        "路由：/portal_work_dynamics.html",
+        "页面文本：工作动态",
+        "selector：h1"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认本页在完整业务流程中的入口、出口和服务对象。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P34-002",
+      "selectorQuality": {
+        "level": "coarse",
+        "issues": [
+          "区域级 tag 选择器仅适合页面介绍，元素级标注应改用 id/data-ann/按钮级 selector"
+        ]
+      },
+      "createdBy": "ai",
+      "review": {
+        "required": true,
+        "status": "pending",
+        "reason": "product-copy-draft"
+      },
+      "updatedAt": "2026-08-13T07:42:57Z",
+      "order": 1
+    },
+    {
+      "id": "ANN-P34-002",
+      "pageKey": "P34",
+      "target": {
+        "selector": "input[placeholder*=\"搜索动态标题...\"]",
+        "fallbackText": "搜索动态标题...",
+        "strategy": "placeholder",
+        "sourceElementId": "P34-E003",
+        "boundsHint": {
+          "text": "搜索动态标题...",
+          "tag": "input"
+        }
+      },
+      "title": "搜索筛选",
+      "contentMarkdown": "### 业务含义\n\n「搜索动态标题...」用于帮助用户在当前页面快速查找与业务目标相关的内容。帮助用户在 数据服务平台 20 yiyun 中完成与「数据服务平台 - 工作动态」相关的业务操作。\n\n### 使用场景\n\n当用户已经知道关键词、名称、类型或部分条件时，可以通过搜索或筛选快速缩小结果范围。\n\n### 交互规则\n\n- 用户输入关键词或筛选条件后，点击「搜索动态标题...」或确认操作触发查询。\n- 系统根据条件刷新结果列表。\n- 清空条件后，应恢复默认列表或推荐内容。\n\n### 状态与异常\n\n- 搜索中：展示加载状态。\n- 无结果：展示空状态，并提示用户调整关键词。\n- 搜索失败：保留用户输入，并提示稍后重试。\n\n### 待确认\n\n- 是否支持模糊搜索？\n- 是否需要保留用户上一次搜索条件？\n- 是否需要按资源类型进一步筛选？\n",
+      "devNotesMarkdown": null,
+      "audienceMode": "product-review",
+      "annotationType": "C",
+      "kind": "form",
+      "topics": [
+        "business",
+        "field-rule",
+        "exception"
+      ],
+      "dimension": "Form and validation",
+      "priority": "high",
+      "visible": true,
+      "source": {
+        "type": "prototype",
+        "ref": "page-map:P34-E003"
+      },
+      "evidence": [
+        "页面文本：搜索动态标题...",
+        "selector：input[placeholder*=\"搜索动态标题...\"]"
+      ],
+      "nextActions": [],
+      "dependencies": [
+        "需确认字段必填性、默认值、校验时机、选项来源和提交阻断条件。"
+      ],
+      "risks": [],
+      "openQuestions": [
+        "该说明基于原型结构推断，需确认 PRD、上游页面级需求说明文档或人工评审中的最终规则。"
+      ],
+      "candidateId": "CAND-P34-003",
       "selectorQuality": {
         "level": "stable",
         "issues": []
@@ -7483,6 +9020,62 @@
       "order": 9
     },
     {
+      "id": "ANN-P40-003",
+      "pageKey": "P40",
+      "target": {
+        "selector": "#icon-input",
+        "fallbackText": "",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "input"
+        }
+      },
+      "title": "新增标注",
+      "contentMarkdown": "### 业务含义\n输入图标代码后右侧进行图标预览",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 3,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-14T05:52:44.063Z"
+    },
+    {
+      "id": "ANN-P40-004",
+      "pageKey": "P40",
+      "target": {
+        "selector": "div:nth-of-type(2) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(6)",
+        "fallbackText": "查看详情",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "td"
+        }
+      },
+      "title": "查看详情",
+      "contentMarkdown": "### 业务含义\n\n数据范围：所有已发布的目录\n\n查看详情：抽屉为已发布目录详情",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 4,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-14T05:53:46.218Z"
+    },
+    {
       "id": "ANN-P41-002",
       "pageKey": "P41",
       "target": {
@@ -8629,6 +10222,34 @@
       "order": 9
     },
     {
+      "id": "ANN-P46-001",
+      "pageKey": "P46",
+      "target": {
+        "selector": "div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > h3",
+        "fallbackText": "智能问答助手",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "h3"
+        }
+      },
+      "title": "智能问答助手",
+      "contentMarkdown": "一、场景总览（共6类）\n\n系统覆盖以下用户场景：\n- 数据资源检索 — 用户说“我要XXX数据”\n- 数据归属查询 — 用户问“XXX数据是谁的/哪家提供的”\n- 分析场景推荐 — 用户问“做XXX场景需要哪些数据”\n- 申请流程指导 — 用户问“如何申请数据”\n- 数据篮管理 — 用户点击“加入数据篮”或“将定制数据加入数据篮”\n- 未找到数据定制 — 上游场景无匹配结果，引导用户“我要定制数据”，根据引导填写定制内容，将定制数据加入数据篮\n- 非以上内容，用于处理完全无关或无法识别意图的输入。\n\n二、各场景详细业务逻辑\n\n### 场景1：数据资源检索\n\n触发条件：用户输入含“我要/我想查/有没有”等检索意图，且抽取到明确的数据主题词。\n\n处理流程：\n\n意图识别为“检索”\n抽取主题词（如“新能源汽车”）、时间范围、地域等限定条件\n在数据资源目录中按主题、标签、关键词执行检索\n结果分支：\n\n找到数据 → 返回资源列表（名称、提供方、格式、更新频率、访问方式），页面提供【加入数据篮】按钮\n未找到数据 → 转入场景6（未找到数据定制）\n### 场景2：数据归属查询\n\n触发条件：用户问“XXX数据是谁的/哪家提供的/归属哪个部门”。\n\n处理流程：\n\n意图识别为“归属”\n抽取数据类型名称（如“企业纳税数据”）\n在权责关系表中查询该数据的归属部门/管理单位/提供方\n结果分支：\n\n找到匹配 → 返回归属部门名称、联系方式、数据公开属性，如有官方链接一并提供\n未找到匹配 → 转入场景6（未找到数据定制）\n### 场景3：分析场景推荐\n\n触发条件：用户问“做XXX分析/场景需要哪些数据”。\n\n处理流程：\n\n意图识别为“分析推荐”\n抽取分析领域（如“数字经济”）、分析维度（如“产业规模”）\n在分析推荐规则库中匹配所需的数据集组合\n结果分支：\n\n有匹配推荐 → 返回推荐数据集清单及推荐理由/使用场景说明，提供【加入数据篮】按钮\n无匹配推荐 → 转入场景6（未找到数据定制）\n### 场景4：申请流程指导\n\n触发条件：用户问“如何申请数据/怎么获取/申请流程是什么”。\n\n处理流程：\n\n意图识别为“申请指导”\n抽取资源名称（如有）、申请人类别（企业/个人）\n在申请规则库中检索对应资源的申请流程、条件、材料清单、审批时限\n结果分支：\n\n有匹配 → 返回分步流程 + 条件 + 在线申请入口链接\n该资源不支持申请或无匹配 → 转入场景6（未找到数据定制）\n### 场景5：数据篮管理\n\n触发条件：用户点击“加入数据篮”按钮，或在定制流程完成后触发“将定制数据加入数据篮”。\n\n处理流程：\n\n将选中的正式数据资源，或定制需求意向，暂存至用户数据篮（购物车/意向单）\n定制需求入篮时打标 type=custom，状态为待评估\n支持数据篮内资源统一勾选、批量提交申请\n说明：数据篮是统一的申请前置容器，正式资源和定制需求可混合存放，提交时系统按不同类型分别流转。\n\n### 场景6：未找到数据定制（重点）\n\n触发条件：场景1/2/3/4的知识库匹配结果为空时，自动进入本场景，承接上游传递的查询实体。\n\n处理流程：\n\n输出定制引导话术：\n\n“暂未找到您需要的【{实体}】数据资源。您可以提交数据定制需求，我们将评估后反馈。”\n引导用户根据提示填写定制内容，至少采集：\n\n所需数据名称/描述\n期望用途（分析/研发/决策等）\n期望数据范围（时间、地域、粒度）\n期望交付格式\n联系人及联系方式（选填）\n结构化需求提交至工单系统，生成唯一需求编号返回用户\n将定制数据加入数据篮（作为意向需求记录），状态为待评估\n后续由运营团队评估，结果通过短信/站内信/邮件通知用户\n### 非以上内容\n\n触发条件：用户问题完全无法识别意图，或与数据服务平台无关（如“今天天气怎么样”“讲个笑话”），置信度低于阈值。\n\n统一回复标准：\n\n感谢您的提问！我是数据服务平台智能问答助手，可以帮您解答数据资源查找、申请使用、平台操作等问题。\n\n如果您没有找到需要的数据，我们还支持数据定制服务，告诉我您的需求，我们来帮您对接实现。\n\n请问还有什么可以帮您的？\n\n处理动作：\n\n输出上述固定话术\n记录问题文本，存入待优化语料库，用于后续模型迭代",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 1,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-17T08:47:23.381Z"
+    },
+    {
       "id": "ANN-P47-001",
       "pageKey": "P47",
       "target": {
@@ -8985,6 +10606,97 @@
       "surfaceId": "surface-P48-ai-drawer",
       "displayWhenClosed": "sidebar-only",
       "order": 7
+    },
+    {
+      "id": "ANN-P48-008",
+      "pageKey": "P48",
+      "target": {
+        "selector": "#agent-report",
+        "fallbackText": "报告生成智能体 上传报告模板，智能生成数据分析报告，支持下载",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "button"
+        }
+      },
+      "title": "报告生成智能体 上传报告模板，智能生成数据分析报",
+      "contentMarkdown": "### 业务含义\n\n优先级低，当前版本先不做",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "form",
+      "priority": "medium",
+      "order": 8,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-14T03:36:41.908Z",
+      "surfaceId": "surface-P48-ai-drawer",
+      "displayWhenClosed": "sidebar-only",
+      "topics": [
+        "surface",
+        "form",
+        "field"
+      ]
+    },
+    {
+      "id": "ANN-P48-009",
+      "pageKey": "P48",
+      "target": {
+        "selector": "div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(1) > a",
+        "fallbackText": "查看更多",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "a"
+        }
+      },
+      "title": "查看更多",
+      "contentMarkdown": "### 业务含义\n\n点击链接到已发布目录清单页面",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 9,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-14T06:14:32.042Z"
+    },
+    {
+      "id": "ANN-P48-010",
+      "pageKey": "P48",
+      "target": {
+        "selector": "main > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(4) > a",
+        "fallbackText": "查看更多",
+        "strategy": "manual",
+        "boundsHint": {
+          "tag": "a"
+        }
+      },
+      "title": "查看更多",
+      "contentMarkdown": "### 业务含义\n\n点击链接到已发布服务清单页面",
+      "devNotesMarkdown": null,
+      "annotationType": "C",
+      "audienceMode": "product-review",
+      "evidence": [],
+      "kind": "note",
+      "priority": "medium",
+      "order": 10,
+      "visible": true,
+      "source": {
+        "type": "manual",
+        "ref": "页面内新增"
+      },
+      "createdBy": "manual",
+      "updatedAt": "2026-08-14T06:15:04.340Z"
     },
     {
       "id": "ANN-P49-001",
@@ -9462,84 +11174,6 @@
       "order": 1
     },
     {
-      "id": "ANN-P21-005",
-      "pageKey": "P21",
-      "target": {
-        "selector": "section:nth-of-type(3) > div > div:nth-of-type(1) > div > p",
-        "fallbackText": "丰富的数据资源，助力业务创新发展",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "p"
-        }
-      },
-      "title": "丰富的数据资源，助力业务创新发展",
-      "contentMarkdown": "### 业务含义\n\n按照发布时间倒序",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 5,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-13T07:47:30.904Z"
-    },
-    {
-      "id": "ANN-P10-AUDIT-03",
-      "pageKey": "P10",
-      "target": {
-        "selector": "#smart-audit-tip",
-        "fallbackText": "智能审核提示条",
-        "strategy": "manual",
-        "boundsHint": {
-          "text": "智能审核提示条",
-          "tag": "div"
-        }
-      },
-      "title": "共享类型审核要点",
-      "contentMarkdown": "### 目录审核逻辑与标准\n目录审核基于以下5个维度对信息资源进行自动分析：\n\n- 信息资源名称规范性 —— 信息资源名称应填写政务信息资源内容的标题，强调结果信息类，不是动作类。\n- 目录颗粒度合理性 —— 梳理时重点把握每个政务信息资源目录的颗粒度，避免拆分不合适。\n- 共享类型匹配性 —— 共享类型应按数据特性正确选择并填写使用要求。\n- 信息资源摘要完整性 —— 信息资源摘要应详细描述数据范围和主要内容，不能过于简单。\n- 信息项名称规范性 —— 信息项名称应使用具体的字段名称，不能使用系统名称或目录名称。\n\n### 一、信息资源名称规范性审核要点\n\n不能使用信息系统名、工作名、事项名、职责、文件名等内容作为信息资源名称。\n\n错误样例：\n- 管理、审批、考核、对某某的处罚等不符合规定。\n- 信息系统名：全国救助管理信息系统\n- 工作名：规划编制规范性文件制定工作\n\n正确样例\n- 群众走访登记信息\n- 事业单位法人登记信息\n- 学校安全管理信息\n- 律师执业信息\n- 民办职业培训机构设立审批信息\n\n审核标准\n- 信息资源名称应填写政务信息资源内容的标题，强调部门在履行职能过程中产生、管理和使用的各类信息（结果信息类），不是动作类。\n- 对资源内容的描述，尽量使用相关文件或有明确规定的名称，如果没有也要尽量贴近资源内容。\n- 信息资源名称强调的是结果信息类，不是动作类。如\"对水路运输的处罚\"应改为\"水路运输的处罚结果信息\"。\n\n### 二、目录颗粒度合理性审核要点\n- 常见问题\n- 拆分不到位：明显包含多个资源，应拆分为多个独立的信息资源目录。\n- 拆分过细：一个文件即作为一个信息资源，颗粒度过细不便于管理。\n- 审核标准\n- 每个信息资源目录应聚焦单一业务对象的结果信息。\n- 包含多个业务对象或多个数据集的应拆分。\n- 同一业务的多个文件可合并为一个信息资源目录。\n\n### 三、共享类型匹配性审核要点\n- 填写要求\n- 无条件共享类和有条件共享类：应标明使用要求，包括作为行政依据、工作参考，用于数据校核、业务协同等。\n- 有条件共享类：还应注明共享条件和共享范围。\n- 不予共享类：应注明相关的法律、行政法规或党中央、国务院政策依据。\n- 错误事例\n- 不予共享的信息资源，其共享条件未填写相关法律法规依据。\n\n- 审核标准\n- 共享类型与数据特性是否匹配。\n- 使用要求、共享条件、共享范围是否完整。\n- 不予共享类是否有明确的法律法规依据。\n\n### 四、信息资源摘要完整性审核要点\n- 错误样例\n- 摘要与资源名称一样\n- 摘要未填写\n- 正确填写样例\n- 数据范围：潍坊市。主要包含数据：物资ID、物资名称、物资全称、型号、品牌、简介、单位、常规库存、年生产力、存放地址、所属企业ID、仓储容量、产品详情、操作人员电话、操作员。数据开始时间：2022年10月。\n\n- 审核标准\n- 摘要应包含数据范围、主要数据项、数据起始时间等关键信息。\n- 摘要不能与资源名称重复或为空。\n\n### 五、信息项名称规范性审核要点\n- 错误样例\n- 使用系统名称作为信息项名称\n- 使用目录名称作为信息项名称\n- 正确样例\n- 姓名\n- 身份证号\n- 年龄\n- 性别\n- 联系电话\n- 注册地址\n\n- 审核标准\n- 信息项名称应为具体的业务字段名称。\n- 不能使用系统名、目录名等概括性名称。",
-      "devNotesMarkdown": null,
-      "audienceMode": "product-review",
-      "annotationType": "C",
-      "kind": "note",
-      "topics": [
-        "audit",
-        "business",
-        "standard"
-      ],
-      "dimension": "Audit standard",
-      "priority": "high",
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "智能审核标准"
-      },
-      "evidence": [],
-      "nextActions": [],
-      "dependencies": [],
-      "risks": [],
-      "openQuestions": [],
-      "candidateId": null,
-      "selectorQuality": {
-        "level": "stable",
-        "issues": []
-      },
-      "createdBy": "manual",
-      "review": {
-        "required": false,
-        "status": "approved",
-        "reason": "manual-audit-standard"
-      },
-      "updatedAt": "2026-08-17T06:58:26.540Z",
-      "order": 3,
-      "surfaceId": "surface-P10-audit-drawer"
-    },
-    {
       "id": "ANN-P51-AUDIT-02",
       "pageKey": "P51",
       "target": {
@@ -9688,343 +11322,6 @@
       "updatedAt": "2026-08-17T07:00:16.554Z",
       "order": 5,
       "surfaceId": "surface-P51-audit-drawer"
-    },
-    {
-      "id": "ANN-P19-AUDIT-03",
-      "pageKey": "P19",
-      "target": {
-        "selector": "#smart-audit-tip",
-        "fallbackText": "智能审核提示条",
-        "strategy": "manual",
-        "boundsHint": {
-          "text": "智能审核提示条",
-          "tag": "div"
-        }
-      },
-      "title": "附件审核要点",
-      "contentMarkdown": "### 智能审核逻辑与标准\n智能审核基于以下4个维度对需求进行自动分析：\n\n- 场景明确性 —— 需求场景必须明确具体，不能使用模糊的描述。\n- 系统名称规范性 —— 系统名称应规范，不能使用明显非系统名称的内容。\n- 附件完整性 —— 附件应为标准模板，且内容不能为空，需要签字盖章。\n- 申请依据有效性 —— 申请依据需明确法律条文或者省市下发的重要通知。\n\n### 一、场景明确性审核要点\n\n错误样例\n- 数据比对\n- 数据分析\n- 这些描述过于笼统，无法明确应用场景。\n\n正确样例\n- 退役军人事务局退役军人优抚补贴核验\n- 应用于县级节点校验残疾学生教育资助补贴\n\n审核标准\n- 场景描述应包含具体的应用部门、应用对象和应用目的。\n- 不能使用\"数据比对\"、\"数据分析\"等模糊词汇。\n- 场景应与实际业务需求匹配。\n\n### 二、系统名称规范性审核要点\n\n错误样例\n- 测试\n- 1\n- 其他明显非系统名称的内容\n\n审核标准\n- 系统名称应为正式的系统名称或服务名称。\n- 不能使用测试数据、数字等无意义内容。\n- 名称应能反映系统或服务的实际功能。\n\n### 三、附件完整性审核要点\n\n驳回情形\n- 附件非标准模板，格式不符合要求。\n- 附件内容为空，未填写必要信息。\n- 附件未签字盖章。\n\n审核标准\n- 附件必须使用平台下发的标准模板。\n- 附件内容应完整填写，不得为空。\n- 附件必须有申请人签字和单位盖章。\n- 附件内容应与申请信息一致。\n\n### 四、申请依据有效性审核要点\n\n驳回情形\n- 申请依据未填写。\n- 申请依据为模糊描述，未引用具体法律条文。\n- 申请依据与实际需求不符。\n\n审核标准\n- 申请依据应明确引用法律条文（如《XX法第X条》）。\n- 或引用省市下发的重要通知（如《XX省关于XX的通知》文号）。\n- 申请依据应与申请的数据资源、应用场景匹配。",
-      "devNotesMarkdown": null,
-      "audienceMode": "product-review",
-      "annotationType": "C",
-      "kind": "note",
-      "topics": [
-        "audit",
-        "business",
-        "standard"
-      ],
-      "dimension": "Audit standard",
-      "priority": "high",
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "智能审核标准"
-      },
-      "evidence": [],
-      "nextActions": [],
-      "dependencies": [],
-      "risks": [],
-      "openQuestions": [],
-      "candidateId": null,
-      "selectorQuality": {
-        "level": "stable",
-        "issues": []
-      },
-      "createdBy": "manual",
-      "review": {
-        "required": false,
-        "status": "approved",
-        "reason": "manual-audit-standard"
-      },
-      "updatedAt": "2026-08-17T07:10:20.107Z",
-      "order": 3,
-      "surfaceId": "surface-P19-accept-drawer"
-    },
-    {
-      "id": "ANN-P48-008",
-      "pageKey": "P48",
-      "target": {
-        "selector": "#agent-report",
-        "fallbackText": "报告生成智能体 上传报告模板，智能生成数据分析报告，支持下载",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "button"
-        }
-      },
-      "title": "报告生成智能体 上传报告模板，智能生成数据分析报",
-      "contentMarkdown": "### 业务含义\n\n优先级低，当前版本先不做",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "form",
-      "priority": "medium",
-      "order": 8,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-14T03:36:41.908Z",
-      "surfaceId": "surface-P48-ai-drawer",
-      "displayWhenClosed": "sidebar-only",
-      "topics": [
-        "surface",
-        "form",
-        "field"
-      ]
-    },
-    {
-      "id": "ANN-P13-004",
-      "pageKey": "P13",
-      "target": {
-        "selector": "div:nth-of-type(1) > main > div:nth-of-type(2) > span:nth-of-type(3)",
-        "fallbackText": "场景配置",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "span"
-        }
-      },
-      "title": "场景配置",
-      "contentMarkdown": "### 页面功能介绍\n\n本页面用于帮助【平台运维方】配置门户中的场景中心内容。",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 4,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-14T05:50:48.337Z"
-    },
-    {
-      "id": "ANN-P13-005",
-      "pageKey": "P13",
-      "target": {
-        "selector": "main > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1)",
-        "fallbackText": "全部领域 8",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "div"
-        }
-      },
-      "title": "全部领域 8",
-      "contentMarkdown": "### 业务含义\n\n配置场景所属领域，逻辑通目录分类管理逻辑一样",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 5,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-14T05:54:18.268Z"
-    },
-    {
-      "id": "ANN-P40-003",
-      "pageKey": "P40",
-      "target": {
-        "selector": "#icon-input",
-        "fallbackText": "",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "input"
-        }
-      },
-      "title": "新增标注",
-      "contentMarkdown": "### 业务含义\n输入图标代码后右侧进行图标预览",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 3,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-14T05:52:44.063Z"
-    },
-    {
-      "id": "ANN-P40-004",
-      "pageKey": "P40",
-      "target": {
-        "selector": "div:nth-of-type(2) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(6)",
-        "fallbackText": "查看详情",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "td"
-        }
-      },
-      "title": "查看详情",
-      "contentMarkdown": "### 业务含义\n\n数据范围：所有已发布的目录\n\n查看详情：抽屉为已发布目录详情",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 4,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-14T05:53:46.218Z"
-    },
-    {
-      "id": "ANN-P13-006",
-      "pageKey": "P13",
-      "target": {
-        "selector": "table > tbody > tr:nth-of-type(1) > td:nth-of-type(4) > button",
-        "fallbackText": "",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "button"
-        }
-      },
-      "title": "新增标注",
-      "contentMarkdown": "### 业务含义\n\n启用后在门户展示，停用后不会在门户展示",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 6,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-14T05:54:55.542Z"
-    },
-    {
-      "id": "ANN-P48-009",
-      "pageKey": "P48",
-      "target": {
-        "selector": "div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(1) > a",
-        "fallbackText": "查看更多",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "a"
-        }
-      },
-      "title": "查看更多",
-      "contentMarkdown": "### 业务含义\n\n点击链接到已发布目录清单页面",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 9,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-14T06:14:32.042Z"
-    },
-    {
-      "id": "ANN-P48-010",
-      "pageKey": "P48",
-      "target": {
-        "selector": "main > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(4) > a",
-        "fallbackText": "查看更多",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "a"
-        }
-      },
-      "title": "查看更多",
-      "contentMarkdown": "### 业务含义\n\n点击链接到已发布服务清单页面",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 10,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-14T06:15:04.340Z"
-    },
-    {
-      "id": "ANN-P01-005",
-      "pageKey": "P01",
-      "target": {
-        "selector": "#smart-audit-view-btn",
-        "fallbackText": "查看",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "button"
-        }
-      },
-      "title": "查看",
-      "contentMarkdown": "### 服务审核逻辑与标准\n服务审核基于以下3个维度对服务注册信息进行自动分析：\n1. 服务名称规范性 —— 服务名称应规范，不能存在碎片化、引用系统名称、法律依据文件名称等问题。\n2. 接口地址完整性 —— 接口服务地址应为完整的http或https接口，确保可访问性。\n3. 接口文档完整性 —— 必须上传接口文档，且文档内容不能为空，应包含完整的入参、返参说明。\n\n### 一、服务名称规范性审核要点\n\n驳回情形\n1. 服务名称碎片化，无法清晰表达服务内容。\n2. 服务名称引用了系统名称。\n3. 服务名称引用了法律依据文件名称。\n\n审核标准\n* 服务名称应清晰、完整地描述服务内容。\n* 应避免使用系统内部名称或文件名称。\n* 名称应体现业务含义，便于理解和使用。\n\n### 二、接口地址完整性审核要点\n\n驳回情形\n1. 接口地址不完整，缺少http或https协议前缀。\n2. 接口地址无法访问。\n3. 代理前地址、代理后地址、接口path等关键信息缺失。\n\n审核标准\n* 接口path、代理前地址、代理后地址应完整填写。\n* 地址应使用完整的http或https协议。\n* 接口类型（rest/webservice）和返回类型（json/xml/string）应明确。\n\n### 三、接口文档完整性审核要点\n\n驳回情形\n1. 未上传接口文档。\n2. 接口文档内容为空。\n3. 接口文档缺少入参说明。\n4. 接口文档缺少返参说明。\n\n审核标准\n* 必须上传接口文档（支持docx、pdf、json等格式）。\n* 文档应包含完整的请求参数（入参）说明：参数名、类型、是否必填、说明。\n* 文档应包含完整的返回参数（返参）说明：参数名、类型、说明。\n* 文档应包含错误代码说明。",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 5,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-17T07:00:48.477Z"
-    },
-    {
-      "id": "ANN-P46-001",
-      "pageKey": "P46",
-      "target": {
-        "selector": "div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > h3",
-        "fallbackText": "智能问答助手",
-        "strategy": "manual",
-        "boundsHint": {
-          "tag": "h3"
-        }
-      },
-      "title": "智能问答助手",
-      "contentMarkdown": "一、场景总览（共6类）\n\n系统覆盖以下用户场景：\n- 数据资源检索 — 用户说“我要XXX数据”\n- 数据归属查询 — 用户问“XXX数据是谁的/哪家提供的”\n- 分析场景推荐 — 用户问“做XXX场景需要哪些数据”\n- 申请流程指导 — 用户问“如何申请数据”\n- 数据篮管理 — 用户点击“加入数据篮”或“将定制数据加入数据篮”\n- 未找到数据定制 — 上游场景无匹配结果，引导用户“我要定制数据”，根据引导填写定制内容，将定制数据加入数据篮\n- 非以上内容，用于处理完全无关或无法识别意图的输入。\n\n二、各场景详细业务逻辑\n\n### 场景1：数据资源检索\n\n触发条件：用户输入含“我要/我想查/有没有”等检索意图，且抽取到明确的数据主题词。\n\n处理流程：\n\n意图识别为“检索”\n抽取主题词（如“新能源汽车”）、时间范围、地域等限定条件\n在数据资源目录中按主题、标签、关键词执行检索\n结果分支：\n\n找到数据 → 返回资源列表（名称、提供方、格式、更新频率、访问方式），页面提供【加入数据篮】按钮\n未找到数据 → 转入场景6（未找到数据定制）\n### 场景2：数据归属查询\n\n触发条件：用户问“XXX数据是谁的/哪家提供的/归属哪个部门”。\n\n处理流程：\n\n意图识别为“归属”\n抽取数据类型名称（如“企业纳税数据”）\n在权责关系表中查询该数据的归属部门/管理单位/提供方\n结果分支：\n\n找到匹配 → 返回归属部门名称、联系方式、数据公开属性，如有官方链接一并提供\n未找到匹配 → 转入场景6（未找到数据定制）\n### 场景3：分析场景推荐\n\n触发条件：用户问“做XXX分析/场景需要哪些数据”。\n\n处理流程：\n\n意图识别为“分析推荐”\n抽取分析领域（如“数字经济”）、分析维度（如“产业规模”）\n在分析推荐规则库中匹配所需的数据集组合\n结果分支：\n\n有匹配推荐 → 返回推荐数据集清单及推荐理由/使用场景说明，提供【加入数据篮】按钮\n无匹配推荐 → 转入场景6（未找到数据定制）\n### 场景4：申请流程指导\n\n触发条件：用户问“如何申请数据/怎么获取/申请流程是什么”。\n\n处理流程：\n\n意图识别为“申请指导”\n抽取资源名称（如有）、申请人类别（企业/个人）\n在申请规则库中检索对应资源的申请流程、条件、材料清单、审批时限\n结果分支：\n\n有匹配 → 返回分步流程 + 条件 + 在线申请入口链接\n该资源不支持申请或无匹配 → 转入场景6（未找到数据定制）\n### 场景5：数据篮管理\n\n触发条件：用户点击“加入数据篮”按钮，或在定制流程完成后触发“将定制数据加入数据篮”。\n\n处理流程：\n\n将选中的正式数据资源，或定制需求意向，暂存至用户数据篮（购物车/意向单）\n定制需求入篮时打标 type=custom，状态为待评估\n支持数据篮内资源统一勾选、批量提交申请\n说明：数据篮是统一的申请前置容器，正式资源和定制需求可混合存放，提交时系统按不同类型分别流转。\n\n### 场景6：未找到数据定制（重点）\n\n触发条件：场景1/2/3/4的知识库匹配结果为空时，自动进入本场景，承接上游传递的查询实体。\n\n处理流程：\n\n输出定制引导话术：\n\n“暂未找到您需要的【{实体}】数据资源。您可以提交数据定制需求，我们将评估后反馈。”\n引导用户根据提示填写定制内容，至少采集：\n\n所需数据名称/描述\n期望用途（分析/研发/决策等）\n期望数据范围（时间、地域、粒度）\n期望交付格式\n联系人及联系方式（选填）\n结构化需求提交至工单系统，生成唯一需求编号返回用户\n将定制数据加入数据篮（作为意向需求记录），状态为待评估\n后续由运营团队评估，结果通过短信/站内信/邮件通知用户\n### 非以上内容\n\n触发条件：用户问题完全无法识别意图，或与数据服务平台无关（如“今天天气怎么样”“讲个笑话”），置信度低于阈值。\n\n统一回复标准：\n\n感谢您的提问！我是数据服务平台智能问答助手，可以帮您解答数据资源查找、申请使用、平台操作等问题。\n\n如果您没有找到需要的数据，我们还支持数据定制服务，告诉我您的需求，我们来帮您对接实现。\n\n请问还有什么可以帮您的？\n\n处理动作：\n\n输出上述固定话术\n记录问题文本，存入待优化语料库，用于后续模型迭代",
-      "devNotesMarkdown": null,
-      "annotationType": "C",
-      "audienceMode": "product-review",
-      "evidence": [],
-      "kind": "note",
-      "priority": "medium",
-      "order": 1,
-      "visible": true,
-      "source": {
-        "type": "manual",
-        "ref": "页面内新增"
-      },
-      "createdBy": "manual",
-      "updatedAt": "2026-08-17T08:47:23.381Z"
     }
   ],
   "project": {

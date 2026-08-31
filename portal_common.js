@@ -6,7 +6,7 @@
         { key: 'data_center', label: '数据中心', href: 'portal_data_center.html', badge: '升' },
         { key: 'scene_center', label: '场景中心', href: 'portal_scene_center.html', badge: '新' },
         { key: 'app_center', label: '应用中心', href: 'portal_app_center.html', badge: '升' },
-        { key: 'material_center', label: '材料中心', href: 'portal_material_center.html', badge: '升' },
+        { key: 'material_center', label: '资料中心', href: 'portal_material_center.html', badge: '升' },
         { key: 'work_dynamics', label: '工作动态', href: 'portal_work_dynamics.html', badge: '升' }
     ];
 
@@ -160,7 +160,7 @@
                             <li><a href="portal_data_center.html" class="hover:text-white transition-colors">数据中心</a></li>
                             <li><a href="portal_scene_center.html" class="hover:text-white transition-colors">场景中心</a></li>
                             <li><a href="portal_app_center.html" class="hover:text-white transition-colors">应用中心</a></li>
-                            <li><a href="portal_material_center.html" class="hover:text-white transition-colors">材料中心</a></li>
+                            <li><a href="portal_material_center.html" class="hover:text-white transition-colors">资料中心</a></li>
                             <li><a href="portal_work_dynamics.html" class="hover:text-white transition-colors">工作动态</a></li>
                         </ul>
                     </div>
@@ -174,13 +174,8 @@
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-700 pt-6 flex flex-col md:flex-row items-center justify-between text-sm text-[#8f959e]">
+            <div class="border-t border-gray-700 pt-6 flex flex-col items-center justify-center text-sm text-[#8f959e]">
                 <p>Copyright 2026 数据服务平台 版权所有</p>
-                <div class="flex items-center gap-4 mt-4 md:mt-0">
-                    <a href="#" class="hover:text-white transition-colors">隐私政策</a>
-                    <a href="#" class="hover:text-white transition-colors">服务条款</a>
-                    <a href="#" class="hover:text-white transition-colors">备案信息</a>
-                </div>
             </div>
         </div>
     </footer>

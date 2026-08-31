@@ -85,6 +85,15 @@ const developerSideNavMap = {
                 { type: 'link', label: '服务审核', href: 'service_audit.html?nav=resource-service-audit', navKey: 'resource-service-audit', badge: '升' },
                 { type: 'link', label: '服务交付', href: 'service_delivery.html?nav=resource-service-delivery', navKey: 'resource-service-delivery', badge: '升' }
             ]
+        },
+        {
+            type: 'group',
+            label: '开放管理',
+            icon: 'fa-unlock-keyhole',
+            badge: '升',
+            children: [
+                { type: 'link', label: '开放新增审核', href: 'catalog_open_audit.html?nav=resource-open-audit', navKey: 'resource-open-audit', badge: '升' }
+            ]
         }
     ],
     supply_demand: [
@@ -102,6 +111,7 @@ const developerSideNavMap = {
             type: 'group',
             label: '供给管理',
             icon: 'fa-handshake',
+            disabled: true,
             children: [
                 { type: 'link', label: '需求审核', disabled: true },
                 { type: 'link', label: '需求交付', disabled: true },
@@ -171,6 +181,7 @@ const developerSideNavMap = {
             type: 'group',
             label: '目录服务统计',
             icon: 'fa-table',
+            disabled: true,
             children: [
                 { type: 'link', label: '目录服务总览', href: '', navKey: 'statistics-overview', disabled: true },
                 { type: 'link', label: '部门目录基本情况', href: '', navKey: 'statistics-dept-catalog', disabled: true },
@@ -217,8 +228,9 @@ const developerSideNavMap = {
             type: 'group',
             label: '服务使用监控',
             icon: 'fa-eye',
+            disabled: true,
             children: [
-                { type: 'link', label: '供给服务监控', href: 'monitor_service_monitor.html?nav=monitor-service-monitor', navKey: 'monitor-service-monitor' },
+                { type: 'link', label: '供给服务监控', href: 'monitor_service_monitor.html?nav=monitor-service-monitor', navKey: 'monitor-service-monitor', disabled: true },
                 { type: 'link', label: '申请服务监控', href: '', navKey: 'monitor-apply-monitor', disabled: true },
                 { type: 'link', label: '场景使用监控', href: '', navKey: 'monitor-scene-monitor', disabled: true },
                 { type: 'link', label: '服务使用监控', href: '', navKey: 'monitor-service-usage', disabled: true }
@@ -271,7 +283,8 @@ const developerPathDefaults = {
     'service_register_add.html': { group: 'resource_mgmt', navKey: 'resource-service' },
     'service_audit.html': { group: 'resource_mgmt', navKey: 'resource-service-audit' },
     'service_delivery.html': { group: 'resource_mgmt', navKey: 'resource-service-delivery' },
-    'service_delivery_add.html': { group: 'resource_mgmt', navKey: 'resource-service-delivery' }
+    'service_delivery_add.html': { group: 'resource_mgmt', navKey: 'resource-service-delivery' },
+    'catalog_open_audit.html': { group: 'resource_mgmt', navKey: 'resource-open-audit' }
 };
 
 const developerNavKeyToGroup = {};
@@ -440,7 +453,25 @@ function renderDeveloperSideNav(state) {
                     const groupId = `group-${index}`;
                     const groupBadgeClass = item.badge === '新' ? 'nav-badge nav-badge-new' : item.badge === '升' ? 'nav-badge nav-badge-up' : '';
                     const groupBadgeHtml = item.badge ? `<span class="${groupBadgeClass}">${item.badge}</span>` : '';
-                    
+
+                    // 禁用分组：灰字、不可点击，不渲染子菜单
+                    if (item.disabled) {
+                        return `
+                            <div class="flex flex-col mb-1">
+                                <div
+                                    class="flex items-center justify-between px-4 py-3 mx-2 rounded-lg text-[#c0c4cc] cursor-not-allowed font-medium text-[14px]"
+                                    title="暂无页面"
+                                >
+                                    <div class="flex items-center">
+                                        <i class="fa-solid ${item.icon || 'fa-folder'} w-5 text-center mr-2 text-lg"></i>
+                                        <span>${item.label}</span>
+                                        ${groupBadgeHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+
                     return `
                         <div class="flex flex-col mb-1">
                             <div 
