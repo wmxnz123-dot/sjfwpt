@@ -69,14 +69,6 @@
                             <label class="text-[#606266] whitespace-nowrap text-sm">申请单位：</label>
                             <input type="text" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
                         </div>
-                        <div class="flex items-center gap-2">
-                            <label class="text-[#606266] whitespace-nowrap text-sm">资源级别：</label>
-                            <select class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd] appearance-none bg-white">
-                                <option value="">全部</option>
-                                <option value="city">市县级</option>
-                                <option value="province">省级</option>
-                            </select>
-                        </div>
                         <div class="flex items-center justify-end gap-2">
                             <button class="px-4 py-1.5 bg-[#1c7ffd] text-white rounded text-[13px] hover:bg-blue-600 transition-colors">查询</button>
                             <button class="px-4 py-1.5 border border-gray-300 text-[#606266] rounded text-[13px] hover:bg-gray-50 transition-colors">重置</button>
@@ -92,7 +84,6 @@
                                     <th class="py-3 px-4 font-medium">需求服务</th>
                                     <th class="py-3 px-4 font-medium">申请单位</th>
                                     <th class="py-3 px-4 font-medium">数据提供单位</th>
-                                    <th class="py-3 px-4 font-medium">资源级别</th>
                                     <th class="py-3 px-4 font-medium">数据量</th>
                                     <th class="py-3 px-4 font-medium">同步时间</th>
                                 </tr>
@@ -104,7 +95,6 @@
                                     <td class="py-3 px-4">人口数据查询接口</td>
                                     <td class="py-3 px-4">市公安局</td>
                                     <td class="py-3 px-4">省公安厅</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">省级</span></td>
                                     <td class="py-3 px-4">8,240万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-14 09:15</td>
                                 </tr>
@@ -114,7 +104,6 @@
                                     <td class="py-3 px-4">社保数据交换服务</td>
                                     <td class="py-3 px-4">市人社局</td>
                                     <td class="py-3 px-4">省人社厅</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
                                     <td class="py-3 px-4">3,580万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-14 08:42</td>
                                 </tr>
@@ -124,7 +113,6 @@
                                     <td class="py-3 px-4">婚姻状态查询接口</td>
                                     <td class="py-3 px-4">市民政局</td>
                                     <td class="py-3 px-4">省民政厅</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
                                     <td class="py-3 px-4">1,250万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 18:30</td>
                                 </tr>
@@ -134,7 +122,6 @@
                                     <td class="py-3 px-4">企业工商登记接口</td>
                                     <td class="py-3 px-4">市市场监管局</td>
                                     <td class="py-3 px-4">省市场监管局</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
                                     <td class="py-3 px-4">2,860万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 16:05</td>
                                 </tr>
@@ -144,7 +131,6 @@
                                     <td class="py-3 px-4">健康医疗数据接口</td>
                                     <td class="py-3 px-4">市卫健委</td>
                                     <td class="py-3 px-4">省卫健委</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">省级</span></td>
                                     <td class="py-3 px-4">5,620万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 14:20</td>
                                 </tr>
@@ -154,7 +140,6 @@
                                     <td class="py-3 px-4">学籍查询接口</td>
                                     <td class="py-3 px-4">市教育局</td>
                                     <td class="py-3 px-4">省教育厅</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
                                     <td class="py-3 px-4">2,150万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 11:08</td>
                                 </tr>
@@ -164,7 +149,6 @@
                                     <td class="py-3 px-4">税务数据交换接口</td>
                                     <td class="py-3 px-4">市税务局</td>
                                     <td class="py-3 px-4">省税务局</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">省级</span></td>
                                     <td class="py-3 px-4">4,820万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 09:55</td>
                                 </tr>
@@ -174,7 +158,6 @@
                                     <td class="py-3 px-4">不动产查询接口</td>
                                     <td class="py-3 px-4">市自然资源局</td>
                                     <td class="py-3 px-4">省自然资源厅</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
                                     <td class="py-3 px-4">980万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-12 17:42</td>
                                 </tr>
@@ -184,7 +167,6 @@
                                     <td class="py-3 px-4">车辆信息查询接口</td>
                                     <td class="py-3 px-4">市公安局交警支队</td>
                                     <td class="py-3 px-4">省公安厅交警总队</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] rounded text-xs">市县级</span></td>
                                     <td class="py-3 px-4">1,850万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-12 15:30</td>
                                 </tr>
@@ -194,7 +176,6 @@
                                     <td class="py-3 px-4">信用查询服务</td>
                                     <td class="py-3 px-4">市发改委</td>
                                     <td class="py-3 px-4">省发改委</td>
-                                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-50 text-[#f56c6c] rounded text-xs">省级</span></td>
                                     <td class="py-3 px-4">3,420万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-12 10:18</td>
                                 </tr>

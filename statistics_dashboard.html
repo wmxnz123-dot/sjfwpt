@@ -105,10 +105,7 @@
                                 <i class="fa-solid fa-database text-[#1c7ffd] opacity-50"></i>
                             </div>
                             <div class="text-[32px] font-bold text-[#303133] mb-1">12,580</div>
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.5%</span>
-                                <span class="text-[#909399]">较上月</span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1,350</span></div>
                         </div>
 
                         <div class="stat-card bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-5">
@@ -117,10 +114,7 @@
                                 <i class="fa-solid fa-link text-[#36c2aa] opacity-50"></i>
                             </div>
                             <div class="text-[32px] font-bold text-[#303133] mb-1">8,960</div>
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 15.2%</span>
-                                <span class="text-[#909399]">较上月</span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">980</span></div>
                         </div>
 
                         <div class="stat-card bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-5">
@@ -129,10 +123,7 @@
                                 <i class="fa-solid fa-percent text-[#e6a23c] opacity-50"></i>
                             </div>
                             <div class="text-[32px] font-bold text-[#303133] mb-1">71.2%</div>
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 3.8%</span>
-                                <span class="text-[#909399]">较上月</span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">2.1%</span></div>
                         </div>
 
                         <div class="stat-card bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-5">
@@ -141,10 +132,7 @@
                                 <i class="fa-solid fa-plus-circle text-[#7a6df4] opacity-50"></i>
                             </div>
                             <div class="text-[32px] font-bold text-[#303133] mb-1">1,350</div>
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.3%</span>
-                                <span class="text-[#909399]">较上月</span>
-                            </div>
+                            <div class="text-xs text-[#909399]">较上月新增：<span class="text-[#303133] font-medium">+1,350</span></div>
                         </div>
 
                         <div class="stat-card bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-lg p-5">
@@ -153,16 +141,20 @@
                                 <i class="fa-solid fa-chart-column text-[#06b6d4] opacity-50"></i>
                             </div>
                             <div class="text-[32px] font-bold text-[#303133] mb-1">8.6亿</div>
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.3%</span>
-                                <span class="text-[#909399]">较上月</span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">3,200万</span></div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-3 gap-6">
                         <div class="col-span-2">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4">目录数月度趋势</h3>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-[14px] font-medium text-[#606266]">目录数趋势</h3>
+                                <div class="flex gap-2 text-xs" id="catalogTrendRange">
+                                    <button onclick="switchCatalogTrendRange('7d', this)" class="px-2 py-1 bg-blue-50 text-[#1c7ffd] rounded">7天</button>
+                                    <button onclick="switchCatalogTrendRange('1m', this)" class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">1个月</button>
+                                    <button onclick="switchCatalogTrendRange('12m', this)" class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">12个月</button>
+                                </div>
+                            </div>
                             <div class="h-[300px]">
                                 <canvas id="catalogTrendChart"></canvas>
                             </div>
@@ -305,40 +297,35 @@
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">服务总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">12,580</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1,350</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.5%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1,350</span></div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">接口服务总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">1,580</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">180</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 15.6%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">180</span></div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">库表服务总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">8,240</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">850</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 11.2%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">850</span></div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">文件服务总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">2,150</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">210</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.5%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">210</span></div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-6 mb-8">
                         <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">服务数近12个月趋势图</h3>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-[14px] font-medium text-[#606266]">服务数趋势</h3>
+                                <div class="flex gap-2 text-xs" id="serviceTrendRange">
+                                    <button onclick="switchServiceTrendRange('7d', this)" class="px-2 py-1 bg-blue-50 text-[#1c7ffd] rounded">7天</button>
+                                    <button onclick="switchServiceTrendRange('1m', this)" class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">1个月</button>
+                                    <button onclick="switchServiceTrendRange('12m', this)" class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">12个月</button>
+                                </div>
+                            </div>
                             <div class="h-[220px]">
                                 <canvas id="serviceTrendChart"></canvas>
                             </div>
@@ -430,34 +417,22 @@
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">服务申请总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">3,450</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">420</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 15.2%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">420</span></div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">接口申请数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">8,920</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">805</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 12.3%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">805</span></div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">库表申请数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">12,530</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1,120</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 10.5%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">1,120</span></div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">文件申请数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">5,680</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">512</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 8.9%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">512</span></div>
                         </div>
                     </div>
 
@@ -470,11 +445,11 @@
                         </div>
                         <div class="border border-gray-100 rounded-lg p-4 col-span-2">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-[14px] font-medium text-[#606266]">接口申请/库表申请/文件申请趋势</h3>
-                                <div class="flex gap-2 text-xs">
-                                    <button class="px-2 py-1 bg-blue-50 text-[#1c7ffd] rounded">近7天</button>
-                                    <button class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">近30天</button>
-                                    <button class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">近12个月</button>
+                                <h3 class="text-[14px] font-medium text-[#606266]">服务申请趋势</h3>
+                                <div class="flex gap-2 text-xs" id="usageTrendRange">
+                                    <button onclick="switchUsageTrendRange('7d', this)" class="px-2 py-1 bg-blue-50 text-[#1c7ffd] rounded">7天</button>
+                                    <button onclick="switchUsageTrendRange('1m', this)" class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">1个月</button>
+                                    <button onclick="switchUsageTrendRange('12m', this)" class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">12个月</button>
                                 </div>
                             </div>
                             <div class="h-[220px]">
@@ -714,34 +689,22 @@
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">数据异议总数</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">1,250</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">本月新增：<span class="text-[#303133] font-medium">85</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#f56c6c]"><i class="fa-solid fa-arrow-down"></i> 5.2%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">本月新增：<span class="text-[#303133] font-medium">85</span></div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">异议完成率</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">92.5%</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">已完成：<span class="text-[#303133] font-medium">1,156</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 1.5%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">已完成：<span class="text-[#303133] font-medium">1,156</span></div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">异议受理通过率</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">88.4%</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">已受理：<span class="text-[#303133] font-medium">1,105</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 2.4%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">已受理：<span class="text-[#303133] font-medium">1,105</span></div>
                         </div>
                         <div class="border border-gray-100 bg-gray-50 rounded-lg p-4">
                             <div class="text-[#606266] text-sm mb-2">异议审查通过率</div>
                             <div class="text-2xl font-bold text-[#303133] mb-2">85.6%</div>
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-[#909399]">已审查：<span class="text-[#303133] font-medium">1,070</span></span>
-                                <span class="text-[#909399]">月环比：<span class="text-[#00d9a6]"><i class="fa-solid fa-arrow-up"></i> 1.8%</span></span>
-                            </div>
+                            <div class="text-xs text-[#909399]">已审查：<span class="text-[#303133] font-medium">1,070</span></div>
                         </div>
                     </div>
 
@@ -1317,16 +1280,130 @@
             alert(`${title}\n\n${content}`);
         }
 
+        // 趋势图实例与数据集
+        let catalogTrendChartInstance = null;
+        let serviceTrendChartInstance = null;
+        let usageTrendChartInstance = null;
+
+        const catalogTrendData = {
+            '7d': {
+                labels: ['08-27', '08-28', '08-29', '08-30', '08-31', '09-01', '09-02'],
+                total: [12310, 12335, 12360, 12390, 12420, 12455, 12580],
+                linked: [8780, 8810, 8845, 8875, 8900, 8935, 8960]
+            },
+            '1m': {
+                labels: ['08-03', '08-07', '08-11', '08-15', '08-19', '08-23', '08-27', '09-01'],
+                total: [11980, 12060, 12150, 12220, 12290, 12360, 12455, 12580],
+                linked: [8540, 8620, 8700, 8770, 8840, 8900, 8935, 8960]
+            },
+            '12m': {
+                labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                total: [8500, 8900, 9200, 9600, 10100, 10500, 10900, 11300, 11700, 12100, 12350, 12580],
+                linked: [5800, 6100, 6400, 6800, 7200, 7500, 7800, 8100, 8400, 8700, 8850, 8960]
+            }
+        };
+
+        const serviceTrendData = {
+            '7d': {
+                labels: ['08-27', '08-28', '08-29', '08-30', '08-31', '09-01', '09-02'],
+                total: [12380, 12420, 12460, 12495, 12525, 12555, 12580],
+                api: [1540, 1548, 1555, 1562, 1568, 1575, 1580],
+                db: [8150, 8175, 8195, 8210, 8222, 8232, 8240],
+                file: [2120, 2128, 2135, 2140, 2144, 2147, 2150]
+            },
+            '1m': {
+                labels: ['08-03', '08-07', '08-11', '08-15', '08-19', '08-23', '08-27', '09-01'],
+                total: [12080, 12180, 12260, 12320, 12380, 12460, 12525, 12580],
+                api: [1480, 1500, 1520, 1540, 1552, 1565, 1572, 1580],
+                db: [8000, 8060, 8110, 8150, 8185, 8210, 8228, 8240],
+                file: [2050, 2075, 2095, 2110, 2122, 2135, 2144, 2150]
+            },
+            '12m': {
+                labels: ['9月', '10月', '11月', '12月', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月'],
+                total: [7200, 7600, 7980, 8400, 8850, 9350, 9900, 10480, 11080, 11680, 12120, 12580],
+                api: [880, 920, 960, 1000, 1050, 1100, 1160, 1220, 1290, 1360, 1470, 1580],
+                db: [4800, 5080, 5380, 5700, 6020, 6360, 6720, 7100, 7480, 7820, 8030, 8240],
+                file: [1280, 1360, 1440, 1520, 1600, 1680, 1760, 1840, 1920, 2000, 2070, 2150]
+            }
+        };
+
+        const usageTrendData = {
+            '7d': {
+                labels: ['08-27', '08-28', '08-29', '08-30', '08-31', '09-01', '09-02'],
+                total: [2190, 2270, 2350, 2640, 2890, 2530, 2880],
+                api: [820, 850, 870, 980, 1080, 940, 1060],
+                db: [1050, 1080, 1120, 1240, 1360, 1180, 1320],
+                file: [320, 340, 360, 420, 450, 410, 500]
+            },
+            '1m': {
+                labels: ['08-03', '08-07', '08-11', '08-15', '08-19', '08-23', '08-27', '09-01'],
+                total: [1850, 2100, 2280, 2420, 2550, 2680, 2890, 3050],
+                api: [680, 780, 850, 900, 950, 1000, 1080, 1140],
+                db: [880, 1000, 1080, 1150, 1210, 1270, 1360, 1440],
+                file: [290, 320, 350, 370, 390, 410, 450, 470]
+            },
+            '12m': {
+                labels: ['10月', '11月', '12月', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月'],
+                total: [18500, 21200, 23800, 26500, 29200, 32500, 35800, 38600, 41200, 43800, 45200, 47800],
+                api: [6800, 7800, 8800, 9800, 10800, 12000, 13200, 14200, 15200, 16200, 16800, 17800],
+                db: [8800, 10100, 11300, 12600, 13900, 15400, 17000, 18300, 19500, 20800, 21400, 22600],
+                file: [2900, 3300, 3700, 4100, 4500, 5100, 5600, 6100, 6500, 6800, 7000, 7400]
+            }
+        };
+
+        function updateTrendRangeButtons(containerId, activeBtn) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.querySelectorAll('button').forEach(btn => {
+                btn.className = 'px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100';
+            });
+            activeBtn.className = 'px-2 py-1 bg-blue-50 text-[#1c7ffd] rounded';
+        }
+
+        function switchCatalogTrendRange(range, btn) {
+            if (!catalogTrendChartInstance) return;
+            updateTrendRangeButtons('catalogTrendRange', btn);
+            const d = catalogTrendData[range];
+            catalogTrendChartInstance.data.labels = d.labels;
+            catalogTrendChartInstance.data.datasets[0].data = d.total;
+            catalogTrendChartInstance.data.datasets[1].data = d.linked;
+            catalogTrendChartInstance.update();
+        }
+
+        function switchServiceTrendRange(range, btn) {
+            if (!serviceTrendChartInstance) return;
+            updateTrendRangeButtons('serviceTrendRange', btn);
+            const d = serviceTrendData[range];
+            serviceTrendChartInstance.data.labels = d.labels;
+            serviceTrendChartInstance.data.datasets[0].data = d.total;
+            serviceTrendChartInstance.data.datasets[1].data = d.api;
+            serviceTrendChartInstance.data.datasets[2].data = d.db;
+            serviceTrendChartInstance.data.datasets[3].data = d.file;
+            serviceTrendChartInstance.update();
+        }
+
+        function switchUsageTrendRange(range, btn) {
+            if (!usageTrendChartInstance) return;
+            updateTrendRangeButtons('usageTrendRange', btn);
+            const d = usageTrendData[range];
+            usageTrendChartInstance.data.labels = d.labels;
+            usageTrendChartInstance.data.datasets[0].data = d.total;
+            usageTrendChartInstance.data.datasets[1].data = d.api;
+            usageTrendChartInstance.data.datasets[2].data = d.db;
+            usageTrendChartInstance.data.datasets[3].data = d.file;
+            usageTrendChartInstance.update();
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             const ctx1 = document.getElementById('catalogTrendChart').getContext('2d');
-            new Chart(ctx1, {
+            catalogTrendChartInstance = new Chart(ctx1, {
                 type: 'line',
                 data: {
-                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    labels: catalogTrendData['7d'].labels,
                     datasets: [
                         {
                             label: '数据目录总数',
-                            data: [8500, 8900, 9200, 9600, 10100, 10500, 10900, 11300, 11700, 12100, 12350, 12580],
+                            data: catalogTrendData['7d'].total,
                             borderColor: '#1c7ffd',
                             backgroundColor: 'rgba(28, 127, 253, 0.1)',
                             fill: true,
@@ -1336,7 +1413,7 @@
                         },
                         {
                             label: '已挂接资源目录数',
-                            data: [5800, 6100, 6400, 6800, 7200, 7500, 7800, 8100, 8400, 8700, 8850, 8960],
+                            data: catalogTrendData['7d'].linked,
                             borderColor: '#36c2aa',
                             backgroundColor: 'rgba(54, 194, 170, 0.1)',
                             fill: true,
@@ -1372,14 +1449,14 @@
             });
 
             // 数据资源统计相关图表
-            new Chart(document.getElementById('serviceTrendChart').getContext('2d'), {
+            serviceTrendChartInstance = new Chart(document.getElementById('serviceTrendChart').getContext('2d'), {
                 type: 'line',
                 data: {
-                    labels: ['9月', '10月', '11月', '12月', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月'],
+                    labels: serviceTrendData['7d'].labels,
                     datasets: [
                         {
                             label: '服务总数',
-                            data: [7200, 7600, 7980, 8400, 8850, 9350, 9900, 10480, 11080, 11680, 12120, 12580],
+                            data: serviceTrendData['7d'].total,
                             borderColor: '#1c7ffd',
                             backgroundColor: 'rgba(28, 127, 253, 0.1)',
                             fill: true,
@@ -1389,7 +1466,7 @@
                         },
                         {
                             label: '接口',
-                            data: [880, 920, 960, 1000, 1050, 1100, 1160, 1220, 1290, 1360, 1470, 1580],
+                            data: serviceTrendData['7d'].api,
                             borderColor: '#e6a23c',
                             backgroundColor: 'rgba(230, 162, 60, 0.05)',
                             fill: false,
@@ -1399,7 +1476,7 @@
                         },
                         {
                             label: '库表',
-                            data: [4800, 5080, 5380, 5700, 6020, 6360, 6720, 7100, 7480, 7820, 8030, 8240],
+                            data: serviceTrendData['7d'].db,
                             borderColor: '#36c2aa',
                             backgroundColor: 'rgba(54, 194, 170, 0.05)',
                             fill: false,
@@ -1409,7 +1486,7 @@
                         },
                         {
                             label: '文件',
-                            data: [1280, 1360, 1440, 1520, 1600, 1680, 1760, 1840, 1920, 2000, 2070, 2150],
+                            data: serviceTrendData['7d'].file,
                             borderColor: '#f56c6c',
                             backgroundColor: 'rgba(245, 108, 108, 0.05)',
                             fill: false,
@@ -1447,14 +1524,14 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
             });
 
-            new Chart(document.getElementById('usageTrendChart').getContext('2d'), {
+            usageTrendChartInstance = new Chart(document.getElementById('usageTrendChart').getContext('2d'), {
                 type: 'line',
                 data: {
-                    labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                    labels: usageTrendData['7d'].labels,
                     datasets: [
                         {
-                            label: '接口申请数（件）',
-                            data: [820, 910, 880, 1020, 1150, 980, 1080],
+                            label: '服务申请总数',
+                            data: usageTrendData['7d'].total,
                             borderColor: '#1c7ffd',
                             backgroundColor: 'rgba(28, 127, 253, 0.1)',
                             fill: true,
@@ -1463,21 +1540,31 @@
                             pointHoverRadius: 6
                         },
                         {
-                            label: '库表申请数（件）',
-                            data: [1050, 980, 1120, 1200, 1280, 1160, 1350],
-                            borderColor: '#36c2aa',
-                            backgroundColor: 'rgba(54, 194, 170, 0.1)',
-                            fill: true,
+                            label: '接口申请',
+                            data: usageTrendData['7d'].api,
+                            borderColor: '#e6a23c',
+                            backgroundColor: 'rgba(230, 162, 60, 0.05)',
+                            fill: false,
                             tension: 0.4,
                             pointRadius: 4,
                             pointHoverRadius: 6
                         },
                         {
-                            label: '文件申请数（件）',
-                            data: [320, 380, 350, 420, 460, 390, 450],
-                            borderColor: '#e6a23c',
-                            backgroundColor: 'rgba(230, 162, 60, 0.1)',
-                            fill: true,
+                            label: '库表申请',
+                            data: usageTrendData['7d'].db,
+                            borderColor: '#36c2aa',
+                            backgroundColor: 'rgba(54, 194, 170, 0.05)',
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: '文件申请',
+                            data: usageTrendData['7d'].file,
+                            borderColor: '#f56c6c',
+                            backgroundColor: 'rgba(245, 108, 108, 0.05)',
+                            fill: false,
                             tension: 0.4,
                             pointRadius: 4,
                             pointHoverRadius: 6

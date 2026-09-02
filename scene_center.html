@@ -126,7 +126,10 @@
                                         <i class="fa-solid fa-envelope"></i>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-[#303133] font-bold text-[15px] truncate w-32" title="婚姻登记查询">婚姻登记查询</span>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="text-[#303133] font-bold text-[15px] truncate w-32" title="婚姻登记查询">婚姻登记查询</span>
+                                            <span class="inline-flex items-center px-1.5 py-0.5 text-[11px] font-bold text-white rounded-[10px] whitespace-nowrap" style="background: linear-gradient(135deg, #f56c6c, #ff7875); box-shadow: 0 2px 4px rgba(245,108,108,0.3);">置顶</span>
+                                        </div>
                                         <span class="text-[#909399] text-[12px] mt-0.5">场景ID：CJ20260602001</span>
                                     </div>
                                 </div>
@@ -191,7 +194,7 @@
                                 <div class="absolute inset-0 flex items-center gap-1.5 opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
                                     <a href="#" onclick="return false;" title="暂不可用" class="flex-1 text-center py-1.5 bg-gray-50 border border-gray-200 rounded text-[#c0c4cc] text-[12px] transition-colors cursor-not-allowed pointer-events-auto">查看场景</a>
                                     <a href="#" onclick="openCreateSceneModal(); return false;" class="flex-1 text-center py-1.5 bg-white border border-gray-300 rounded text-[#606266] hover:text-white hover:border-[#1c7ffd] hover:bg-[#1c7ffd] text-[12px] transition-colors cursor-pointer">编辑场景</a>
-                                    <a href="#" onclick="showConfirm('确定删除该场景吗？'); return false;" class="flex-1 text-center py-1.5 bg-white border border-gray-300 rounded text-[#606266] hover:text-white hover:border-[#1c7ffd] hover:bg-[#1c7ffd] text-[12px] transition-colors cursor-pointer">删除场景</a>
+                                    <a href="#" onclick="showConfirm('确定要删除该场景吗？删除后数据将无法恢复，请谨慎操作！'); return false;" class="flex-1 text-center py-1.5 bg-white border border-gray-300 rounded text-[#606266] hover:text-white hover:border-[#1c7ffd] hover:bg-[#1c7ffd] text-[12px] transition-colors cursor-pointer">删除场景</a>
                                 </div>
                             </div>
                         </div>
@@ -318,7 +321,7 @@
                                 <div class="absolute inset-0 flex items-center gap-1.5 opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
                                     <a href="#" onclick="return false;" title="暂不可用" class="flex-1 text-center py-1.5 bg-gray-50 border border-gray-200 rounded text-[#c0c4cc] text-[12px] transition-colors cursor-not-allowed pointer-events-auto">查看场景</a>
                                     <a href="#" onclick="openCreateSceneModal(); return false;" class="flex-1 text-center py-1.5 bg-white border border-gray-300 rounded text-[#606266] hover:text-white hover:border-[#1c7ffd] hover:bg-[#1c7ffd] text-[12px] transition-colors cursor-pointer">编辑场景</a>
-                                    <a href="#" onclick="showConfirm('确定删除该场景吗？'); return false;" class="flex-1 text-center py-1.5 bg-white border border-gray-300 rounded text-[#606266] hover:text-white hover:border-[#1c7ffd] hover:bg-[#1c7ffd] text-[12px] transition-colors cursor-pointer">删除场景</a>
+                                    <a href="#" onclick="showConfirm('确定要删除该场景吗？删除后数据将无法恢复，请谨慎操作！'); return false;" class="flex-1 text-center py-1.5 bg-white border border-gray-300 rounded text-[#606266] hover:text-white hover:border-[#1c7ffd] hover:bg-[#1c7ffd] text-[12px] transition-colors cursor-pointer">删除场景</a>
                                 </div>
                             </div>
                         </div>
@@ -414,14 +417,17 @@
     </script>
 
     <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-30 z-[70] hidden flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-2xl w-[420px] overflow-hidden">
-            <div class="px-6 py-5 flex items-center gap-3 border-b border-gray-100">
-                <i class="fa-solid fa-circle-question text-orange-500 text-2xl"></i>
-                <span id="confirmMessage" class="text-[#303133] text-[15px]"></span>
+        <div class="bg-white rounded-lg shadow-2xl w-[440px] overflow-hidden">
+            <div class="px-6 py-5 flex items-start gap-3 border-b border-gray-100">
+                <i class="fa-solid fa-triangle-exclamation text-[#f56c6c] text-2xl mt-0.5"></i>
+                <div class="flex-1">
+                    <div class="text-[#303133] text-[15px] font-medium mb-1">删除确认</div>
+                    <span id="confirmMessage" class="text-[#606266] text-[13px] leading-relaxed block"></span>
+                </div>
             </div>
             <div class="px-6 py-4 flex justify-end gap-3 bg-white">
                 <button class="px-5 h-8 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-sm" onclick="closeConfirm()">取 消</button>
-                <button class="px-5 h-8 bg-[#1c7ffd] text-white rounded hover:bg-blue-600 transition-colors text-sm" id="confirmOkBtn">确 定</button>
+                <button class="px-5 h-8 bg-[#f56c6c] text-white rounded hover:bg-[#d9363e] transition-colors text-sm" id="confirmOkBtn">确认删除</button>
             </div>
         </div>
     </div>

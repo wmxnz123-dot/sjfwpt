@@ -173,27 +173,48 @@
                             </div>
                         </div>
 
-                        <!-- 所属领域 -->
-                        <div>
-                            <label class="block text-sm text-[#606266] mb-2">
-                                所属领域<span class="text-red-500 ml-1">*</span>
-                            </label>
-                            <select id="scene-domain" class="w-full h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] bg-white transition-all">
-                                <option value="">请选择所属领域</option>
-                                <option value="yimin">一码一表</option>
-                                <option value="zhizao">智慧治理</option>
-                                <option value="minzheng">民生保障</option>
-                                <option value="shengtai">生态环保</option>
-                                <option value="wulian">物联网</option>
-                                <option value="shuzi">数字经济</option>
-                                <option value="jiaoyu">智慧教育</option>
-                            </select>
-                        </div>
-
                         <!-- 场景描述（全宽） -->
                         <div class="col-span-2">
                             <label class="block text-sm text-[#606266] mb-2">场景描述</label>
                             <textarea id="scene-desc" rows="3" placeholder="请输入场景描述（10-50字）" class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all resize-none"></textarea>
+                        </div>
+
+                        <!-- 场景图片 -->
+                        <div class="col-span-2">
+                            <label class="block text-sm text-[#606266] mb-2">
+                                场景图片<span class="text-[#909399] ml-1 text-xs">（建议尺寸 750×420，支持 JPG/PNG，最大 2MB）</span>
+                            </label>
+                            <div class="flex items-start gap-4">
+                                <!-- 预览区 -->
+                                <div id="scene-image-preview" class="w-[180px] h-[100px] border-2 border-dashed border-gray-200 rounded-lg flex flex-col items-center justify-center bg-gray-50 cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50/30 transition-all overflow-hidden relative" onclick="document.getElementById('scene-image-input').click()">
+                                    <i class="fa-solid fa-cloud-arrow-up text-2xl text-gray-300 mb-1"></i>
+                                    <span class="text-xs text-[#909399]">点击上传图片</span>
+                                </div>
+                                <!-- 操作与说明 -->
+                                <div class="flex-1">
+                                    <input type="file" id="scene-image-input" accept="image/jpeg,image/png" class="hidden" onchange="handleSceneImageUpload(this)">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <button type="button" onclick="document.getElementById('scene-image-input').click()" class="h-[32px] px-4 border border-[#1c7ffd] text-[#1c7ffd] rounded-md text-sm hover:bg-blue-50 transition-colors">
+                                            <i class="fa-solid fa-upload mr-1"></i>选择图片
+                                        </button>
+                                        <button type="button" id="scene-image-remove" onclick="removeSceneImage()" class="h-[32px] px-4 border border-gray-200 text-[#909399] rounded-md text-sm hover:bg-gray-50 hover:text-[#f56c6c] hover:border-[#f56c6c] transition-colors hidden">
+                                            <i class="fa-solid fa-trash-can mr-1"></i>移除
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-[#909399] leading-relaxed">支持上传场景封面图，用于门户场景中心列表及详情页展示。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 是否置顶 -->
+                        <div>
+                            <label class="block text-sm text-[#606266] mb-2">是否置顶</label>
+                            <label class="inline-flex items-center cursor-pointer select-none">
+                                <input type="checkbox" id="scene-pinned" class="sr-only peer" onchange="togglePinned(this.checked)">
+                                <div class="relative w-[44px] h-[24px] bg-gray-200 peer-checked:bg-[#1c7ffd] rounded-full transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-[20px] after:w-[20px] after:transition-all peer-checked:after:translate-x-[20px] shadow-inner"></div>
+                                <span id="pinned-label" class="ml-2 text-sm text-[#909399]">不置顶</span>
+                            </label>
+                            <p class="text-xs text-[#909399] mt-1">开启后该场景将固定在场景中心列表首位展示</p>
                         </div>
                     </div>
                 </div>
@@ -240,7 +261,6 @@
             <!-- 底部操作栏 -->
             <div class="bg-white border-t border-gray-100 px-8 py-4 flex items-center justify-end gap-3 shrink-0 shadow-[0_-4px_12px_rgba(0,0,0,0.04)]">
                 <button onclick="cancel()" class="h-[36px] px-6 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">取消</button>
-                <button onclick="saveDraft()" class="h-[36px] px-6 border border-[#1c7ffd] text-[#1c7ffd] rounded-md text-sm hover:bg-blue-50 transition-colors">暂存</button>
                 <button onclick="publish()" class="h-[36px] px-6 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#0d6efd] transition-colors shadow-sm">发布场景</button>
             </div>
         </main>
@@ -393,6 +413,57 @@
             alert('查看目录详情：' + catalogs[idx].name);
         }
 
+        // ===== 场景图片上传 =====
+        let sceneImageDataUrl = '';
+
+        function handleSceneImageUpload(input) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            // 类型校验
+            if (!/^image\/(jpeg|png)$/.test(file.type)) {
+                alert('仅支持 JPG/PNG 格式图片');
+                input.value = '';
+                return;
+            }
+            // 大小校验（2MB）
+            if (file.size > 2 * 1024 * 1024) {
+                alert('图片大小不能超过 2MB');
+                input.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                sceneImageDataUrl = e.target.result;
+                const preview = document.getElementById('scene-image-preview');
+                preview.innerHTML = '<img src="' + sceneImageDataUrl + '" class="w-full h-full object-cover" alt="场景图片">';
+                document.getElementById('scene-image-remove').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeSceneImage() {
+            sceneImageDataUrl = '';
+            const input = document.getElementById('scene-image-input');
+            if (input) input.value = '';
+            const preview = document.getElementById('scene-image-preview');
+            preview.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-2xl text-gray-300 mb-1"></i><span class="text-xs text-[#909399]">点击上传图片</span>';
+            document.getElementById('scene-image-remove').classList.add('hidden');
+        }
+
+        // ===== 置顶切换 =====
+        function togglePinned(checked) {
+            const label = document.getElementById('pinned-label');
+            if (checked) {
+                label.textContent = '置顶';
+                label.classList.remove('text-[#909399]');
+                label.classList.add('text-[#1c7ffd]', 'font-medium');
+            } else {
+                label.textContent = '不置顶';
+                label.classList.add('text-[#909399]');
+                label.classList.remove('text-[#1c7ffd]', 'font-medium');
+            }
+        }
+
         // ===== 底部按钮 =====
         function cancel() {
             if (confirm('确定取消编辑吗？已填写的内容将丢失。')) {
@@ -400,17 +471,9 @@
             }
         }
 
-        function saveDraft() {
-            const name = document.getElementById('scene-name').value.trim();
-            if (!name) { alert('请先填写场景名称'); return; }
-            alert('已暂存草稿：' + name);
-        }
-
         function publish() {
             const name = document.getElementById('scene-name').value.trim();
-            const domain = document.getElementById('scene-domain').value;
             if (!name) { alert('请填写场景名称'); return; }
-            if (!domain) { alert('请选择所属领域'); return; }
             if (selectedCatalogs.size === 0) { alert('请至少选择一个目录'); return; }
             alert('场景「' + name + '」发布成功！');
             window.location.href = 'config_center.html';

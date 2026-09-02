@@ -82,6 +82,7 @@
                                     <th class="w-16 px-4 py-3 text-left font-medium text-[#606266]">序号</th>
                                     <th class="px-4 py-3 text-left font-medium text-[#606266]">场景名称</th>
                                     <th class="w-28 px-4 py-3 text-center font-medium text-[#606266]">数据目录数</th>
+                                    <th class="w-24 px-4 py-3 text-center font-medium text-[#606266]">是否置顶</th>
                                     <th class="w-24 px-4 py-3 text-center font-medium text-[#606266]">状态</th>
                                     <th class="w-40 px-4 py-3 text-left font-medium text-[#606266]">更新时间</th>
                                     <th class="w-80 px-4 py-3 text-center font-medium text-[#606266]">操作</th>
@@ -152,6 +153,23 @@
         </div>
     </div>
 
+    <!-- 确认弹窗（删除等危险操作） -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-30 z-[70] hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-2xl w-[440px] overflow-hidden">
+            <div class="px-6 py-5 flex items-start gap-3 border-b border-gray-100">
+                <i class="fa-solid fa-triangle-exclamation text-[#f56c6c] text-2xl mt-0.5"></i>
+                <div class="flex-1">
+                    <div class="text-[#303133] text-[15px] font-medium mb-1" id="confirmTitle">删除确认</div>
+                    <span id="confirmMessage" class="text-[#606266] text-[13px] leading-relaxed block"></span>
+                </div>
+            </div>
+            <div class="px-6 py-4 flex justify-end gap-3 bg-white">
+                <button class="px-5 h-8 border border-gray-300 rounded text-[#606266] hover:text-[#1c7ffd] hover:border-[#1c7ffd] transition-colors text-sm" onclick="closeConfirm()">取 消</button>
+                <button class="px-5 h-8 bg-[#f56c6c] text-white rounded hover:bg-[#d9363e] transition-colors text-sm" id="confirmOkBtn">确认删除</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 领域分类数据
         const domains = [
@@ -169,42 +187,42 @@
         let sceneData = [
             {
                 id: 1, name: '企业开办一站式服务', domain: 'yimin', domainName: '一码一表', catalogCount: 12,
-                status: '启用', updateTime: '2026-07-28 14:30',
+                status: '启用', updateTime: '2026-07-28 14:30', pinned: true,
                 icon: 'fa-building', iconColor: '#1c7ffd'
             },
             {
                 id: 2, name: '人口健康服务场景', domain: 'minzheng', domainName: '民生保障', catalogCount: 8,
-                status: '启用', updateTime: '2026-07-26 09:15',
+                status: '启用', updateTime: '2026-07-26 09:15', pinned: false,
                 icon: 'fa-heart-pulse', iconColor: '#00b894'
             },
             {
                 id: 3, name: '城市治理一张图', domain: 'zhizao', domainName: '智慧治理', catalogCount: 20,
-                status: '启用', updateTime: '2026-07-24 16:45',
+                status: '启用', updateTime: '2026-07-24 16:45', pinned: false,
                 icon: 'fa-map', iconColor: '#667eea'
             },
             {
                 id: 4, name: '大气污染防治监测', domain: 'shengtai', domainName: '生态环保', catalogCount: 6,
-                status: '停用', updateTime: '2026-07-20 11:20',
+                status: '停用', updateTime: '2026-07-20 11:20', pinned: false,
                 icon: 'fa-leaf', iconColor: '#00d9a6'
             },
             {
                 id: 5, name: '物联网设备监管', domain: 'wulian', domainName: '物联网', catalogCount: 15,
-                status: '启用', updateTime: '2026-07-18 10:00',
+                status: '启用', updateTime: '2026-07-18 10:00', pinned: false,
                 icon: 'fa-wifi', iconColor: '#36c2aa'
             },
             {
                 id: 6, name: '数字经济产业图谱', domain: 'shuzi', domainName: '数字经济', catalogCount: 10,
-                status: '停用', updateTime: '2026-07-15 15:30',
+                status: '停用', updateTime: '2026-07-15 15:30', pinned: false,
                 icon: 'fa-chart-line', iconColor: '#f39c12'
             },
             {
                 id: 7, name: '教育资源共享平台', domain: 'jiaoyu', domainName: '智慧教育', catalogCount: 5,
-                status: '启用', updateTime: '2026-07-12 08:40',
+                status: '启用', updateTime: '2026-07-12 08:40', pinned: false,
                 icon: 'fa-graduation-cap', iconColor: '#e74c3c'
             },
             {
                 id: 8, name: '企业信用一键查', domain: 'yimin', domainName: '一码一表', catalogCount: 9,
-                status: '启用', updateTime: '2026-07-10 13:25',
+                status: '启用', updateTime: '2026-07-10 13:25', pinned: true,
                 icon: 'fa-shield-halved', iconColor: '#8e44ad'
             }
         ];
@@ -243,6 +261,13 @@
                 list = list.filter(s => s.name.includes(keyword));
             }
 
+            // 置顶场景优先展示
+            list = [...list].sort((a, b) => {
+                if (a.pinned && !b.pinned) return -1;
+                if (!a.pinned && b.pinned) return 1;
+                return 0;
+            });
+
             const filterName = domains.find(d => d.id === currentDomain);
             const filterLabel = document.getElementById('scene-filter-label');
             if (filterLabel) filterLabel.textContent = (filterName ? filterName.name : '全部领域') + (keyword ? ' · "' + keyword + '"' : '');
@@ -251,7 +276,7 @@
             if (list.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6" class="py-16 text-center text-[#909399]">
+                        <td colspan="7" class="py-16 text-center text-[#909399]">
                             <i class="fa-regular fa-folder-open text-3xl mb-2 block opacity-30"></i>
                             暂无场景数据
                         </td>
@@ -264,9 +289,17 @@
                 <tr class="border-b border-gray-100 hover:bg-blue-50/50 transition-colors">
                     <td class="px-4 py-3.5 text-[#909399]">${i + 1}</td>
                     <td class="px-4 py-3.5">
-                        <span class="text-[#303133] font-medium">${s.name}</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[#303133] font-medium">${s.name}</span>
+                            ${s.pinned ? '<span class="inline-flex items-center px-1.5 py-0.5 text-[11px] font-bold text-white rounded-[10px] whitespace-nowrap" style="background: linear-gradient(135deg, #f56c6c, #ff7875); box-shadow: 0 2px 4px rgba(245,108,108,0.3);">置顶</span>' : ''}
+                        </div>
                     </td>
                     <td class="px-4 py-3.5 text-center text-[#1c7ffd] font-medium">${s.catalogCount}</td>
+                    <td class="px-4 py-3.5 text-center">
+                        <button onclick="toggleScenePinned(${s.id})" class="relative inline-flex w-10 h-6 items-center rounded-full transition-colors ${s.pinned ? 'bg-[#f56c6c]' : 'bg-gray-300'}" title="点击切换置顶">
+                            <span class="inline-block w-4 h-4 transform rounded-full bg-white shadow transition-transform ${s.pinned ? 'translate-x-5' : 'translate-x-1'}"></span>
+                        </button>
+                    </td>
                     <td class="px-4 py-3.5 text-center">
                         <button onclick="toggleSceneStatus(${s.id})" class="relative inline-flex w-10 h-6 items-center rounded-full transition-colors ${s.status === '启用' ? 'bg-green-500' : 'bg-gray-300'}" title="点击切换状态">
                             <span class="inline-block w-4 h-4 transform rounded-full bg-white shadow transition-transform ${s.status === '启用' ? 'translate-x-5' : 'translate-x-1'}"></span>
@@ -284,12 +317,20 @@
             `).join('');
         }
 
+        // 切换置顶状态
+        function toggleScenePinned(id) {
+            const s = sceneData.find(x => x.id === id);
+            if (!s) return;
+            s.pinned = !s.pinned;
+            renderScenes();
+        }
+
         function searchScenes() {
             renderScenes();
         }
 
         function toggleSceneStatus(id) {
-            const scene = scenes.find(s => s.id === id);
+            const scene = sceneData.find(s => s.id === id);
             if (!scene) return;
             scene.status = scene.status === '启用' ? '停用' : '启用';
             renderScenes();
@@ -368,12 +409,36 @@
         function deleteScene(id) {
             const s = sceneData.find(x => x.id === id);
             if (!s) return;
-            if (confirm('确定删除场景「' + s.name + '」吗？')) {
-                sceneData = sceneData.filter(x => x.id !== id);
-                renderDomains();
-                renderScenes();
-                alert('删除成功');
-            }
+            showConfirm(
+                '删除确认',
+                '确定要删除场景「' + s.name + '」吗？删除后数据将无法恢复，请谨慎操作！',
+                function() {
+                    sceneData = sceneData.filter(x => x.id !== id);
+                    renderDomains();
+                    renderScenes();
+                    alert('删除成功');
+                }
+            );
+        }
+
+        // 通用确认弹窗
+        function showConfirm(title, message, onOk) {
+            const modal = document.getElementById('confirmModal');
+            document.getElementById('confirmTitle').textContent = title || '删除确认';
+            document.getElementById('confirmMessage').textContent = message || '';
+            const okBtn = document.getElementById('confirmOkBtn');
+            // 克隆替换，移除之前绑定的事件
+            const newBtn = okBtn.cloneNode(true);
+            okBtn.parentNode.replaceChild(newBtn, okBtn);
+            newBtn.addEventListener('click', function() {
+                closeConfirm();
+                if (typeof onOk === 'function') onOk();
+            });
+            modal.classList.remove('hidden');
+        }
+
+        function closeConfirm() {
+            document.getElementById('confirmModal').classList.add('hidden');
         }
 
         // 初始化

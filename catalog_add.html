@@ -14,13 +14,6 @@
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         .step-active { background: #1c7ffd; color: white; }
         .step-inactive { background: #fff; color: #909399; border: 1px solid #dcdfe6; }
-        .gradient-bg { background: linear-gradient(135deg, #1c7ffd 0%, #0d6efd 100%); }
-        .gradient-bg-green { background: linear-gradient(135deg, #00d9a6 0%, #00b894 100%); }
-        /* ===== 智能编目抽屉（对齐统计中心智能助手抽屉样式） ===== */
-        .ai-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .pulse-animation { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-        .agent-active { border-color: #667eea; background-color: #f3f0ff; }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
@@ -86,10 +79,15 @@
                     <div id="step-1-content" class="px-10 pb-8 space-y-8">
                         <!-- 基本信息 -->
                         <div>
-                            <h3 class="text-[16px] font-bold text-[#303133] mb-6 flex items-center">
-                                <span class="w-1 h-4 bg-[#1c7ffd] rounded-full mr-2"></span>
-                                基本信息
-                            </h3>
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-[16px] font-bold text-[#303133] flex items-center">
+                                    <span class="w-1 h-4 bg-[#1c7ffd] rounded-full mr-2"></span>
+                                    基本信息
+                                </h3>
+                                <button onclick="openSmartFillModal()" class="px-4 py-1.5 bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] text-white rounded-md text-sm hover:opacity-90 transition-opacity flex items-center gap-1.5">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> 智能填充
+                                </button>
+                            </div>
                             <div class="grid grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-[#606266] font-medium mb-2">
@@ -384,14 +382,8 @@
                     <div id="step-2-content" class="px-10 pb-8 space-y-6 hidden">
                         <!-- 操作按钮区 -->
                         <div class="flex justify-end items-center gap-3">
-                            <button class="text-gray-300 text-sm flex items-center gap-1 cursor-not-allowed" disabled>
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> 快速填充
-                            </button>
                             <button class="px-4 py-2 bg-gray-200 text-gray-400 rounded-md text-sm cursor-not-allowed" disabled>
                                 <i class="fa-solid fa-plus text-xs"></i> 添加信息项
-                            </button>
-                            <button onclick="openSmartFillModal()" class="px-4 py-2 bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] text-white rounded-md text-sm hover:opacity-90 transition-opacity flex items-center gap-1">
-                                <i class="fa-solid fa-brain"></i> 智能添加
                             </button>
                             <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-1">
                                 <i class="fa-solid fa-trash text-xs"></i> 批量删除
@@ -445,296 +437,41 @@
         </main>
     </div>
 
-    <!-- 智能编目悬浮按钮 -->
-    <button id="smart-catalog-btn" class="fixed bottom-8 right-8 flex items-center gap-3 px-5 py-3 ai-card text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 z-[30]" title="智能编目">
-        <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center pulse-animation">
-            <i class="fa-solid fa-brain"></i>
-        </span>
-        <span class="font-medium">智能编目</span>
-        <i class="fa-solid fa-chevron-left text-sm" id="smart-catalog-arrow"></i>
-    </button>
-
-    <!-- 智能编目抽屉 -->
-    <div id="smart-catalog-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeSmartCatalog()"></div>
-    <div id="smart-catalog-drawer" class="fixed top-0 right-0 bottom-0 w-[900px] bg-white z-[90] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
-        <!-- 抽屉头部 -->
-        <div class="p-5 border-b border-gray-100 flex items-center justify-between shrink-0">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg ai-card flex items-center justify-center">
-                    <i class="fa-solid fa-brain text-white"></i>
-                </div>
-                <div>
-                    <h3 class="font-semibold text-[#303133]">智能编目</h3>
-                    <p class="text-xs text-[#909399]">选择智能体开始对话</p>
-                </div>
-            </div>
-            <button onclick="closeSmartCatalog()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-        <!-- 选择智能体 -->
-        <div class="p-4 border-b border-gray-100 shrink-0">
-            <div class="flex items-center gap-2 mb-3">
-                <i class="fa-solid fa-robot text-[#667eea]"></i>
-                <span class="text-sm font-medium text-[#303133]">选择智能体</span>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-                <button id="catalog-tab-auto" onclick="switchCatalogTab('auto')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left agent-active">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-wand-magic-sparkles text-[#1c7ffd]"></i>
-                        <span class="font-medium text-sm">自动编目智能体</span>
-                    </div>
-                    <p class="text-xs text-[#909399]">选择数据表自动编目，AI生成资源目录</p>
-                </button>
-                <button id="catalog-tab-qa" onclick="switchCatalogTab('qa')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-comments text-[#36c2aa]"></i>
-                        <span class="font-medium text-sm">问答编目智能体</span>
-                    </div>
-                    <p class="text-xs text-[#909399]">输入描述或上传文件，AI智能生成目录</p>
-                </button>
-            </div>
-        </div>
-
-        <!-- 自动编目视图 -->
-        <div id="catalog-view-auto" class="flex-1 flex flex-col overflow-hidden">
-            <div id="auto-catalog-content" class="flex-1 overflow-y-auto px-6 py-5">
-                <p class="text-[#606266] text-sm mb-4">请选择要自动编目的数据表：</p>
-                <!-- 搜索框 -->
-                <div class="mb-4">
-                    <div class="relative">
-                        <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-[#909399] text-sm"></i>
-                        <input type="text" id="auto-table-search" placeholder="按表名/中文名/字段关键词搜索..." 
-                            oninput="filterAutoTables()"
-                            class="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-[#1c7ffd] focus:ring-2 focus:ring-[#1c7ffd]/10 transition-all">
-                    </div>
-                    <div id="auto-table-search-empty" class="hidden py-10 text-center text-sm text-[#909399]">
-                        <i class="fa-regular fa-folder-open text-3xl mb-2 block text-gray-300"></i>
-                        没有找到匹配的数据表
-                    </div>
-                </div>
-                <div id="auto-table-list" class="space-y-2 max-h-[420px] overflow-y-auto">
-                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
-                        <input type="radio" name="table-select" value="enterprise_company" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
-                            data-keywords="enterprise company 企业 工商 公司 信用代码 注册地址 法人">
-                        <div>
-                            <div class="font-medium text-[#303133]">enterprise_company</div>
-                            <div class="text-xs text-[#909399]">企业工商登记信息表 - 包含企业名称、统一社会信用代码、注册地址等字段</div>
-                        </div>
-                    </label>
-                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
-                        <input type="radio" name="table-select" value="population_resident" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
-                            data-keywords="population resident 常住 人口 居民 姓名 性别 民族 出生 身份证">
-                        <div>
-                            <div class="font-medium text-[#303133]">population_resident</div>
-                            <div class="text-xs text-[#909399]">常住人口基本信息表 - 包含姓名、性别、民族、出生日期等字段</div>
-                        </div>
-                    </label>
-                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
-                        <input type="radio" name="table-select" value="tax_register" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
-                            data-keywords="tax register 税务 登记 纳税人 识别号 主管 税务机关">
-                        <div>
-                            <div class="font-medium text-[#303133]">tax_register</div>
-                            <div class="text-xs text-[#909399]">税务登记信息表 - 包含纳税人识别号、税务登记状态等字段</div>
-                        </div>
-                    </label>
-                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
-                        <input type="radio" name="table-select" value="credit_info" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
-                            data-keywords="credit info 信用 征信 守信 失信 惩戒 评价 信用承诺">
-                        <div>
-                            <div class="font-medium text-[#303133]">credit_info</div>
-                            <div class="text-xs text-[#909399]">社会信用信息表 - 包含信用评价、守信激励、失信惩戒等字段</div>
-                        </div>
-                    </label>
-                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
-                        <input type="radio" name="table-select" value="geo_boundary" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
-                            data-keywords="geo boundary 地理 边界 空间 行政区 区划 坐标 面积 经纬度">
-                        <div>
-                            <div class="font-medium text-[#303133]">geo_boundary</div>
-                            <div class="text-xs text-[#909399]">空间地理边界数据表 - 包含行政区划边界、地理坐标等字段</div>
-                        </div>
-                    </label>
-                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
-                        <input type="radio" name="table-select" value="license_electronic" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
-                            data-keywords="license electronic 证照 电子证 证件 执照 驾驶证 不动产 证照编号">
-                        <div>
-                            <div class="font-medium text-[#303133]">license_electronic</div>
-                            <div class="text-xs text-[#909399]">电子证照信息表 - 包含证照编号、证照类型、持证人、有效期等字段</div>
-                        </div>
-                    </label>
-                    <label class="auto-table-item flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-[#1c7ffd] hover:bg-blue-50 transition-all">
-                        <input type="radio" name="table-select" value="marriage_register" class="text-[#1c7ffd] focus:ring-[#1c7ffd]"
-                            data-keywords="marriage register 婚姻 登记 结婚证 离婚证 配偶 登记时间 民政">
-                        <div>
-                            <div class="font-medium text-[#303133]">marriage_register</div>
-                            <div class="text-xs text-[#909399]">婚姻登记信息表 - 包含婚姻登记编号、夫妻双方信息、登记日期等字段</div>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-            <!-- 进度条区域 -->
-            <div id="auto-catalog-progress" class="hidden px-6 py-4 border-t border-gray-100">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div id="progress-bar" class="h-full bg-[#00d9a6] rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <span id="progress-text" class="text-sm text-[#606266] w-16 text-right">0%</span>
-                </div>
-                <div id="progress-steps" class="space-y-2">
-                    <div class="flex items-center gap-2 text-sm">
-                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="step-1-icon">1</span>
-                        <span id="step-1-text" class="text-[#909399]">正在读取数据表结构...</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm">
-                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="step-2-icon">2</span>
-                        <span id="step-2-text" class="text-[#909399]">正在分析字段信息...</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm">
-                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="step-3-icon">3</span>
-                        <span id="step-3-text" class="text-[#909399]">正在生成目录信息...</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm">
-                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="step-4-icon">4</span>
-                        <span id="step-4-text" class="text-[#909399]">正在填充表单...</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 编目完成页 -->
-            <div id="auto-catalog-done" class="hidden flex-1 overflow-y-auto px-8 py-8">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 rounded-full bg-green-50 border-4 border-green-200 flex items-center justify-center mx-auto mb-4">
-                        <i class="fa-solid fa-check text-3xl text-[#00d9a6]"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-[#303133] mb-2">自动编目完成</h3>
-                    <p class="text-sm text-[#909399]">已成功生成目录信息并自动填充到表单，请确认或继续编辑</p>
-                </div>
-                <div class="bg-gray-50 rounded-xl border border-gray-100 p-6">
-                    <div class="grid grid-cols-2 gap-5 text-sm">
-                        <div>
-                            <div class="text-xs text-[#909399] mb-1">目录名称</div>
-                            <div class="text-[#303133] font-medium" id="done-name">-</div>
-                        </div>
-                        <div>
-                            <div class="text-xs text-[#909399] mb-1">所属领域</div>
-                            <div class="text-[#303133] font-medium" id="done-domain">-</div>
-                        </div>
-                        <div>
-                            <div class="text-xs text-[#909399] mb-1">共享方式</div>
-                            <div class="text-[#303133] font-medium" id="done-share">-</div>
-                        </div>
-                        <div>
-                            <div class="text-xs text-[#909399] mb-1">开放类型</div>
-                            <div class="text-[#303133] font-medium" id="done-open">-</div>
-                        </div>
-                        <div class="col-span-2">
-                            <div class="text-xs text-[#909399] mb-1">目录描述</div>
-                            <div class="text-[#303133]" id="done-summary">-</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-center mt-8">
-                    <button onclick="resetAutoCatalogView(); closeSmartCatalog();" class="px-5 py-2 bg-[#00d9a6] text-white rounded-md text-sm hover:bg-[#00b894] transition-colors flex items-center gap-1">
-                        <i class="fa-solid fa-eye"></i>查看表单
-                    </button>
-                </div>
-            </div>
-
-            <!-- 自动编目底部按钮 -->
-            <div id="auto-catalog-footer" class="px-6 py-4 border-t border-gray-100 flex items-center justify-end gap-3 shrink-0">
-                <button onclick="closeSmartCatalog()" class="px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
-                    取消
-                </button>
-                <button onclick="startAutoCatalog()" class="px-5 py-2 bg-[#00d9a6] text-white rounded-md text-sm hover:bg-[#00b894] transition-colors flex items-center gap-1">
-                    <i class="fa-solid fa-play"></i>
-                    开始编目
-                </button>
-            </div>
-        </div>
-
-        <!-- 问答编目视图 -->
-        <div id="catalog-view-qa" class="flex-1 flex flex-col overflow-hidden">
-
-        <!-- 对话内容区 -->
-        <div class="flex-1 overflow-y-auto p-4 space-y-5" id="smart-catalog-messages">
-            <div class="flex items-start gap-3">
-                <div class="w-10 h-10 rounded-full ai-card flex items-center justify-center shrink-0">
-                    <i class="fa-solid fa-brain text-white text-base"></i>
-                </div>
-                <div class="flex-1">
-                    <div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-3.5 text-sm text-[#303133] leading-relaxed">
-                        您好！我是智能编目助手，支持以下两种方式帮您自动生成数据资源目录：<br>
-                        <br>
-                        📄 <b>方式一：上传文件分析</b>（支持 .xlsx / .xls / .csv / .doc / .docx / .pdf / .json）<br>
-                        &nbsp;&nbsp;&nbsp;• 我会自动识别文件中的字段、数据格式、业务含义<br>
-                        &nbsp;&nbsp;&nbsp;• 自动推荐：目录名称、提供机构、信息项、资源分类、共享开放属性<br>
-                        <br>
-                        ✏️ <b>方式二：直接输入描述</b><br>
-                        &nbsp;&nbsp;&nbsp;例如：企业工商登记信息，包含企业名称、统一社会信用代码、注册地址、经营范围、法定代表人等字段
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 输入区 -->
-        <div class="border-t border-gray-100 px-6 py-4 shrink-0 bg-white">
-            <!-- 上传文件预览 -->
-            <div id="smart-upload-preview" class="hidden mb-3"></div>
-            <!-- 工具栏 -->
-            <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-2">
-                    <label class="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-gray-200 text-[#606266] hover:border-blue-400 hover:text-[#1c7ffd] hover:bg-blue-50 transition-colors cursor-pointer">
-                        <i class="fa-solid fa-paperclip"></i>
-                        <span>上传文件</span>
-                        <input type="file" id="smart-upload-input" multiple 
-                            accept=".xlsx,.xls,.csv,.doc,.docx,.pdf,.json"
-                            class="hidden" onchange="handleSmartFileUpload(event)">
-                    </label>
-                    <span class="text-xs text-[#909399]">支持 Excel/CSV/Word/PDF/JSON，单文件 ≤ 20MB</span>
-                </div>
-            </div>
-            <!-- 文本输入 -->
-            <div class="flex gap-3">
-                <input type="text" id="smart-catalog-input" rows="2" placeholder="请输入目录描述，或点击上方按钮上传文件让AI分析..." 
-                    class="flex-1 px-4 py-2.5 border border-gray-200 rounded-full text-sm focus:outline-none focus:border-[#667eea] focus:ring-2 focus:ring-[#667eea]/20 transition-all" 
-                    onkeydown="handleSmartCatalogKeydown(event)">
-                <button onclick="generateCatalog()" class="w-11 h-11 rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity ai-card shrink-0">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <!-- 快速填充弹窗 -->
+    <!-- 智能填充弹窗 -->
     <div id="smart-fill-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeSmartFillModal()"></div>
-    <div id="smart-fill-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] bg-white z-[90] rounded-lg shadow-2xl opacity-0 invisible transition-all duration-300">
+    <div id="smart-fill-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] bg-white z-[90] rounded-lg shadow-2xl opacity-0 invisible transition-all duration-300">
         <div class="h-12 flex items-center justify-between px-5 border-b border-gray-100">
-            <h3 class="font-semibold text-base text-[#303133]">智能添加信息项</h3>
+            <h3 class="font-semibold text-base text-[#303133]">智能填充</h3>
             <button onclick="closeSmartFillModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
-        <div class="p-5 space-y-5">
+        <div class="px-5 pt-4">
             <div class="flex items-center gap-2 px-4 py-3 bg-[#fffbe6] border border-[#ffe58f] rounded-lg">
                 <i class="fa-solid fa-lightbulb text-[#e6a23c]"></i>
-                <span class="text-sm text-[#d4a76a]">输入字段描述或上传文件，系统将智能解析并自动填充信息项</span>
+                <span id="fill-tip" class="text-sm text-[#d4a76a]">上传文件或输入描述，系统将智能解析并自动填充目录基本信息</span>
             </div>
-
-            <div>
-                <label class="block text-sm text-[#606266] mb-2">输入字段描述：</label>
-                <textarea id="smart-fill-input" rows="4" placeholder="例如：包含姓名、性别、身份证号码、出生日期、户籍地址等字段" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133] resize-none"></textarea>
+        </div>
+        <!-- Tab 切换 -->
+        <div class="px-5 pt-4">
+            <div class="flex border-b border-gray-200">
+                <button id="fill-tab-desc" onclick="switchFillTab('desc')" class="px-5 py-2.5 text-sm font-medium border-b-2 border-[#1c7ffd] text-[#1c7ffd] -mb-px transition-colors">描述</button>
+                <button id="fill-tab-upload" onclick="switchFillTab('upload')" class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-[#606266] hover:text-[#1c7ffd] transition-colors">上传文件</button>
             </div>
-
-            <div>
-                <label class="block text-sm text-[#606266] mb-2">或上传文件：</label>
+        </div>
+        <div class="p-5 space-y-5">
+            <!-- 描述 Tab -->
+            <div id="fill-view-desc">
+                <label class="block text-sm text-[#606266] mb-2">输入目录描述：</label>
+                <textarea id="smart-fill-input" rows="5" placeholder="例如：企业工商登记信息，包含企业名称、统一社会信用代码、注册地址、经营范围、法定代表人等字段" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133] resize-none"></textarea>
+            </div>
+            <!-- 上传文件 Tab -->
+            <div id="fill-view-upload" class="hidden">
                 <div class="border border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#1c7ffd] transition-colors cursor-pointer" onclick="document.getElementById('file-upload').click()">
-                    <input type="file" id="file-upload" class="hidden" accept=".txt,.csv,.json,.doc,.docx" onchange="handleFileUpload(this)">
+                    <input type="file" id="file-upload" class="hidden" accept=".xlsx,.xls,.csv,.doc,.docx,.pdf,.json" onchange="handleFileUpload(this)">
                     <i class="fa-solid fa-upload text-3xl text-[#c0c4cc] mb-3"></i>
                     <div class="text-sm text-[#909399]">点击或拖拽文件到此处上传</div>
-                    <div class="text-xs text-[#c0c4cc] mt-1">支持 .txt .csv .json .doc .docx 格式</div>
+                    <div class="text-xs text-[#c0c4cc] mt-1">支持 .xlsx .xls .csv .doc .docx .pdf .json 格式</div>
                 </div>
                 <div id="uploaded-file-info" class="mt-2 text-sm text-[#606266] hidden"></div>
             </div>
@@ -753,11 +490,11 @@
                     </div>
                     <div class="flex items-center gap-2 text-sm">
                         <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="fill-step-2-icon">2</span>
-                        <span id="fill-step-2-text" class="text-[#909399]">正在分析字段类型...</span>
+                        <span id="fill-step-2-text" class="text-[#909399]">正在分析目录信息...</span>
                     </div>
                     <div class="flex items-center gap-2 text-sm">
                         <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="fill-step-3-icon">3</span>
-                        <span id="fill-step-3-text" class="text-[#909399]">正在智能填充表格...</span>
+                        <span id="fill-step-3-text" class="text-[#909399]">正在智能填充表单...</span>
                     </div>
                 </div>
             </div>
@@ -768,131 +505,29 @@
                 </button>
                 <button onclick="doSmartFill()" class="flex-1 px-5 py-2 bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] text-white rounded-md text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-1">
                     <i class="fa-solid fa-brain"></i>
-                    开始智能添加
+                    开始智能填充
                 </button>
             </div>
         </div>
     </div>
 
     <script>
-        // 打开智能编目抽屉
-        document.getElementById('smart-catalog-btn').addEventListener('click', function() {
-            document.getElementById('smart-catalog-drawer').classList.remove('translate-x-full');
-            document.getElementById('smart-catalog-overlay').classList.remove('opacity-0', 'invisible');
-            document.body.style.overflow = 'hidden';
-            switchCatalogTab('auto');
-        });
+        // 智能填充是否已填充过（用于二次填充覆盖提示）
+        let smartFillFilled = false;
+        let currentFillTab = 'desc';
 
-        // 关闭智能编目抽屉
-        function closeSmartCatalog() {
-            document.getElementById('smart-catalog-drawer').classList.add('translate-x-full');
-            document.getElementById('smart-catalog-overlay').classList.add('opacity-0', 'invisible');
-            document.body.style.overflow = '';
-            resetAutoCatalogView();
-        }
-
-        // 自动调整输入框高度
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px';
-        }
-
-        // 处理回车发送
-        function handleSmartCatalogKeydown(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                generateCatalog();
-            }
-        }
-
-        // 生成目录信息
-        function generateCatalog() {
-            const input = document.getElementById('smart-catalog-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            // 添加用户消息
-            addSmartCatalogMessage('user', text);
-            input.value = '';
-            input.style.height = 'auto';
-
-            // 模拟AI处理
-            const container = document.getElementById('smart-catalog-messages');
-            const loadingHtml = `
-                <div class="flex items-start gap-3" id="smart-catalog-loading">
-                    <div class="w-9 h-9 rounded-full gradient-bg flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-robot text-white text-sm"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-3 text-sm text-[#303133] inline-flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-[#909399] rounded-full animate-bounce"></span>
-                            <span class="w-1.5 h-1.5 bg-[#909399] rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
-                            <span class="w-1.5 h-1.5 bg-[#909399] rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', loadingHtml);
-            scrollSmartCatalogToBottom();
-
-            setTimeout(() => {
-                const loading = document.getElementById('smart-catalog-loading');
-                if (loading) loading.remove();
-
-                // 根据输入自动填充表单字段
-                const catalogData = analyzeCatalog(text);
-                fillCatalogForm(catalogData);
-
-                // 添加AI回复
-                addSmartCatalogMessage('ai', `已为您自动生成目录信息：
-• 目录名称：${catalogData.name}
-• 所属领域：${catalogData.domain}
-• 共享类型：${catalogData.shareType}
-• 开放类型：${catalogData.openType}
-
-您可以继续编辑调整，满意后关闭此对话框。`);
-            }, 1500);
-        }
-
-        // 添加消息
-        function addSmartCatalogMessage(type, text) {
-            const container = document.getElementById('smart-catalog-messages');
-            if (type === 'user') {
-                const html = `
-                    <div class="flex items-start gap-3 justify-end">
-                        <div class="flex-1 max-w-[85%]">
-                            <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm leading-relaxed">
-                                ${text}
-                            </div>
-                        </div>
-                        <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-user text-gray-500 text-sm"></i>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', html);
-            } else {
-                const html = `
-                    <div class="flex items-start gap-3">
-                        <div class="w-9 h-9 rounded-full gradient-bg flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-robot text-white text-sm"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-3 text-sm text-[#303133] leading-relaxed">
-                                ${text}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', html);
-            }
-            scrollSmartCatalogToBottom();
-        }
-
-        // 滚动到底部
-        function scrollSmartCatalogToBottom() {
-            const container = document.getElementById('smart-catalog-messages');
-            container.scrollTop = container.scrollHeight;
+        // 智能填充弹窗 Tab 切换
+        function switchFillTab(tab) {
+            currentFillTab = tab;
+            const descTab = document.getElementById('fill-tab-desc');
+            const uploadTab = document.getElementById('fill-tab-upload');
+            const descView = document.getElementById('fill-view-desc');
+            const uploadView = document.getElementById('fill-view-upload');
+            const isDesc = tab === 'desc';
+            descTab.className = 'px-5 py-2.5 text-sm font-medium border-b-2 ' + (isDesc ? 'border-[#1c7ffd] text-[#1c7ffd] -mb-px' : 'border-transparent text-[#606266] hover:text-[#1c7ffd]') + ' transition-colors';
+            uploadTab.className = 'px-5 py-2.5 text-sm font-medium border-b-2 ' + (!isDesc ? 'border-[#1c7ffd] text-[#1c7ffd] -mb-px' : 'border-transparent text-[#606266] hover:text-[#1c7ffd]') + ' transition-colors';
+            descView.classList.toggle('hidden', !isDesc);
+            uploadView.classList.toggle('hidden', isDesc);
         }
 
         // 分析目录描述
@@ -1011,264 +646,6 @@
             }
         }
 
-        // 抽屉 Tab 切换
-        function switchCatalogTab(tab) {
-            const autoTab = document.getElementById('catalog-tab-auto');
-            const qaTab = document.getElementById('catalog-tab-qa');
-            const autoView = document.getElementById('catalog-view-auto');
-            const qaView = document.getElementById('catalog-view-qa');
-            autoTab.classList.toggle('agent-active', tab === 'auto');
-            qaTab.classList.toggle('agent-active', tab === 'qa');
-            autoView.classList.toggle('hidden', tab !== 'auto');
-            qaView.classList.toggle('hidden', tab !== 'qa');
-        }
-
-        // 自动编目相关函数
-        function resetAutoCatalogView() {
-            document.getElementById('auto-catalog-content').classList.remove('hidden');
-            document.getElementById('auto-catalog-footer').classList.remove('hidden');
-            document.getElementById('auto-catalog-progress').classList.add('hidden');
-            document.getElementById('auto-catalog-done').classList.add('hidden');
-            document.getElementById('progress-bar').style.width = '0%';
-            document.getElementById('progress-text').textContent = '0%';
-            resetSteps();
-            document.getElementById('auto-table-search').value = '';
-            filterAutoTables();
-        }
-
-        // 显示编目完成页
-        function showAutoCatalogDone(tableData) {
-            document.getElementById('auto-catalog-content').classList.add('hidden');
-            document.getElementById('auto-catalog-footer').classList.add('hidden');
-            document.getElementById('auto-catalog-progress').classList.add('hidden');
-            document.getElementById('auto-catalog-done').classList.remove('hidden');
-            const d = tableData || {};
-            const set = (id, val) => { document.getElementById(id).textContent = val || '-'; };
-            set('done-name', d.name);
-            set('done-domain', d.domain);
-            set('done-share', d.shareType);
-            set('done-open', d.openType);
-            set('done-summary', d.summary);
-        }
-
-        // 返回选表列表继续编目
-        function showAutoCatalogList() {
-            resetAutoCatalogView();
-        }
-
-        function filterAutoTables() {
-            const kw = (document.getElementById('auto-table-search').value || '').trim().toLowerCase();
-            const items = document.querySelectorAll('.auto-table-item');
-            const empty = document.getElementById('auto-table-search-empty');
-            let visibleCount = 0;
-            items.forEach(item => {
-                const input = item.querySelector('input[name="table-select"]');
-                const words = (input ? input.getAttribute('data-keywords') || '' : '') + ' ' + item.innerText;
-                const matched = !kw || words.toLowerCase().indexOf(kw) > -1;
-                item.classList.toggle('hidden', !matched);
-                if (matched) visibleCount++;
-            });
-            if (empty) empty.classList.toggle('hidden', visibleCount > 0);
-        }
-
-        function handleSmartFileUpload(e) {
-            const files = Array.from(e.target.files || []);
-            if (!files.length) return;
-            const previewBox = document.getElementById('smart-upload-preview');
-            let html = '';
-            files.forEach(file => {
-                let icon = 'fa-file-lines text-gray-500';
-                if (/\.xlsx?|\.csv$/i.test(file.name)) icon = 'fa-file-excel text-green-600';
-                else if (/\.docx?$/i.test(file.name)) icon = 'fa-file-word text-blue-600';
-                else if (/\.pdf$/i.test(file.name)) icon = 'fa-file-pdf text-red-500';
-                else if (/\.json$/i.test(file.name)) icon = 'fa-file-code text-yellow-600';
-                const size = file.size > 1024 * 1024 ? (file.size / 1024 / 1024).toFixed(2) + 'MB' : (file.size / 1024).toFixed(1) + 'KB';
-                html += `<div class="flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg bg-gray-50">
-                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                        <i class="fa-solid ${icon} text-lg"></i>
-                        <div class="min-w-0 flex-1">
-                            <div class="text-sm text-[#303133] truncate">${file.name}</div>
-                            <div class="text-xs text-[#909399]">${size} · 等待AI分析</div>
-                        </div>
-                    </div>
-                    <button type="button" onclick="this.closest('#smart-upload-preview').querySelectorAll('.smart-upload-item').length>1?this.closest('.smart-upload-item').remove():(document.getElementById('smart-upload-preview').classList.add('hidden'),document.getElementById('smart-upload-preview').innerHTML='');document.getElementById('smart-upload-input').value='';"
-                        class="w-7 h-7 rounded-full hover:bg-white text-[#909399] hover:text-red-500 shrink-0 ml-2 flex items-center justify-center">
-                        <i class="fa-solid fa-xmark text-sm"></i>
-                    </button>
-                </div>`;
-            });
-            previewBox.innerHTML = `<div class="space-y-2 smart-upload-wrap">${html}</div>`;
-            previewBox.classList.remove('hidden');
-            setTimeout(() => {
-                const msgs = document.getElementById('smart-catalog-messages');
-                const bubble = document.createElement('div');
-                bubble.className = 'flex items-start gap-3 justify-end';
-                bubble.innerHTML = `<div class="max-w-[80%]">
-                    <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm leading-relaxed">
-                        📄 已上传 ${files.length} 个文件：${files.map(f=>f.name).join('、')}<br>
-                        点击发送按钮，AI将自动分析文件中的字段并生成推荐目录信息～
-                    </div>
-                </div>
-                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" class="w-8 h-8 rounded-full">
-                </div>`;
-                msgs.appendChild(bubble);
-                msgs.scrollTop = msgs.scrollHeight;
-            }, 80);
-        }
-
-        function resetSteps() {
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById('step-' + i + '-icon').className = 'w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs';
-                document.getElementById('step-' + i + '-icon').textContent = i;
-                document.getElementById('step-' + i + '-text').className = 'text-[#909399]';
-            }
-        }
-
-        function setStepActive(step, text) {
-            const icon = document.getElementById('step-' + step + '-icon');
-            const textEl = document.getElementById('step-' + step + '-text');
-            icon.className = 'w-5 h-5 rounded-full bg-[#00d9a6] text-white flex items-center justify-center text-xs';
-            icon.innerHTML = '<i class="fa-solid fa-check"></i>';
-            textEl.className = 'text-[#00d9a6] font-medium';
-            textEl.textContent = text;
-        }
-
-        function setStepCurrent(step, text) {
-            const icon = document.getElementById('step-' + step + '-icon');
-            const textEl = document.getElementById('step-' + step + '-text');
-            icon.className = 'w-5 h-5 rounded-full border-2 border-[#00d9a6] text-[#00d9a6] flex items-center justify-center text-xs';
-            icon.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-            textEl.className = 'text-[#303133]';
-            textEl.textContent = text;
-        }
-
-        function startAutoCatalog() {
-            const selectedTable = document.querySelector('input[name="table-select"]:checked');
-            if (!selectedTable) {
-                alert('请选择一个数据表');
-                return;
-            }
-
-            document.getElementById('auto-catalog-content').classList.add('hidden');
-            document.getElementById('auto-catalog-footer').classList.add('hidden');
-            document.getElementById('auto-catalog-progress').classList.remove('hidden');
-
-            const tableData = getTableCatalogData(selectedTable.value);
-            
-            let progress = 0;
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-
-            const steps = [
-                { percent: 25, step: 1, text: '正在读取数据表结构...', doneText: '数据表结构读取完成' },
-                { percent: 50, step: 2, text: '正在分析字段信息...', doneText: '字段信息分析完成' },
-                { percent: 75, step: 3, text: '正在生成目录信息...', doneText: '目录信息生成完成' },
-                { percent: 100, step: 4, text: '正在填充表单...', doneText: '表单填充完成' }
-            ];
-
-            let stepIndex = 0;
-            setStepCurrent(1, steps[0].text);
-
-            const interval = setInterval(() => {
-                progress += 2;
-                if (progress >= steps[stepIndex].percent) {
-                    setStepActive(steps[stepIndex].step, steps[stepIndex].doneText);
-                    stepIndex++;
-                    if (stepIndex < steps.length) {
-                        setStepCurrent(steps[stepIndex].step, steps[stepIndex].text);
-                    }
-                }
-                
-                progressBar.style.width = progress + '%';
-                progressText.textContent = progress + '%';
-
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        fillCatalogForm(tableData);
-                        showAutoCatalogDone(tableData);
-                    }, 500);
-                }
-            }, 50);
-        }
-
-        function getTableCatalogData(tableName) {
-            const tableMap = {
-                'enterprise_company': {
-                    name: '企业工商登记信息',
-                    domain: '经济建设',
-                    shareType: '无条件共享',
-                    openType: '不予开放',
-                    summary: '包含企业名称、统一社会信用代码、注册地址、经营范围、法定代表人等工商登记基本信息。',
-                    themeCategory: '法人基础信息',
-                    applicationScene: '市场监管',
-                    businessCycle: '每日',
-                    dataCycle: '每日',
-                    formatCategory: '数据库',
-                    formatType: 'MySQL',
-                    shareCondition: '用于企业资质核验、市场分析等场景，可作为行政依据和工作参考。'
-                },
-                'population_resident': {
-                    name: '常住人口基本信息',
-                    domain: '社会保障',
-                    shareType: '有条件共享',
-                    openType: '不予开放',
-                    summary: '包含姓名、性别、民族、出生日期、身份证号码、户籍地址等人口基本信息。',
-                    themeCategory: '人口基础信息',
-                    applicationScene: '政务服务',
-                    businessCycle: '每月',
-                    dataCycle: '每月',
-                    formatCategory: '数据库',
-                    formatType: 'MySQL',
-                    shareCondition: '用于政务服务、社会管理等场景，需严格控制使用范围。'
-                },
-                'tax_register': {
-                    name: '税务登记信息',
-                    domain: '经济建设',
-                    shareType: '有条件共享',
-                    openType: '不予开放',
-                    summary: '包含纳税人识别号、纳税人类型、税务登记状态、主管税务机关等信息。',
-                    themeCategory: '请选择',
-                    applicationScene: '市场监管',
-                    businessCycle: '每月',
-                    dataCycle: '每月',
-                    formatCategory: '数据库',
-                    formatType: 'MySQL',
-                    shareCondition: '用于税务风控、企业征信等场景，需经授权使用。'
-                },
-                'credit_info': {
-                    name: '社会信用信息',
-                    domain: '公共安全',
-                    shareType: '有条件共享',
-                    openType: '有条件开放',
-                    summary: '包含企业和个人的信用评价信息、守信激励和失信惩戒记录。',
-                    themeCategory: '社会信用基础信息',
-                    applicationScene: '市场监管',
-                    businessCycle: '每月',
-                    dataCycle: '每月',
-                    formatCategory: '数据库',
-                    formatType: 'MySQL',
-                    shareCondition: '用于信用监管、金融服务等场景。'
-                },
-                'geo_boundary': {
-                    name: '空间地理边界数据',
-                    domain: '城市建设',
-                    shareType: '无条件共享',
-                    openType: '不予开放',
-                    summary: '包含行政区划边界、地理坐标等空间地理基础数据。',
-                    themeCategory: '空间地理基础信息',
-                    applicationScene: '城市治理',
-                    businessCycle: '每年',
-                    dataCycle: '每年',
-                    formatCategory: '文件',
-                    formatType: 'CSV',
-                    shareCondition: '用于地图应用、区域分析等场景。'
-                }
-            };
-            return tableMap[tableName] || tableMap['enterprise_company'];
-        }
-
         let currentStep = 1;
 
         function goToStep(step) {
@@ -1307,6 +684,17 @@
         }
 
         function openSmartFillModal() {
+            // 重置到描述 Tab，并恢复按钮/进度区状态
+            switchFillTab('desc');
+            document.getElementById('smart-fill-buttons').classList.remove('hidden');
+            document.getElementById('smart-fill-progress').classList.add('hidden');
+            // 二次填充提示：覆盖前面内容
+            const tip = document.getElementById('fill-tip');
+            if (smartFillFilled) {
+                tip.textContent = '检测到已填充过目录内容，本次智能填充将覆盖已有内容，请确认后继续。';
+            } else {
+                tip.textContent = '上传文件或输入描述，系统将智能解析并自动填充目录基本信息';
+            }
             document.getElementById('smart-fill-overlay').classList.remove('opacity-0', 'invisible');
             document.getElementById('smart-fill-modal').classList.remove('opacity-0', 'invisible');
         }
@@ -1324,56 +712,85 @@
             }
         }
 
+        // 根据文件名推断目录描述文本
+        function describeFromFile(file) {
+            const base = file.name.replace(/\.[^.]+$/, '').toLowerCase();
+            const map = {
+                'enterprise_company': '企业工商登记信息，包含企业名称、统一社会信用代码、注册地址、经营范围、法定代表人等字段',
+                'population_resident': '常住人口信息，包含姓名、性别、民族、出生日期、身份证号码、户籍地址等字段',
+                'tax_register': '税务登记信息，包含纳税人识别号、税务登记状态、主管税务机关等字段',
+                'credit_info': '社会信用信息，包含信用评价、守信激励、失信惩戒等字段',
+                'geo_boundary': '空间地理边界数据，包含行政区划边界、地理坐标等字段',
+                'license_electronic': '电子证照信息，包含证照编号、证照类型、持证人、有效期等字段',
+                'marriage_register': '婚姻登记信息，包含婚姻登记编号、夫妻双方信息、登记日期等字段'
+            };
+            if (map[base]) return map[base];
+            if (/enterprise|company|工商|企业/i.test(file.name)) return '企业工商登记信息，包含企业名称、统一社会信用代码、注册地址、经营范围、法定代表人等字段';
+            if (/population|resident|人口|居民/i.test(file.name)) return '常住人口信息，包含姓名、性别、民族、出生日期、身份证号码、户籍地址等字段';
+            if (/tax|税务|纳税/i.test(file.name)) return '税务登记信息，包含纳税人识别号、税务登记状态、主管税务机关等字段';
+            if (/credit|信用|征信/i.test(file.name)) return '社会信用信息，包含信用评价、守信激励、失信惩戒等字段';
+            if (/geo|地理|边界/i.test(file.name)) return '空间地理边界数据，包含行政区划边界、地理坐标等字段';
+            return file.name.replace(/\.[^.]+$/, '') + '，包含相关业务字段信息';
+        }
+
         function doSmartFill() {
             const inputText = document.getElementById('smart-fill-input').value.trim();
             const fileInput = document.getElementById('file-upload');
-            
-            if (!inputText && (!fileInput.files || fileInput.files.length === 0)) {
-                alert('请输入字段描述或上传文件');
-                return;
+            const hasFile = fileInput.files && fileInput.files.length > 0;
+
+            // 根据当前 Tab 校验输入
+            if (currentFillTab === 'desc') {
+                if (!inputText) {
+                    alert('请输入目录描述');
+                    return;
+                }
+            } else {
+                if (!hasFile) {
+                    alert('请上传文件');
+                    return;
+                }
             }
-            
+
+            // 解析出用于分析的描述文本
+            const descText = currentFillTab === 'desc' ? inputText : describeFromFile(fileInput.files[0]);
+
             document.getElementById('smart-fill-buttons').classList.add('hidden');
             document.getElementById('smart-fill-progress').classList.remove('hidden');
-            
+
             const progressBar = document.getElementById('smart-fill-progress-bar');
             const progressText = document.getElementById('smart-fill-progress-text');
             progressBar.style.width = '0%';
             progressText.textContent = '0%';
-            
+
             resetProgressSteps();
-            
+
             setTimeout(() => {
                 updateProgress(33, '正在解析输入内容...', 1);
-                
+
                 setTimeout(() => {
-                    updateProgress(66, '正在分析字段类型...', 2);
-                    
+                    updateProgress(66, '正在分析目录信息...', 2);
+
                     setTimeout(() => {
-                        updateProgress(100, '正在智能填充表格...', 3);
-                        
+                        updateProgress(100, '正在智能填充表单...', 3);
+
                         setTimeout(() => {
-                            let fieldNames = [];
-                            if (inputText) {
-                                fieldNames = parseFieldDescription(inputText);
-                            }
-                            
-                            if (fieldNames.length === 0) {
-                                fieldNames = ['姓名', '性别', '身份证号码', '出生日期', '户籍地址', '民族', '联系电话', '文化程度', '职业', '婚姻状况', '工作单位', '户籍所在地', '现居住地址', '数据采集时间', '数据更新时间'];
-                            }
-                            
-                            fillInfoItems(fieldNames);
-                            
+                            // 智能填充基本信息表单（覆盖前面内容）
+                            const catalogData = analyzeCatalog(descText);
+                            fillCatalogForm(catalogData);
+
                             const fillStep3Text = document.getElementById('fill-step-3-text');
                             const fillStep3Icon = document.getElementById('fill-step-3-icon');
                             fillStep3Icon.className = 'w-5 h-5 rounded-full bg-[#00d9a6] text-white flex items-center justify-center text-xs';
                             fillStep3Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
                             fillStep3Text.className = 'text-[#00d9a6]';
-                            fillStep3Text.textContent = `智能添加完成，共添加 ${fieldNames.length} 条数据`;
-                            
+                            fillStep3Text.textContent = '智能填充完成，已自动填充目录基本信息';
+
+                            const isOverwrite = smartFillFilled;
+                            smartFillFilled = true;
+
                             setTimeout(() => {
                                 closeSmartFillModal();
-                                showSmartFillResult(fieldNames.length);
+                                showSmartFillResult(catalogData, isOverwrite);
                             }, 1500);
                         }, 800);
                     }, 800);
@@ -1381,17 +798,21 @@
             }, 300);
         }
 
-        function showSmartFillResult(count) {
+        function showSmartFillResult(data, isOverwrite) {
             const resultOverlay = document.createElement('div');
             resultOverlay.className = 'fixed inset-0 bg-black/30 z-[95] flex items-center justify-center opacity-0 transition-opacity duration-300';
+            const overwriteTip = isOverwrite
+                ? `<p class="text-xs text-[#e6a23c] mt-2 flex items-center justify-center gap-1"><i class="fa-solid fa-circle-info"></i>已覆盖之前的填充内容</p>`
+                : '';
             resultOverlay.innerHTML = `
-                <div class="bg-white rounded-lg shadow-2xl w-[400px] p-6 transform scale-90 transition-transform duration-300">
+                <div class="bg-white rounded-lg shadow-2xl w-[420px] p-6 transform scale-90 transition-transform duration-300">
                     <div class="flex flex-col items-center text-center">
                         <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
                             <i class="fa-solid fa-check text-green-500 text-3xl"></i>
                         </div>
-                        <h3 class="text-lg font-semibold text-[#303133] mb-2">智能添加完成</h3>
-                        <p class="text-sm text-[#606266]">共添加 <span class="text-[#1c7ffd] font-semibold text-base">${count}</span> 条数据</p>
+                        <h3 class="text-lg font-semibold text-[#303133] mb-2">智能填充完成</h3>
+                        <p class="text-sm text-[#606266]">已自动填充目录：<span class="text-[#1c7ffd] font-semibold">${data.name}</span></p>
+                        ${overwriteTip}
                         <button onclick="this.closest('.fixed').remove()" class="mt-5 px-8 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1c7ffd]/90 transition-colors">
                             确定
                         </button>
@@ -1439,8 +860,8 @@
                 text.className = 'text-[#909399]';
             }
             document.getElementById('fill-step-1-text').textContent = '正在解析输入内容...';
-            document.getElementById('fill-step-2-text').textContent = '正在分析字段类型...';
-            document.getElementById('fill-step-3-text').textContent = '正在智能填充表格...';
+            document.getElementById('fill-step-2-text').textContent = '正在分析目录信息...';
+            document.getElementById('fill-step-3-text').textContent = '正在智能填充表单...';
         }
 
         function parseFieldDescription(text) {
