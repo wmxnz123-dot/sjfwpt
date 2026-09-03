@@ -19,21 +19,6 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        .agent-card.agent-active {
-            border-color: #667eea;
-            background: #f3f0ff;
-            box-shadow: 0 0 0 1px #667eea inset;
-        }
-        .agent-card.agent-active .font-medium {
-            color: #4f46e5;
-        }
-        .ai-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5); }
-            70% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-        }
-        .pulse-animation { animation: pulse-ring 2s infinite; }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
@@ -193,6 +178,13 @@
                             <span class="font-medium text-[#303133]" id="selected-catalog-name">行政复议被申请人信息</span>
                         </div>
 
+                        <!-- 智能新增按钮（仅服务类型为接口且接口来源为已有API时显示） -->
+                        <div class="flex justify-end -mb-2">
+                            <button id="smart-fill-trigger" onclick="openSmartFillModal()" class="px-4 py-1.5 bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] text-white rounded-md text-sm hover:opacity-90 transition-opacity flex items-center gap-1.5">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> 智能新增
+                            </button>
+                        </div>
+
                         <!-- 服务名称 -->
                         <div class="flex items-center">
                             <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>服务名称：</label>
@@ -206,13 +198,13 @@
                             <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>服务类型：</label>
                             <div class="ml-4 flex gap-6">
                                 <label class="flex items-center cursor-pointer">
-                                    <input type="radio" name="service-type" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> 接口
+                                    <input type="radio" name="service-type" value="接口" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]" onchange="updateSmartFillBtnVisibility()"> 接口
                                 </label>
                                 <label class="flex items-center cursor-pointer">
-                                    <input type="radio" name="service-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> 库表
+                                    <input type="radio" name="service-type" value="库表" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]" onchange="updateSmartFillBtnVisibility()"> 库表
                                 </label>
                                 <label class="flex items-center cursor-pointer">
-                                    <input type="radio" name="service-type" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> 文件
+                                    <input type="radio" name="service-type" value="文件" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]" onchange="updateSmartFillBtnVisibility()"> 文件
                                 </label>
                             </div>
                         </div>
@@ -222,10 +214,10 @@
                             <label class="w-[160px] text-right shrink-0 text-[#606266]"><span class="text-red-500 mr-1">*</span>接口来源：</label>
                             <div class="ml-4 flex gap-6">
                                 <label class="flex items-center cursor-pointer">
-                                    <input type="radio" name="api-source" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]"> 已有API
+                                    <input type="radio" name="api-source" value="已有API" checked class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd] border-[#1c7ffd] focus:ring-[#1c7ffd]" onchange="updateSmartFillBtnVisibility()"> 已有API
                                 </label>
                                 <label class="flex items-center cursor-pointer">
-                                    <input type="radio" name="api-source" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]"> 定制API
+                                    <input type="radio" name="api-source" value="定制API" class="mr-2 cursor-pointer w-3.5 h-3.5 text-[#1c7ffd]" onchange="updateSmartFillBtnVisibility()"> 定制API
                                 </label>
                             </div>
                         </div>
@@ -467,117 +459,76 @@
         </main>
     </div>
 
-    <!-- 智能助手悬浮按钮（仅第二步显示） -->
-    <button id="global-smart-fill-btn" onclick="openGlobalSmartFill()" class="fixed bottom-8 right-8 flex items-center gap-3 px-5 py-3 ai-card text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 z-[30] hidden" title="智能助手">
-        <span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center pulse-animation">
-            <i class="fa-solid fa-robot"></i>
-        </span>
-        <span class="font-medium">智能助手</span>
-        <i class="fa-solid fa-chevron-left text-sm" id="global-smart-arrow"></i>
-    </button>
-
-    <!-- 智能助手抽屉 -->
-    <div id="global-smart-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeGlobalSmartFill()"></div>
-    <div id="global-smart-drawer" class="fixed top-0 right-0 bottom-0 w-[760px] bg-white z-[90] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
-        <!-- 抽屉头部 -->
-        <div class="p-5 border-b border-gray-100 flex items-center justify-between shrink-0">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg ai-card flex items-center justify-center">
-                    <i class="fa-solid fa-robot text-white"></i>
-                </div>
-                <div>
-                    <h3 class="font-semibold text-[#303133]">智能助手 · 注册服务</h3>
-                    <p class="text-xs text-[#909399]">选择智能体开始对话</p>
-                </div>
-            </div>
-            <button onclick="closeGlobalSmartFill()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
-                <i class="fa-solid fa-xmark"></i>
+    <!-- 智能填充弹窗（仅服务类型为接口且接口来源为已有API时显示按钮） -->
+    <div id="smart-fill-overlay" class="fixed inset-0 bg-black/30 z-[80] opacity-0 invisible transition-all duration-300" onclick="closeSmartFillModal()"></div>
+    <div id="smart-fill-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] bg-white z-[90] rounded-lg shadow-2xl opacity-0 invisible transition-all duration-300">
+        <div class="h-12 flex items-center justify-between px-5 border-b border-gray-100">
+            <h3 class="font-semibold text-base text-[#303133]">智能新增</h3>
+            <button onclick="closeSmartFillModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-[#909399] transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
-
-        <!-- 选择智能体 -->
-        <div class="p-4 border-b border-gray-100 shrink-0">
-            <div class="flex items-center gap-2 mb-3">
-                <i class="fa-solid fa-robot text-[#667eea]"></i>
-                <span class="text-sm font-medium text-[#303133]">选择智能体</span>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="selectAgent('qa')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left agent-active" id="agent-qa">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-message-question text-[#36c2aa]"></i>
-                        <span class="font-medium text-sm">智能问答智能体</span>
-                    </div>
-                    <p class="text-xs text-[#909399]">自然语言描述需求，AI智能生成服务注册信息</p>
-                </button>
-                <button onclick="selectAgent('doc')" class="agent-card p-3 border-2 border-gray-100 rounded-lg cursor-pointer hover:border-[#667eea] hover:bg-[#f3f0ff] transition-all text-left" id="agent-doc">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i class="fa-solid fa-file-lines text-[#1c7ffd]"></i>
-                        <span class="font-medium text-sm">文档解析智能体</span>
-                    </div>
-                    <p class="text-xs text-[#909399]">上传接口文档/数据字典，AI自动解析并填充注册表单</p>
-                </button>
+        <div class="px-5 pt-4">
+            <div class="flex items-center gap-2 px-4 py-3 bg-[#fffbe6] border border-[#ffe58f] rounded-lg">
+                <i class="fa-solid fa-lightbulb text-[#e6a23c]"></i>
+                <span id="fill-tip" class="text-sm text-[#d4a76a]">上传文件或输入描述，系统将智能解析并自动填充服务注册信息</span>
             </div>
         </div>
-
-        <!-- ===== 文档解析智能体 - 上传视图 ===== -->
-        <div id="doc-view" class="flex-1 flex flex-col overflow-hidden hidden">
-            <div class="flex-1 overflow-y-auto px-6 py-5 space-y-5" id="doc-messages">
-                <div class="flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #1c7ffd">
-                        <i class="fa-solid fa-file-lines text-white text-xs"></i>
-                    </div>
-                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
-                        <p class="text-sm text-[#606266]">您好！我是<strong>文档解析智能体</strong>。请上传接口文档 / 数据字典（支持 .xlsx / .docx / .pdf / .json 等），我将自动解析服务名称、调用方式、请求/返回参数、错误代码等，一键填充到注册表单。</p>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-100 px-6 py-4 shrink-0 bg-white">
-                <div id="doc-preview" class="hidden mb-3"></div>
-                <div class="flex items-center justify-between mb-2">
-                    <label class="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-gray-200 text-[#606266] hover:border-blue-400 hover:text-[#1c7ffd] hover:bg-blue-50 transition-colors cursor-pointer">
-                        <i class="fa-solid fa-paperclip"></i>
-                        <span>上传接口文档</span>
-                        <input type="file" id="doc-upload" multiple
-                            accept=".xlsx,.xls,.csv,.doc,.docx,.pdf,.json,.txt,.yaml,.yml"
-                            class="hidden" onchange="handleGlobalSmartFile(event)">
-                    </label>
-                    <span class="text-xs text-[#909399]">支持接口文档/数据字典/json schema</span>
-                </div>
-                <button onclick="fillWithLastAnswer()" id="doc-apply-btn" class="hidden w-full text-sm text-white px-3 py-2.5 rounded-lg gradient-bg flex items-center justify-center gap-1 hover:shadow-lg transition-all">
-                    <i class="fa-solid fa-check-double"></i>应用AI填写到表单
-                </button>
+        <!-- Tab 切换 -->
+        <div class="px-5 pt-4">
+            <div class="flex border-b border-gray-200">
+                <button id="fill-tab-desc" onclick="switchFillTab('desc')" class="px-5 py-2.5 text-sm font-medium border-b-2 border-[#1c7ffd] text-[#1c7ffd] -mb-px transition-colors">描述</button>
+                <button id="fill-tab-upload" onclick="switchFillTab('upload')" class="px-5 py-2.5 text-sm font-medium border-b-2 border-transparent text-[#606266] hover:text-[#1c7ffd] transition-colors">上传文件</button>
             </div>
         </div>
+        <div class="p-5 space-y-5">
+            <!-- 描述 Tab -->
+            <div id="fill-view-desc">
+                <label class="block text-sm text-[#606266] mb-2">输入服务描述：</label>
+                <textarea id="smart-fill-input" rows="5" placeholder="例如：企业工商信息查询接口，GET方式，请求参数为统一社会信用代码，返回企业名称、法人、注册资本、注册地址等" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#1c7ffd] text-[#303133] resize-none"></textarea>
+            </div>
+            <!-- 上传文件 Tab -->
+            <div id="fill-view-upload" class="hidden">
+                <div class="border border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#1c7ffd] transition-colors cursor-pointer" onclick="document.getElementById('file-upload').click()">
+                    <input type="file" id="file-upload" class="hidden" accept=".xlsx,.xls,.csv,.doc,.docx,.pdf,.json,.yaml,.yml" onchange="handleFileUpload(this)">
+                    <i class="fa-solid fa-upload text-3xl text-[#c0c4cc] mb-3"></i>
+                    <div class="text-sm text-[#909399]">点击或拖拽文件到此处上传</div>
+                    <div class="text-xs text-[#c0c4cc] mt-1">支持 .xlsx .xls .csv .doc .docx .pdf .json .yaml .yml 格式</div>
+                </div>
+                <div id="uploaded-file-info" class="mt-2 text-sm text-[#606266] hidden"></div>
+            </div>
 
-        <!-- ===== 智能问答智能体 - 聊天视图 ===== -->
-        <div id="qa-view" class="flex-1 flex flex-col overflow-hidden">
-            <div class="flex-1 overflow-y-auto px-6 py-5 space-y-5" id="qa-messages">
-                <div class="flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
-                        <i class="fa-solid fa-message-question text-white text-xs"></i>
+            <div id="smart-fill-progress" class="hidden">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div id="smart-fill-progress-bar" class="h-full bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
-                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
-                        <p class="text-sm text-[#606266]">您好！我是<strong>智能问答智能体</strong>。用自然语言描述您要注册的服务，例如："我要注册一个企业工商信息查询接口，GET方式，请求参数是企业信用代码，返回企业名称、法人、注册资本…"</p>
+                    <span id="smart-fill-progress-text" class="text-sm text-[#606266] w-16 text-right">0%</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="fill-step-1-icon">1</span>
+                        <span id="fill-step-1-text" class="text-[#909399]">正在解析输入内容...</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="fill-step-2-icon">2</span>
+                        <span id="fill-step-2-text" class="text-[#909399]">正在分析服务信息...</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs" id="fill-step-3-icon">3</span>
+                        <span id="fill-step-3-text" class="text-[#909399]">正在智能填充表单...</span>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-100 px-6 py-4 shrink-0 bg-white">
-                <div class="flex items-end gap-3">
-                    <div class="flex-1 relative">
-                        <textarea id="global-smart-input" rows="2" placeholder="描述您要注册的服务信息，或直接粘贴接口定义..."
-                            class="w-full px-4 py-3 pr-10 border border-gray-200 rounded-xl text-sm resize-none outline-none focus:border-[#1c7ffd] focus:ring-2 focus:ring-[#1c7ffd]/10 transition-all max-h-40"
-                            onkeydown="handleGlobalSmartKeydown(event)"></textarea>
-                    </div>
-                    <button onclick="sendGlobalSmartMsg()" class="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center text-white hover:shadow-lg transition-all shrink-0">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
-                </div>
-                <div class="flex items-center gap-2 mt-3 flex-wrap">
-                    <span class="text-xs text-[#909399]">快捷填充：</span>
-                    <button onclick="quickAsk(1)" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">身份证查询</button>
-                    <button onclick="quickAsk(2)" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">企业工商查询</button>
-                    <button onclick="quickAsk(3)" class="px-3 py-1 bg-gray-100 text-[#606266] rounded-full text-xs hover:bg-gray-200 transition-colors">手机号用户查询</button>
-                </div>
+
+            <div class="flex gap-3" id="smart-fill-buttons">
+                <button onclick="closeSmartFillModal()" class="flex-1 px-5 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+                <button onclick="doSmartFill()" class="flex-1 px-5 py-2 bg-gradient-to-r from-[#1c7ffd] to-[#00d9a6] text-white rounded-md text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-brain"></i>
+                    开始智能填充
+                </button>
             </div>
         </div>
     </div>
@@ -628,21 +579,20 @@
 
         function goToStep(step) {
             currentStep = step;
-            const floatBtn = document.getElementById('global-smart-fill-btn');
             if (step === 1) {
                 document.getElementById('step-1').classList.remove('hidden');
                 document.getElementById('step-2').classList.add('hidden');
                 document.getElementById('btn-prev').classList.add('hidden');
                 document.getElementById('btn-next').classList.remove('hidden');
                 document.getElementById('btn-submit').classList.add('hidden');
-                if (floatBtn) floatBtn.classList.add('hidden');
             } else {
                 document.getElementById('step-1').classList.add('hidden');
                 document.getElementById('step-2').classList.remove('hidden');
                 document.getElementById('btn-prev').classList.remove('hidden');
                 document.getElementById('btn-next').classList.add('hidden');
                 document.getElementById('btn-submit').classList.remove('hidden');
-                if (floatBtn) floatBtn.classList.remove('hidden');
+                // 进入第二步时根据当前服务类型/接口来源更新智能新增按钮可见性
+                updateSmartFillBtnVisibility();
             }
         }
 
@@ -1095,235 +1045,185 @@
             }
         }
 
-        // ============== 智能助手（悬浮按钮+抽屉） ==============
-        let lastSmartAnswer = null;
-        let currentAgent = 'qa';
+        // ============== 智能新增弹窗 ==============
+        let smartFillFilled = false;
+        let currentFillTab = 'desc';
 
-        function openGlobalSmartFill() {
-            document.getElementById('global-smart-overlay').classList.remove('opacity-0', 'invisible');
-            document.getElementById('global-smart-drawer').classList.remove('translate-x-full');
-            document.body.style.overflow = 'hidden';
-            selectAgent('qa');
-        }
-
-        function closeGlobalSmartFill() {
-            document.getElementById('global-smart-overlay').classList.add('opacity-0', 'invisible');
-            document.getElementById('global-smart-drawer').classList.add('translate-x-full');
-            document.body.style.overflow = '';
-        }
-
-        // 切换智能体（参考统计中心抽屉样式）
-        function selectAgent(agentId) {
-            currentAgent = agentId;
-            document.querySelectorAll('.agent-card').forEach(card => {
-                card.classList.remove('agent-active');
-            });
-            const targetCard = document.getElementById('agent-' + agentId);
-            if (targetCard) targetCard.classList.add('agent-active');
-            document.getElementById('doc-view').classList.toggle('hidden', agentId !== 'doc');
-            document.getElementById('qa-view').classList.toggle('hidden', agentId !== 'qa');
-        }
-
-        // 获取当前智能体的消息容器
-        function getMsgContainer() {
-            return document.getElementById(currentAgent === 'doc' ? 'doc-messages' : 'qa-messages');
-        }
-
-        function quickAsk(id) {
-            const map = {
-                1: '帮我填写一个「身份证号查询公民基本信息」的接口服务：POST方式，请求参数为身份证号id_card(必填，string，body)，返回参数request_id、data.name(姓名)、data.gender(性别)、data.age(年龄)、data.birthday(出生日期)、data.address(户籍地址)，错误代码400参数错误、401未授权、500服务器错误',
-                2: '帮我填写「统一社会信用代码查询企业工商信息」接口服务：GET方式，请求参数credit_code(必填，string，query)，返回企业名称、法人、注册资本、成立日期、注册地址、经营范围，错误代码400、404未找到、500',
-                3: '帮我填写「手机号查询用户基础信息」接口服务：POST方式，请求参数phone(必填，header中app_id和app_secret为固定常量参数，body中phone)，返回用户ID、昵称、头像、性别、注册时间、会员等级，错误代码400参数错误、403无权限、429调用超限'
-            };
-            const val = map[id] || '';
-            document.getElementById('global-smart-input').value = val;
-            sendGlobalSmartMsg();
-        }
-
-        function handleGlobalSmartFile(e) {
-            const files = Array.from(e.target.files || []);
-            if (!files.length) return;
-            const preview = document.getElementById('doc-preview');
-            const html = files.map(f => {
-                let icon = 'fa-file-lines text-gray-500';
-                if (/\.xlsx?|\.csv$/i.test(f.name)) icon = 'fa-file-excel text-green-600';
-                else if (/\.docx?$/i.test(f.name)) icon = 'fa-file-word text-blue-600';
-                else if (/\.pdf$/i.test(f.name)) icon = 'fa-file-pdf text-red-500';
-                else if (/\.json|\.ya?ml$/i.test(f.name)) icon = 'fa-file-code text-yellow-600';
-                else if (/\.txt$/i.test(f.name)) icon = 'fa-file-alt text-indigo-500';
-                const size = f.size > 1048576 ? (f.size/1048576).toFixed(2)+'MB' : (f.size/1024).toFixed(1)+'KB';
-                return `<div class="flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 mb-2 last:mb-0">
-                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                        <i class="fa-solid ${icon} text-lg"></i>
-                        <div class="min-w-0 flex-1">
-                            <div class="text-sm text-[#303133] truncate">${f.name}</div>
-                            <div class="text-xs text-[#909399]">${size} · 等待AI解析</div>
-                        </div>
-                    </div>
-                    <button type="button" onclick="this.closest('#doc-preview').querySelectorAll('div.flex.items-center.justify-between').length<=1?(document.getElementById('doc-preview').classList.add('hidden'),document.getElementById('doc-preview').innerHTML=''):this.closest('div.flex.items-center.justify-between').remove();document.getElementById('doc-upload').value='';"
-                        class="w-7 h-7 rounded-full hover:bg-white text-[#909399] hover:text-red-500 shrink-0 ml-2 flex items-center justify-center">
-                        <i class="fa-solid fa-xmark text-sm"></i>
-                    </button>
-                </div>`;
-            }).join('');
-            preview.innerHTML = html;
-            preview.classList.remove('hidden');
-            // 上传后自动触发AI解析（文档解析智能体）
-            const container = document.getElementById('doc-messages');
-            container.innerHTML += `
-                <div class="flex gap-3 justify-end">
-                    <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%]">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-regular fa-file-lines"></i>
-                            <span class="text-sm">已上传接口文档：${files.map(f=>f.name).join('、')}</span>
-                        </div>
-                    </div>
-                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-user text-[#1c7ffd] text-xs"></i>
-                    </div>
-                </div>
-            `;
-            container.scrollTop = container.scrollHeight;
-            simulateDocParse();
-        }
-
-        // 文档解析智能体：模拟AI解析过程
-        function simulateDocParse() {
-            const container = document.getElementById('doc-messages');
-            const msgId = 'doc-msg-' + Date.now();
-            container.innerHTML += `
-                <div class="flex gap-3" id="${msgId}">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #1c7ffd">
-                        <i class="fa-solid fa-file-lines text-white text-xs"></i>
-                    </div>
-                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
-                        <div class="flex items-center gap-2 mb-3">
-                            <i class="fa-solid fa-spinner fa-spin text-[#1c7ffd]"></i>
-                            <span class="text-sm text-[#606266]" id="${msgId}-text">正在解析接口文档...</span>
-                        </div>
-                        <div class="flex-1 h-2 bg-white rounded-full overflow-hidden w-[220px]">
-                            <div id="${msgId}-bar" class="h-full bg-[#1c7ffd] rounded-full transition-all duration-500" style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            container.scrollTop = container.scrollHeight;
-
-            let progress = 0;
-            const steps = ['正在读取文档结构...', '正在分析接口定义...', '正在识别参数信息...'];
-            let stepIdx = 0;
-            const timer = setInterval(() => {
-                progress += 2;
-                if (progress >= 30 && stepIdx === 0) { stepIdx = 1; document.getElementById(msgId + '-text').textContent = steps[1]; }
-                if (progress >= 60 && stepIdx === 1) { stepIdx = 2; document.getElementById(msgId + '-text').textContent = steps[2]; }
-                document.getElementById(msgId + '-bar').style.width = progress + '%';
-                if (progress >= 100) {
-                    clearInterval(timer);
-                    setTimeout(() => {
-                        const msg = document.getElementById(msgId);
-                        if (msg) msg.remove();
-                        const summary = mockSmartAnswer('接口文档解析');
-                        lastSmartAnswer = summary;
-                        container.innerHTML += `
-                            <div class="flex gap-3">
-                                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #1c7ffd">
-                                    <i class="fa-solid fa-file-lines text-white text-xs"></i>
-                                </div>
-                                <div class="flex-1">${buildAnswerBubble(summary)}</div>
-                            </div>
-                        `;
-                        document.getElementById('doc-apply-btn').classList.remove('hidden');
-                        container.scrollTop = container.scrollHeight;
-                    }, 500);
-                }
-            }, 40);
-        }
-
-        function addMsgRight(text) {
-            const msgs = getMsgContainer();
-            const d = document.createElement('div');
-            d.className = 'flex items-start gap-3 justify-end';
-            d.innerHTML = `<div class="max-w-[82%]">
-                <div class="bg-[#1c7ffd] text-white rounded-2xl rounded-tr-md px-4 py-3 text-sm leading-relaxed">${text}</div>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" class="w-8 h-8 rounded-full">
-            </div>`;
-            msgs.appendChild(d);
-            msgs.scrollTop = msgs.scrollHeight;
-        }
-
-        function addMsgLeft(html) {
-            const msgs = getMsgContainer();
-            const d = document.createElement('div');
-            d.className = 'flex items-start gap-3';
-            d.innerHTML = `<div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-robot text-white text-base"></i>
-            </div><div class="flex-1">${html}</div>`;
-            msgs.appendChild(d);
-            msgs.scrollTop = msgs.scrollHeight;
-            return d;
-        }
-
-        function handleGlobalSmartKeydown(e) {
-            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                sendGlobalSmartMsg();
+        // 根据服务类型和接口来源更新智能新增按钮可见性
+        function updateSmartFillBtnVisibility() {
+            const svcType = document.querySelector('input[name="service-type"]:checked');
+            const apiSource = document.querySelector('input[name="api-source"]:checked');
+            const btn = document.getElementById('smart-fill-trigger');
+            if (!btn) return;
+            const isInterface = svcType && svcType.value === '接口';
+            const isExistingAPI = apiSource && apiSource.value === '已有API';
+            if (isInterface && isExistingAPI) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
             }
         }
 
-        function sendGlobalSmartMsg() {
-            const input = document.getElementById('global-smart-input');
-            const val = (input.value || '').trim();
-            if (!val) return;
-
-            // 用户消息（问答视图）
-            const container = document.getElementById('qa-messages');
-            container.innerHTML += `
-                <div class="flex gap-3 justify-end">
-                    <div class="bg-[#36c2aa] text-white rounded-2xl rounded-tr-none px-4 py-3 max-w-[85%]">
-                        <p class="text-sm">${val.replace(/\n/g, '<br>')}</p>
-                    </div>
-                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-user text-[#36c2aa] text-xs"></i>
-                    </div>
-                </div>
-            `;
-            input.value = '';
-            container.scrollTop = container.scrollHeight;
-
-            // AI回复（加载中）
-            const msgId = 'qa-msg-' + Date.now();
-            container.innerHTML += `
-                <div class="flex gap-3" id="${msgId}">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
-                        <i class="fa-solid fa-message-question text-white text-xs"></i>
-                    </div>
-                    <div class="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3">
-                        <p class="text-sm text-[#606266] animate-pulse">智能问答智能体正在分析...</p>
-                    </div>
-                </div>
-            `;
-            container.scrollTop = container.scrollHeight;
-
-            setTimeout(() => {
-                const msg = document.getElementById(msgId);
-                if (msg) msg.remove();
-                const summary = mockSmartAnswer(val);
-                lastSmartAnswer = summary;
-                container.innerHTML += `
-                    <div class="flex gap-3">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background: #36c2aa">
-                            <i class="fa-solid fa-message-question text-white text-xs"></i>
-                        </div>
-                        <div class="flex-1">${buildAnswerBubble(summary)}</div>
-                    </div>
-                `;
-                container.scrollTop = container.scrollHeight;
-            }, 1200);
+        // 智能新增弹窗 Tab 切换
+        function switchFillTab(tab) {
+            currentFillTab = tab;
+            const descTab = document.getElementById('fill-tab-desc');
+            const uploadTab = document.getElementById('fill-tab-upload');
+            const descView = document.getElementById('fill-view-desc');
+            const uploadView = document.getElementById('fill-view-upload');
+            const isDesc = tab === 'desc';
+            descTab.className = 'px-5 py-2.5 text-sm font-medium border-b-2 ' + (isDesc ? 'border-[#1c7ffd] text-[#1c7ffd] -mb-px' : 'border-transparent text-[#606266] hover:text-[#1c7ffd]') + ' transition-colors';
+            uploadTab.className = 'px-5 py-2.5 text-sm font-medium border-b-2 ' + (!isDesc ? 'border-[#1c7ffd] text-[#1c7ffd] -mb-px' : 'border-transparent text-[#606266] hover:text-[#1c7ffd]') + ' transition-colors';
+            descView.classList.toggle('hidden', !isDesc);
+            uploadView.classList.toggle('hidden', isDesc);
         }
 
-        function mockSmartAnswer(text) {
+        function openSmartFillModal() {
+            switchFillTab('desc');
+            document.getElementById('smart-fill-buttons').classList.remove('hidden');
+            document.getElementById('smart-fill-progress').classList.add('hidden');
+            const tip = document.getElementById('fill-tip');
+            if (smartFillFilled) {
+                tip.textContent = '检测到已填充过服务内容，本次智能新增将覆盖已有内容，请确认后继续。';
+            } else {
+                tip.textContent = '上传文件或输入描述，系统将智能解析并自动填充服务注册信息';
+            }
+            document.getElementById('smart-fill-overlay').classList.remove('opacity-0', 'invisible');
+            document.getElementById('smart-fill-modal').classList.remove('opacity-0', 'invisible');
+        }
+
+        function closeSmartFillModal() {
+            document.getElementById('smart-fill-overlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('smart-fill-modal').classList.add('opacity-0', 'invisible');
+        }
+
+        function handleFileUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                document.getElementById('uploaded-file-info').textContent = `已选择文件：${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                document.getElementById('uploaded-file-info').classList.remove('hidden');
+            }
+        }
+
+        function doSmartFill() {
+            const inputText = document.getElementById('smart-fill-input').value.trim();
+            const fileInput = document.getElementById('file-upload');
+            const hasFile = fileInput.files && fileInput.files.length > 0;
+
+            if (currentFillTab === 'desc') {
+                if (!inputText) { alert('请输入服务描述'); return; }
+            } else {
+                if (!hasFile) { alert('请上传文件'); return; }
+            }
+
+            const descText = currentFillTab === 'desc' ? inputText : (fileInput.files[0].name.replace(/\.[^.]+$/, '') + '接口服务');
+
+            document.getElementById('smart-fill-buttons').classList.add('hidden');
+            document.getElementById('smart-fill-progress').classList.remove('hidden');
+
+            const progressBar = document.getElementById('smart-fill-progress-bar');
+            const progressText = document.getElementById('smart-fill-progress-text');
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+
+            resetProgressSteps();
+
+            setTimeout(() => {
+                updateProgress(33, '正在解析输入内容...', 1);
+                setTimeout(() => {
+                    updateProgress(66, '正在分析服务信息...', 2);
+                    setTimeout(() => {
+                        updateProgress(100, '正在智能填充表单...', 3);
+                        setTimeout(() => {
+                            const serviceData = analyzeService(descText);
+                            fillServiceForm(serviceData);
+
+                            const fillStep3Text = document.getElementById('fill-step-3-text');
+                            const fillStep3Icon = document.getElementById('fill-step-3-icon');
+                            fillStep3Icon.className = 'w-5 h-5 rounded-full bg-[#00d9a6] text-white flex items-center justify-center text-xs';
+                            fillStep3Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                            fillStep3Text.className = 'text-[#00d9a6]';
+                            fillStep3Text.textContent = '智能填充完成，已自动填充服务注册信息';
+
+                            const isOverwrite = smartFillFilled;
+                            smartFillFilled = true;
+
+                            setTimeout(() => {
+                                closeSmartFillModal();
+                                showSmartFillResult(serviceData, isOverwrite);
+                            }, 1500);
+                        }, 800);
+                    }, 800);
+                }, 800);
+            }, 300);
+        }
+
+        function showSmartFillResult(data, isOverwrite) {
+            const resultOverlay = document.createElement('div');
+            resultOverlay.className = 'fixed inset-0 bg-black/30 z-[95] flex items-center justify-center opacity-0 transition-opacity duration-300';
+            const overwriteTip = isOverwrite
+                ? `<p class="text-xs text-[#e6a23c] mt-2 flex items-center justify-center gap-1"><i class="fa-solid fa-circle-info"></i>已覆盖之前的填充内容</p>`
+                : '';
+            resultOverlay.innerHTML = `
+                <div class="bg-white rounded-lg shadow-2xl w-[420px] p-6 transform scale-90 transition-transform duration-300">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-check text-green-500 text-3xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-[#303133] mb-2">智能填充完成</h3>
+                        <p class="text-sm text-[#606266]">已自动填充服务：<span class="text-[#1c7ffd] font-semibold">${data.svcName}</span></p>
+                        ${overwriteTip}
+                        <button onclick="this.closest('.fixed').remove()" class="mt-5 px-8 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1c7ffd]/90 transition-colors">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(resultOverlay);
+            requestAnimationFrame(() => {
+                resultOverlay.classList.remove('opacity-0');
+                resultOverlay.querySelector('div').classList.remove('scale-90');
+            });
+            setTimeout(() => {
+                document.getElementById('smart-fill-buttons').classList.remove('hidden');
+                document.getElementById('smart-fill-progress').classList.add('hidden');
+            }, 300);
+        }
+
+        function updateProgress(percent, message, step) {
+            const progressBar = document.getElementById('smart-fill-progress-bar');
+            const progressText = document.getElementById('smart-fill-progress-text');
+            progressBar.style.width = percent + '%';
+            progressText.textContent = percent + '%';
+            for (let i = 1; i <= 3; i++) {
+                const icon = document.getElementById('fill-step-' + i + '-icon');
+                const text = document.getElementById('fill-step-' + i + '-text');
+                if (i < step) {
+                    icon.className = 'w-5 h-5 rounded-full bg-[#00d9a6] text-white flex items-center justify-center text-xs';
+                    icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    text.className = 'text-[#00d9a6]';
+                } else if (i === step) {
+                    icon.className = 'w-5 h-5 rounded-full bg-[#1c7ffd] text-white flex items-center justify-center text-xs';
+                    text.className = 'text-[#1c7ffd] font-medium';
+                    text.textContent = message;
+                }
+            }
+        }
+
+        function resetProgressSteps() {
+            for (let i = 1; i <= 3; i++) {
+                const icon = document.getElementById('fill-step-' + i + '-icon');
+                const text = document.getElementById('fill-step-' + i + '-text');
+                icon.className = 'w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs';
+                icon.textContent = i;
+                text.className = 'text-[#909399]';
+            }
+            document.getElementById('fill-step-1-text').textContent = '正在解析输入内容...';
+            document.getElementById('fill-step-2-text').textContent = '正在分析服务信息...';
+            document.getElementById('fill-step-3-text').textContent = '正在智能填充表单...';
+        }
+
+        function analyzeService(text) {
             const t = text.toLowerCase();
             let svcName = '自定义信息查询接口';
             let svcType = '查询服务';
@@ -1438,52 +1338,7 @@
                 req: defaultReq, fixed: defaultFixed, resp: defaultResp, err: defaultErr };
         }
 
-        function buildAnswerBubble(s) {
-            const tagHtml = (s.tags||[]).map(x=>`<span class="px-2 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded mr-1 mb-1 inline-block">${x}</span>`).join('');
-            return `<div class="bg-gray-100 rounded-2xl rounded-tl-md px-4 py-4 text-sm text-[#303133] leading-relaxed">
-                ✅ 已为您生成「<b>${s.svcName}</b>」的推荐信息，可直接应用到表单：<br><br>
-                <div class="space-y-2 bg-white rounded-lg border border-gray-200 p-3 text-[13px]">
-                    <div><span class="text-[#909399] w-24 inline-block shrink-0">服务名称：</span><b>${s.svcName}</b></div>
-                    <div><span class="text-[#909399] w-24 inline-block shrink-0">服务类型：</span>${s.svcType}</div>
-                    <div><span class="text-[#909399] w-24 inline-block shrink-0">调用方式：</span><code class="px-1.5 py-0.5 bg-blue-50 text-[#1c7ffd] text-xs rounded">${s.callMethod}</code></div>
-                    <div><span class="text-[#909399] w-24 inline-block shrink-0 align-top">标签：</span>${tagHtml || '-'}</div>
-                    <div><span class="text-[#909399] w-24 inline-block shrink-0 align-top">服务描述：</span>${s.desc}</div>
-                    <div><span class="text-[#909399] w-24 inline-block shrink-0">超时时间：</span>${s.timeOut}秒 / 单日限 ${s.limitDay}次</div>
-                </div>
-                <div class="grid grid-cols-4 gap-3 mt-4">
-                    <div class="col-span-2 bg-white rounded-lg border border-gray-200 p-3 text-xs">
-                        <div class="flex items-center gap-1 mb-2 text-[#1c7ffd] font-medium"><i class="fa-solid fa-arrow-down w-3.5"></i>请求参数 <span class="text-[#909399] font-normal">(${s.req.length})</span></div>
-                        <div class="space-y-1 text-[#606266]">${s.req.map(r=>`
-                            <div class="flex justify-between gap-2"><span class="truncate">${r.name}</span><span class="truncate text-[#909399]">${r.desc}</span></div>`).join('')}
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-lg border border-gray-200 p-3 text-xs">
-                        <div class="flex items-center gap-1 mb-2 text-[#36c2aa] font-medium"><i class="fa-solid fa-wrench w-3.5"></i>常量参数 <span class="text-[#909399] font-normal">(${s.fixed.length})</span></div>
-                        <div class="space-y-1 text-[#606266]">${s.fixed.map(f=>`
-                            <div class="flex justify-between gap-2"><span class="truncate">${f.name}</span><span class="truncate text-[#909399]">${f.desc}</span></div>`).join('')}
-                        </div>
-                    </div>
-                    <div class="col-span-2 bg-white rounded-lg border border-gray-200 p-3 text-xs">
-                        <div class="flex items-center gap-1 mb-2 text-indigo-600 font-medium"><i class="fa-solid fa-arrow-up w-3.5"></i>返回参数 <span class="text-[#909399] font-normal">(${s.resp.length})</span></div>
-                        <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[#606266]">${s.resp.map(r=>`
-                            <div class="flex justify-between gap-2"><span class="truncate">${r.name}</span><span class="truncate text-[#909399]">${r.desc}</span></div>`).join('')}
-                        </div>
-                    </div>
-                    <div class="col-span-2 bg-white rounded-lg border border-gray-200 p-3 text-xs">
-                        <div class="flex items-center gap-1 mb-2 text-red-500 font-medium"><i class="fa-solid fa-triangle-exclamation w-3.5"></i>错误代码 <span class="text-[#909399] font-normal">(${s.err.length})</span></div>
-                        <div class="grid grid-cols-3 gap-x-3 gap-y-1 text-[#606266]">${s.err.map(e=>`
-                            <div class="flex items-center gap-2"><code class="px-1.5 py-0.5 bg-red-50 text-red-500 rounded text-[11px]">${e.code}</code><span class="truncate">${e.desc}</span></div>`).join('')}
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-3 text-xs text-[#909399]">点击下方「<b class="text-[#303133]">应用AI填写到表单</b>」按钮，一键填充以下内容～</div>
-            </div>`;
-        }
-
-        function fillWithLastAnswer() {
-            const s = lastSmartAnswer;
-            if (!s) { alert('请先让AI生成推荐内容再应用～'); return; }
-
+        function fillServiceForm(s) {
             const safeSet = (id, val) => { const el = document.getElementById(id); if (el) el.value = val ?? ''; };
             safeSet('service-name', s.svcName);
             const typeEl = document.getElementById('service-type');
@@ -1539,9 +1394,6 @@
                     <td class="py-3 px-4 text-[#1c7ffd]"><a href="#" onclick="deleteRow(this)" class="hover:underline">删除</a></td>
                 </tr>`).join('');
             }
-
-            closeGlobalSmartFill();
-            toast('✅ AI已自动填写以下内容：服务名称/类型/调用方式/描述 → 请求参数/常量参数/返回参数/错误代码');
         }
 
         function toast(msg) {
