@@ -196,11 +196,14 @@
                     </div>
 
                     <div class="mt-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-[14px] font-medium text-[#606266]">各部门数据目录情况</h3>
-                            <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                        <div class="mb-4 flex items-center justify-between border-b border-gray-200">
+                            <div class="flex items-center">
+                                <button onclick="switchCatalogTab('dept')" id="catalogTabDeptBtn" class="px-4 py-2 text-[14px] font-bold text-[#1c7ffd] border-b-2 border-[#1c7ffd]">各部门数据目录情况</button>
+                                <button onclick="switchCatalogTab('region')" id="catalogTabRegionBtn" class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">区划数据目录情况</button>
+                            </div>
+                            <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline mb-[-1px]">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
                         </div>
-                        <div class="overflow-x-auto">
+                        <div id="catalogTabDept" class="overflow-x-auto">
                             <table class="w-full text-[13px] border-collapse table-fixed">
                                 <thead class="bg-gray-50 text-[#606266]">
                                     <tr>
@@ -268,6 +271,74 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div id="catalogTabRegion" class="overflow-x-auto hidden">
+                            <table class="w-full text-[13px] border-collapse table-fixed">
+                                <thead class="bg-gray-50 text-[#606266]">
+                                    <tr>
+                                        <th class="py-3 px-4 text-left font-medium w-[60px]">序号</th>
+                                        <th class="py-3 px-4 text-left font-medium">区划名称</th>
+                                        <th class="py-3 px-4 text-center font-medium">已发布目录数(条)</th>
+                                        <th class="py-3 px-4 text-center font-medium">可共享目录数(条)</th>
+                                        <th class="py-3 px-4 text-center font-medium">已开放目录数(条)</th>
+                                        <th class="py-3 px-4 text-center font-medium">挂载目录数(条)</th>
+                                        <th class="py-3 px-4 text-center font-medium">归集数据量(条)</th>
+                                        <th class="py-3 px-4 text-center font-medium">开放数据量(条)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 text-[#606266]">
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4">1</td>
+                                        <td class="py-3 px-4 text-[#303133]">xx市</td>
+                                        <td class="py-3 px-4 text-center">1915</td>
+                                        <td class="py-3 px-4 text-center">1907</td>
+                                        <td class="py-3 px-4 text-center">39</td>
+                                        <td class="py-3 px-4 text-center">1739</td>
+                                        <td class="py-3 px-4 text-center">1216</td>
+                                        <td class="py-3 px-4 text-center">657</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4">2</td>
+                                        <td class="py-3 px-4 text-[#303133]">xx区</td>
+                                        <td class="py-3 px-4 text-center">301</td>
+                                        <td class="py-3 px-4 text-center">301</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                        <td class="py-3 px-4 text-center">277</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4">3</td>
+                                        <td class="py-3 px-4 text-[#303133]">xx区</td>
+                                        <td class="py-3 px-4 text-center">476</td>
+                                        <td class="py-3 px-4 text-center">476</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                        <td class="py-3 px-4 text-center">476</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4">4</td>
+                                        <td class="py-3 px-4 text-[#303133]">xx区</td>
+                                        <td class="py-3 px-4 text-center">155</td>
+                                        <td class="py-3 px-4 text-center">155</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                        <td class="py-3 px-4 text-center">154</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4">5</td>
+                                        <td class="py-3 px-4 text-[#303133]">xx区</td>
+                                        <td class="py-3 px-4 text-center">244</td>
+                                        <td class="py-3 px-4 text-center">244</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                        <td class="py-3 px-4 text-center">233</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                        <td class="py-3 px-4 text-center">0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -329,11 +400,14 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-[15px] font-bold text-[#303133]">各地市服务注册情况</h3>
-                        <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                    <div class="mb-4 flex items-center justify-between border-b border-gray-200">
+                        <div class="flex items-center">
+                            <button onclick="switchServiceRegTab('city')" id="serviceRegTabCityBtn" class="px-4 py-2 text-[14px] font-bold text-[#1c7ffd] border-b-2 border-[#1c7ffd]">各地市服务注册情况</button>
+                            <button onclick="switchServiceRegTab('region')" id="serviceRegTabRegionBtn" class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">区划服务注册情况</button>
+                        </div>
+                        <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline mb-[-1px]">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
                     </div>
-                    <div class="overflow-x-auto">
+                    <div id="serviceRegTabCity" class="overflow-x-auto">
                         <table class="w-full text-[13px] border-collapse text-center table-fixed">
                             <thead class="bg-gray-50 text-[#606266]">
                                 <tr>
@@ -384,6 +458,62 @@
                                     <td class="py-3 px-4">215</td>
                                     <td class="py-3 px-4">8</td>
                                     <td class="py-3 px-4">207</td>
+                                    <td class="py-3 px-4">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="serviceRegTabRegion" class="overflow-x-auto hidden">
+                        <table class="w-full text-[13px] border-collapse text-center table-fixed">
+                            <thead class="bg-gray-50 text-[#606266]">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium text-left w-[60px]">序号</th>
+                                    <th class="py-3 px-4 font-medium text-left">区划名称</th>
+                                    <th class="py-3 px-4 font-medium">服务总数(个)</th>
+                                    <th class="py-3 px-4 font-medium">接口数(个)</th>
+                                    <th class="py-3 px-4 font-medium">库表数(个)</th>
+                                    <th class="py-3 px-4 font-medium">文件数(个)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-[#606266]">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">1</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">xx市</td>
+                                    <td class="py-3 px-4">3097</td>
+                                    <td class="py-3 px-4">1473</td>
+                                    <td class="py-3 px-4">1605</td>
+                                    <td class="py-3 px-4">19</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">2</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">xx区</td>
+                                    <td class="py-3 px-4">513</td>
+                                    <td class="py-3 px-4">19</td>
+                                    <td class="py-3 px-4">494</td>
+                                    <td class="py-3 px-4">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">3</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">xx区</td>
+                                    <td class="py-3 px-4">710</td>
+                                    <td class="py-3 px-4">105</td>
+                                    <td class="py-3 px-4">605</td>
+                                    <td class="py-3 px-4">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">4</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">xx区</td>
+                                    <td class="py-3 px-4">311</td>
+                                    <td class="py-3 px-4">76</td>
+                                    <td class="py-3 px-4">235</td>
+                                    <td class="py-3 px-4">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">5</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">xx区</td>
+                                    <td class="py-3 px-4">438</td>
+                                    <td class="py-3 px-4">118</td>
+                                    <td class="py-3 px-4">320</td>
                                     <td class="py-3 px-4">0</td>
                                 </tr>
                             </tbody>
@@ -452,10 +582,12 @@
                     <div class="mb-4 flex items-center justify-between border-b border-gray-200">
                         <div class="flex items-center">
                             <button onclick="switchUsageTab('used')" id="usageTabUsedBtn" class="px-4 py-2 text-[14px] font-bold text-[#1c7ffd] border-b-2 border-[#1c7ffd]">各部门申请服务情况</button>
+                            <button onclick="switchUsageTab('usedRegion')" id="usageTabUsedRegionBtn" class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">区划申请服务情况</button>
                             <button onclick="switchUsageTab('use')" id="usageTabUseBtn" class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">部门服务被申请情况</button>
+                            <button onclick="switchUsageTab('useRegion')" id="usageTabUseRegionBtn" class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">区划服务被申请情况</button>
                             <button onclick="switchUsageTab('demand')" id="usageTabDemandBtn" class="px-4 py-2 text-[14px] font-medium text-[#606266] hover:text-[#303133]">需求数据量</button>
                         </div>
-                        <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                        <a href="javascript:void(0)" class="text-[#1c7ffd] text-xs hover:underline mb-[-1px]">查看更多 <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
                     </div>
                     <div id="usageTabUsed" class="overflow-x-auto">
                         <table class="w-full text-[13px] border-collapse table-fixed">
@@ -525,6 +657,74 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="usageTabUsedRegion" class="overflow-x-auto hidden">
+                        <table class="w-full text-[13px] border-collapse table-fixed">
+                            <thead class="bg-gray-50 text-[#606266]">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium text-left w-[60px]">序号</th>
+                                    <th class="py-3 px-4 font-medium text-left">区划名称</th>
+                                    <th class="py-3 px-4 font-medium">需求总数</th>
+                                    <th class="py-3 px-4 font-medium">需求通过数</th>
+                                    <th class="py-3 px-4 font-medium">申请总数</th>
+                                    <th class="py-3 px-4 font-medium">申请通过数</th>
+                                    <th class="py-3 px-4 font-medium">定制数</th>
+                                    <th class="py-3 px-4 font-medium">定制通过数</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-[#606266]">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">1</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">省级相关部门</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">2</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">省级</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">3</td>
+                                    <td class="py-3 px-4 text-left">&nbsp;</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">4</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">测定法</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">5</td>
+                                    <td class="py-3 px-4 text-left">&nbsp;</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div id="usageTabUse" class="overflow-x-auto hidden">
                         <table class="w-full text-[13px] border-collapse table-fixed">
                             <thead class="bg-gray-50 text-[#606266]">
@@ -587,6 +787,74 @@
                                     <td class="py-3 px-4 text-center">407</td>
                                     <td class="py-3 px-4 text-center">407</td>
                                     <td class="py-3 px-4 text-center">407</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="usageTabUseRegion" class="overflow-x-auto hidden">
+                        <table class="w-full text-[13px] border-collapse table-fixed">
+                            <thead class="bg-gray-50 text-[#606266]">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium text-left w-[60px]">序号</th>
+                                    <th class="py-3 px-4 font-medium text-left">区域名称</th>
+                                    <th class="py-3 px-4 font-medium">供给总数</th>
+                                    <th class="py-3 px-4 font-medium">供给通过数</th>
+                                    <th class="py-3 px-4 font-medium">被申请总数</th>
+                                    <th class="py-3 px-4 font-medium">被申请通过数</th>
+                                    <th class="py-3 px-4 font-medium">被定制总数</th>
+                                    <th class="py-3 px-4 font-medium">被定制通过数</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-[#606266]">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">1</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">省级相关部门</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">2</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">省级</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">3</td>
+                                    <td class="py-3 px-4 text-left">&nbsp;</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">4</td>
+                                    <td class="py-3 px-4 text-[#303133] text-left">测定法</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-4 text-left">5</td>
+                                    <td class="py-3 px-4 text-left">&nbsp;</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
+                                    <td class="py-3 px-4 text-center">0</td>
                                     <td class="py-3 px-4 text-center">0</td>
                                     <td class="py-3 px-4 text-center">0</td>
                                 </tr>
@@ -1000,10 +1268,56 @@
             document.getElementById('report-content').classList.toggle('hidden', agentId !== 'report');
         }
 
+        // 服务注册情况 - Tab切换
+        function switchServiceRegTab(tab) {
+            const btnMap = { city: 'serviceRegTabCityBtn', region: 'serviceRegTabRegionBtn' };
+            const panelMap = { city: 'serviceRegTabCity', region: 'serviceRegTabRegion' };
+            const visiblePanel = panelMap[tab];
+            Object.entries(btnMap).forEach(([key, btnId]) => {
+                const btnEl = document.getElementById(btnId);
+                if (!btnEl) return;
+                const isActive = (key === tab);
+                if (isActive) {
+                    btnEl.classList.add('font-bold', 'text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]');
+                    btnEl.classList.remove('font-medium', 'text-[#606266]');
+                } else {
+                    btnEl.classList.remove('font-bold', 'text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]');
+                    btnEl.classList.add('font-medium', 'text-[#606266]');
+                }
+            });
+            Object.values(panelMap).forEach(panelId => {
+                const panelEl = document.getElementById(panelId);
+                if (panelEl) panelEl.classList.toggle('hidden', panelId !== visiblePanel);
+            });
+        }
+
+        // 数据目录统计 - Tab切换
+        function switchCatalogTab(tab) {
+            const btnMap = { dept: 'catalogTabDeptBtn', region: 'catalogTabRegionBtn' };
+            const panelMap = { dept: 'catalogTabDept', region: 'catalogTabRegion' };
+            const visiblePanel = panelMap[tab];
+            Object.entries(btnMap).forEach(([key, btnId]) => {
+                const btnEl = document.getElementById(btnId);
+                if (!btnEl) return;
+                const isActive = (key === tab);
+                if (isActive) {
+                    btnEl.classList.add('font-bold', 'text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]');
+                    btnEl.classList.remove('font-medium', 'text-[#606266]');
+                } else {
+                    btnEl.classList.remove('font-bold', 'text-[#1c7ffd]', 'border-b-2', 'border-[#1c7ffd]');
+                    btnEl.classList.add('font-medium', 'text-[#606266]');
+                }
+            });
+            Object.values(panelMap).forEach(panelId => {
+                const panelEl = document.getElementById(panelId);
+                if (panelEl) panelEl.classList.toggle('hidden', panelId !== visiblePanel);
+            });
+        }
+
         // 申请使用统计 - Tab切换
         function switchUsageTab(tab) {
-            const btnMap = { used: 'usageTabUsedBtn', use: 'usageTabUseBtn', demand: 'usageTabDemandBtn' };
-            const panelMap = { used: 'usageTabUsed', use: 'usageTabUse', demand: 'usageTabDemand' };
+            const btnMap = { used: 'usageTabUsedBtn', usedRegion: 'usageTabUsedRegionBtn', use: 'usageTabUseBtn', useRegion: 'usageTabUseRegionBtn', demand: 'usageTabDemandBtn' };
+            const panelMap = { used: 'usageTabUsed', usedRegion: 'usageTabUsedRegion', use: 'usageTabUse', useRegion: 'usageTabUseRegion', demand: 'usageTabDemand' };
             const visiblePanel = panelMap[tab];
             Object.entries(btnMap).forEach(([key, btnId]) => {
                 const btnEl = document.getElementById(btnId);
