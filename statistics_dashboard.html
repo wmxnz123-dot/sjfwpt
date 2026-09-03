@@ -83,19 +83,19 @@
                     <div>
                         <h1 class="text-xl font-bold text-[#303133]">统计看板</h1>
                     </div>
+                    <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
+                        <span class="text-[#909399] text-sm">统计维度：</span>
+                        <select id="globalStatDimension" class="text-sm text-[#303133] outline-none bg-transparent">
+                            <option value="all">全部</option>
+                            <option value="city">市直部门</option>
+                            <option value="district">区县</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div id="section-catalog" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="mb-6">
                         <h2 class="text-[16px] font-bold text-[#303133]">数据目录统计</h2>
-                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
-                            <span class="text-[#909399] text-sm">统计维度：</span>
-                            <select class="text-sm text-[#303133] outline-none">
-                                <option>全部</option>
-                                <option>市直部门</option>
-                                <option>区县</option>
-                            </select>
-                        </div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-5 mb-8">
@@ -343,16 +343,8 @@
                 </div>
 
                 <div id="section-resource" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="mb-6">
                         <h2 class="text-[16px] font-bold text-[#303133]">服务统计</h2>
-                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
-                            <span class="text-[#909399] text-sm">统计范围：</span>
-                            <select class="text-sm text-[#303133] outline-none bg-transparent">
-                                <option>全部</option>
-                                <option>市直部门</option>
-                                <option>区县</option>
-                            </select>
-                        </div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-4 mb-8">
@@ -522,16 +514,8 @@
                 </div>
 
                 <div id="section-usage" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6">
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="mb-6">
                         <h2 class="text-[16px] font-bold text-[#303133]">申请使用统计</h2>
-                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
-                            <span class="text-[#909399] text-sm">统计范围：</span>
-                            <select class="text-sm text-[#303133] outline-none bg-transparent">
-                                <option>全部</option>
-                                <option>市直部门</option>
-                                <option>区县</option>
-                            </select>
-                        </div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-4 mb-8">
@@ -932,16 +916,8 @@
                 </div>
 
                 <div id="section-objection" class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6 mb-5 scroll-mt-6 hidden">
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="mb-6">
                         <h2 class="text-[16px] font-bold text-[#303133]">数据异议统计</h2>
-                        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5">
-                            <span class="text-[#909399] text-sm">统计范围：</span>
-                            <select class="text-sm text-[#303133] outline-none bg-transparent">
-                                <option>全部</option>
-                                <option>市直部门</option>
-                                <option>区县</option>
-                            </select>
-                        </div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-4 mb-8">
@@ -1901,9 +1877,16 @@
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 10 } } } }
             });
-        });
 
-        let modalChartsInit = false;
+            // 全局统计维度下拉：切换时应用到页面整体（当前为静态数据，预留联动钩子）
+            const globalDimEl = document.getElementById('globalStatDimension');
+            if (globalDimEl) {
+                globalDimEl.addEventListener('change', (e) => {
+                    // 此处可接入后端接口，按 e.target.value（all / city / district）刷新各模块数据
+                    // console.log('切换全局统计维度：', e.target.value);
+                });
+            }
+        });
         function openResourceDetailModal(deptName) {
             document.getElementById('modalDeptTitle').innerText = deptName + ' 资源情况详情';
             document.getElementById('resourceDetailModal').classList.remove('hidden');
