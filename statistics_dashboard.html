@@ -136,7 +136,7 @@
                     </div>
 
                     <div class="grid grid-cols-3 gap-6">
-                        <div class="col-span-2">
+                        <div class="col-span-2 border border-gray-100 rounded-lg p-4">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-[14px] font-medium text-[#606266]">目录数趋势</h3>
                                 <div class="flex gap-2 text-xs" id="catalogTrendRange">
@@ -150,9 +150,9 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div class="border border-gray-100 rounded-lg p-4">
                             <h3 class="text-[14px] font-medium text-[#606266] mb-4">目录共享类型分布</h3>
-                            <div class="h-[300px] flex items-center justify-center">
+                            <div class="h-[300px]">
                                 <canvas id="catalogShareChart"></canvas>
                             </div>
                         </div>
@@ -369,8 +369,8 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-6 mb-8">
-                        <div class="border border-gray-100 rounded-lg p-4">
+                    <div class="grid grid-cols-3 gap-6 mb-8">
+                        <div class="col-span-2 border border-gray-100 rounded-lg p-4">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-[14px] font-medium text-[#606266]">服务数趋势</h3>
                                 <div class="flex gap-2 text-xs" id="serviceTrendRange">
@@ -379,13 +379,13 @@
                                     <button onclick="switchServiceTrendRange('12m', this)" class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">12个月</button>
                                 </div>
                             </div>
-                            <div class="h-[220px]">
+                            <div class="h-[260px]">
                                 <canvas id="serviceTrendChart"></canvas>
                             </div>
                         </div>
                         <div class="border border-gray-100 rounded-lg p-4">
                             <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">服务类型分布</h3>
-                            <div class="h-[220px]">
+                            <div class="h-[260px]">
                                 <canvas id="resourceTypeChart"></canvas>
                             </div>
                         </div>
@@ -541,13 +541,7 @@
                     </div>
 
                     <div class="grid grid-cols-3 gap-6 mb-8">
-                        <div class="border border-gray-100 rounded-lg p-4">
-                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">服务类型分布</h3>
-                            <div class="h-[220px]">
-                                <canvas id="usageResourceTypeChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="border border-gray-100 rounded-lg p-4 col-span-2">
+                        <div class="col-span-2 border border-gray-100 rounded-lg p-4">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-[14px] font-medium text-[#606266]">服务申请趋势</h3>
                                 <div class="flex gap-2 text-xs" id="usageTrendRange">
@@ -556,8 +550,14 @@
                                     <button onclick="switchUsageTrendRange('12m', this)" class="px-2 py-1 bg-gray-50 text-[#606266] rounded hover:bg-gray-100">12个月</button>
                                 </div>
                             </div>
-                            <div class="h-[220px]">
+                            <div class="h-[260px]">
                                 <canvas id="usageTrendChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="border border-gray-100 rounded-lg p-4">
+                            <h3 class="text-[14px] font-medium text-[#606266] mb-4 text-center">申请服务类型分布</h3>
+                            <div class="h-[260px]">
+                                <canvas id="usageResourceTypeChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -1713,18 +1713,50 @@
                 }
             });
 
+            // 环形图百分比标签插件：在扇区中部绘制百分比
+            const doughnutPercentLabels = {
+                id: 'doughnutPercentLabels',
+                afterDatasetsDraw(chart) {
+                    const { ctx } = chart;
+                    const meta = chart.getDatasetMeta(0);
+                    if (!meta || chart.config.type !== 'doughnut') return;
+                    const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                    if (!total) return;
+                    meta.data.forEach((arc, i) => {
+                        const { x, y, startAngle, endAngle, outerRadius, innerRadius } = arc.getProps(['x', 'y', 'startAngle', 'endAngle', 'outerRadius', 'innerRadius'], true);
+                        const midAngle = (startAngle + endAngle) / 2;
+                        const r = (outerRadius + innerRadius) / 2;
+                        const px = x + Math.cos(midAngle) * r;
+                        const py = y + Math.sin(midAngle) * r;
+                        const value = chart.data.datasets[0].data[i];
+                        const pct = (value / total * 100).toFixed(1) + '%';
+                        ctx.save();
+                        ctx.fillStyle = '#fff';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.font = 'bold 11px sans-serif';
+                        ctx.fillText(value.toLocaleString(), px, py - 7);
+                        ctx.font = '10px sans-serif';
+                        ctx.fillText(pct, px, py + 7);
+                        ctx.restore();
+                    });
+                }
+            };
+
             const ctx2 = document.getElementById('catalogShareChart').getContext('2d');
             new Chart(ctx2, {
                 type: 'doughnut',
+                plugins: [doughnutPercentLabels],
                 data: {
                     labels: ['无条件共享', '有条件共享', '不予共享'],
-                    datasets: [{ data: [4580, 6250, 1750], backgroundColor: ['#36c2aa', '#1c7ffd', '#e6a23c'], borderWidth: 0, hoverOffset: 10 }]
+                    datasets: [{ data: [4580, 6250, 1750], backgroundColor: ['#36c2aa', '#1c7ffd', '#e6a23c'], borderWidth: 0, hoverOffset: 6 }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15 } } },
-                    cutout: '60%'
+                    plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } },
+                    cutout: '62%',
+                    radius: '78%'
                 }
             });
 
@@ -1788,20 +1820,22 @@
             });
             new Chart(document.getElementById('resourceTypeChart').getContext('2d'), {
                 type: 'doughnut',
+                plugins: [doughnutPercentLabels],
                 data: {
                     labels: ['库表', '文件', '接口'],
-                    datasets: [{ data: [8240, 2150, 1580], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c'], borderWidth: 0 }]
+                    datasets: [{ data: [8240, 2150, 1580], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c'], borderWidth: 0, hoverOffset: 6 }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '62%', radius: '78%' }
             });
 
             new Chart(document.getElementById('usageResourceTypeChart').getContext('2d'), {
                 type: 'doughnut',
+                plugins: [doughnutPercentLabels],
                 data: {
                     labels: ['库表', '接口', '文件'],
-                    datasets: [{ data: [1620, 980, 620], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c'], borderWidth: 0 }]
+                    datasets: [{ data: [1620, 980, 620], backgroundColor: ['#1c7ffd', '#36c2aa', '#e6a23c'], borderWidth: 0, hoverOffset: 6 }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '60%' }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 10 } } }, cutout: '62%', radius: '78%' }
             });
 
             usageTrendChartInstance = new Chart(document.getElementById('usageTrendChart').getContext('2d'), {
