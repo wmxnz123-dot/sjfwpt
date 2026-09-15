@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 需求数据配置</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js?v=20260831b"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <div class="flex-1 p-6 flex flex-col gap-5 overflow-y-auto">
+                
+                <!-- 搜索区域 -->
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-5">
+                    <div class="flex items-center gap-6 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">任务名称：</label>
+                            <input type="text" id="search-task" placeholder="请输入" class="w-[200px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">需求名称：</label>
+                            <input type="text" id="search-demand" placeholder="请输入" class="w-[200px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">申请单位：</label>
+                            <input type="text" id="search-apply" placeholder="请输入" class="w-[200px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] font-medium">提供单位：</label>
+                            <input type="text" id="search-provide" placeholder="请输入" class="w-[200px] h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all">
+                        </div>
+                        <div class="flex items-center gap-3 ml-auto">
+                            <button onclick="queryList()" class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-right text-xs"></i>
+                                重置
+                            </button>
+                            <button onclick="resetSearch()" class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-search text-xs"></i>
+                                查询
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 配置列表 -->
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)]">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h2 class="text-[16px] font-bold text-[#303133]">需求数据配置列表</h2>
+                        <button onclick="openAddModal()" class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors flex items-center gap-1">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                            新增
+                        </button>
+                    </div>
+
+                    <!-- 表格 -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">序号</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">任务名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">需求名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">目录名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">服务名称</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">申请单位</th>
+                                    <th class="px-5 py-3 text-left font-medium text-[#606266]">提供单位</th>
+                                    <th class="px-5 py-3 text-right font-medium text-[#606266]">配置时间</th>
+                                    <th class="px-5 py-3 text-center font-medium text-[#606266]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="config-table-body"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between">
+                        <div class="text-sm text-[#606266]">
+                            共 <span class="font-medium" id="total-count">5</span> 条
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">
+                                <i class="fa-solid fa-angle-left text-sm"></i>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">1</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">2</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-[#606266] hover:bg-gray-50 hover:text-[#1c7ffd] transition-colors">3</button>
+                            <button class="w-8 h-8 flex items-center justify-center border border-[#1c7ffd] bg-[#1c7ffd] text-white rounded">
+                                <i class="fa-solid fa-angle-right text-sm"></i>
+                            </button>
+                            <select class="h-8 px-2 border border-gray-200 rounded text-sm outline-none focus:border-[#1c7ffd]">
+                                <option>10条/页</option>
+                                <option>20条/页</option>
+                                <option>50条/页</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- 新增配置弹窗 -->
+    <div id="addConfigModal" class="fixed inset-0 bg-black bg-opacity-30 z-[70] hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-2xl w-[480px] overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <div class="text-[#303133] text-[15px] font-medium">新增配置</div>
+                <i class="fa-solid fa-xmark text-gray-400 cursor-pointer hover:text-[#1c7ffd] text-lg" onclick="closeAddModal()"></i>
+            </div>
+            <div class="px-6 py-5 space-y-4">
+                <div class="flex items-center gap-3">
+                    <label class="w-[100px] text-right text-[#606266] shrink-0"><span class="text-red-500 mr-1">*</span>任务名称</label>
+                    <select id="add-task-name" class="flex-1 h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-3">
+                    <label class="w-[100px] text-right text-[#606266] shrink-0"><span class="text-red-500 mr-1">*</span>申请单位</label>
+                    <select id="add-apply-unit" class="flex-1 h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-3">
+                    <label class="w-[100px] text-right text-[#606266] shrink-0"><span class="text-red-500 mr-1">*</span>需求名称</label>
+                    <select id="add-demand-name" class="flex-1 h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-3">
+                    <label class="w-[100px] text-right text-[#606266] shrink-0"><span class="text-red-500 mr-1">*</span>目录名称</label>
+                    <select id="add-catalog-name" class="flex-1 h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-3">
+                    <label class="w-[100px] text-right text-[#606266] shrink-0"><span class="text-red-500 mr-1">*</span>服务名称</label>
+                    <select id="add-service-name" class="flex-1 h-[36px] px-3 border border-gray-200 rounded-md text-sm outline-none focus:border-[#1c7ffd] focus:ring-1 focus:ring-[#1c7ffd] transition-all bg-white">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="px-6 py-4 flex justify-end gap-3 bg-white border-t border-gray-100">
+                <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors" onclick="closeAddModal()">取 消</button>
+                <button class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md text-sm hover:bg-[#1a73e8] transition-colors" onclick="submitAddConfig()">确 认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除确认弹窗 -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-30 z-[70] hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-2xl w-[440px] overflow-hidden">
+            <div class="px-6 py-5 flex items-start gap-3 border-b border-gray-100">
+                <i class="fa-solid fa-triangle-exclamation text-[#f56c6c] text-2xl mt-0.5"></i>
+                <div class="flex-1">
+                    <div class="text-[#303133] text-[15px] font-medium mb-1">删除确认</div>
+                    <span id="confirmMessage" class="text-[#606266] text-[13px] leading-relaxed block"></span>
+                </div>
+            </div>
+            <div class="px-6 py-4 flex justify-end gap-3 bg-white">
+                <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors" onclick="closeConfirm()">取 消</button>
+                <button class="px-4 py-2 bg-[#f56c6c] text-white rounded-md hover:bg-[#d9363e] transition-colors text-sm" id="confirmOkBtn">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 配置成功提示弹窗 -->
+    <div id="alertModal" class="fixed inset-0 bg-black bg-opacity-30 z-[70] hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-2xl w-[400px] overflow-hidden">
+            <div class="px-6 py-5 flex items-center gap-3">
+                <i class="fa-solid fa-circle-check text-green-500 text-2xl"></i>
+                <span id="alertMessage" class="text-[#303133] text-[15px]"></span>
+            </div>
+            <div class="px-6 py-4 flex justify-end gap-3 bg-white border-t border-gray-100">
+                <button class="px-4 py-2 bg-[#1c7ffd] text-white rounded-md hover:bg-blue-600 transition-colors text-sm" onclick="closeAlert()">确 定</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 下拉选项数据
+        const taskOptions = ['人口数据归集任务', '企业信用数据归集任务', '政务服务数据共享任务', '生态环保监测数据任务', '教育资源共享数据任务'];
+        const demandOptions = ['人口基础数据需求', '企业信用信息需求', '政务服务事项数据需求', '环境质量监测数据需求', '教育资源信息需求'];
+        const catalogOptions = ['人口基础信息库', '法人基础信息库', '企业登记信息库', '社会信用信息目录', '环境质量监测目录', '教育资源信息目录'];
+        const serviceOptions = ['人口信息查询接口', '企业信用信息查询接口', '政务服务事项查询接口', '环境质量数据服务', '教育资源数据服务'];
+        const applyUnitOptions = ['市公安局', '市发改委', '市政务服务中心', '市生态环境局', '市教育局', '市人社局', '市民政局', '市税务局', '市自然资源局'];
+        const provideUnitOptions = ['省公安厅', '省市场监管局', '省政务服务管理局', '省生态环境厅', '省教育厅', '省人社厅', '省民政厅', '省税务局', '省自然资源厅'];
+
+        // 配置列表数据
+        let configData = [
+            { id: 1, taskName: '人口数据归集任务', demandName: '人口基础数据需求', applyUnit: '市公安局', provideUnit: '省公安厅', catalogName: '人口基础信息库', serviceName: '人口信息查询接口', configTime: '2026-08-20 10:30' },
+            { id: 2, taskName: '企业信用数据归集任务', demandName: '企业信用信息需求', applyUnit: '市发改委', provideUnit: '省市场监管局', catalogName: '法人基础信息库', serviceName: '企业信用信息查询接口', configTime: '2026-08-22 14:15' },
+            { id: 3, taskName: '政务服务数据共享任务', demandName: '政务服务事项数据需求', applyUnit: '市政务服务中心', provideUnit: '省政务服务管理局', catalogName: '企业登记信息库', serviceName: '政务服务事项查询接口', configTime: '2026-08-25 09:40' },
+            { id: 4, taskName: '生态环保监测数据任务', demandName: '环境质量监测数据需求', applyUnit: '市生态环境局', provideUnit: '省生态环境厅', catalogName: '社会信用信息目录', serviceName: '环境质量数据服务', configTime: '2026-08-28 16:20' },
+            { id: 5, taskName: '教育资源共享数据任务', demandName: '教育资源信息需求', applyUnit: '市教育局', provideUnit: '省教育厅', catalogName: '环境质量监测目录', serviceName: '教育资源数据服务', configTime: '2026-09-01 11:05' }
+        ];
+
+        let filteredData = [...configData];
+
+        // 渲染配置列表
+        function renderConfigs() {
+            const tbody = document.getElementById('config-table-body');
+            document.getElementById('total-count').textContent = filteredData.length;
+            if (filteredData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="py-16 text-center text-[#909399]">
+                            <i class="fa-regular fa-folder-open text-3xl mb-2 block opacity-30"></i>
+                            暂无配置数据
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            tbody.innerHTML = filteredData.map((c, i) => `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td class="px-5 py-4 text-[#303133]">${i + 1}</td>
+                    <td class="px-5 py-4 text-[#303133] font-medium">${c.taskName}</td>
+                    <td class="px-5 py-4 text-[#303133]">${c.demandName}</td>
+                    <td class="px-5 py-4 text-[#606266]">${c.catalogName}</td>
+                    <td class="px-5 py-4 text-[#606266]">${c.serviceName}</td>
+                    <td class="px-5 py-4 text-[#606266]">${c.applyUnit}</td>
+                    <td class="px-5 py-4 text-[#606266]">${c.provideUnit}</td>
+                    <td class="px-5 py-4 text-right text-[#606266]">${c.configTime}</td>
+                    <td class="px-5 py-4 text-center">
+                        <div class="flex items-center justify-center gap-3">
+                            <a href="javascript:void(0)" onclick="deleteConfig(${c.id})" class="text-red-500 hover:text-red-600 text-sm">删除</a>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 查询
+        function queryList() {
+            const taskKw = document.getElementById('search-task').value.trim();
+            const demandKw = document.getElementById('search-demand').value.trim();
+            const applyKw = document.getElementById('search-apply').value.trim();
+            const provideKw = document.getElementById('search-provide').value.trim();
+            filteredData = configData.filter(c => {
+                if (taskKw && !c.taskName.includes(taskKw)) return false;
+                if (demandKw && !c.demandName.includes(demandKw)) return false;
+                if (applyKw && !c.applyUnit.includes(applyKw)) return false;
+                if (provideKw && !c.provideUnit.includes(provideKw)) return false;
+                return true;
+            });
+            renderConfigs();
+        }
+
+        // 重置
+        function resetSearch() {
+            document.getElementById('search-task').value = '';
+            document.getElementById('search-demand').value = '';
+            document.getElementById('search-apply').value = '';
+            document.getElementById('search-provide').value = '';
+            filteredData = [...configData];
+            renderConfigs();
+        }
+
+        // 初始化下拉选项
+        function initSelectOptions() {
+            const fill = (id, options) => {
+                const sel = document.getElementById(id);
+                sel.innerHTML = '<option value="">请选择</option>' + options.map(o => `<option value="${o}">${o}</option>`).join('');
+            };
+            fill('add-task-name', taskOptions);
+            fill('add-apply-unit', applyUnitOptions);
+            fill('add-demand-name', demandOptions);
+            fill('add-catalog-name', catalogOptions);
+            fill('add-service-name', serviceOptions);
+        }
+
+        // 打开新增配置弹窗
+        function openAddModal() {
+            document.getElementById('add-task-name').value = '';
+            document.getElementById('add-apply-unit').value = '';
+            document.getElementById('add-demand-name').value = '';
+            document.getElementById('add-catalog-name').value = '';
+            document.getElementById('add-service-name').value = '';
+            document.getElementById('addConfigModal').classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addConfigModal').classList.add('hidden');
+        }
+
+        // 提交新增配置
+        function submitAddConfig() {
+            const taskName = document.getElementById('add-task-name').value;
+            const applyUnit = document.getElementById('add-apply-unit').value;
+            const demandName = document.getElementById('add-demand-name').value;
+            const catalogName = document.getElementById('add-catalog-name').value;
+            const serviceName = document.getElementById('add-service-name').value;
+            if (!taskName || !applyUnit || !demandName || !catalogName || !serviceName) {
+                showAlert('请完整填写所有必填项');
+                return;
+            }
+            const now = new Date();
+            const pad = n => String(n).padStart(2, '0');
+            const configTime = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+            configData.unshift({ id: Date.now(), taskName, demandName, applyUnit, provideUnit: '', catalogName, serviceName, configTime });
+            filteredData = [...configData];
+            renderConfigs();
+            closeAddModal();
+            showAlert('配置成功');
+        }
+
+        // 删除配置
+        function deleteConfig(id) {
+            const c = configData.find(x => x.id === id);
+            if (!c) return;
+            showConfirm('确定要删除配置「' + c.taskName + '」吗？删除后数据将无法恢复，请谨慎操作！', function() {
+                configData = configData.filter(x => x.id !== id);
+                filteredData = filteredData.filter(x => x.id !== id);
+                renderConfigs();
+            });
+        }
+
+        function showConfirm(message, onOk) {
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('confirmOkBtn').onclick = function() {
+                closeConfirm();
+                if (onOk) onOk();
+            };
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+
+        function closeConfirm() {
+            document.getElementById('confirmModal').classList.add('hidden');
+        }
+
+        function showAlert(message) {
+            document.getElementById('alertMessage').textContent = message;
+            document.getElementById('alertModal').classList.remove('hidden');
+        }
+
+        function closeAlert() {
+            document.getElementById('alertModal').classList.add('hidden');
+        }
+
+        // 初始化
+        initSelectOptions();
+        renderConfigs();
+    </script>
+</body>
+</html>

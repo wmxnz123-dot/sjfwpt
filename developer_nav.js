@@ -204,7 +204,8 @@ const developerSideNavMap = {
                 { type: 'link', label: '部门调用情况', href: '', navKey: 'statistics-dept-call', disabled: true },
                 { type: 'link', label: '区划调用情况', href: '', navKey: 'statistics-region-call', disabled: true },
                 { type: 'link', label: '部门接口调用情况', href: '', navKey: 'statistics-dept-api-call', disabled: true },
-                { type: 'link', label: '需求数据量', href: 'statistics_demand.html?nav=statistics-demand', navKey: 'statistics-demand', badge: '新' }
+                { type: 'link', label: '需求数据量', href: 'statistics_demand_task.html?nav=statistics-demand-task', navKey: 'statistics-demand-task', badge: '新' },
+                { type: 'link', label: '需求数据总量', href: 'statistics_demand.html?nav=statistics-demand', navKey: 'statistics-demand', badge: '新' }
             ]
         },
         { type: 'link', label: '基础库统计', href: '', navKey: 'statistics-database', disabled: true, icon: 'fa-database' },
@@ -218,7 +219,8 @@ const developerSideNavMap = {
             icon: 'fa-sliders',
             badge: '新',
             children: [
-                { type: 'link', label: '场景配置', href: 'config_center.html?nav=config-scene', navKey: 'config-scene', badge: '新' }
+                { type: 'link', label: '场景配置', href: 'config_center.html?nav=config-scene', navKey: 'config-scene', badge: '新' },
+                { type: 'link', label: '需求数据配置', href: 'config_demand.html?nav=config-demand', navKey: 'config-demand', badge: '新' }
             ]
         }
     ],
@@ -267,8 +269,10 @@ const developerPathDefaults = {
     
     'statistics_dashboard.html': { group: 'statistics', navKey: 'statistics-dashboard' },
     'statistics_demand.html': { group: 'statistics', navKey: 'statistics-demand' },
+    'statistics_demand_task.html': { group: 'statistics', navKey: 'statistics-demand-task' },
     'config_center.html': { group: 'config', navKey: 'config-scene' },
     'scene_add.html': { group: 'config', navKey: 'config-scene' },
+    'config_demand.html': { group: 'config', navKey: 'config-demand' },
     'monitor_service_monitor.html': { group: 'monitor', navKey: 'monitor-service-monitor' },
     'monitor_dashboard.html': { group: 'monitor', navKey: 'monitor-dashboard' },
     'monitor_authorization_alert.html': { group: 'monitor', navKey: 'monitor-authorization-alert' },

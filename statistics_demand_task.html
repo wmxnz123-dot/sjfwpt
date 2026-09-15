@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据服务平台 - 需求数据量</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden bg-[#f0f2f5] text-[14px] text-gray-700">
+    <header class="h-14 bg-[#1c7ffd] flex justify-between items-center px-6 text-white shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-cubes-stacked text-2xl"></i>
+            <span class="text-lg font-medium tracking-wider ml-1">数据服务平台</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-gray-200 transition-colors" onclick="window.location.href='my_messages.html'">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#1c7ffd] leading-none">20</span>
+            </div>
+            <div class="flex items-center gap-2 cursor-pointer hover:text-gray-200 transition-colors">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yiyun&backgroundColor=b6e3f4" alt="avatar" class="w-8 h-8 rounded-full border border-blue-300 bg-white">
+                <span>yiyun</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden">
+        <aside class="w-[220px] bg-white border-r border-gray-200 shrink-0 overflow-y-auto">
+            <div id="developer-side-nav" class="py-4"></div>
+        </aside>
+
+        <script src="./developer_nav.js?v=20260831b"></script>
+
+        <main class="flex-1 flex flex-col overflow-hidden relative bg-[#f0f2f5]">
+            <div id="developer-top-nav" class="h-[52px] bg-white border-b border-gray-200 px-6 flex items-center gap-2 shrink-0 overflow-x-auto"></div>
+
+            <div class="h-[52px] flex items-center px-6 text-[#606266] shrink-0 bg-white border-b border-gray-100 text-[14px]">
+                <span>统计中心</span>
+                <span class="mx-2">/</span>
+                <span>申请使用统计</span>
+                <span class="mx-2">/</span>
+                <span class="font-medium text-[#303133]">需求数据量</span>
+            </div>
+
+            <div class="flex-1 p-6 overflow-y-auto">
+                <!-- 列表区 -->
+                <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6">
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-[16px] font-bold text-[#303133]">需求数据量</h2>
+                    </div>
+
+                    <!-- 搜索区 -->
+                    <div class="grid grid-cols-4 gap-x-6 gap-y-3 mb-5 p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] whitespace-nowrap text-sm">任务名称：</label>
+                            <input type="text" id="search-task" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] whitespace-nowrap text-sm">需求名称：</label>
+                            <input type="text" id="search-demand" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] whitespace-nowrap text-sm">申请单位：</label>
+                            <input type="text" id="search-apply" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] whitespace-nowrap text-sm">提供单位：</label>
+                            <input type="text" id="search-provide" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                        </div>
+                        <div class="flex items-center gap-2 col-span-2">
+                            <label class="text-[#606266] whitespace-nowrap text-sm">同步时间：</label>
+                            <input type="date" id="sync-start" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                            <span class="text-[#909399]">至</span>
+                            <input type="date" id="sync-end" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                        </div>
+                        <div class="flex items-center justify-end gap-2 col-span-2">
+                            <button onclick="queryList()" class="px-4 py-1.5 bg-[#1c7ffd] text-white rounded text-[13px] hover:bg-blue-600 transition-colors">查询</button>
+                            <button onclick="resetSearch()" class="px-4 py-1.5 border border-gray-300 text-[#606266] rounded text-[13px] hover:bg-gray-50 transition-colors">重置</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-[13px] border-collapse text-center whitespace-nowrap">
+                            <thead class="bg-gray-50 text-[#606266]">
+                                <tr>
+                                    <th class="w-16 py-3 px-4 font-medium">序号</th>
+                                    <th class="py-3 px-4 font-medium text-left">任务名称</th>
+                                    <th class="py-3 px-4 font-medium text-left">需求名称</th>
+                                    <th class="py-3 px-4 font-medium text-left">目录名称</th>
+                                    <th class="py-3 px-4 font-medium text-left">服务名称</th>
+                                    <th class="py-3 px-4 font-medium text-left">申请单位</th>
+                                    <th class="py-3 px-4 font-medium text-left">提供单位</th>
+                                    <th class="py-3 px-4 font-medium">同步数据量</th>
+                                    <th class="py-3 px-4 font-medium">同步时间</th>
+                                </tr>
+                            </thead>
+                            <tbody id="task-table-body" class="divide-y divide-gray-100"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="flex items-center justify-between mt-5 text-[13px] text-[#606266]">
+                        <div>共 <span class="text-[#303133] font-medium" id="total-count">0</span> 条</div>
+                        <div class="flex items-center gap-2">
+                            <button class="px-3 py-1 border border-gray-200 rounded text-[#909399] cursor-not-allowed" disabled>上一页</button>
+                            <button class="px-3 py-1 bg-[#1c7ffd] text-white rounded">1</button>
+                            <button class="px-3 py-1 border border-gray-200 rounded hover:bg-gray-50">下一页</button>
+                            <span class="ml-2">每页</span>
+                            <select class="h-7 px-2 border border-gray-200 rounded text-[13px] bg-white">
+                                <option>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                            </select>
+                            <span>条</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 需求任务数据量列表数据
+        let taskData = [
+            { taskName: '人口数据归集任务', demandName: '人口基础数据需求', catalogName: '人口基础信息库', serviceName: '人口信息查询接口', applyUnit: '市公安局', provideUnit: '省公安厅', syncCount: '8,240万条', syncTime: '2026-09-08 09:15' },
+            { taskName: '企业信用数据归集任务', demandName: '企业信用信息需求', catalogName: '法人基础信息库', serviceName: '企业信用信息查询接口', applyUnit: '市发改委', provideUnit: '省市场监管局', syncCount: '3,580万条', syncTime: '2026-09-08 08:42' },
+            { taskName: '政务服务数据共享任务', demandName: '政务服务事项数据需求', catalogName: '企业登记信息库', serviceName: '政务服务事项查询接口', applyUnit: '市政务服务中心', provideUnit: '省政务服务管理局', syncCount: '1,250万条', syncTime: '2026-09-07 18:30' },
+            { taskName: '生态环保监测数据任务', demandName: '环境质量监测数据需求', catalogName: '社会信用信息目录', serviceName: '环境质量数据服务', applyUnit: '市生态环境局', provideUnit: '省生态环境厅', syncCount: '2,860万条', syncTime: '2026-09-07 16:05' },
+            { taskName: '教育资源共享数据任务', demandName: '教育资源信息需求', catalogName: '环境质量监测目录', serviceName: '教育资源数据服务', applyUnit: '市教育局', provideUnit: '省教育厅', syncCount: '5,620万条', syncTime: '2026-09-07 14:20' },
+            { taskName: '社保数据归集任务', demandName: '社保参保数据需求', catalogName: '社保参保信息库', serviceName: '社保数据交换服务', applyUnit: '市人社局', provideUnit: '省人社厅', syncCount: '2,150万条', syncTime: '2026-09-06 11:08' },
+            { taskName: '民政数据归集任务', demandName: '婚姻登记信息需求', catalogName: '婚姻登记信息库', serviceName: '婚姻状态查询接口', applyUnit: '市民政局', provideUnit: '省民政厅', syncCount: '980万条', syncTime: '2026-09-06 09:55' },
+            { taskName: '税务数据归集任务', demandName: '税务登记数据需求', catalogName: '税务登记信息库', serviceName: '税务数据交换接口', applyUnit: '市税务局', provideUnit: '省税务局', syncCount: '4,820万条', syncTime: '2026-09-05 17:42' },
+            { taskName: '不动产数据归集任务', demandName: '不动产登记数据需求', catalogName: '不动产登记信息库', serviceName: '不动产查询接口', applyUnit: '市自然资源局', provideUnit: '省自然资源厅', syncCount: '1,850万条', syncTime: '2026-09-05 15:30' },
+            { taskName: '公共信用数据归集任务', demandName: '公共信用数据需求', catalogName: '公共信用信息库', serviceName: '信用查询服务', applyUnit: '市发改委', provideUnit: '省发改委', syncCount: '3,420万条', syncTime: '2026-09-05 10:18' }
+        ];
+
+        // 渲染列表
+        function renderList(list) {
+            const tbody = document.getElementById('task-table-body');
+            document.getElementById('total-count').textContent = list.length;
+            if (list.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="py-16 text-center text-[#909399]">
+                            <i class="fa-regular fa-folder-open text-3xl mb-2 block opacity-30"></i>
+                            暂无数据
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            tbody.innerHTML = list.map((d, i) => `
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="py-3 px-4 text-[#909399]">${i + 1}</td>
+                    <td class="py-3 px-4 text-[#303133] text-left truncate" title="${d.taskName}">${d.taskName}</td>
+                    <td class="py-3 px-4 text-left truncate" title="${d.demandName}">${d.demandName}</td>
+                    <td class="py-3 px-4 text-left truncate" title="${d.catalogName}">${d.catalogName}</td>
+                    <td class="py-3 px-4 text-left truncate" title="${d.serviceName}">${d.serviceName}</td>
+                    <td class="py-3 px-4 text-left truncate" title="${d.applyUnit}">${d.applyUnit}</td>
+                    <td class="py-3 px-4 text-left truncate" title="${d.provideUnit}">${d.provideUnit}</td>
+                    <td class="py-3 px-4 text-[#1c7ffd] font-medium">${d.syncCount}</td>
+                    <td class="py-3 px-4 text-[#909399]">${d.syncTime}</td>
+                </tr>
+            `).join('');
+        }
+
+        // 查询
+        function queryList() {
+            const taskKw = document.getElementById('search-task').value.trim();
+            const demandKw = document.getElementById('search-demand').value.trim();
+            const applyKw = document.getElementById('search-apply').value.trim();
+            const provideKw = document.getElementById('search-provide').value.trim();
+            const start = document.getElementById('sync-start').value;
+            const end = document.getElementById('sync-end').value;
+            if (start && end && start > end) {
+                alert('同步时间起始日期不能晚于结束日期');
+                return;
+            }
+            let list = taskData;
+            if (taskKw) list = list.filter(d => d.taskName.includes(taskKw));
+            if (demandKw) list = list.filter(d => d.demandName.includes(demandKw));
+            if (applyKw) list = list.filter(d => d.applyUnit.includes(applyKw));
+            if (provideKw) list = list.filter(d => d.provideUnit.includes(provideKw));
+            if (start) list = list.filter(d => d.syncTime.slice(0, 10) >= start);
+            if (end) list = list.filter(d => d.syncTime.slice(0, 10) <= end);
+            renderList(list);
+        }
+
+        // 重置
+        function resetSearch() {
+            document.getElementById('search-task').value = '';
+            document.getElementById('search-demand').value = '';
+            document.getElementById('search-apply').value = '';
+            document.getElementById('search-provide').value = '';
+            document.getElementById('sync-start').value = '';
+            document.getElementById('sync-end').value = '';
+            renderList(taskData);
+        }
+
+        // 初始化
+        renderList(taskData);
+    </script>
+</body>
+</html>

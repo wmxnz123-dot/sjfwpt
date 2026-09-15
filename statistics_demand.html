@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数据服务平台 - 需求数据量</title>
+    <title>数据服务平台 - 需求数据总量</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -49,14 +49,14 @@
                 <span class="mx-2">/</span>
                 <span>申请使用统计</span>
                 <span class="mx-2">/</span>
-                <span class="font-medium text-[#303133]">需求数据量</span>
+                <span class="font-medium text-[#303133]">需求数据总量</span>
             </div>
 
             <div class="flex-1 p-6 overflow-y-auto">
                 <!-- 列表区 -->
                 <div class="bg-white rounded-lg shadow-[0_2px_12px_0_rgba(0,0,0,0.05)] p-6">
                     <div class="flex items-center justify-between mb-5">
-                        <h2 class="text-[16px] font-bold text-[#303133]">需求数据明细</h2>
+                        <h2 class="text-[16px] font-bold text-[#303133]">需求数据总量</h2>
                     </div>
 
                     <!-- 搜索区 -->
@@ -67,6 +67,10 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <label class="text-[#606266] whitespace-nowrap text-sm">申请单位：</label>
+                            <input type="text" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-[#606266] whitespace-nowrap text-sm">数据提供单位：</label>
                             <input type="text" placeholder="请输入" class="flex-1 h-8 px-3 border border-gray-300 rounded text-[13px] focus:outline-none focus:border-[#1c7ffd]">
                         </div>
                         <div class="flex items-center justify-end gap-2">
@@ -85,7 +89,8 @@
                                     <th class="py-3 px-4 font-medium">申请单位</th>
                                     <th class="py-3 px-4 font-medium">数据提供单位</th>
                                     <th class="py-3 px-4 font-medium">数据量</th>
-                                    <th class="py-3 px-4 font-medium">同步时间</th>
+                                    <th class="py-3 px-4 font-medium">更新时间</th>
+                                    <th class="w-20 py-3 px-4 font-medium">操作</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
@@ -97,6 +102,7 @@
                                     <td class="py-3 px-4">省公安厅</td>
                                     <td class="py-3 px-4">8,240万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-14 09:15</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('人口核查')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-[#303133] text-left">社保核验</td>
@@ -106,6 +112,7 @@
                                     <td class="py-3 px-4">省人社厅</td>
                                     <td class="py-3 px-4">3,580万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-14 08:42</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('社保核验')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-[#303133] text-left">婚姻登记</td>
@@ -115,6 +122,7 @@
                                     <td class="py-3 px-4">省民政厅</td>
                                     <td class="py-3 px-4">1,250万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 18:30</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('婚姻登记')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-[#303133] text-left">企业监管</td>
@@ -124,6 +132,7 @@
                                     <td class="py-3 px-4">省市场监管局</td>
                                     <td class="py-3 px-4">2,860万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 16:05</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('企业监管')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-[#303133] text-left">医疗协同</td>
@@ -133,6 +142,7 @@
                                     <td class="py-3 px-4">省卫健委</td>
                                     <td class="py-3 px-4">5,620万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 14:20</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('医疗协同')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-[#303133] text-left">教育查询</td>
@@ -142,6 +152,7 @@
                                     <td class="py-3 px-4">省教育厅</td>
                                     <td class="py-3 px-4">2,150万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 11:08</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('教育查询')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-[#303133] text-left">税务核查</td>
@@ -151,6 +162,7 @@
                                     <td class="py-3 px-4">省税务局</td>
                                     <td class="py-3 px-4">4,820万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-13 09:55</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('税务核查')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-[#303133] text-left">住房查询</td>
@@ -160,6 +172,7 @@
                                     <td class="py-3 px-4">省自然资源厅</td>
                                     <td class="py-3 px-4">980万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-12 17:42</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('住房查询')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-[#303133] text-left">交通管理</td>
@@ -169,6 +182,7 @@
                                     <td class="py-3 px-4">省公安厅交警总队</td>
                                     <td class="py-3 px-4">1,850万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-12 15:30</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('交通管理')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="py-3 px-4 text-[#303133] text-left">信用查询</td>
@@ -178,6 +192,7 @@
                                     <td class="py-3 px-4">省发改委</td>
                                     <td class="py-3 px-4">3,420万条</td>
                                     <td class="py-3 px-4 text-[#909399]">2026-08-12 10:18</td>
+                                    <td class="py-3 px-4"><button onclick="viewMonthly('信用查询')" class="px-2 py-1 text-[#1c7ffd] hover:bg-blue-50 rounded transition-colors">查看</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -205,6 +220,95 @@
             </div>
         </main>
     </div>
+
+    <!-- 每月同步数据量抽屉 -->
+    <div id="monthlyDrawerOverlay" class="fixed inset-0 bg-black bg-opacity-30 z-40 hidden transition-opacity" onclick="closeMonthlyDrawer()"></div>
+    <div id="monthlyDrawer" class="fixed top-0 right-0 h-full w-[800px] bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="h-14 border-b border-gray-100 flex items-center justify-between px-6 shrink-0 bg-white">
+            <span class="font-medium text-[#303133]">详情</span>
+            <i class="fa-solid fa-xmark text-gray-400 cursor-pointer hover:text-[#1c7ffd] text-lg" onclick="closeMonthlyDrawer()"></i>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6 bg-[#f5f7fa]">
+            <!-- 基本信息 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-4">
+                <div class="px-6 py-5 flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-database text-[#1c7ffd]"></i>
+                    </div>
+                    <div>
+                        <div class="text-[18px] font-bold text-[#303133] mb-1" id="drawer-demand-name">需求名称</div>
+                        <div class="text-[#909399] text-[13px]">申请单位：<span id="drawer-apply-unit">-</span></div>
+                    </div>
+                    <div class="ml-auto text-right">
+                        <div class="text-[#909399] text-[13px]">更新时间：<span class="text-[#606266]" id="drawer-update-time">-</span></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 每月同步数据量列表 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="font-bold text-[#303133] text-[15px] flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days text-[#1c7ffd]"></i>每月同步数据量
+                    </h3>
+                    <div class="text-[13px] text-[#909399]">数据总量：<span class="text-[#1c7ffd] font-bold" id="drawer-total-count">-</span></div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th class="w-16 px-4 py-3 text-center font-medium text-[#606266]">序号</th>
+                                <th class="px-4 py-3 text-center font-medium text-[#606266]">月份</th>
+                                <th class="px-4 py-3 text-center font-medium text-[#606266]">同步数据量</th>
+                            </tr>
+                        </thead>
+                        <tbody id="drawer-monthly-list" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 需求列表数据（与表格行对应）
+        const demandRows = {
+            '人口核查': { applyUnit: '市公安局', total: '8,240万条', updateTime: '2026-08-14 09:15', monthly: [['2026-08', '1,240万条'], ['2026-07', '1,180万条'], ['2026-06', '1,090万条'], ['2026-05', '1,020万条'], ['2026-04', '980万条'], ['2026-03', '915万条'], ['2026-02', '890万条'], ['2026-01', '925万条']] },
+            '社保核验': { applyUnit: '市人社局', total: '3,580万条', updateTime: '2026-08-14 08:42', monthly: [['2026-08', '520万条'], ['2026-07', '485万条'], ['2026-06', '460万条'], ['2026-05', '445万条'], ['2026-04', '430万条'], ['2026-03', '415万条'], ['2026-02', '395万条'], ['2026-01', '430万条']] },
+            '婚姻登记': { applyUnit: '市民政局', total: '1,250万条', updateTime: '2026-08-13 18:30', monthly: [['2026-08', '185万条'], ['2026-07', '170万条'], ['2026-06', '160万条'], ['2026-05', '155万条'], ['2026-04', '148万条'], ['2026-03', '142万条'], ['2026-02', '128万条'], ['2026-01', '162万条']] },
+            '企业监管': { applyUnit: '市市场监管局', total: '2,860万条', updateTime: '2026-08-13 16:05', monthly: [['2026-08', '425万条'], ['2026-07', '392万条'], ['2026-06', '368万条'], ['2026-05', '355万条'], ['2026-04', '340万条'], ['2026-03', '328万条'], ['2026-02', '305万条'], ['2026-01', '347万条']] },
+            '医疗协同': { applyUnit: '市卫健委', total: '5,620万条', updateTime: '2026-08-13 14:20', monthly: [['2026-08', '830万条'], ['2026-07', '765万条'], ['2026-06', '720万条'], ['2026-05', '690万条'], ['2026-04', '665万条'], ['2026-03', '640万条'], ['2026-02', '610万条'], ['2026-01', '700万条']] },
+            '教育查询': { applyUnit: '市教育局', total: '2,150万条', updateTime: '2026-08-13 11:08', monthly: [['2026-08', '320万条'], ['2026-07', '295万条'], ['2026-06', '280万条'], ['2026-05', '270万条'], ['2026-04', '258万条'], ['2026-03', '248万条'], ['2026-02', '232万条'], ['2026-01', '247万条']] },
+            '税务核查': { applyUnit: '市税务局', total: '4,820万条', updateTime: '2026-08-13 09:55', monthly: [['2026-08', '715万条'], ['2026-07', '660万条'], ['2026-06', '620万条'], ['2026-05', '598万条'], ['2026-04', '575万条'], ['2026-03', '552万条'], ['2026-02', '520万条'], ['2026-01', '580万条']] },
+            '住房查询': { applyUnit: '市自然资源局', total: '980万条', updateTime: '2026-08-12 17:42', monthly: [['2026-08', '145万条'], ['2026-07', '134万条'], ['2026-06', '126万条'], ['2026-05', '122万条'], ['2026-04', '117万条'], ['2026-03', '112万条'], ['2026-02', '104万条'], ['2026-01', '120万条']] },
+            '交通管理': { applyUnit: '市公安局交警支队', total: '1,850万条', updateTime: '2026-08-12 15:30', monthly: [['2026-08', '275万条'], ['2026-07', '253万条'], ['2026-06', '238万条'], ['2026-05', '230万条'], ['2026-04', '221万条'], ['2026-03', '212万条'], ['2026-02', '198万条'], ['2026-01', '223万条']] },
+            '信用查询': { applyUnit: '市发改委', total: '3,420万条', updateTime: '2026-08-12 10:18', monthly: [['2026-08', '507万条'], ['2026-07', '468万条'], ['2026-06', '441万条'], ['2026-05', '425万条'], ['2026-04', '409万条'], ['2026-03', '393万条'], ['2026-02', '367万条'], ['2026-01', '410万条']] }
+        };
+
+        function viewMonthly(name) {
+            const d = demandRows[name];
+            if (!d) return;
+            document.getElementById('drawer-demand-name').textContent = name;
+            document.getElementById('drawer-apply-unit').textContent = d.applyUnit;
+            document.getElementById('drawer-update-time').textContent = d.updateTime;
+            document.getElementById('drawer-total-count').textContent = d.total;
+            document.getElementById('drawer-monthly-list').innerHTML = d.monthly.map((m, i) => `
+                <tr class="hover:bg-blue-50/30 transition-colors">
+                    <td class="px-4 py-3 text-center text-[#909399]">${i + 1}</td>
+                    <td class="px-4 py-3 text-center text-[#303133]">${m[0]}</td>
+                    <td class="px-4 py-3 text-center text-[#1c7ffd] font-medium">${m[1]}</td>
+                </tr>
+            `).join('');
+            document.getElementById('monthlyDrawer').classList.remove('translate-x-full');
+            document.getElementById('monthlyDrawerOverlay').classList.remove('hidden');
+        }
+
+        function closeMonthlyDrawer() {
+            document.getElementById('monthlyDrawer').classList.add('translate-x-full');
+            document.getElementById('monthlyDrawerOverlay').classList.add('hidden');
+        }
+    </script>
 
 <!-- Prototype Annotator runtime -->
 <script>
