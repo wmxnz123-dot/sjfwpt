@@ -31,19 +31,27 @@
                     </div>
                     <div class="flex-1 overflow-y-auto p-3">
                         <p class="text-xs text-[#909399] px-3 mb-2">历史对话</p>
-                        <div class="space-y-1">
-                            <button class="w-full text-left px-3 py-2.5 bg-blue-50 text-[#1c7ffd] rounded-lg text-sm hover:bg-blue-50 transition-colors line-clamp-1">
-                                我想做一个婚姻查询的应用
-                            </button>
-                            <button class="w-full text-left px-3 py-2.5 text-[#606266] hover:bg-gray-50 rounded-lg text-sm transition-colors line-clamp-1">
-                                企业信用查询怎么申请
-                            </button>
-                            <button class="w-full text-left px-3 py-2.5 text-[#606266] hover:bg-gray-50 rounded-lg text-sm transition-colors line-clamp-1">
-                                人口数据服务接口有哪些
-                            </button>
-                            <button class="w-full text-left px-3 py-2.5 text-[#606266] hover:bg-gray-50 rounded-lg text-sm transition-colors line-clamp-1">
-                                数据安全如何保障
-                            </button>
+                        <div class="space-y-1" id="chat-history-list">
+                            <div class="history-item group flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer mb-1 bg-blue-50" data-id="0" onclick="loadChatHistory(0)">
+                                <i class="fa-regular fa-comment-dots text-[#1c7ffd] text-xs shrink-0"></i>
+                                <span class="flex-1 text-sm text-[#1c7ffd] line-clamp-1">我想做一个婚姻查询的应用</span>
+                                <i class="fa-regular fa-trash-can text-[#c0c4cc] text-xs opacity-0 group-hover:opacity-100 hover:text-[#f56c6c] transition-opacity shrink-0" onclick="event.stopPropagation();confirmDeleteChatHistory(0)"></i>
+                            </div>
+                            <div class="history-item group flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer mb-1 hover:bg-gray-50" data-id="1" onclick="loadChatHistory(1)">
+                                <i class="fa-regular fa-comment-dots text-[#909399] text-xs shrink-0"></i>
+                                <span class="flex-1 text-sm text-[#606266] line-clamp-1">企业信用查询怎么申请</span>
+                                <i class="fa-regular fa-trash-can text-[#c0c4cc] text-xs opacity-0 group-hover:opacity-100 hover:text-[#f56c6c] transition-opacity shrink-0" onclick="event.stopPropagation();confirmDeleteChatHistory(1)"></i>
+                            </div>
+                            <div class="history-item group flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer mb-1 hover:bg-gray-50" data-id="2" onclick="loadChatHistory(2)">
+                                <i class="fa-regular fa-comment-dots text-[#909399] text-xs shrink-0"></i>
+                                <span class="flex-1 text-sm text-[#606266] line-clamp-1">人口数据服务接口有哪些</span>
+                                <i class="fa-regular fa-trash-can text-[#c0c4cc] text-xs opacity-0 group-hover:opacity-100 hover:text-[#f56c6c] transition-opacity shrink-0" onclick="event.stopPropagation();confirmDeleteChatHistory(2)"></i>
+                            </div>
+                            <div class="history-item group flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer mb-1 hover:bg-gray-50" data-id="3" onclick="loadChatHistory(3)">
+                                <i class="fa-regular fa-comment-dots text-[#909399] text-xs shrink-0"></i>
+                                <span class="flex-1 text-sm text-[#606266] line-clamp-1">数据安全如何保障</span>
+                                <i class="fa-regular fa-trash-can text-[#c0c4cc] text-xs opacity-0 group-hover:opacity-100 hover:text-[#f56c6c] transition-opacity shrink-0" onclick="event.stopPropagation();confirmDeleteChatHistory(3)"></i>
+                            </div>
                         </div>
                     </div>
                     <div class="p-3 border-t border-gray-100">
@@ -177,12 +185,72 @@
         </div>
     </main>
 
+    <!-- 删除历史对话确认弹窗 -->
+    <div id="chat-history-delete-modal" class="fixed inset-0 bg-black/30 z-[90] hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-2xl w-[400px] overflow-hidden">
+            <div class="px-6 py-5 flex items-start gap-3 border-b border-gray-100">
+                <i class="fa-solid fa-triangle-exclamation text-[#f56c6c] text-2xl mt-0.5"></i>
+                <div class="flex-1">
+                    <div class="text-[#303133] text-[15px] font-medium mb-1">删除确认</div>
+                    <span class="text-[#606266] text-[13px] leading-relaxed block">该对话将不可恢复</span>
+                </div>
+            </div>
+            <div class="px-6 py-4 flex justify-end gap-3 bg-white">
+                <button class="px-4 py-2 border border-gray-200 text-[#606266] rounded-md text-sm hover:bg-gray-50 transition-colors" onclick="closeChatHistoryDeleteModal()">取 消</button>
+                <button class="px-4 py-2 bg-[#f56c6c] text-white rounded-md text-sm hover:bg-[#d9363e] transition-colors" onclick="confirmDeleteChatHistoryAction()">删除该对话</button>
+            </div>
+        </div>
+    </div>
+
     <script>PortalCommon.renderFloatButtons();</script>
 
     <script>
         let basketCount = 1;
         let customizing = false;
         let lastRecommendServices = [];
+
+        // 删除历史对话
+        let pendingDeleteChatHistoryId = null;
+        function confirmDeleteChatHistory(id) {
+            pendingDeleteChatHistoryId = id;
+            document.getElementById('chat-history-delete-modal').classList.remove('hidden');
+        }
+        function closeChatHistoryDeleteModal() {
+            document.getElementById('chat-history-delete-modal').classList.add('hidden');
+            pendingDeleteChatHistoryId = null;
+        }
+        function confirmDeleteChatHistoryAction() {
+            if (pendingDeleteChatHistoryId !== null) {
+                const item = document.querySelector(`#chat-history-list .history-item[data-id="${pendingDeleteChatHistoryId}"]`);
+                if (item) item.remove();
+            }
+            closeChatHistoryDeleteModal();
+        }
+        function loadChatHistory(id) {
+            // 重置选中态
+            document.querySelectorAll('#chat-history-list .history-item').forEach(item => {
+                item.classList.remove('bg-blue-50');
+                item.classList.add('hover:bg-gray-50');
+                const dot = item.querySelector('.fa-comment-dots');
+                dot?.classList.remove('text-[#1c7ffd]');
+                dot?.classList.add('text-[#909399]');
+                const span = item.querySelector('span');
+                span?.classList.remove('text-[#1c7ffd]');
+                span?.classList.add('text-[#606266]');
+            });
+            // 设置当前选中
+            const activeItem = document.querySelector(`#chat-history-list .history-item[data-id="${id}"]`);
+            if (activeItem) {
+                activeItem.classList.add('bg-blue-50');
+                activeItem.classList.remove('hover:bg-gray-50');
+                const dot = activeItem.querySelector('.fa-comment-dots');
+                dot?.classList.add('text-[#1c7ffd]');
+                dot?.classList.remove('text-[#909399]');
+                const span = activeItem.querySelector('span');
+                span?.classList.add('text-[#1c7ffd]');
+                span?.classList.remove('text-[#606266]');
+            }
+        }
 
         function startNewChat() {
             const welcome = document.getElementById('chat-welcome');
